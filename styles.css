@@ -126,7 +126,7 @@ img {
 /* Header Styles           */
 /* ------------------------ */
 .site-header {
-  background-color: rgba(12, 52, 61, 0.9); /* Changed from solid to 90% opacity */
+  background-color: rgba(12, 52, 61, 0.7); /* Changed from solid to 70% opacity */
   color: var(--color-secondary);
   padding: var(--spacing-sm) var(--spacing-md);
   position: fixed;
