@@ -439,7 +439,7 @@ img {
   transition: var(--transition-standard);
 }
 .footer-link:hover {
-  text-decoration: underline;
+  text-decoration: none;
   opacity: 0.9;
 }
 .contact-info {
