@@ -1,1 +1,117 @@
- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rofilid</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Font Awesome for social media icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+  <!-- Header Section -->
+  <header>
+    <div class="logo">
+      <a href="index.html"><img src="assets/images/logo.png" alt="Rofilid Logo"></a>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="pages/corporate.html">Corporate</a></li>
+        <li><a href="pages/personal.html">Personal</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <button class="connect-button">Let's Connect</button>
+  </header>
+  
+  <!-- Hero Section with Background Image -->
+  <section id="hero" style="background-image: url('assets/images/hero-background.jpg');">
+    <h1>We specialize in financial coaching, process optimization, and systems improvement.</h1>
+    <button class="connect-button">Let's Connect</button>
+  </section>
+  
+  <!-- Service Areas Section with Icons -->
+  <section id="services">
+    <div class="cards">
+      <div class="card">
+        <img src="assets/images/digital-transformation-icon.png" alt="Digital Transformation Icon">
+        <h2>Corporate</h2>
+        <ul>
+          <li>Digital Transformation</li>
+          <li>Process Automation</li>
+          <li>Website Development</li>
+          <li>Visual Branding</li>
+        </ul>
+        <a href="pages/corporate.html" class="learn-more">Learn More</a>
+      </div>
+      <div class="card">
+        <img src="assets/images/coaching-icon.png" alt="Personal Finance Coaching Icon">
+        <h2>Personal</h2>
+        <ul>
+          <li><a href="pages/personal-finance-coaching.html">Personal Finance Coaching</a></li>
+          <li><a href="pages/personal-finance-tools.html">Personal Finance Tools and Resources</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Mid-Page Call to Action Section -->
+  <section id="cta-mid">
+    <p>Let us help you with the boost you need to achieve clarity, efficiency, and lasting success.</p>
+    <button class="connect-button">Let's Connect</button>
+  </section>
+  
+  <!-- Contact Section -->
+  <section id="contact">
+    <h2>Contact Us</h2>
+    <div class="contact-container">
+      <div class="contact-info">
+        <p>Email: info@rofilid.com</p>
+        <p>Social Media: Follow us on our channels below</p>
+      </div>
+      <form>
+        <label for="name">Name (Required)</label>
+        <input type="text" id="name" required>
+        <label for="email">Email (Required)</label>
+        <input type="email" id="email" required>
+        <label for="message">Message (Required)</label>
+        <textarea id="message" required></textarea>
+        <label for="phone">Phone Number (Optional)</label>
+        <input type="tel" id="phone">
+        <label for="location">Location (Optional)</label>
+        <input type="text" id="location">
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
+  </section>
+  
+  <!-- Footer Section with Logo -->
+  <footer>
+    <div class="logo">
+      <img src="assets/images/logo.png" alt="Rofilid Logo" style="height: 30px;">
+    </div>
+    <p>© 2023 Rofilid. All rights reserved.</p>
+    <div>
+      <a href="#data-protection">Data Protection Policy</a> |
+      <a href="#privacy">Privacy Policy</a>
+    </div>
+    <p>Contact: info@rofilid.com</p>
+    <div class="social-media">
+      <a href="https://twitter.com/rofilid"><i class="fab fa-x"></i></a>
+      <a href="https://youtube.com/rofilid"><i class="fab fa-youtube"></i></a>
+      <a href="https://instagram.com/rofilid"><i class="fab fa-instagram"></i></a>
+      <a href="https://facebook.com/rofilid"><i class="fab fa-facebook"></i></a>
+    </div>
+  </footer>
+
+  <!-- JavaScript for smooth scrolling -->
+  <script>
+    document.querySelectorAll('.connect-button').forEach(button => {
+      button.addEventListener('click', () => {
+        document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+</body>
+</html> 
