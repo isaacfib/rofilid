@@ -451,19 +451,27 @@ img {
   color: var(--color-secondary);
 }
 .email {
-  display: block;
-  margin: var(--spacing-xs) 0;
-  color: var(--color-secondary);
-  text-decoration: none;
+    display: block;
+    margin: var(--spacing-xs) 0;
+    color: var(--color-secondary); /* Keep this for white color */
+    text-decoration: none; /* Remove default underline */
 }
+
 .email:hover {
-  text-decoration: underline;
+    text-decoration: none; /* Remove underline on hover */
 }
 .social-media {
   display: flex;
   justify-content: flex-start;
   gap: var(--spacing-md);
   margin-top: var(--spacing-md);
+}
+
+.social-icon {
+    width: 20px; /* Adjust as needed */
+    height: 20px; /* Adjust as needed */
+    display: block; /* Ensure it fills the available space within the <a> tag */
+    margin: auto;     /* Center the icon horizontally and vertically inside the <a> */
 }
 .social-link {
   color: var(--color-secondary);
