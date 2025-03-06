@@ -1,1 +1,61 @@
- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Financial Calculator - Rofilid</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <!-- Header Section -->
+  <header>
+    <div class="logo">
+      <a href="../index.html"><img src="../assets/images/logo.png" alt="Rofilid Logo"></a>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="../pages/corporate.html">Corporate</a></li>
+        <li><a href="../pages/personal.html">Personal</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <button class="connect-button">Let's Connect</button>
+  </header>
+  
+  <!-- Calculator Content -->
+  <section id="content">
+    <h1>Financial Calculator</h1>
+    <p>This is a placeholder for a financial calculator tool. Functionality can be added with JavaScript as needed.</p>
+    <!-- Add calculator form or interactive elements here -->
+  </section>
+  
+  <!-- Footer Section -->
+  <footer>
+    <div class="logo">
+      <img src="../assets/images/logo.png" alt="Rofilid Logo" style="height: 30px;">
+    </div>
+    <p>© 2023 Rofilid. All rights reserved.</p>
+    <div>
+      <a href="#data-protection">Data Protection Policy</a> |
+      <a href="#privacy">Privacy Policy</a>
+    </div>
+    <p>Contact: info@rofilid.com</p>
+    <div class="social-media">
+      <a href="https://twitter.com/rofilid"><i class="fab fa-x"></i></a>
+      <a href="https://youtube.com/rofilid"><i class="fab fa-youtube"></i></a>
+      <a href="https://instagram.com/rofilid"><i class="fab fa-instagram"></i></a>
+      <a href="https://facebook.com/rofilid"><i class="fab fa-facebook"></i></a>
+    </div>
+  </footer>
+
+  <!-- JavaScript for smooth scrolling -->
+  <script>
+    document.querySelectorAll('.connect-button').forEach(button => {
+      button.addEventListener('click', () => {
+        window.location.href = '../index.html#contact';
+      });
+    });
+  </script>
+</body>
+</html> 
