@@ -468,8 +468,8 @@ img {
 }
 
 .social-icon {
-    width: 20px; /* Adjust as needed */
-    height: 20px; /* Adjust as needed */
+    width: 40px; /* Adjust as needed */
+    height: 40px; /* Adjust as needed */
     display: block; /* Ensure it fills the available space within the <a> tag */
     margin: auto;     /* Center the icon horizontally and vertically inside the <a> */
 }
