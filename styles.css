@@ -311,171 +311,213 @@ img {
 /* Contact Section - Enhanced Styles */
 /* ------------------------ */
 .contact-section {
-    background-color: var(--color-background); /* Keep background color */
-    padding: var(--spacing-xxl) var(--spacing-md);
-    /* Add a slightly different background to the container for visual separation if needed */
-    /* background-color: #f0f0f0; /* Lighter background if you want a subtle container background */ */
+  background-color: var(--color-background); /* Keep background color */
+  padding: var(--spacing-xxl) var(--spacing-md);
+  /* Add a slightly different background to the container for visual separation if needed */
+  /* background-color: #f0f0f0; /* Lighter background if you want a subtle container background */ */
 }
 
 .contact-container {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xl);
-    max-width: var(--container-width);
-    margin: 0 auto;
-    /* Add a subtle border or background to the container itself for more definition if desired */
-    /* border: 1px solid var(--color-accent); */
-    /* background-color: var(--color-secondary); */
-    /* padding: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+  max-width: var(--container-width);
+  margin: 0 auto;
+  /* Add a subtle border or background to the container itself for more definition if desired */
+  /* border: 1px solid var(--color-accent); */
+  /* background-color: var(--color-secondary); */
+  /* padding: var(--spacing-xl);
     border-radius: var(--border-radius); */
 }
 
 .contact-info {
-    text-align: center;
-    margin-bottom: var(--spacing-xl); /* Increased margin to separate more from form */
-    padding: var(--spacing-lg); /* Add padding to the info area */
-    background-color: var(--color-secondary); /* Give it a white background */
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow); /* Add shadow for depth */
+  text-align: center;
+  margin-bottom: var(--spacing-xl); /* Increased margin to separate more from form */
+  padding: var(--spacing-lg); /* Add padding to the info area */
+  background-color: var(--color-secondary); /* Give it a white background */
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow); /* Add shadow for depth */
 }
 
 .contact-info h2.section-title { /* Style the title within contact-info specifically if needed */
-    margin-bottom: var(--spacing-lg); /* Increase title margin */
-    font-size: 2.2rem; /* Slightly larger title */
-    color: var(--color-primary-dark); /* Darker primary for emphasis */
+  margin-bottom: var(--spacing-lg); /* Increase title margin */
+  font-size: 2.2rem; /* Slightly larger title */
+  color: var(--color-primary-dark); /* Darker primary for emphasis */
 }
 
 .contact-info address p {
-    font-size: 1.1rem; /* Slightly larger contact text */
-    margin-bottom: var(--spacing-sm);
+  font-size: 1.1rem; /* Slightly larger contact text */
+  margin-bottom: var(--spacing-sm);
 }
 
 .contact-info address a {
-    color: var(--color-primary);
-    font-weight: var(--font-weight-medium); /* Slightly bolder links */
-    text-decoration: none; /* Remove default underline */
+  color: var(--color-primary);
+  font-weight: var(--font-weight-medium); /* Slightly bolder links */
+  text-decoration: none; /* Remove default underline */
 }
 
 .contact-info address a:hover {
-    text-decoration: underline; /* Add underline on hover for links */
-    color: var(--color-primary-light);
+  text-decoration: underline; /* Add underline on hover for links */
+  color: var(--color-primary-light);
 }
 
 .contact-info .social-media {
-    margin-top: var(--spacing-lg); /* Increased margin for social icons */
-    justify-content: center; /* Center icons again within contact-info */
+  margin-top: var(--spacing-lg); /* Increased margin for social icons */
+  justify-content: center; /* Center icons again within contact-info */
 }
 
 .contact-info .social-link {
-    font-size: 1.7rem; /* Slightly larger social icons */
-    width: 45px; /* Slightly larger icon buttons */
-    height: 45px;
-    background-color: var(--color-primary); /* Make social icons primary color backgrounds */
-    color: var(--color-secondary); /* Icons white */
+  font-size: 1.7rem; /* Slightly larger social icons */
+  width: 45px; /* Slightly larger icon buttons */
+  height: 45px;
+  background-color: var(--color-primary); /* Make social icons primary color backgrounds */
+  color: var(--color-secondary); /* Icons white */
 }
 
 .contact-info .social-link:hover {
-    background-color: var(--color-primary-dark); /* Darker primary on hover */
+  background-color: var(--color-primary-dark); /* Darker primary on hover */
 }
 
 
 .contact-form {
-    width: 100%;
-    max-width: 550px; /* Slightly wider form */
-    margin: 0 auto;
-    padding: var(--spacing-lg); /* Add padding to the form area */
-    background-color: var(--color-secondary); /* Give form white background */
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow); /* Add shadow to form */
+  width: 100%;
+  max-width: 550px; /* Slightly wider form */
+  margin: 0 auto;
+  padding: var(--spacing-lg); /* Add padding to the form area */
+  background-color: var(--color-secondary); /* Give form white background */
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow); /* Add shadow to form */
 }
 
 .contact-form h2.section-title { /* Style the title above the form specifically if you move it */
-    margin-bottom: var(--spacing-lg);
-    font-size: 2.2rem;
-    color: var(--color-primary-dark);
+  margin-bottom: var(--spacing-lg);
+  font-size: 2.2rem;
+  color: var(--color-primary-dark);
 }
 
 
 .form-group label {
-    display: block;
-    margin-bottom: var(--spacing-xs);
-    font-weight: var(--font-weight-bold); /* Bolder labels */
-    color: var(--color-primary-dark); /* Darker primary color labels */
-    font-size: 1.1rem; /* Slightly larger labels */
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  font-weight: var(--font-weight-bold); /* Bolder labels */
+  color: var(--color-primary-dark); /* Darker primary color labels */
+  font-size: 1.1rem; /* Slightly larger labels */
 }
 
 .form-group input,
 .form-group textarea {
-    width: 100%;
-    padding: var(--spacing-md); /* Increased padding for inputs */
-    border: 1px solid var(--color-accent); /* Lighter border */
-    border-radius: var(--border-radius);
-    font-family: inherit;
-    font-size: 1rem;
-    transition: var(--transition-standard);
-    background-color: var(--color-background); /* Light background for inputs */
-    color: var(--color-text); /* Text color in inputs */
+  width: 100%;
+  padding: var(--spacing-md); /* Increased padding for inputs */
+  border: 1px solid var(--color-accent); /* Lighter border */
+  border-radius: var(--border-radius);
+  font-family: inherit;
+  font-size: 1rem;
+  transition: var(--transition-standard);
+  background-color: var(--color-background); /* Light background for inputs */
+  color: var(--color-text); /* Text color in inputs */
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
-    border-color: var(--color-primary-light); /* Lighter primary focus border */
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(var(--color-primary-light-rgb), 0.2); /* Use RGB for outline alpha */
+  border-color: var(--color-primary-light); /* Lighter primary focus border */
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(12, 52, 61, 0.2); /* Use RGB for outline alpha */
 }
 
 
 .submit-button {
-    background-color: var(--color-primary-dark); /* Darker primary for submit button */
-    color: var(--color-secondary);
-    width: 100%;
-    padding: var(--spacing-md) var(--spacing-xl); /* More padding on sides of button */
-    font-size: 1.1rem; /* Slightly larger button text */
-    margin-top: var(--spacing-lg); /* More space above the button */
-    font-weight: var(--font-weight-bold); /* Bolder button text */
-    border-radius: calc(var(--border-radius) * 2); /* More rounded button */
-    box-shadow: var(--box-shadow); /* Add shadow to button */
+  background-color: var(--color-primary-dark); /* Darker primary for submit button */
+  color: var(--color-secondary);
+  width: 100%;
+  padding: var(--spacing-md) var(--spacing-xl); /* More padding on sides of button */
+  font-size: 1.1rem; /* Slightly larger button text */
+  margin-top: var(--spacing-lg); /* More space above the button */
+  font-weight: var(--font-weight-bold); /* Bolder button text */
+  border-radius: calc(var(--border-radius) * 2); /* More rounded button */
+  box-shadow: var(--box-shadow); /* Add shadow to button */
 }
 
 .submit-button:hover {
-    background-color: var(--color-primary-light); /* Lighter primary on hover */
-    transform: translateY(-3px); /* More pronounced hover lift */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Stronger hover shadow */
+  background-color: var(--color-primary-light); /* Lighter primary on hover */
+  transform: translateY(-3px); /* More pronounced hover lift */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Stronger hover shadow */
 }
 
 
 /* Responsive adjustments for Tablet (min-width: 768px) - keep existing, but adjust if needed */
 @media (min-width: 768px) {
-    /* ... your existing tablet styles ... */
+  .hero-section {
+    min-height: 600px;
+  }
 
-    .contact-container {
-        flex-direction: row; /* Keep side-by-side on tablet */
-        /* ... other existing tablet styles for contact-container ... */
-    }
+  .hero-section h1 {
+    font-size: 2.5rem;
+  }
 
-    .contact-info {
-        flex: 1;
-        min-width: 350px; /* Slightly wider info area on tablet */
-        text-align: left; /* Align text left on tablet */
-        margin-bottom: 0; /* Remove bottom margin on tablet for side-by-side layout */
-        margin-right: var(--spacing-xl); /* Add right margin to separate from form */
-    }
+  .cards {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 
-    .contact-form {
-        flex: 1;
-        min-width: 400px; /* Slightly wider form on tablet */
-        margin: 0; /* Reset margins on tablet for side-by-side layout */
-    }
+  .card {
+    flex: 0 1 320px;
+  }
 
-    .contact-info .social-media {
-        justify-content: flex-start; /* Align social icons left in contact info on tablet */
-    }
+  .contact-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start; /* Re-align items to the start (top) if needed */
+  }
+
+  .contact-info {
+    flex: 1;
+    min-width: 350px; /* Slightly wider info area on tablet */
+    text-align: left; /* Align text left on tablet */
+    margin-bottom: 0; /* Remove bottom margin on tablet for side-by-side layout */
+    margin-right: var(--spacing-xl); /* Add right margin to separate from form */
+    align-self: flex-start; /* Add vertical alignment if needed to align with the form at the top */
+  }
+
+  .contact-form {
+    flex: 1;
+    min-width: 400px; /* Slightly wider form on tablet */
+    margin: 0; /* Reset margins on tablet for side-by-side layout */
+    align-self: flex-start; /* Add vertical alignment to match contact-info top alignment */
+  }
+
+  .social-media {
+    justify-content: flex-start;
+  }
 }
 
-
-/* Responsive adjustments for Desktop (min-width: 992px) - keep existing, adjust if needed */
+/* Responsive adjustments for Desktop (min-width: 992px) */
 @media (min-width: 992px) {
-    /* ... your existing desktop styles ... */
+  body {
+    font-size: 1.1rem;
+  }
+
+  .hero-section {
+    min-height: 700px;
+  }
+
+  .hero-section h1 {
+    font-size: 3rem;
+  }
+
+  .mobile-menu-toggle {
+    display: none;
+  }
+
+  .nav-list {
+    display: flex;
+    gap: var(--spacing-md);
+  }
+
+  .section-title {
+    font-size: 2.5rem;
+  }
 }
 /* ------------------------ */
 /* Footer Styles           */
@@ -584,101 +626,72 @@ img {
   .hero-section {
     min-height: 600px;
   }
-  
+
   .hero-section h1 {
     font-size: 2.5rem;
   }
-  
+
   .cards {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
   }
-  
+
   .card {
     flex: 0 1 320px;
   }
-  
+
   .contact-container {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: flex-start; /* Re-align items to the start (top) if needed */
   }
-  
+
   .contact-info {
     flex: 1;
-    min-width: 300px;
-    text-align: left;
+    min-width: 350px; /* Slightly wider info area on tablet */
+    text-align: left; /* Align text left on tablet */
+    margin-bottom: 0; /* Remove bottom margin on tablet for side-by-side layout */
+    margin-right: var(--spacing-xl); /* Add right margin to separate from form */
+    align-self: flex-start; /* Add vertical alignment if needed to align with the form at the top */
   }
-  
+
   .contact-form {
     flex: 1;
-    min-width: 300px;
+    min-width: 400px; /* Slightly wider form on tablet */
+    margin: 0; /* Reset margins on tablet for side-by-side layout */
+    align-self: flex-start; /* Add vertical alignment to match contact-info top alignment */
   }
-  
+
   .social-media {
     justify-content: flex-start;
   }
-  
-  .footer-content {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-  
-  .footer-left {
-    flex: 1;
-    max-width: 300px;
-  }
-  
-  .footer-right {
-    flex: 2;
-  }
-  
-  .footer-nav {
-    flex-direction: row;
-    justify-content: flex-end;
-    gap: var(--spacing-xl);
-    align-items: center;
-  }
-  
-  .contact-info {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    text-align: right;
-  }
-  
-  .social-media {
-    justify-content: flex-end;
-  }
 }
-/* --------------------------- */
-/* Responsive Design (Desktop) */
-/* --------------------------- */
+
+/* Responsive adjustments for Desktop (min-width: 992px) */
 @media (min-width: 992px) {
   body {
     font-size: 1.1rem;
   }
-  
+
   .hero-section {
     min-height: 700px;
   }
-  
+
   .hero-section h1 {
     font-size: 3rem;
   }
-  
+
   .mobile-menu-toggle {
     display: none;
   }
-  
+
   .nav-list {
     display: flex;
     gap: var(--spacing-md);
   }
-  
+
   .section-title {
     font-size: 2.5rem;
   }
@@ -688,27 +701,27 @@ img {
   body {
     padding-top: 0;
   }
-  
-  .site-header, 
+
+  .site-header,
   .cta-section,
   .footer-right,
   .submit-button,
   .mobile-menu-toggle {
     display: none;
   }
-  
+
   .hero-section {
     background-image: none;
     color: black;
     margin-top: 0;
     padding: var(--spacing-md) 0;
   }
-  
+
   .card {
     box-shadow: none;
     border: 1px solid #ddd;
   }
-  
+
   .site-footer {
     background-color: white;
     color: black;
