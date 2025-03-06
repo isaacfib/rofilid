@@ -3,115 +3,181 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rofilid</title>
+  <meta name="description" content="Rofilid - Financial coaching, process optimization, and systems improvement experts">
+  <title>Rofilid | Financial Optimization Specialists</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <!-- Font Awesome for social media icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
 </head>
 <body>
   <!-- Header Section -->
   <header>
     <div class="logo">
-      <a href="index.html"><img src="assets/images/logo.png" alt="Rofilid Logo"></a>
+      <a href="index.html" aria-label="Home">
+        <img src="assets/images/logo.png" alt="Rofilid Logo" width="120" height="40">
+      </a>
     </div>
-    <nav>
-      <ul>
+    
+    <nav aria-label="Main navigation">
+      <button class="mobile-menu-toggle" aria-expanded="false" aria-controls="primary-navigation">
+        <span class="sr-only">Menu</span>
+        <i class="fas fa-bars"></i>
+      </button>
+      <ul id="primary-navigation">
         <li><a href="pages/corporate.html">Corporate</a></li>
         <li><a href="pages/personal.html">Personal</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
-    <button class="connect-button">Let's Connect</button>
+    <button class="connect-button" aria-label="Contact us">Let's Connect</button>
   </header>
-  
-  <!-- Hero Section with Background Image -->
-  <section id="hero" style="background-image: url('assets/images/hero-background.jpg');">
-    <h1>We specialize in financial coaching, process optimization, and systems improvement.</h1>
-    <button class="connect-button">Let's Connect</button>
+
+  <!-- Hero Section -->
+  <section id="hero" class="hero-section">
+    <div class="hero-content">
+      <h1>We specialize in financial coaching, process optimization, and systems improvement.</h1>
+      <button class="cta-button">Let's Connect</button>
+    </div>
   </section>
-  
-  <!-- Service Areas Section with Icons -->
-  <section id="services">
+
+  <!-- Service Areas Section -->
+  <section id="services" aria-labelledby="services-heading">
+    <h2 id="services-heading" class="sr-only">Our Services</h2>
     <div class="cards">
-      <div class="card">
-        <img src="assets/images/digital-transformation-icon.png" alt="Digital Transformation Icon">
-        <h2>Corporate</h2>
+      <!-- Corporate Services Card -->
+      <article class="card">
+        <img src="assets/images/digital-transformation-icon.png" alt="" role="presentation">
+        <h3>Corporate Solutions</h3>
         <ul>
           <li>Digital Transformation</li>
           <li>Process Automation</li>
           <li>Website Development</li>
           <li>Visual Branding</li>
         </ul>
-        <a href="pages/corporate.html" class="learn-more">Learn More</a>
-      </div>
-      <div class="card">
-        <img src="assets/images/coaching-icon.png" alt="Personal Finance Coaching Icon">
-        <h2>Personal</h2>
+        <a href="pages/corporate.html" class="learn-more">Explore Corporate Solutions →</a>
+      </article>
+
+      <!-- Personal Services Card -->
+      <article class="card">
+        <img src="assets/images/coaching-icon.png" alt="" role="presentation">
+        <h3>Personal Finance</h3>
         <ul>
           <li><a href="pages/personal-finance-coaching.html">Personal Finance Coaching</a></li>
-          <li><a href="pages/personal-finance-tools.html">Personal Finance Tools and Resources</a></li>
+          <li><a href="pages/personal-finance-tools.html">Financial Tools & Resources</a></li>
         </ul>
-      </div>
+        <a href="pages/personal.html" class="learn-more">Discover Personal Solutions →</a>
+      </article>
     </div>
   </section>
-  
-  <!-- Mid-Page Call to Action Section -->
-  <section id="cta-mid">
-    <p>Let us help you with the boost you need to achieve clarity, efficiency, and lasting success.</p>
-    <button class="connect-button">Let's Connect</button>
+
+  <!-- CTA Section -->
+  <section id="cta-mid" class="cta-section">
+    <div class="cta-content">
+      <p>Let us help you achieve clarity, efficiency, and lasting success.</p>
+      <button class="cta-button">Start Your Journey</button>
+    </div>
   </section>
-  
+
   <!-- Contact Section -->
-  <section id="contact">
-    <h2>Contact Us</h2>
+  <section id="contact" aria-labelledby="contact-heading">
     <div class="contact-container">
+      <h2 id="contact-heading">Get in Touch</h2>
       <div class="contact-info">
-        <p>Email: info@rofilid.com</p>
-        <p>Social Media: Follow us on our channels below</p>
+        <address>
+          <p>Email: <a href="mailto:info@rofilid.com">info@rofilid.com</a></p>
+          <p>Phone: <a href="tel:+1234567890">+1 (234) 567-890</a></p>
+          <div class="social-media">
+            <a href="https://twitter.com/rofilid" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+            <a href="https://youtube.com/rofilid" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="https://instagram.com/rofilid" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://facebook.com/rofilid" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+          </div>
+        </address>
       </div>
-      <form>
-        <label for="name">Name (Required)</label>
-        <input type="text" id="name" required>
-        <label for="email">Email (Required)</label>
-        <input type="email" id="email" required>
-        <label for="message">Message (Required)</label>
-        <textarea id="message" required></textarea>
-        <label for="phone">Phone Number (Optional)</label>
-        <input type="tel" id="phone">
-        <label for="location">Location (Optional)</label>
-        <input type="text" id="location">
-        <button type="submit">Send Message</button>
+      
+      <form id="contact-form" method="POST" action="/submit-form">
+        <div class="form-group">
+          <label for="name">Full Name *</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Email *</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">City/Region *</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Message *</label>
+          <textarea id="message" name="message" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" name="phone">
+        </div>
+
+        <button type="submit" class="submit-button">Send Message</button>
       </form>
     </div>
   </section>
-  
-  <!-- Footer Section with Logo -->
+
+  <!-- Footer Section -->
   <footer>
-    <div class="logo">
-      <img src="assets/images/logo.png" alt="Rofilid Logo" style="height: 30px;">
-    </div>
-    <p>© 2023 Rofilid. All rights reserved.</p>
-    <div>
-      <a href="#data-protection">Data Protection Policy</a> |
-      <a href="#privacy">Privacy Policy</a>
-    </div>
-    <p>Contact: info@rofilid.com</p>
-    <div class="social-media">
-      <a href="https://twitter.com/rofilid"><i class="fab fa-x"></i></a>
-      <a href="https://youtube.com/rofilid"><i class="fab fa-youtube"></i></a>
-      <a href="https://instagram.com/rofilid"><i class="fab fa-instagram"></i></a>
-      <a href="https://facebook.com/rofilid"><i class="fab fa-facebook"></i></a>
+    <div class="footer-content">
+      <div class="footer-branding">
+        <img src="assets/images/logo-light.png" alt="Rofilid Logo" width="120" height="40">
+        <p>Raise Your Fiscal Lid</p>
+      </div>
+      
+      <nav aria-label="Legal navigation">
+        <ul>
+          <li><a href="pages/privacy.html">Privacy Policy</a></li>
+          <li><a href="pages/terms.html">Terms of Service</a></li>
+          <li><a href="pages/cookies.html">Cookie Policy</a></li>
+        </ul>
+      </nav>
+
+      <div class="footer-legal">
+        <p>© 2023 Rofilid. All rights reserved.</p>
+        </div>
     </div>
   </footer>
 
-  <!-- JavaScript for smooth scrolling -->
+  <!-- Scripts -->
   <script>
-    document.querySelectorAll('.connect-button').forEach(button => {
-      button.addEventListener('click', () => {
-        document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+    // Mobile Menu Toggle
+    const menuToggle = document.querySelector('.mobile-menu-toggle');
+    const primaryNav = document.querySelector('#primary-navigation');
+
+    menuToggle.addEventListener('click', () => {
+      const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+      menuToggle.setAttribute('aria-expanded', !isExpanded);
+      primaryNav.classList.toggle('active');
+    });
+
+    // Smooth Scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        target.scrollIntoView({ behavior: 'smooth' });
       });
+    });
+
+    // Form Validation
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+      const email = document.getElementById('email').value;
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        e.preventDefault();
+        alert('Please enter a valid email address');
+      }
     });
   </script>
 </body>
-</html> 
+</html>
