@@ -165,6 +165,7 @@ img {
 .nav-link:focus {
   outline: 1px solid var(--color-secondary);
   outline-offset: 2px;
+  border-radius: 5px;
 }
 .mobile-menu-toggle {
   background: transparent;
@@ -383,6 +384,7 @@ img {
   border-color: var(--color-primary);
   outline: none;
   box-shadow: 0 0 0 2px rgba(12, 52, 61, 0.2);
+  
 }
 .form-group textarea {
   resize: vertical;
