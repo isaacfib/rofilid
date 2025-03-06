@@ -1,7 +1,8 @@
- /* General Styles */
+/* General Styles */
 body {
   margin: 0;
   font-family: 'Roboto', sans-serif;
+  padding-top: 80px; /* Added space for fixed header */
 }
 
 /* Header Styles */
@@ -15,6 +16,7 @@ header {
   position: fixed;
   width: 100%;
   top: 0;
+  z-index: 1000; /* Ensure header stays on top */
 }
 
 .logo img {
@@ -34,10 +36,12 @@ nav a {
   color: #ffffff;
   text-decoration: none;
   font-weight: 500;
+  transition: opacity 0.3s ease; /* Smooth hover effect */
 }
 
 nav a:hover {
-  text-decoration: underline;
+  opacity: 0.8;
+  text-decoration: none; /* Remove underline for cleaner look */
 }
 
 button.connect-button {
@@ -48,104 +52,105 @@ button.connect-button {
   border-radius: 5px;
   font-weight: 500;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 button.connect-button:hover {
   background-color: #e0e0e0;
 }
 
-/* Hero Section Styles with Background Image */
+/* Hero Section Styles */
 #hero {
+  background-image: linear-gradient(rgba(12, 52, 61, 0.7), rgba(12, 52, 61, 0.7)), url('hero-bg.jpg');
   background-size: cover;
   background-position: center;
-  padding: 150px 20px;
+  padding: 100px 20px;
   text-align: center;
   color: #ffffff;
+  margin-top: -80px; /* Counteract body padding */
 }
 
 #hero h1 {
   font-weight: 900;
   font-size: 48px;
   margin-bottom: 20px;
+  line-height: 1.2;
 }
 
 #hero button {
-  background-color: #0c343d;
-  color: #ffffff;
-  padding: 10px 20px;
+  background-color: #ffffff;
+  color: #0c343d;
+  padding: 12px 30px;
   border: none;
   border-radius: 5px;
   font-weight: 500;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 #hero button:hover {
-  background-color: #08252b;
+  background-color: #0c343d;
+  color: #ffffff;
+  transform: translateY(-2px);
 }
 
-/* Service Areas Section Styles */
+/* Service Areas Section */
 #services {
-  background-color: #ffffff;
-  padding: 50px 20px;
+  background-color: #f8f9fa;
+  padding: 80px 20px;
 }
 
 .cards {
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: 30px;
   flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .card {
   background-color: #ffffff;
-  padding: 20px;
+  padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  width: 300px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  width: 320px;
   text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
 }
 
 .card img {
-  height: 50px;
+  height: 60px;
   width: auto;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .card h2 {
   font-weight: 700;
   color: #0c343d;
+  margin: 15px 0;
 }
 
 .card ul {
   list-style: none;
   padding: 0;
+  margin: 20px 0;
 }
 
 .card li {
   font-weight: 400;
-  color: #0c343d;
+  color: #4a4a4a;
+  padding: 8px 0;
 }
 
-.card a {
-  font-weight: 500;
-  color: #0c343d;
-  text-decoration: none;
-}
-
-.card a:hover {
-  text-decoration: underline;
-}
-
-.learn-more {
-  display: block;
-  text-align: center;
-  margin-top: 10px;
-}
-
-/* Mid-Page Call to Action Styles */
+/* Mid-Page CTA */
 #cta-mid {
   background-color: #0c343d;
-  padding: 50px 20px;
+  padding: 80px 20px;
   text-align: center;
 }
 
@@ -153,34 +158,14 @@ button.connect-button:hover {
   font-weight: 400;
   font-size: 24px;
   color: #ffffff;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  line-height: 1.5;
 }
 
-#cta-mid button {
-  background-color: #ffffff;
-  color: #0c343d;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-#cta-mid button:hover {
-  background-color: #e0e0e0;
-}
-
-/* Contact Section Styles */
+/* Contact Section */
 #contact {
   background-color: #ffffff;
-  padding: 50px 20px;
-}
-
-#contact h2 {
-  font-weight: 700;
-  color: #0c343d;
-  text-align: center;
-  margin-bottom: 20px;
+  padding: 80px 20px;
 }
 
 .contact-container {
@@ -188,122 +173,59 @@ button.connect-button:hover {
   justify-content: center;
   gap: 50px;
   flex-wrap: wrap;
-}
-
-.contact-info p {
-  font-weight: 400;
-  color: #0c343d;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
-  max-width: 400px;
-}
-
-form label {
-  font-weight: 400;
-  color: #0c343d;
-}
-
-form input, form textarea {
-  padding: 10px;
-  border: 1px solid #0c343d;
-  border-radius: 5px;
-  font-family: 'Roboto', sans-serif;
-}
-
-form textarea {
-  resize: vertical;
-  min-height: 100px;
-}
-
-form button {
-  background-color: #0c343d;
-  color: #ffffff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-form button:hover {
-  background-color: #08252b;
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
 }
 
 /* Footer Styles */
 footer {
-  background-color: #0c343d;
+  background-color: #08252b;
   color: #ffffff;
-  padding: 20px;
+  padding: 40px 20px;
   text-align: center;
 }
 
-footer p, footer a {
-  font-weight: 300;
-  font-size: 14px;
-  color: #ffffff;
-  text-decoration: none;
-}
-
-footer a:hover {
-  text-decoration: underline;
+.social-media {
+  margin: 20px 0;
 }
 
 .social-media a {
-  margin: 0 10px;
+  margin: 0 15px;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
 }
 
-/* Styles for Dedicated Pages */
-section#content {
-  padding: 100px 20px 50px;
-  background-color: #ffffff;
+.social-media a:hover {
+  opacity: 1;
 }
 
-section#content h1 {
-  font-weight: 900;
-  font-size: 36px;
-  color: #0c343d;
-  text-align: center;
+/* Responsive Design Additions */
+@media (max-width: 768px) {
+  nav ul {
+    display: none; /* Add mobile menu implementation here */
+  }
+  
+  #hero h1 {
+    font-size: 36px;
+  }
+  
+  .cards {
+    gap: 20px;
+  }
 }
 
-section#content p {
-  font-weight: 400;
-  color: #0c343d;
-  max-width: 800px;
-  margin: 20px auto;
-  text-align: center;
-}
-
-section#content img.content-image {
-  display: block;
-  margin: 20px auto;
-  max-width: 100%;
-  height: auto;
-  border-radius: 10px;
-}
-
-section#content ul {
-  list-style: none;
-  padding: 0;
-  text-align: center;
-}
-
-section#content li {
-  font-weight: 400;
-  color: #0c343d;
-  margin: 10px 0;
-}
-
-section#content a {
-  color: #0c343d;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-section#content a:hover {
-  text-decoration: underline;
+@media (max-width: 480px) {
+  .logo img {
+    height: 30px;
+  }
+  
+  #hero {
+    padding: 80px 20px;
+  }
 }
