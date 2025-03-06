@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Rofilid - Financial coaching, process optimization, and systems improvement experts">
   <title>ROFILID</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -12,191 +14,221 @@
 </head>
 <body>
   <!-- Header Section -->
-<header>
-  <div class="logo">
-    <a href="index.html" aria-label="Home">
-      <img src="assets/images/logo.png" alt="Rofilid Logo" width="120" height="40">
-    </a>
-  </div>
-  
-  <nav aria-label="Main navigation">
-    <button class="mobile-menu-toggle" aria-expanded="false" aria-controls="primary-navigation">
-      <span class="sr-only">Menu</span>
-      <i class="fas fa-bars"></i>
-    </button>
-    <ul id="primary-navigation">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="pages/corporate.html">Corporate</a></li>
-      <li><a href="pages/personal.html">Personal</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
-  <button class="connect-button" aria-label="Contact us">Let's Connect</button>
-</header>
-
-  <!-- Hero Section -->
-  <section id="hero" class="hero-section">
-    <div class="hero-content">
-      <h1>We specialize in financial coaching, process optimization and systems improvement.</h1>
-      <button class="cta-button">Let's Connect</button>
-    </div>
-  </section>
-
-  <!-- Service Areas Section -->
-  <section id="services" aria-labelledby="services-heading">
-    <h2 id="services-heading" class="sr-only">Our Services</h2>
-    <div class="cards">
-      <!-- Corporate Services Card -->
-      <article class="card">
-        <img src="assets/images/digital-transformation-icon.png" alt="" role="presentation">
-        <h3>Corporate Solutions</h3>
-        <ul>
-          <li>Digital Transformation</li>
-          <li>Process Automation</li>
-          <li>Website Development</li>
-          <li>Visual Branding</li>
-        </ul>
-        <a href="pages/corporate.html" class="learn-more">Explore Corporate Solutions →</a>
-      </article>
-
-      <!-- Personal Services Card -->
-      <article class="card">
-        <img src="assets/images/coaching-icon.png" alt="" role="presentation">
-        <h3>Personal Solutions</h3>
-        <ul>
-          <li><a href="pages/personal-finance-coaching.html">Finance Coaching</a></li>
-          <li><a href="pages/personal-finance-tools.html">Financial Tools & Resources</a></li>
-        </ul>
-        <a href="pages/personal.html" class="learn-more">Discover Personal Solutions →</a>
-      </article>
-    </div>
-  </section>
-
-  <!-- CTA Section -->
-  <section id="cta-mid" class="cta-section">
-    <div class="cta-content">
-      <p>Let us help you achieve clarity, efficiency, and lasting success.</p>
-      <button class="cta-button">Start Your Journey</button>
-    </div>
-  </section>
-
-  <!-- Contact Section -->
-  <section id="contact" aria-labelledby="contact-heading">
-    <div class="contact-container">
-      <h2 id="contact-heading">Get in Touch</h2>
-      <div class="contact-info">
-        <address>
-          <p>Email: <a href="mailto:info@rofilid.com">info@rofilid.com</a></p>
-          <p>Phone: <a href="tel:+1234567890">+234 (0) 805-890-0000</a></p>
-          <div class="social-media">
-            <a href="https://twitter.com/rofilid" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
-            <a href="https://youtube.com/rofilid" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-            <a href="https://instagram.com/rofi.lid" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="https://facebook.com/rofilid" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-          </div>
-        </address>
+  <header class="site-header">
+    <div class="container header-container">
+      <div class="logo">
+        <a href="index.html" aria-label="Rofilid Home">
+          <img src="assets/images/logo.png" alt="Rofilid Logo" width="120" height="40" loading="eager">
+        </a>
       </div>
       
-      <form id="contact-form" method="POST" action="/submit-form">
-        <div class="form-group">
-          <label for="name">Full Name *</label>
-          <input type="text" id="name" name="name" required>
+      <nav aria-label="Main navigation">
+        <button class="mobile-menu-toggle" aria-expanded="false" aria-controls="primary-navigation">
+          <span class="sr-only">Menu</span>
+          <i class="fas fa-bars" aria-hidden="true"></i>
+        </button>
+        <ul id="primary-navigation" class="nav-list">
+          <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+          <li class="nav-item"><a href="pages/corporate.html" class="nav-link">Corporate</a></li>
+          <li class="nav-item"><a href="pages/personal.html" class="nav-link">Personal</a></li>
+          <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <a href="#contact" class="connect-button" aria-label="Contact us">Let's Connect</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section">
+      <div class="container">
+        <div class="hero-content">
+          <h1>We specialize in financial coaching, process optimization and systems improvement.</h1>
+          <a href="#contact" class="cta-button">Let's Connect</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Service Areas Section -->
+    <section id="services" class="services-section" aria-labelledby="services-heading">
+      <div class="container">
+        <h2 id="services-heading" class="section-title">Our Services</h2>
+        <div class="cards">
+          <!-- Corporate Services Card -->
+          <article class="card">
+            <img src="assets/images/digital-transformation-icon.png" alt="" role="presentation" width="64" height="64" loading="lazy">
+            <h3 class="card-title">Corporate Solutions</h3>
+            <ul class="service-list">
+              <li>Digital Transformation</li>
+              <li>Process Automation</li>
+              <li>Website Development</li>
+              <li>Visual Branding</li>
+            </ul>
+            <a href="pages/corporate.html" class="learn-more">Explore Corporate Solutions <span aria-hidden="true">→</span></a>
+          </article>
+          
+          <!-- Personal Services Card -->
+          <article class="card">
+            <img src="assets/images/coaching-icon.png" alt="" role="presentation" width="64" height="64" loading="lazy">
+            <h3 class="card-title">Personal Solutions</h3>
+            <ul class="service-list">
+              <li><a href="pages/personal-finance-coaching.html">Finance Coaching</a></li>
+              <li><a href="pages/personal-finance-tools.html">Financial Tools & Resources</a></li>
+            </ul>
+            <a href="pages/personal.html" class="learn-more">Discover Personal Solutions <span aria-hidden="true">→</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="cta-mid" class="cta-section">
+      <div class="container">
+        <div class="cta-content">
+          <p>Let us help you achieve clarity, efficiency, and lasting success.</p>
+          <a href="#contact" class="cta-button">Start Your Journey</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section" aria-labelledby="contact-heading">
+      <div class="container">
+        <div class="contact-container">
+          <h2 id="contact-heading" class="section-title">Get in Touch</h2>
+          
+          <div class="contact-info">
+            <address>
+              <p>Email: <a href="mailto:info@rofilid.com">info@rofilid.com</a></p>
+              <p>Phone: <a href="tel:+2348058900000">+234 (0) 805-890-0000</a></p>
+              <div class="social-media">
+                <a href="https://twitter.com/rofilid" aria-label="Twitter" class="social-link"><i class="fab fa-x-twitter" aria-hidden="true"></i></a>
+                <a href="https://youtube.com/rofilid" aria-label="YouTube" class="social-link"><i class="fab fa-youtube" aria-hidden="true"></i></a>
+                <a href="https://instagram.com/rofi.lid" aria-label="Instagram" class="social-link"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                <a href="https://facebook.com/rofilid" aria-label="Facebook" class="social-link"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+              </div>
+            </address>
+          </div>
+          
+          <form id="contact-form" method="POST" action="/submit-form" class="contact-form">
+            <div class="form-group">
+              <label for="name">Full Name <span aria-hidden="true">*</span><span class="sr-only">(required)</span></label>
+              <input type="text" id="name" name="name" required aria-required="true">
+            </div>
+            
+            <div class="form-group">
+              <label for="contact-email">Email <span aria-hidden="true">*</span><span class="sr-only">(required)</span></label>
+              <input type="email" id="contact-email" name="email" required aria-required="true">
+            </div>
+            
+            <div class="form-group">
+              <label for="region">City/Region <span aria-hidden="true">*</span><span class="sr-only">(required)</span></label>
+              <input type="text" id="region" name="region" required aria-required="true">
+            </div>
+            
+            <div class="form-group">
+              <label for="message">Message <span aria-hidden="true">*</span><span class="sr-only">(required)</span></label>
+              <textarea id="message" name="message" required aria-required="true" rows="4"></textarea>
+            </div>
+            
+            <div class="form-group">
+              <label for="phone">Phone</label>
+              <input type="tel" id="phone" name="phone">
+            </div>
+            
+            <button type="submit" class="submit-button">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-left">
+          <div class="logo">
+            <img src="assets/images/logo.png" alt="Rofilid Logo" width="120" height="40" loading="lazy">
+          </div>
+          <p class="tagline">Raise Your Fiscal Lid</p>
         </div>
         
-        <div class="form-group">
-          <label for="email">Email *</label>
-          <input type="email" id="email" name="email" required>
+        <div class="footer-right">
+          <nav class="footer-nav" aria-label="Footer Navigation">
+            <a href="#data-protection" class="footer-link">Data Protection Policy</a>
+            <a href="#privacy" class="footer-link">Privacy Policy</a>
+            <div class="contact-info">
+              <span>Contact:</span>
+              <a href="mailto:contact@rofilid.com" class="email">contact@rofilid.com</a>
+              <div class="social-media">
+                <a href="https://facebook.com/rofilid" aria-label="Facebook" class="social-link">
+                  <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+                <a href="https://instagram.com/rofi.lid" aria-label="Instagram" class="social-link">
+                  <i class="fab fa-instagram" aria-hidden="true"></i>
+                </a>
+                <a href="https://linkedin.com/company/rofilid" aria-label="LinkedIn" class="social-link">
+                  <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+                <a href="https://twitter.com/rofilid" aria-label="X (Formerly Twitter)" class="social-link">
+                  <i class="fab fa-x-twitter" aria-hidden="true"></i>
+                </a>
+              </div>
+            </div>
+          </nav>
         </div>
-
-        <div class="form-group">
-          <label for="email">City/Region *</label>
-          <input type="email" id="email" name="email" required>
-        </div>
-
-        <div class="form-group">
-          <label for="message">Message *</label>
-          <textarea id="message" name="message" required></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="phone">Phone</label>
-          <input type="tel" id="phone" name="phone">
-        </div>
-
-        <button type="submit" class="submit-button">Send Message</button>
-      </form>
-    </div>
-  </section>
-
-<!-- Footer Section -->
-<footer>
-  <div class="footer-content">
-    <div class="footer-left">
-      <div class="logo">
-        <img src="assets/images/logo.png" alt="Rofilid Logo" style="height: 40px;">
       </div>
-      <p class="tagline">Raise Your Fiscal Lid</p>
+      
+      <div class="copyright">
+        <p>&copy; <span id="current-year">2023</span> ROFILID Services Limited. All rights reserved.</p>
+      </div>
     </div>
+  </footer>
 
-    <div class="footer-right">
-      <nav class="footer-nav">
-        <a href="#data-protection">Data Protection Policy</a>
-        <a href="#privacy">Privacy Policy</a>
-        <div class="contact-info">
-          <span>Contact:</span>
-          <a href="mailto:contact@rofilid.com" class="email">contact@rofilid.com</a>
-          <div class="social-media">
-            <a href="https://facebook.com/rofilid" aria-label="Facebook">
-              <i class="fab fa-facebook"></i>
-            </a>
-            <a href="https://instagram.com/rofi.lid" aria-label="Instagram">
-              <i class="fab fa-instagram"></i>
-            </a>
-            <a href="https://linkedin.com/company/rofilid" aria-label="LinkedIn">
-              <i class="fab fa-linkedin"></i>
-            </a>
-            <a href="https://twitter.com/rofilid" aria-label="X (Formerly Twitter)">
-              <i class="fab fa-x-twitter"></i>
-            </a>
-          </div>
-        </div>
-      </nav>
-    </div>
-  </div>
-  
-  <div class="copyright">
-    <p>© 2023 ROFILID Services Limited. All rights reserved.</p>
-  </div>
-</footer>
   <!-- Scripts -->
   <script>
     // Mobile Menu Toggle
     const menuToggle = document.querySelector('.mobile-menu-toggle');
     const primaryNav = document.querySelector('#primary-navigation');
-
+    
     menuToggle.addEventListener('click', () => {
       const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
       menuToggle.setAttribute('aria-expanded', !isExpanded);
       primaryNav.classList.toggle('active');
     });
-
+    
     // Smooth Scroll
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        target.scrollIntoView({ behavior: 'smooth' });
+        const target = document.querySelector(targetId);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+          
+          // Update URL without page reload
+          history.pushState(null, null, targetId);
+        }
       });
     });
-
+    
     // Form Validation
     document.getElementById('contact-form').addEventListener('submit', function(e) {
-      const email = document.getElementById('email').value;
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      const email = document.getElementById('contact-email').value;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      
+      if (!emailRegex.test(email)) {
         e.preventDefault();
         alert('Please enter a valid email address');
+        document.getElementById('contact-email').focus();
       }
     });
+    
+    // Update current year in copyright
+    document.getElementById('current-year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
