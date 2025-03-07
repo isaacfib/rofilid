@@ -150,6 +150,7 @@ img {
 }
 .nav-item {
   margin: 0;
+  justify-content: center;
 }
 .nav-link {
   color: var(--color-secondary);
