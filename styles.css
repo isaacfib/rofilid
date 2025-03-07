@@ -624,6 +624,9 @@ img {
 .site-footer .social-media {
   justify-content: flex-end;
 }
+.footer-nav {
+  align-items: flex-end;
+}
 
 /* --------------------------- */
 /* Responsive Design (Tablet) */
@@ -732,5 +735,12 @@ img {
     background-color: white;
     color: black;
     border-top: 1px solid #ddd;
+  }
+}
+@media (min-width: 768px) {
+  .footer-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
   }
 }
