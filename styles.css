@@ -182,15 +182,15 @@ img {
 /* Mobile menu active state */
 #primary-navigation.active {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   position: absolute;
   top: 100%;
   left: 0;
   width: 100%;
   background-color: var(--color-primary);
-  padding: var(--spacing-md);
+  padding: var(--spacing-sm);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  gap: var(--spacing-md);
+  gap: var(--spacing-sm);
 }
 /* ------------------------ */
 /* Hero Section            */
@@ -508,7 +508,7 @@ img {
 
   .nav-list {
     display: flex;
-    gap: var(--spacing-md);
+    gap: var(--spacing-sm);
   }
 
   .section-title {
