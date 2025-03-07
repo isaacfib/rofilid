@@ -196,7 +196,7 @@ img {
 /* Hero Section            */
 /* ------------------------ */
 .hero-section {
-  background-image: linear-gradient(rgba(12, 52, 61, 0.7), rgba(12, 52, 61, 0.7)), url('assets/images/hero-bg.jpg');
+  background-image: linear-gradient(rgba(12, 52, 61, 0.7), rgba(12, 52, 61, 0.7)), url('assets/images/hero-background.jpg');
   background-size: cover;
   background-position: center;
   color: var(--color-secondary);
