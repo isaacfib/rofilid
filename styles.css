@@ -147,6 +147,9 @@ img {
 .nav-list {
   display: none; /* Hidden by default on mobile */
   list-style: none;
+  /* Add transition for opacity */
+  transition: opacity 0.3s ease-out; /* Adjust duration and easing as needed */
+  opacity: 0; /* Initially fully transparent when hidden */
 }
 .nav-item {
   margin: 0;
@@ -181,7 +184,7 @@ img {
 }
 /* Mobile menu active state */
 #primary-navigation.active {
-  display: flex;
+  display: flex; /* Keep display: flex for layout when active */
   flex-direction: row;
   position: absolute;
   top: 100%;
@@ -192,6 +195,8 @@ img {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   gap: var(--spacing-sm);
   justify-content: center;
+  /* Make fully opaque when active */
+  opacity: 1;
 }
 /* ------------------------ */
 /* Hero Section            */
