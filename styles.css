@@ -618,9 +618,6 @@ img {
 .site-footer .social-media {
   justify-content: flex-end;
 }
-.footer-nav {
-  align-items: flex-end;
-}
 
 /* --------------------------- */
 /* Responsive Design (Tablet) */
