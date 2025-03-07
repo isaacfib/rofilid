@@ -241,11 +241,11 @@ img {
   transition: var(--transition-standard);
   outline-offset: 2px;
 }
-.hero-section .cta-button {
+.hero-section .hero-cta-button {
   padding: var(--spacing-sm) var(--spacing-xl);
   font-size: 1.1rem;
 }
-.hero-section .cta-button:hover {
+.hero-section .hero-cta-button:hover {
   background-color: var(--color-primary-dark);
   color: var(--color-secondary);
 }
