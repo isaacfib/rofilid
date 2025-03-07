@@ -538,6 +538,7 @@ img {
 }
 .footer-nav {
   display: flex;
+  justify-content: right;
   flex-direction: row;
   gap: var(--spacing-md);
   align-items: flex-end;
