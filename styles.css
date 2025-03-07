@@ -525,19 +525,13 @@ img {
 }
 .footer-content {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: flex-start;
-  gap: var(--spacing-lg);
-  margin-bottom: var(--spacing-lg);
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
 }
 .footer-left {
   text-align: left;
-}
-.tagline {
-  font-size: 1.2rem;
-  font-weight: var(--font-weight-medium);
-  margin-top: var(--spacing-sm);
-  color: var(--color-secondary);
 }
 .footer-right {
   width: 100%;
