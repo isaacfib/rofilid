@@ -561,20 +561,10 @@ img {
 .contact-info span {
   color: var(--color-secondary);
 }
-.email {
-    display: block;
-    margin: var(--spacing-xs) 0;
-    color: var(--color-secondary); /* Keep this for white color */
-    text-decoration: none; /* Remove default underline */
-}
-
-.email:hover {
-    text-decoration: none; /* Remove underline on hover */
-}
 .social-media {
   display: flex;
   justify-content: flex-start;
-  gap: var(--spacing-md);
+  gap: var(--spacing-sm);
   margin-top: var(--spacing-md);
 }
 
