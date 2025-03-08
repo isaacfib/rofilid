@@ -222,6 +222,8 @@ img {
   font-size: 1.1rem;
   background-color: var(--color-primary-dark);
   outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  color: var(--color-secondary);
 }
 .hero-section .cta-button:hover {
   background-color: var(--color-primary-dark);
