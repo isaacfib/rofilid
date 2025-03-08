@@ -281,7 +281,7 @@ img {
 }
 .service-list a:hover {
   color: var(--color-primary-light);
-  text-decoration: underline;
+  text-decoration: none;
 }
 /* ------------------------ */
 /* CTA Mid Section         */
