@@ -309,7 +309,7 @@ img {
   background-color: var(--color-background); /* Keep background color */
   padding: var(--spacing-xxl) var(--spacing-md);
   /* Add a slightly different background to the container for visual separation if needed */
-  /* background-color: #f0f0f0; 
+  /* background-color: #f0f0f0; */
 }
 
 .contact-container {
@@ -432,7 +432,7 @@ img {
 }
 
 /* Responsive adjustments for Tablet (min-width: 768px) - keep existing, but adjust if needed */
-@media (min-width: 500px) {
+@media (min-width: 768px) {
   .hero-section {
     min-height: 600px;
   }
@@ -604,7 +604,7 @@ img {
 /* --------------------------- */
 /* Responsive Design (Tablet) */
 /* --------------------------- */
-@media (max-width: 992px) {
+@media (max-width: 500px) {
   .site-header {
     padding: var(--spacing-sm) var(--spacing-md); /* Keep header padding */
   }
