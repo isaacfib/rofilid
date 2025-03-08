@@ -348,7 +348,7 @@ img {
 }
 
 .contact-info address a:hover {
-  text-decoration: underline; /* Add underline on hover for links */
+  text-decoration: none; /* Add underline on hover for links */
   color: var(--color-primary-light);
 }
 
@@ -359,8 +359,8 @@ img {
 
 .contact-info .social-link {
   font-size: 1.7rem; /* Slightly larger social icons */
-  width: 45px; /* Slightly larger icon buttons */
-  height: 45px;
+  width: 40px; /* Slightly larger icon buttons */
+  height: 40px;
   background-color: var(--color-primary); /* Make social icons primary color backgrounds */
   color: var(--color-secondary); /* Icons white */
 }
