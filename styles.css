@@ -619,6 +619,27 @@ img {
 /* --------------------------- */
 /* Responsive Design (Tablet) */
 /* --------------------------- */
+@media (max-width: 992px) {
+  .site-header {
+    padding: var(--spacing-sm) var(--spacing-md); /* Keep header padding */
+  }
+
+  .header-container {
+    display: flex;
+    justify-content: space-between; /* Keep space-between to push items to edges */
+    align-items: center;
+  }
+
+  .connect-button {
+    display: none; /* Hide the CTA button on smaller screens */
+  }
+
+  .mobile-menu-toggle {
+    margin-left: auto; /* Push mobile menu toggle to the far right */
+    margin-right: 0; /* Ensure no right margin if any is accidentally set elsewhere */
+    display: block; /* Make sure it's visible (in case it was accidentally hidden elsewhere for small screens) */
+  }
+
 @media (min-width: 768px) {
   .hero-section {
     min-height: 600px;
@@ -749,11 +770,11 @@ img {
 /* For phones (max-width: 480px) */
 @media (max-width: 480px) {
   .social-icon {
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
   }
   .social-link {
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
   }
 }
