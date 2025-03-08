@@ -149,7 +149,7 @@ img {
   list-style: none;
   /* Add transition for opacity */
   transition: opacity 0.3s ease-out; /* Adjust duration and easing as needed */
-  opacity: 0; /* Initially fully transparent when hidden */
+  opacity: 0.8; /* Initially fully transparent when hidden */
 }
 .nav-item {
   margin: 0;
@@ -191,7 +191,7 @@ img {
   left: 0;
   width: 100%;
   background-color: var(--color-primary);
-  padding: var(--spacing-sm);
+  padding: var(--spacing-xs);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   gap: var(--spacing-sm);
   justify-content: center;
