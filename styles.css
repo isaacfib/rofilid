@@ -550,7 +550,7 @@ img {
 }
 .contact-info {
   text-align: left;
-  margin-top: var(--spacing-md);
+  margin-top: 0px;
   color: var(--color-secondary);
 }
 .contact-info span {
