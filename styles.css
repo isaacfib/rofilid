@@ -547,7 +547,7 @@ img {
   justify-content: right;
   flex-direction: row;
   gap: var(--spacing-md);
-  align-items: flex-end;
+  align-items: flex-start;
 }
 .footer-link {
   color: var(--color-secondary);
