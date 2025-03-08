@@ -732,3 +732,28 @@ img {
     justify-content: space-between;
   }
 }
+/* ... your base styles ... */
+
+/* For tablets (max-width: 768px) */
+@media (max-width: 768px) {
+  .social-icon {
+    width: 25px;
+    height: 25px;
+  }
+  .social-link {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+/* For phones (max-width: 480px) */
+@media (max-width: 480px) {
+  .social-icon {
+    width: 20px;
+    height: 20px;
+  }
+  .social-link {
+    width: 20px;
+    height: 20px;
+  }
+}
