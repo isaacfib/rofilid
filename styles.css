@@ -1,11 +1,4 @@
-/*
- * ROFILID Website Stylesheet
- * - Organized with a clear structure
- * - Mobile-first approach for better responsiveness
- * - Performance optimizations
- * - Improved accessibility
- * - Enhanced visual consistency
- */
+
 /* ------------------- */
 /* CSS Reset & Globals */
 /* ------------------- */
@@ -194,8 +187,7 @@ img {
   padding: var(--spacing-xs);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   gap: var(--spacing-sm);
-  justify-content: center;
-  /* Make fully opaque when active */
+  justify-content: center;  
   opacity: 1;
 }
 /* ------------------------ */
@@ -313,14 +305,11 @@ img {
 /* ------------------------ */
 /* Contact Section         */
 /* ------------------------ */
-/* ------------------------ */
-/* Contact Section - Enhanced Styles */
-/* ------------------------ */
 .contact-section {
   background-color: var(--color-background); /* Keep background color */
   padding: var(--spacing-xxl) var(--spacing-md);
   /* Add a slightly different background to the container for visual separation if needed */
-  /* background-color: #f0f0f0; /* Lighter background if you want a subtle container background */ */
+  /* background-color: #f0f0f0; 
 }
 
 .contact-container {
@@ -329,11 +318,7 @@ img {
   gap: var(--spacing-xl);
   max-width: var(--container-width);
   margin: 0 auto;
-  /* Add a subtle border or background to the container itself for more definition if desired */
-  /* border: 1px solid var(--color-accent); */
-  /* background-color: var(--color-secondary); */
-  /* padding: var(--spacing-xl);
-    border-radius: var(--border-radius); */
+  border: 1px solid var(--color-accent);
 }
 
 .contact-info {
@@ -447,7 +432,7 @@ img {
 }
 
 /* Responsive adjustments for Tablet (min-width: 768px) - keep existing, but adjust if needed */
-@media (min-width: 768px) {
+@media (min-width: 500px) {
   .hero-section {
     min-height: 600px;
   }
