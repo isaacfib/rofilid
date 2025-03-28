@@ -56,16 +56,15 @@
 
         <div class="resource-items">
           <article class="resource-item">
+            <div class="placeholder-image resource"></div> <!-- Updated placeholder -->
             <h3>Blog & Articles</h3>
-             <img src="https://via.placeholder.com/300x180.png?text=Resource+Image" alt="Stylized image representing financial articles" class="placeholder-image" loading="lazy">
             <p>Explore articles on budgeting, saving, investing, Nigeria-specific topics like navigating high inflation, understanding local tax nuances, and universal financial principles.</p>
-            <!-- <a href="#" class="learn-more">Read Articles <span aria-hidden="true">→</span></a> -->
              <p><em>(Full Blog Coming Soon)</em></p>
           </article>
 
           <article class="resource-item">
+             <div class="placeholder-image basicpfc"></div> <!-- Updated placeholder -->
             <h3>BasicPFC Insights</h3>
-             <img src="https://via.placeholder.com/300x180.png?text=BasicPFC+Graphic" alt="Graphic representing BasicPFC social media content" class="placeholder-image" loading="lazy">
             <p>Practical tips and core concepts from @basicpfc, presented in easy-to-understand formats directly on our site. Simplifying financial knowledge from social media.</p>
              <p><em>(Integration Coming Soon)</em></p>
           </article>
@@ -80,11 +79,12 @@
               <li>Prepare effectively for emergencies</li>
               <li>Confidently pursue and achieve financial goals</li>
             </ul>
+             <!-- Optional: Add small icon/image here too -->
           </article>
 
           <article class="resource-item">
+             <div class="placeholder-image productivity"></div> <!-- Updated placeholder -->
              <h3>Productivity Link</h3>
-              <img src="https://via.placeholder.com/300x180.png?text=Workplace+Focus" alt="Image representing workplace productivity" class="placeholder-image" loading="lazy">
              <p>For Employers: Employee financial stress directly impacts focus and productivity. Investing in your team's financial literacy benefits both the individual and the business bottom line.</p>
           </article>
         </div>
@@ -97,33 +97,11 @@
     <section id="personal-tools" class="page-section">
       <div class="container">
         <h2>Tools for Success</h2>
-        <p class="section-description">Utilize our interactive tools to gain personalized insights and manage your finances more effectively.</p>
+        <p class="section-description">Utilize our interactive tools and resources to gain personalized insights and manage your finances more effectively.</p>
 
+         <!-- Calculators & Templates Grid -->
         <div class="tool-items">
-          <article class="tool-item">
-            <h3>Interactive Quizzes</h3>
-            <p>Test your financial knowledge with short, engaging quizzes. Get immediate feedback and guidance.</p>
-            <!-- Quiz 1 Container -->
-            <div id="quiz1-container" class="quiz-container">
-                <h4>Basic Financial Literacy Quiz</h4>
-                <div id="quiz1-question" class="quiz-question"></div>
-                <div id="quiz1-options" class="quiz-options"></div>
-                <div id="quiz1-feedback" class="quiz-feedback" style="display: none;"></div>
-                <button id="quiz1-next" class="cta-button small quiz-next-btn" style="display: none;">Next Question</button>
-                <div id="quiz1-results" class="quiz-results" style="display: none;"></div>
-            </div>
-             <!-- Quiz 2 Container -->
-            <div id="quiz2-container" class="quiz-container" style="margin-top: var(--spacing-lg);">
-                <h4>Debt Management Quiz</h4>
-                <div id="quiz2-question" class="quiz-question"></div>
-                <div id="quiz2-options" class="quiz-options"></div>
-                <div id="quiz2-feedback" class="quiz-feedback" style="display: none;"></div>
-                <button id="quiz2-next" class="cta-button small quiz-next-btn" style="display: none;">Next Question</button>
-                 <div id="quiz2-results" class="quiz-results" style="display: none;"></div>
-            </div>
-          </article>
-
-          <article class="tool-item">
+           <article class="tool-item">
             <h3>Financial Calculators</h3>
             <p>Plan and visualize your savings goals, understand the power of compound interest, and more. Defaults to NGN with options for other major currencies.</p>
             <div class="calculator-placeholder">
@@ -136,7 +114,7 @@
           <article class="tool-item">
             <h3>Downloadable Templates</h3>
             <p>Get started with practical spreadsheet templates for budgeting and expense tracking.</p>
-            <i class="fas fa-file-excel" style="font-size: 2rem; margin: 10px 0; color: #1D6F42;"></i> <!-- Excel Icon -->
+            <i class="fas fa-file-excel" style="font-size: 2rem; margin: 10px 0; color: #1D6F42;"></i>
             <div>
                 <a href="#" class="download-link">Download Basic Budget (Free)</a>
             </div>
@@ -145,7 +123,40 @@
             </div>
              <p style="font-size: 0.8rem; margin-top: 15px;"><em>(Template links placeholder)</em></p>
           </article>
+           <!-- Add more tool items here if needed -->
         </div>
+
+        <!-- Quizzes Section (Separated) -->
+        <div class="quiz-section-container">
+             <h3 style="text-align: center; margin-bottom: var(--spacing-lg); color: var(--color-primary);">Test Your Knowledge</h3>
+            <!-- Quiz 1 Container - JS will populate these -->
+            <div id="quiz1-container" class="quiz-container">
+                <h4>Basic Financial Literacy Quiz</h4>
+                <div id="quiz1-question" class="quiz-question">
+                    <!-- JS will insert Q1 text here -->
+                </div>
+                <div id="quiz1-options" class="quiz-options">
+                    <!-- JS will insert Q1 options here -->
+                </div>
+                <div id="quiz1-feedback" class="quiz-feedback" style="display: none;"></div>
+                <button id="quiz1-next" class="cta-button small quiz-next-btn" style="display: none;">Next Question</button>
+                <div id="quiz1-results" class="quiz-results" style="display: none;"></div>
+            </div>
+             <!-- Quiz 2 Container - JS will populate these -->
+            <div id="quiz2-container" class="quiz-container">
+                <h4>Debt Management Quiz</h4>
+                <div id="quiz2-question" class="quiz-question">
+                     <!-- JS will insert Q1 text here -->
+                </div>
+                <div id="quiz2-options" class="quiz-options">
+                    <!-- JS will insert Q1 options here -->
+                </div>
+                <div id="quiz2-feedback" class="quiz-feedback" style="display: none;"></div>
+                <button id="quiz2-next" class="cta-button small quiz-next-btn" style="display: none;">Next Question</button>
+                 <div id="quiz2-results" class="quiz-results" style="display: none;"></div>
+            </div>
+         </div>
+
       </div>
     </section>
 
@@ -160,6 +171,7 @@
         <div class="coaching-content">
             <div class="coaching-details">
                 <div class="coaching-item">
+                     <div class="placeholder-image coaching-img"></div> <!-- Placeholder -->
                     <h3>What is Financial Coaching?</h3>
                     <p>It's an educational partnership focused on empowering you. We help you understand your finances, set clear goals, and develop skills for effective money management. Facing financial challenges doesn't mean you're "bad" with money—it often means guidance can help you use it as a tool for a better life.</p>
                 </div>
@@ -179,7 +191,7 @@
             <div class="coaching-item">
                 <h3>Schedule a Session</h3>
                 <p>Ready for personalized support? Fill out the form below, and we'll contact you to discuss how our coaching can help you achieve your financial goals.</p>
-                <form class="coaching-request-form" action="#" method="POST"> <!-- Update action attribute -->
+                <form class="coaching-request-form" action="#" method="POST">
                     <label for="coach-name">Name:</label>
                     <input type="text" id="coach-name" name="name" required placeholder="Your Full Name">
 
@@ -201,16 +213,15 @@
     </section>
 
     <!-- V. Link to MMSBALLIOR -->
-     <section class="page-section section-tight"> <!-- Tighter padding -->
+     <section class="page-section section-tight">
         <div class="container">
             <div class="mmsballior-promo">
               <h3>MMSBALLIOR: Financial Education for Teens</h3>
               <p>Empower the next generation with crucial money skills! MMSBALLIOR is our specialized program teaching teens essential finance concepts (Money Management, Saving, Budgeting, etc.) in an engaging way.</p>
-              <a href="#" class="cta-button">Discover MMSBALLIOR</a> <!-- Link placeholder -->
+              <a href="#" class="cta-button">Discover MMSBALLIOR</a>
             </div>
         </div>
      </section>
-
 
   </main>
 
@@ -226,7 +237,7 @@
                         <li><a href="#personal-resources">Resources</a></li>
                         <li><a href="#personal-tools">Tools</a></li>
                         <li><a href="#personal-coaching">Coaching</a></li>
-                        <li><a href="#">MMSBALLIOR</a></li> <!-- Link placeholder -->
+                        <li><a href="#">MMSBALLIOR</a></li>
                     </ul>
                 </div>
                  <div>
@@ -234,35 +245,27 @@
                      <ul>
                         <li><a href="../index.html">Home</a></li>
                         <li><a href="corporate.html">Corporate Solutions</a></li>
-                        <li><a href="../index.html#contact">Contact Us</a></li> <!-- Link to contact on index -->
+                        <li><a href="../index.html#contact">Contact Us</a></li>
                     </ul>
                  </div>
             </div>
         </div>
         <!-- Standard Footer Content -->
         <div class="footer-content">
-            <div class="footer-left">
-            <div class="logo">
+             <div class="footer-left">
+              <div class="logo">
                 <a href="../index.html" aria-label="Rofilid Home">
-                <img src="../assets/images/rofilid-logo-white.svg" alt="Rofilid Logo" width="120" height="40" loading="lazy">
+                  <img src="../assets/images/rofilid-logo-white.svg" alt="Rofilid Logo" width="120" height="40" loading="lazy">
                 </a>
-            </div>
+              </div>
             </div>
             <div class="footer-right">
-            <div class="social-media">
-                <a href="https://facebook.com/rofilid" aria-label="Facebook" class="social-link" target="_blank" rel="noopener noreferrer">
-                    <img src="../assets/images/facebook.png" alt="Facebook Icon" class="social-icon">
-                </a>
-                <a href="https://instagram.com/rofi.lid" aria-label="Instagram" class="social-link" target="_blank" rel="noopener noreferrer">
-                    <img src="../assets/images/instagram.png" alt="Instagram Icon" class="social-icon">
-                </a>
-                <a href="https://linkedin.com/company/rofilid" aria-label="LinkedIn" class="social-link" target="_blank" rel="noopener noreferrer">
-                    <img src="../assets/images/linkedin.png" alt="LinkedIn Icon" class="social-icon">
-                </a>
-                <a href="https://twitter.com/rofilid" aria-label="X (Formerly Twitter)" class="social-link" target="_blank" rel="noopener noreferrer">
-                    <img src="../assets/images/twitter.png" alt="Twitter Icon" class="social-icon">
-                </a>
-            </div>
+              <div class="social-media">
+                 <a href="https://facebook.com/rofilid" aria-label="Facebook" class="social-link" target="_blank" rel="noopener noreferrer"><img src="../assets/images/facebook.png" alt="Facebook Icon" class="social-icon"></a>
+                 <a href="https://instagram.com/rofi.lid" aria-label="Instagram" class="social-link" target="_blank" rel="noopener noreferrer"><img src="../assets/images/instagram.png" alt="Instagram Icon" class="social-icon"></a>
+                 <a href="https://linkedin.com/company/rofilid" aria-label="LinkedIn" class="social-link" target="_blank" rel="noopener noreferrer"><img src="../assets/images/linkedin.png" alt="LinkedIn Icon" class="social-icon"></a>
+                 <a href="https://twitter.com/rofilid" aria-label="X (Formerly Twitter)" class="social-link" target="_blank" rel="noopener noreferrer"><img src="../assets/images/twitter.png" alt="Twitter Icon" class="social-icon"></a>
+              </div>
             </div>
         </div>
         <div class="copyright">
@@ -271,9 +274,11 @@
     </div>
   </footer>
 
-  <!-- Scripts -->
+  <!-- Scripts (Includes Quiz Logic) -->
   <script>
     // --- START Quiz Functionality ---
+
+    // **** THE QUIZ QUESTIONS AND ANSWERS DATA LIVES HERE ****
     const quizzes = {
         quiz1: {
             containerId: 'quiz1-container',
@@ -285,36 +290,11 @@
             currentQuestionIndex: 0,
             score: 0,
             questions: [
-                {
-                    question: "What is the primary purpose of a budget?",
-                    options: ["To track your expenses", "To plan how to spend your money", "To save for future goals", "All of the above"],
-                    correctAnswer: 3,
-                    explanation: "A budget helps track, plan spending, and save towards goals."
-                },
-                {
-                    question: "Which of the following is a benefit of saving money?",
-                    options: ["Preparing for emergencies", "Funding education", "Buying a house", "All of the above"],
-                    correctAnswer: 3,
-                    explanation: "Saving is crucial for emergencies, major goals like education, and large purchases."
-                },
-                {
-                    question: "What does the term 'interest rate' refer to?",
-                    options: ["The cost of borrowing money", "The return on investment", "Both a and b", "Neither a nor b"],
-                    correctAnswer: 2,
-                    explanation: "Interest is the cost of borrowing or the return earned on savings/investments."
-                },
-                {
-                    question: "In Nigeria, what is the main currency used?",
-                    options: ["Dollar", "Euro", "Naira", "Pound"],
-                    correctAnswer: 2,
-                    explanation: "The official currency of Nigeria is the Naira (NGN)."
-                },
-                {
-                    question: "Which is a common way to access financial services in Nigeria?",
-                    options: ["Mobile money", "Bank branches", "ATMs", "All of the above"],
-                    correctAnswer: 3,
-                    explanation: "Nigerians use various methods including mobile money, banks, and ATMs."
-                }
+                { question: "What is the primary purpose of a budget?", options: ["To track your expenses", "To plan how to spend your money", "To save for future goals", "All of the above"], correctAnswer: 3, explanation: "A budget helps track, plan spending, and save towards goals." },
+                { question: "Which of the following is a benefit of saving money?", options: ["Preparing for emergencies", "Funding education", "Buying a house", "All of the above"], correctAnswer: 3, explanation: "Saving is crucial for emergencies, major goals like education, and large purchases." },
+                { question: "What does the term 'interest rate' refer to?", options: ["The cost of borrowing money", "The return on investment", "Both a and b", "Neither a nor b"], correctAnswer: 2, explanation: "Interest is the cost of borrowing or the return earned on savings/investments." },
+                { question: "In Nigeria, what is the main currency used?", options: ["Dollar", "Euro", "Naira", "Pound"], correctAnswer: 2, explanation: "The official currency of Nigeria is the Naira (NGN)." },
+                { question: "Which is a common way to access financial services in Nigeria?", options: ["Mobile money", "Bank branches", "ATMs", "All of the above"], correctAnswer: 3, explanation: "Nigerians use various methods including mobile money, banks, and ATMs." }
             ]
         },
         quiz2: {
@@ -327,73 +307,60 @@
             currentQuestionIndex: 0,
             score: 0,
              questions: [
-                {
-                    question: "What is a loan?",
-                    options: ["Money given that you don't pay back", "Money you borrow and must repay, usually with interest", "A gift from the bank", "None of the above"],
-                    correctAnswer: 1,
-                    explanation: "A loan is borrowed money that requires repayment, typically with interest."
-                },
-                {
-                    question: "What happens if you don't repay a loan on time?",
-                    options: ["Nothing happens", "You might pay extra fees or higher interest", "Your credit score improves", "You get more loans easily"],
-                    correctAnswer: 1,
-                    explanation: "Late payments usually result in penalties like fees or increased interest."
-                },
-                {
-                    question: "In Nigeria, what is a common loan type for small businesses?",
-                    options: ["Mortgage", "Microfinance loan", "Student loan", "Car loan"],
-                    correctAnswer: 1,
-                    explanation: "Microfinance loans are specifically designed to support small businesses in Nigeria."
-                },
-                 {
-                    question: "What is a credit score?",
-                    options: ["How much money you have", "A rating of creditworthiness based on credit history", "The amount of debt you have", "Your income level"],
-                    correctAnswer: 1,
-                    explanation: "A credit score reflects your history of managing debt and predicts future repayment likelihood."
-                },
-                {
-                    question: "How can you improve chances of getting a loan in Nigeria?",
-                    options: ["Good credit history", "Providing collateral", "Steady income", "All of the above"],
-                    correctAnswer: 3,
-                    explanation: "Lenders consider credit history, collateral (security), and income stability."
-                }
+                { question: "What is a loan?", options: ["Money given that you don't pay back", "Money you borrow and must repay, usually with interest", "A gift from the bank", "None of the above"], correctAnswer: 1, explanation: "A loan is borrowed money that requires repayment, typically with interest." },
+                { question: "What happens if you don't repay a loan on time?", options: ["Nothing happens", "You might pay extra fees or higher interest", "Your credit score improves", "You get more loans easily"], correctAnswer: 1, explanation: "Late payments usually result in penalties like fees or increased interest." },
+                { question: "In Nigeria, what is a common loan type for small businesses?", options: ["Mortgage", "Microfinance loan", "Student loan", "Car loan"], correctAnswer: 1, explanation: "Microfinance loans are specifically designed to support small businesses in Nigeria." },
+                { question: "What is a credit score?", options: ["How much money you have", "A rating of creditworthiness based on credit history", "The amount of debt you have", "Your income level"], correctAnswer: 1, explanation: "A credit score reflects your history of managing debt and predicts future repayment likelihood." },
+                { question: "How can you improve chances of getting a loan in Nigeria?", options: ["Good credit history", "Providing collateral", "Steady income", "All of the above"], correctAnswer: 3, explanation: "Lenders consider credit history, collateral (security), and income stability." }
             ]
         }
     };
+    // **** END OF QUIZ DATA ****
+
 
     function displayQuestion(quizId) {
         const quiz = quizzes[quizId];
+        // Check if quiz or elements are missing to prevent errors
+        if (!quiz || !quiz.questions || quiz.questions.length === 0) return;
         const q = quiz.questions[quiz.currentQuestionIndex];
+        if (!q) return; // Check if question exists
+
         const questionEl = document.getElementById(quiz.questionId);
         const optionsEl = document.getElementById(quiz.optionsId);
         const feedbackEl = document.getElementById(quiz.feedbackId);
         const nextBtn = document.getElementById(quiz.nextBtnId);
         const resultsEl = document.getElementById(quiz.resultsId);
 
-        if (!questionEl || !optionsEl || !feedbackEl || !nextBtn || !resultsEl) return; // Element check
+        if (!questionEl || !optionsEl || !feedbackEl || !nextBtn || !resultsEl) return;
 
         questionEl.textContent = `Q${quiz.currentQuestionIndex + 1}: ${q.question}`;
-        optionsEl.innerHTML = ''; // Clear previous options
-        feedbackEl.style.display = 'none'; // Hide feedback
-        nextBtn.style.display = 'none'; // Hide next button
-        resultsEl.style.display = 'none'; // Hide results
+        optionsEl.innerHTML = '';
+        feedbackEl.style.display = 'none';
+        nextBtn.style.display = 'none';
+        resultsEl.style.display = 'none';
 
         q.options.forEach((option, index) => {
             const label = document.createElement('label');
             const input = document.createElement('input');
+            const span = document.createElement('span'); // Wrap text for styling selected
             input.type = 'radio';
             input.name = quizId + '-options';
             input.value = index;
-            input.onclick = () => showFeedback(quizId, index); // Pass quizId and selected index
+            input.onclick = () => showFeedback(quizId, index);
             label.appendChild(input);
-            label.appendChild(document.createTextNode(` ${option}`));
+            span.textContent = ` ${option}`; // Add space before text
+            label.appendChild(span);
             optionsEl.appendChild(label);
         });
     }
 
     function showFeedback(quizId, selectedIndex) {
         const quiz = quizzes[quizId];
+        // Check data existence
+        if (!quiz || !quiz.questions || !quiz.questions[quiz.currentQuestionIndex]) return;
         const q = quiz.questions[quiz.currentQuestionIndex];
+        if (typeof selectedIndex === 'undefined') return; // Ensure an option was selected
+
         const feedbackEl = document.getElementById(quiz.feedbackId);
         const nextBtn = document.getElementById(quiz.nextBtnId);
         const optionsEl = document.getElementById(quiz.optionsId);
@@ -409,12 +376,19 @@
             quiz.score++;
         }
 
-        // Disable options after selection
+        // Disable options and style labels
         optionsEl.querySelectorAll('input').forEach(input => input.disabled = true);
-        optionsEl.querySelectorAll('label').forEach(label => label.style.cursor = 'default');
+        optionsEl.querySelectorAll('label').forEach((label, index) => {
+            label.style.cursor = 'default';
+             // Optionally highlight correct/incorrect
+            /* if (index === q.correctAnswer) {
+                 label.style.borderColor = 'green'; // Example: Correct answer border
+             }
+             if (index === selectedIndex && !isCorrect) {
+                 label.style.borderColor = 'red'; // Example: User's incorrect choice border
+             }*/
+        });
 
-
-        // Show next button or results
         if (quiz.currentQuestionIndex < quiz.questions.length - 1) {
             nextBtn.style.display = 'inline-block';
             nextBtn.onclick = () => nextQuestion(quizId);
@@ -425,126 +399,72 @@
 
      function nextQuestion(quizId) {
         const quiz = quizzes[quizId];
+         if (!quiz) return;
         quiz.currentQuestionIndex++;
-        displayQuestion(quizId);
+        if (quiz.currentQuestionIndex < quiz.questions.length) {
+            displayQuestion(quizId);
+        }
     }
 
     function showResults(quizId) {
          const quiz = quizzes[quizId];
+          if (!quiz) return;
          const resultsEl = document.getElementById(quiz.resultsId);
-         const questionEl = document.getElementById(quiz.questionId);
-         const optionsEl = document.getElementById(quiz.optionsId);
-         const feedbackEl = document.getElementById(quiz.feedbackId);
          const nextBtn = document.getElementById(quiz.nextBtnId);
 
-         if (!resultsEl || !questionEl || !optionsEl || !feedbackEl || !nextBtn) return;
+         if (!resultsEl || !nextBtn) return;
 
-         // Optional: Hide last question elements if desired
-         // questionEl.style.display = 'none';
-         // optionsEl.style.display = 'none';
-         // feedbackEl.style.display = 'none';
+         // Hide 'Next' button explicitly if shown
          nextBtn.style.display = 'none';
-
 
          resultsEl.textContent = `Quiz Complete! Your Score: ${quiz.score} out of ${quiz.questions.length}`;
          resultsEl.style.display = 'block';
 
-         // Optional: Add a button to restart
-         const restartBtn = document.createElement('button');
-         restartBtn.textContent = 'Restart Quiz';
-         restartBtn.className = 'cta-button small quiz-restart-btn';
-         restartBtn.style.marginTop = '10px';
-         restartBtn.onclick = () => restartQuiz(quizId);
-         resultsEl.appendChild(restartBtn);
+         // Check if restart button already exists before adding
+         if (!resultsEl.querySelector('.quiz-restart-btn')) {
+             const restartBtn = document.createElement('button');
+             restartBtn.textContent = 'Restart Quiz';
+             restartBtn.className = 'cta-button small quiz-restart-btn';
+             restartBtn.style.marginTop = '15px'; // Add some space
+             restartBtn.style.display = 'inline-block'; // Allow centering etc.
+             restartBtn.onclick = () => restartQuiz(quizId);
+             resultsEl.appendChild(restartBtn);
+         }
     }
 
      function restartQuiz(quizId) {
         const quiz = quizzes[quizId];
+         if (!quiz) return;
         quiz.currentQuestionIndex = 0;
         quiz.score = 0;
+        // Ensure results element children (like restart button) are potentially removed or handled
+        const resultsEl = document.getElementById(quiz.resultsId);
+        const restartBtn = resultsEl?.querySelector('.quiz-restart-btn');
+        if (restartBtn) {
+            resultsEl.removeChild(restartBtn); // Remove old restart button
+        }
+        resultsEl.style.display = 'none'; // Hide results area
+
         displayQuestion(quizId); // Display the first question again
     }
 
-
-    // Load quizzes on page load
     document.addEventListener('DOMContentLoaded', () => {
-        if (document.getElementById('quiz1-container')) { // Check if quiz exists on page
-             displayQuestion('quiz1');
-        }
-        if (document.getElementById('quiz2-container')) { // Check if quiz exists on page
-             displayQuestion('quiz2');
-        }
+        if (document.getElementById('quiz1-container')) { displayQuestion('quiz1'); }
+        if (document.getElementById('quiz2-container')) { displayQuestion('quiz2'); }
     });
-
     // --- END Quiz Functionality ---
 
 
     // --- START Standard Scripts (Menu, Scroll, Year) ---
     const menuToggle = document.querySelector('.mobile-menu-toggle');
     const primaryNav = document.querySelector('#primary-navigation');
-
-    if (menuToggle && primaryNav) {
-        menuToggle.addEventListener('click', () => {
-        const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-        menuToggle.setAttribute('aria-expanded', !isExpanded);
-        primaryNav.classList.toggle('active');
-        });
-    }
-
-    window.addEventListener('scroll', () => {
-      if (primaryNav && primaryNav.classList.contains('active')) {
-        primaryNav.classList.remove('active');
-        if(menuToggle) {
-            menuToggle.setAttribute('aria-expanded', 'false');
-        }
-      }
-    });
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        const targetId = this.getAttribute('href');
-        if (targetId && targetId !== '#' && document.querySelector(targetId)) {
-            e.preventDefault();
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                const headerOffset = document.querySelector('.site-header')?.offsetHeight || 80;
-                const elementPosition = targetElement.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-            }
-        }
-      });
-    });
-
-     document.querySelectorAll('a[href^="../index.html#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            const targetId = this.hash;
-            if (targetId) {
-                e.preventDefault();
-                sessionStorage.setItem('scrollToId', targetId);
-                window.location.href = this.getAttribute('href').split('#')[0];
-            }
-        });
-    });
-
-    if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith('index.html')) {
-        const targetId = sessionStorage.getItem('scrollToId');
-        if (targetId && document.querySelector(targetId)) {
-            const targetElement = document.querySelector(targetId);
-            setTimeout(() => {
-                const headerOffset = document.querySelector('.site-header')?.offsetHeight || 80;
-                const elementPosition = targetElement.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-                sessionStorage.removeItem('scrollToId');
-            }, 100);
-        }
-    }
-
+    if(menuToggle && primaryNav){ menuToggle.addEventListener('click', () => { const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true'; menuToggle.setAttribute('aria-expanded', !isExpanded); primaryNav.classList.toggle('active'); }); }
+    window.addEventListener('scroll', () => { if (primaryNav && primaryNav.classList.contains('active')) { primaryNav.classList.remove('active'); if(menuToggle) { menuToggle.setAttribute('aria-expanded', 'false'); } } });
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => { anchor.addEventListener('click', function(e) { const targetId = this.getAttribute('href'); if (targetId && targetId !== '#' && document.querySelector(targetId)) { e.preventDefault(); const targetElement = document.querySelector(targetId); if (targetElement) { const headerOffset = document.querySelector('.site-header')?.offsetHeight || 80; const elementPosition = targetElement.getBoundingClientRect().top; const offsetPosition = elementPosition + window.pageYOffset - headerOffset; window.scrollTo({ top: offsetPosition, behavior: "smooth" }); } } }); });
+    document.querySelectorAll('a[href^="../index.html#"]').forEach(anchor => { anchor.addEventListener('click', function(e) { const targetId = this.hash; if (targetId) { e.preventDefault(); sessionStorage.setItem('scrollToId', targetId); window.location.href = this.getAttribute('href').split('#')[0]; } }); });
+    if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith('index.html')) { const targetId = sessionStorage.getItem('scrollToId'); if (targetId && document.querySelector(targetId)) { const targetElement = document.querySelector(targetId); setTimeout(() => { const headerOffset = document.querySelector('.site-header')?.offsetHeight || 80; const elementPosition = targetElement.getBoundingClientRect().top; const offsetPosition = elementPosition + window.pageYOffset - headerOffset; window.scrollTo({ top: offsetPosition, behavior: 'smooth' }); sessionStorage.removeItem('scrollToId'); }, 100); } }
     const currentYearSpan = document.getElementById('current-year');
-    if(currentYearSpan){
-        currentYearSpan.textContent = new Date().getFullYear();
-    }
+    if(currentYearSpan){currentYearSpan.textContent = new Date().getFullYear();}
      // --- END Standard Scripts ---
   </script>
 </body>
