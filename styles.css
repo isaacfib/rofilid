@@ -1213,3 +1213,592 @@ img {
     background-color: #fdfdfd;
     border-radius: var(--border-radius);
 }
+
+
+/* === General Enhancements & Page Structure v1.0.1 === */
+
+body {
+  background-color: var(--color-secondary); /* Ensure base background */
+}
+
+/* Active Navigation Link Styling */
+.nav-list .nav-link.active-page { /* Add 'active-page' class via JS or backend */
+  font-weight: var(--font-weight-bold);
+  /* Example: Add a subtle underline or color shift */
+  border-bottom: 2px solid var(--color-secondary);
+  opacity: 1;
+}
+/* Ensure hover doesn't override active state too much */
+.nav-list .nav-link.active-page:hover {
+  opacity: 1;
+}
+
+
+.page-intro {
+  padding: var(--spacing-xl) 0 var(--spacing-xxl);
+  text-align: center;
+  background-color: var(--color-primary-dark); /* Darker intro background */
+  color: var(--color-secondary); /* Light text on dark */
+  border-bottom: 5px solid var(--color-primary); /* Accent border */
+}
+
+.page-intro h1 {
+  margin-bottom: var(--spacing-md); /* Increased space */
+  color: var(--color-secondary); /* Light heading */
+  font-size: 2.8rem;
+  font-weight: var(--font-weight-bold);
+}
+
+.page-intro .subheadline {
+  font-size: 1.3rem;
+  color: rgba(255, 255, 255, 0.85); /* Slightly muted light text */
+  margin-bottom: var(--spacing-lg); /* Increased space */
+  max-width: 750px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.page-intro p:not(.subheadline) {
+  max-width: 850px;
+  margin-left: auto;
+  margin-right: auto;
+  color: rgba(255, 255, 255, 0.9); /* Light text */
+  line-height: 1.7; /* Slightly more line spacing */
+}
+
+.page-section {
+  padding: var(--spacing-xxl) 0;
+}
+.page-section.section-tight { /* Option for less padding */
+  padding: var(--spacing-lg) 0;
+}
+
+
+.page-section h2 {
+  text-align: center;
+  margin-bottom: var(--spacing-md); /* Reduced space below H2 */
+  font-size: 2.4rem;
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+}
+
+.page-section > .container > p.section-description { /* Target direct paragraph description */
+  text-align: center;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: var(--spacing-xl); /* Space below section intro */
+  color: var(--color-text-light);
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+
+.page-section h3 {
+  margin-top: 0;
+  margin-bottom: var(--spacing-sm);
+  color: var(--color-primary-dark);
+  font-size: 1.5rem; /* Increased H3 size */
+  font-weight: var(--font-weight-medium);
+  line-height: 1.4;
+}
+
+
+.bg-light {
+  background-color: var(--color-background);
+  border-top: 1px solid var(--color-accent);
+  border-bottom: 1px solid var(--color-accent);
+}
+
+.bg-dark {
+    background-color: var(--color-primary-dark);
+    color: var(--color-secondary);
+}
+.bg-dark h2, .bg-dark h3, .bg-dark p, .bg-dark li {
+    color: rgba(255, 255, 255, 0.9);
+}
+.bg-dark .section-description {
+    color: rgba(255, 255, 255, 0.8);
+}
+.bg-dark .cta-button {
+    background-color: var(--color-secondary);
+    color: var(--color-primary-dark);
+}
+.bg-dark .cta-button:hover {
+    background-color: var(--color-accent);
+}
+.bg-dark .service-item, .bg-dark .resource-item, .bg-dark .tool-item, .bg-dark .coaching-item {
+    background-color: var(--color-primary-light); /* Slightly lighter background for items */
+    border-color: var(--color-primary);
+}
+
+
+/* === Personal Page Specific Styles v1.0.1 === */
+
+.motivational-quote {
+  text-align: center;
+  font-style: normal; /* Removed italic */
+  color: var(--color-primary-light);
+  margin: var(--spacing-xxl) auto;
+  max-width: 700px;
+  font-size: 1.3rem; /* Larger quote */
+  font-weight: var(--font-weight-regular);
+  line-height: 1.6;
+  padding: 0 var(--spacing-md);
+  border-left: 4px solid var(--color-primary); /* Add accent border */
+  padding-left: var(--spacing-lg);
+}
+
+.accent-green {
+  color: #28a745; /* CHANGE THIS to your brand green */
+  font-weight: var(--font-weight-medium);
+}
+
+
+/* --- Resource & Tool Item Grids --- */
+.resource-items, .tool-items {
+  display: grid;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-xl); /* More space above grid */
+}
+
+/* --- Generic Item Styling (Apply to resource, tool, service, coaching items) --- */
+.resource-item, .tool-item, .service-item, .coaching-item {
+  background-color: var(--color-secondary);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  border: 1px solid var(--color-accent);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  display: flex; /* Use flex for consistent height potential */
+  flex-direction: column;
+}
+.resource-item:hover, .tool-item:hover, .service-item:hover, .coaching-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+.resource-item ul, .tool-item ul, .coaching-item ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+    flex-grow: 1; /* Allows list to push button down */
+}
+.resource-item li, .tool-item li, .coaching-item li {
+    margin-bottom: var(--spacing-xs);
+    padding-left: var(--spacing-md); /* Indent list items */
+    position: relative;
+    color: var(--color-text-light);
+}
+/* Add custom bullet */
+.resource-item li::before, .tool-item li::before, .coaching-item li::before {
+    content: '•';
+    color: var(--color-primary); /* Bullet color */
+    font-weight: bold;
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.resource-item .learn-more, .tool-item .cta-button, .coaching-item .cta-button {
+    margin-top: auto; /* Push button to bottom */
+    align-self: flex-start; /* Align button left */
+}
+
+/* --- Tool Item Specifics --- */
+.quiz-button, .download-link, .standard-link, .tool-item .cta-button {
+  margin-top: var(--spacing-md);
+  margin-right: var(--spacing-sm);
+}
+.download-link {
+  display: inline-block;
+  color: var(--color-primary);
+  text-decoration: underline;
+  font-weight: var(--font-weight-medium);
+}
+.download-link:hover {
+    color: var(--color-primary-light);
+}
+.tool-item .cta-button.small {
+  font-size: 0.9rem;
+  padding: var(--spacing-xs) var(--spacing-sm);
+}
+.tool-item button:disabled {
+    background-color: var(--color-accent);
+    color: var(--color-text-light);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+.calculator-placeholder {
+    border: 1px dashed var(--color-accent);
+    padding: var(--spacing-xl);
+    text-align: center;
+    margin-top: var(--spacing-md);
+    color: var(--color-text-light);
+    background-color: #fdfdfd;
+    border-radius: var(--border-radius);
+    font-style: italic;
+}
+.placeholder-image {
+    width: 100%;
+    max-width: 300px; /* Limit size */
+    height: auto;
+    aspect-ratio: 16 / 9; /* Maintain aspect ratio */
+    background-color: var(--color-accent);
+    border: 1px solid #ddd;
+    display: block;
+    margin: var(--spacing-sm) auto var(--spacing-md);
+    border-radius: var(--border-radius);
+    object-fit: cover; /* If using real img tags */
+}
+
+/* --- Quiz Styles --- */
+.quiz-container {
+    background-color: #f0f7f8; /* Light background for quiz area */
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    margin-top: var(--spacing-sm);
+    border: 1px solid var(--color-primary-light);
+}
+.quiz-question {
+    font-weight: var(--font-weight-medium);
+    margin-bottom: var(--spacing-md);
+    color: var(--color-primary-dark);
+}
+.quiz-options label {
+    display: block;
+    background-color: var(--color-secondary);
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--color-accent);
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.quiz-options label:hover {
+    background-color: #e9f1f2;
+    border-color: var(--color-primary-light);
+}
+.quiz-options input[type="radio"] {
+    margin-right: var(--spacing-sm);
+    accent-color: var(--color-primary); /* Style radio button */
+}
+.quiz-feedback {
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius);
+    font-weight: var(--font-weight-medium);
+}
+.quiz-feedback.correct {
+    background-color: #d4edda; /* Light green */
+    color: #155724; /* Dark green */
+    border: 1px solid #c3e6cb;
+}
+.quiz-feedback.incorrect {
+    background-color: #f8d7da; /* Light red */
+    color: #721c24; /* Dark red */
+    border: 1px solid #f5c6cb;
+}
+.quiz-feedback p { margin: 0; }
+.quiz-next-btn { margin-top: var(--spacing-md); }
+.quiz-results { margin-top: var(--spacing-lg); font-weight: bold; }
+
+
+/* --- Coaching Section --- */
+.coaching-content {
+    display: grid;
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-xl);
+}
+.coaching-request-form label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-primary-dark);
+}
+.coaching-request-form input[type="text"],
+.coaching-request-form input[type="email"],
+.coaching-request-form textarea {
+    display: block;
+    width: 100%;
+    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-sm);
+    border: 1px solid var(--color-accent);
+    border-radius: var(--border-radius);
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+.coaching-request-form textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+.coaching-request-form button {
+    display: block;
+    width: 100%;
+    margin-top: var(--spacing-sm);
+}
+
+.disclaimer {
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+  margin: var(--spacing-xl) auto 0; /* Center horizontally */
+  border-top: 1px solid var(--color-accent);
+  padding-top: var(--spacing-lg);
+  text-align: center;
+  max-width: 800px;
+}
+
+/* --- MMSBALLIOR Promo --- */
+.mmsballior-promo {
+  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary)); /* Gradient background */
+  color: var(--color-secondary);
+  padding: var(--spacing-xl) var(--spacing-lg);
+  border-radius: var(--border-radius);
+  text-align: center;
+  margin-top: 0;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+.mmsballior-promo h3 {
+  color: var(--color-secondary);
+  margin-bottom: var(--spacing-sm);
+  font-size: 1.8rem;
+  font-weight: var(--font-weight-bold);
+}
+.mmsballior-promo p {
+  margin-bottom: var(--spacing-md);
+  max-width: 650px;
+  margin-left: auto;
+  margin-right: auto;
+  color: rgba(255, 255, 255, 0.9);
+}
+.mmsballior-promo .cta-button {
+    background-color: var(--color-secondary);
+    color: var(--color-primary-dark);
+    margin-top: var(--spacing-sm);
+    font-weight: var(--font-weight-bold);
+    padding: var(--spacing-sm) var(--spacing-lg);
+}
+.mmsballior-promo .cta-button:hover {
+    background-color: var(--color-accent);
+    transform: translateY(-2px);
+}
+
+
+/* === Corporate Page Specific Styles v1.0.1 === */
+
+/* --- Service Items --- */
+.service-items {
+  display: grid;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
+}
+/* Inherits .service-item base styles */
+.service-item {
+  text-align: center;
+}
+.service-item .service-icon {
+  font-size: 3rem; /* Larger icons */
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-md);
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+.service-item:hover .service-icon {
+    transform: scale(1.1) rotate(5deg); /* Subtle hover effect on icon */
+}
+.service-item h3 {
+  color: var(--color-primary-dark);
+  font-size: 1.5rem; /* Larger H3 */
+  margin-top: 0;
+  margin-bottom: var(--spacing-sm);
+}
+.service-item p {
+  color: var(--color-text-light);
+  font-size: 1rem;
+  line-height: 1.7; /* More line spacing */
+  flex-grow: 1; /* Allows paragraph to push elements below if needed */
+}
+
+/* --- Case Study Placeholder --- */
+.case-study-placeholder { /* Renamed from placeholder-content */
+    border: 1px dashed var(--color-accent);
+    padding: var(--spacing-xxl) var(--spacing-lg);
+    text-align: center;
+    margin-top: var(--spacing-lg);
+    color: var(--color-text-light);
+    background-color: #fdfdfd;
+    border-radius: var(--border-radius);
+    font-style: italic;
+}
+.client-logos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-lg);
+    filter: grayscale(100%); /* Make logos grayscale */
+    opacity: 0.6;
+}
+.client-logos img {
+    max-height: 50px; /* Control logo height */
+    width: auto;
+    max-width: 150px;
+}
+
+
+/* --- Consultation Form --- */
+.consultation-form {
+    margin-top: var(--spacing-xl);
+    max-width: 900px; /* Wider form */
+    margin-left: auto;
+    margin-right: auto;
+    background-color: var(--color-background);
+    padding: var(--spacing-xl) var(--spacing-xxl); /* More padding */
+    border-radius: var(--border-radius);
+    border: 1px solid var(--color-accent);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08); /* Softer shadow */
+}
+
+.consultation-form .form-grid {
+    display: grid;
+    gap: var(--spacing-lg); /* Increase gap */
+    margin-bottom: var(--spacing-lg);
+}
+
+.consultation-form label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-primary-dark);
+}
+
+.consultation-form input[type="text"],
+.consultation-form input[type="email"],
+.consultation-form textarea {
+    display: block;
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md); /* More padding */
+    border: 1px solid var(--color-accent);
+    border-radius: var(--border-radius);
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.5;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.consultation-form input:focus,
+.consultation-form textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px rgba(12, 52, 61, 0.2); /* Focus shadow */
+}
+
+.consultation-form textarea {
+    resize: vertical;
+    min-height: 120px;
+    margin-bottom: var(--spacing-lg);
+}
+
+.consultation-form .form-footer {
+    margin-top: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.consultation-form .privacy-note {
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+}
+
+.consultation-form .cta-button.large {
+    padding: var(--spacing-md) var(--spacing-xl); /* Larger button padding */
+    font-size: 1.1rem;
+    font-weight: var(--font-weight-medium);
+    width: auto;
+    min-width: 220px;
+    background-color: var(--color-primary); /* Use primary color */
+    color: var(--color-secondary);
+}
+.consultation-form .cta-button.large:hover {
+    background-color: var(--color-primary-light);
+    transform: translateY(-2px);
+}
+
+/* === Unique Footer Links Section === */
+.page-footer-links {
+    padding: var(--spacing-lg) 0;
+    margin-bottom: var(--spacing-lg); /* Space before copyright */
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.page-footer-links .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+    text-align: center;
+}
+
+.page-footer-links h4 {
+    margin-bottom: var(--spacing-sm);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.page-footer-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-sm) var(--spacing-lg);
+}
+.page-footer-links li { }
+.page-footer-links a {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.2s ease;
+}
+.page-footer-links a:hover {
+    color: var(--color-secondary);
+    text-decoration: underline;
+}
+
+
+/* === Responsive Adjustments v1.0.1 === */
+
+@media (max-width: 400px) { /* Inherits previous styles */ }
+@media (max-width: 500px) { /* Inherits previous styles */ }
+
+@media (min-width: 768px) {
+  /* Inherit previous 768px styles */
+  .resource-items { grid-template-columns: repeat(2, 1fr); }
+  .coaching-content { grid-template-columns: 2fr 1fr; align-items: start; }
+  .service-items { grid-template-columns: repeat(2, 1fr); }
+  .consultation-form .form-grid { grid-template-columns: repeat(2, 1fr); }
+  .consultation-form .form-footer { flex-direction: row; justify-content: space-between; align-items: center; }
+  .consultation-form .privacy-note { text-align: left; margin-bottom: 0; margin-right: var(--spacing-md); }
+  .consultation-form .cta-button.large { margin-top: 0; }
+  .page-footer-links .container { flex-direction: row; justify-content: space-around; text-align: left; }
+  .page-footer-links h4 { margin-bottom: var(--spacing-md); }
+  .page-footer-links ul { justify-content: flex-start; }
+}
+
+@media (min-width: 992px) {
+   /* Inherit previous 992px styles */
+   .resource-items { grid-template-columns: repeat(3, 1fr); }
+   .tool-items { grid-template-columns: repeat(3, 1fr); }
+   .service-items { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* Print styles remain the same */
