@@ -1802,3 +1802,470 @@ body {
 }
 
 /* Print styles remain the same */
+
+
+/* === General Enhancements & Page Structure v1.0.2 === */
+
+/* Ensure first content block clears fixed header */
+/* Apply to the main hero on index AND page intros on subpages */
+.hero-section, /* Existing hero on index */
+.page-intro {   /* Intro section on subpages */
+    padding-top: calc(80px + var(--spacing-xl)); /* Header height (approx) + desired space */
+    /* Adjust 80px if your actual header height differs significantly */
+}
+
+/* Refined Page Intro */
+.page-intro {
+  /* padding-top handled above */
+  padding-bottom: var(--spacing-xxl);
+  text-align: center;
+  /* Use a subtle gradient or a solid lighter primary color */
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: var(--color-secondary);
+  border-bottom: 5px solid var(--color-primary-dark); /* Darker border */
+  position: relative; /* For potential pseudo-elements */
+  overflow: hidden; /* Hide overflow from potential decorative elements */
+}
+/* Optional: Subtle decorative element */
+/* .page-intro::before {
+    content: '';
+    position: absolute;
+    bottom: -50px;
+    left: -50px;
+    width: 150px;
+    height: 150px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    opacity: 0.5;
+} */
+
+.page-intro h1 {
+  margin-bottom: var(--spacing-md);
+  color: var(--color-secondary);
+  font-size: clamp(2rem, 6vw, 3rem); /* Responsive font size */
+  font-weight: var(--font-weight-bold);
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.2); /* Subtle text shadow */
+}
+
+.page-intro .subheadline {
+  font-size: clamp(1.1rem, 3vw, 1.35rem);
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: var(--spacing-lg);
+  max-width: 750px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.page-intro p:not(.subheadline) {
+  max-width: 850px;
+  margin-left: auto;
+  margin-right: auto;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.7;
+}
+
+/* Section Styling */
+.page-section {
+  padding: var(--spacing-xxl) 0;
+  border-bottom: 1px solid var(--color-accent); /* Separator line */
+}
+.page-section:last-of-type {
+    border-bottom: none; /* No border on last section */
+}
+
+.page-section h2 {
+  text-align: center;
+  margin-bottom: var(--spacing-md);
+  font-size: clamp(1.8rem, 5vw, 2.5rem);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+  position: relative;
+  padding-bottom: var(--spacing-sm);
+}
+/* Optional: Underline effect for H2 */
+.page-section h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background-color: var(--color-primary);
+}
+
+.page-section > .container > p.section-description {
+  text-align: center;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: var(--spacing-xl);
+  color: var(--color-text-light);
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+
+.bg-light {
+  background-color: var(--color-background);
+  /* Removed borders, relying on section borders now */
+}
+/* Removed bg-dark specific h2/h3/p color changes - let specificity handle it */
+
+
+/* === Personal Page Specific Styles v1.0.2 === */
+
+.motivational-quote {
+  text-align: center;
+  font-style: normal;
+  color: var(--color-primary-light);
+  margin: var(--spacing-xxl) auto;
+  max-width: 700px;
+  font-size: 1.35rem;
+  font-weight: var(--font-weight-regular);
+  line-height: 1.7;
+  padding: var(--spacing-md) var(--spacing-md);
+  border-left: 5px solid #28a745; /* Use brand green */
+  background-color: var(--color-background); /* Give it a light background */
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+}
+
+.accent-green {
+  color: #28a745; /* CHANGE THIS */
+  font-weight: var(--font-weight-medium);
+}
+
+/* --- Resource Items Grid --- */
+.resource-items {
+  display: grid;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
+}
+
+/* --- Tool Items Grid (Calculators/Templates Only) --- */
+.tool-items {
+  display: grid;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Keep flexible */
+}
+
+/* --- Generic Item Styling (Resource/Tool/Service/Coaching) --- */
+.resource-item, .tool-item, .service-item, .coaching-item {
+  background-color: var(--color-secondary);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08); /* Softer shadow */
+  border: 1px solid #e0e0e0;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  display: flex;
+  flex-direction: column;
+}
+.resource-item:hover, .tool-item:hover, .service-item:hover, .coaching-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.resource-item h3, .tool-item h3, .service-item h3, .coaching-item h3 {
+  font-size: 1.4rem; /* Slightly smaller H3 in items */
+  margin-bottom: var(--spacing-md); /* More space below H3 */
+  color: var(--color-primary); /* Use primary color for item titles */
+}
+
+.resource-item ul, .tool-item ul, .coaching-item ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: var(--spacing-sm);
+    margin-bottom: var(--spacing-md); /* More space below list */
+    flex-grow: 1;
+}
+.resource-item li, .tool-item li, .coaching-item li {
+    margin-bottom: var(--spacing-sm); /* More space between items */
+    padding-left: var(--spacing-lg); /* Indentation */
+    position: relative;
+    color: var(--color-text); /* Darker list text */
+    line-height: 1.6;
+}
+.resource-item li::before, .tool-item li::before, .coaching-item li::before {
+    content: ''; /* Use background image or Font Awesome */
+    /* Example using Font Awesome Check */
+    /* font-family: "Font Awesome 5 Free"; */ /* Use correct FA version */
+    /* font-weight: 900; */
+    /* content: "\f00c"; */ /* Check icon */
+    /* Using a simple CSS shape */
+    position: absolute;
+    left: 0;
+    top: 8px; /* Adjust vertical alignment */
+    width: 8px;
+    height: 8px;
+    background-color: #28a745; /* Use Brand Green */
+    border-radius: 50%;
+}
+
+/* Placeholder Images in Items */
+.placeholder-image {
+    width: 100%;
+    height: 150px; /* Fixed height */
+    background-color: #e9ecef;
+    border: none;
+    display: flex; /* Use flex to center text */
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--spacing-md); /* Remove top margin */
+    border-radius: var(--border-radius);
+    object-fit: cover;
+    color: #adb5bd; /* Placeholder text color */
+    font-size: 0.9rem;
+    text-align: center;
+    padding: var(--spacing-sm);
+}
+/* Specific icons for placeholders */
+.placeholder-image.resource::before { content: '\f02d'; /* book */ }
+.placeholder-image.basicpfc::before { content: '\f1e0'; /* share-alt-square */ }
+.placeholder-image.productivity::before { content: '\f0b1'; /* briefcase */ }
+.placeholder-image.coaching-img::before { content: '\f0c0'; /* users */ }
+
+/* Style for icons inside placeholder */
+.placeholder-image::before {
+    font-family: "Font Awesome 5 Free"; /* Check FA version */
+    font-weight: 900;
+    font-size: 2rem;
+    margin-bottom: 5px;
+    display: block;
+}
+
+
+/* --- Quiz Specific Styling --- */
+.quiz-section-container { /* Wrapper for the quizzes if needed */
+    margin-top: var(--spacing-xl);
+}
+.quiz-container {
+    max-width: 800px; /* Wider quiz */
+    margin: 0 auto var(--spacing-xl); /* Center and add bottom margin */
+    background-color: var(--color-secondary); /* White background */
+    padding: var(--spacing-lg) var(--spacing-xl); /* More padding */
+    border-radius: var(--border-radius);
+    border: 1px solid #dce4e6; /* Lighter border */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+.quiz-container h4 { /* Style the quiz title */
+    font-size: 1.5rem;
+    color: var(--color-primary-dark);
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+}
+.quiz-question {
+    font-weight: var(--font-weight-medium);
+    margin-bottom: var(--spacing-lg);
+    color: var(--color-text);
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+.quiz-options label {
+    display: block;
+    background-color: #f8f9fa; /* Light background for options */
+    padding: var(--spacing-md); /* More padding */
+    margin-bottom: var(--spacing-sm);
+    border-radius: var(--border-radius);
+    border: 1px solid #e9ecef;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+    position: relative; /* For potential checkmark */
+}
+.quiz-options label:hover {
+    background-color: #eef3f4;
+    border-color: var(--color-primary-light);
+    transform: translateX(3px);
+}
+.quiz-options input[type="radio"] {
+    margin-right: var(--spacing-md); /* More space */
+    accent-color: var(--color-primary);
+    transform: scale(1.2); /* Slightly larger radio */
+}
+/* Style selected label */
+.quiz-options input[type="radio"]:checked + span {
+    font-weight: var(--font-weight-medium);
+}
+
+.quiz-feedback {
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    font-weight: var(--font-weight-regular);
+    line-height: 1.6;
+}
+.quiz-feedback p { margin: 0; }
+.quiz-feedback strong { margin-right: 5px; }
+/* Feedback colors remain same */
+
+.quiz-next-btn, .quiz-restart-btn {
+    margin-top: var(--spacing-lg); /* More space */
+    display: inline-block; /* Allow centering if needed */
+    padding: var(--spacing-sm) var(--spacing-lg); /* Standard button size */
+}
+.quiz-results {
+    margin-top: var(--spacing-lg);
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-align: center;
+    padding: var(--spacing-md);
+    background-color: var(--color-background);
+    border-radius: var(--border-radius);
+}
+
+
+/* --- Coaching Section --- */
+.coaching-item { /* Inherits base item style */ }
+/* etc. Coaching styles largely okay, maybe add placeholder */
+
+/* --- MMSBALLIOR Promo --- */
+/* Styles generally okay, maybe slight tweaks */
+.mmsballior-promo {
+    box-shadow: 0 8px 25px rgba(12, 52, 61, 0.3); /* Stronger shadow */
+}
+
+
+/* === Corporate Page Specific Styles v1.0.2 === */
+
+/* --- Service Items --- */
+.service-item { /* Inherits base item style */ }
+.service-item .service-icon {
+  font-size: 2.8rem; /* Slightly smaller */
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-md);
+  display: block; /* Center icon easily */
+  transition: transform 0.3s ease;
+}
+.service-item:hover .service-icon {
+    transform: translateY(-5px) scale(1.05); /* Lift and scale */
+}
+.service-item h3 {
+  color: var(--color-primary);
+  font-size: 1.4rem;
+  margin-top: 0;
+  margin-bottom: var(--spacing-sm);
+}
+.service-item p {
+  color: var(--color-text-light);
+  font-size: 0.95rem; /* Slightly smaller text */
+  line-height: 1.7;
+  flex-grow: 1;
+}
+
+/* --- Case Study Placeholder --- */
+.case-study-placeholder {
+    border: none; /* Remove dashed border */
+    padding: var(--spacing-xl) 0; /* Adjust padding */
+    text-align: center;
+    margin-top: var(--spacing-lg);
+    color: var(--color-text-light);
+    background-color: transparent; /* No background */
+    border-radius: 0; /* No radius */
+}
+.case-study-placeholder p { font-style: italic; margin-bottom: var(--spacing-lg); }
+.client-logos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-xl) var(--spacing-xxl); /* More gap */
+    margin-top: var(--spacing-lg);
+    filter: grayscale(100%);
+    opacity: 0.5; /* Slightly less opaque */
+    transition: filter 0.3s ease, opacity 0.3s ease;
+}
+#case-studies:hover .client-logos { /* Optional: Colorize on section hover */
+    /* filter: grayscale(0%); */
+    /* opacity: 0.8; */
+}
+.client-logos img {
+    max-height: 45px; /* Slightly smaller logos */
+    width: auto;
+    max-width: 140px;
+}
+
+
+/* --- Consultation Form Refinements --- */
+.consultation-form {
+    margin-top: var(--spacing-xl);
+    max-width: 850px;
+    padding: var(--spacing-xl) var(--spacing-xl); /* Adjust padding */
+    background-color: var(--color-secondary); /* White background */
+    /* ... rest okay ... */
+}
+.consultation-form label {
+    font-size: 0.9rem; /* Smaller label */
+    color: var(--color-text);
+}
+.consultation-form input[type="text"],
+.consultation-form input[type="email"],
+.consultation-form textarea {
+    background-color: #fdfdfd; /* Very light input background */
+}
+.consultation-form .cta-button.large {
+    padding: var(--spacing-sm) var(--spacing-xl); /* Adjust button padding */
+    box-shadow: 0 2px 5px rgba(12, 52, 61, 0.2);
+}
+
+/* === Unique Footer Links Section v1.0.2 === */
+.page-footer-links {
+    padding: var(--spacing-lg) 0;
+    margin-bottom: var(--spacing-lg);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.page-footer-links .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xl); /* Increased gap */
+    text-align: center;
+}
+
+.page-footer-links h4 {
+    margin-bottom: var(--spacing-sm);
+    color: rgba(255, 255, 255, 0.8); /* Brighter */
+    font-size: 1rem;
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.page-footer-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-sm) var(--spacing-lg);
+}
+
+.page-footer-links a {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.2s ease;
+}
+.page-footer-links a:hover {
+    color: var(--color-secondary);
+    text-decoration: underline;
+}
+
+
+/* === Responsive Adjustments v1.0.2 === */
+
+@media (min-width: 768px) {
+  /* Inherit previous 768px styles */
+  .page-footer-links .container {
+      flex-direction: row;
+      justify-content: space-evenly; /* Space out better */
+      align-items: flex-start; /* Align top */
+      text-align: left;
+   }
+   .page-footer-links h4 { margin-bottom: var(--spacing-md); }
+   .page-footer-links ul { justify-content: flex-start; flex-direction: column; gap: var(--spacing-sm); } /* Stack links vertically */
+}
+
+@media (min-width: 992px) {
+    /* Inherit previous 992px styles */
+}
