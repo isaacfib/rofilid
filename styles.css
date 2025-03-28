@@ -39,7 +39,7 @@ body {
   line-height: 1.6;
   color: var(--color-text);
   background-color: var(--color-secondary);
-  /* padding-top: 80px; */ /* <<< REMOVED THIS LINE >>> */
+  /* padding-top: 80px; /* REMOVED */
   overflow-x: hidden;
 }
 
@@ -132,9 +132,6 @@ img {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px); /* Optional: Adds blur effect to background */
   -webkit-backdrop-filter: blur(5px); /* Safari support */
-  /* Ensure header height is accounted for in hero padding */
-  /* Approx height = padding-top + padding-bottom + line-height/logo-height */
-  /* Let's assume ~60-80px. Hero section padding-top: 80px is good. */
 }
 
 .header-container {
@@ -218,16 +215,7 @@ img {
   justify-content: flex-start; /* Better for scrolling */
   opacity: 1;
   transition: opacity 0.3s ease-out; /* Smooth transition */
-
-  /* Optional: Hide scrollbar visually if desired, while keeping functionality */
-  /* scrollbar-width: none; /* Firefox */
-  /* -ms-overflow-style: none;  /* IE and Edge */
 }
-/* Optional: Hide scrollbar visually for Webkit browsers */
-/* #primary-navigation.active::-webkit-scrollbar { */
-  /* display: none; */
-/* } */
-
 
 /* Hero Section */
 .hero-section {
@@ -235,21 +223,20 @@ img {
   background-size: cover;
   background-position: center;
   color: var(--color-secondary);
-  /* Padding: top/bottom = 80px, left/right = 20px */
-  /* The 80px top padding pushes content below the fixed header */
   padding: var(--spacing-xxl) var(--spacing-md);
-  text-align: center;
+  text-align: center; /* Center inline content by default */
   min-height: 500px; /* Or adjust as needed */
   display: flex;
   align-items: center; /* Vertically center content within the padded area */
-  justify-content: center; /* Horizontally center content */
-  /* Note: This section now starts at the very top of the viewport */
+  justify-content: center; /* Horizontally center flex item(s) */
 }
 
 .hero-content {
   max-width: 800px;
-  /* Removed margin: 0 auto; as justify-content on parent handles centering */
-  /* Removed padding: var(--spacing-xl) 0; as parent padding handles spacing */
+  width: 100%; /* Take up available width up to max-width */
+  margin-left: auto;  /* <<< ADDED for robust centering */
+  margin-right: auto; /* <<< ADDED for robust centering */
+  text-align: center; /* Ensure text *within* this block is centered */
 }
 
 .hero-section h1 {
@@ -378,7 +365,7 @@ img {
 
 .cta-content {
   max-width: 700px;
-  margin: 0 auto;
+  margin: 0 auto; /* Keep margin auto for centering */
 }
 
 .cta-content p {
@@ -724,10 +711,14 @@ img {
     padding: var(--spacing-md) 0; /* Adjust print padding */
     min-height: auto;
     text-align: left;
+    display: block; /* Reset flex for print */
   }
    /* Ensure hero content is visible in print */
   .hero-content {
     padding: 0;
+    margin: 0; /* Reset margin */
+    max-width: 100%; /* Use full width */
+    text-align: left; /* Align left for print */
   }
 
   .card {
