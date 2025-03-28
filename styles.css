@@ -536,7 +536,7 @@ img {
   .contact-info {
     flex: 1;
     min-width: 350px;
-    text-align: left;
+    text-align: center;
     margin-bottom: 0;
     margin-right: var(--spacing-xl);
     align-self: flex-start;
