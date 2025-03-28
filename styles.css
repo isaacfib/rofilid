@@ -425,7 +425,8 @@ img {
 .social-media {
   display: flex;
   justify-content: flex-start;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-sm);
 }
 
 .social-icon {
