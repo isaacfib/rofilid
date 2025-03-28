@@ -32,18 +32,16 @@
           <li class="nav-item"><a href="#services" class="nav-link">Services</a></li>
         </ul>
       </nav>
-      <a href="#services" class="connect-button" aria-label="Contact us">Get in Touch</a>
+      <a href="#services" class="connect-button" aria-label="Our Services">Our Services</a> <!-- Updated label for better description -->
     </div>
   </header>
 
   <main>
     <!-- Hero Section -->
     <section id="hero" class="hero-section">
-      <div class="container">
-        <div class="hero-content">
-          <h1>We deliver financial tools to individuals, and support businesses with digital optimizations and systems improvement.</h1>
-          <a href="#services" class="cta-button">Connect with Us</a>
-        </div>
+      <div class="container hero-content"> <!-- Combined container and hero-content for simpler centering -->
+        <h1>We deliver financial tools to individuals, and support businesses with digital optimizations and systems improvement.</h1>
+        <a href="#services" class="cta-button">Explore Our Services</a> <!-- Updated text for clarity -->
       </div>
     </section>
 
@@ -59,10 +57,12 @@
             </a>
             <h3 class="card-title">Corporate Solutions</h3>
             <ul class="service-list">
-              <li>Digital Transformation</li>
-              <li>Website Development</li>
-              <li>Digital Automation</li>
-              <li>Visual Branding</li>
+              <!-- === UPDATED: Corporate list items now link to corporate.html === -->
+              <li><a href="pages/corporate.html">Digital Transformation</a></li>
+              <li><a href="pages/corporate.html">Website Development</a></li>
+              <li><a href="pages/corporate.html">Digital Automation</a></li>
+              <li><a href="pages/corporate.html">Visual Branding</a></li>
+              <!-- =============================================================== -->
             </ul>
             <a href="pages/corporate.html" class="learn-more">Explore Corporate Solutions <span aria-hidden="true">→</span></a>
           </article>
@@ -73,10 +73,12 @@
             </a>
             <h3 class="card-title">Personal Solutions</h3>
             <ul class="service-list">
-              <li><a href="pages/personal-finance-tools.html">Finance Resources</a></li>
-              <li><a href="pages/personal-finance-coaching.html">Finance Coaching</a></li>
-              <li><a href="pages/personal-finance-tools.html">Finance Literacy</a></li>
-              <li><a href="pages/personal-finance-tools.html">Finance Tools</a></li>
+              <!-- === UPDATED: Personal list items now link to personal.html === -->
+              <li><a href="pages/personal.html">Finance Resources</a></li>
+              <li><a href="pages/personal.html">Finance Coaching</a></li>
+              <li><a href="pages/personal.html">Finance Literacy</a></li>
+              <li><a href="pages/personal.html">Finance Tools</a></li>
+              <!-- ============================================================ -->
             </ul>
             <a href="pages/personal.html" class="learn-more">Discover Personal Solutions <span aria-hidden="true">→</span></a>
           </article>
@@ -88,7 +90,7 @@
     <section id="cta-mid" class="cta-section">
       <div class="container">
         <div class="cta-content">
-          <p>Our goal is to help you with the boost you need to achieve clarity, efficiency, and lasting success.</p>
+          <p>Our goal is to help businesses and individuals gain better clarity, drive improved efficiency, and create lasting success through tailored digital and financial solutions.</p>
           <a href="#contact" class="cta-button">Get in Touch</a>
         </div>
       </div>
@@ -149,7 +151,7 @@
     // Mobile Menu Toggle
     const menuToggle = document.querySelector('.mobile-menu-toggle');
     const primaryNav = document.querySelector('#primary-navigation');
-    
+
     menuToggle.addEventListener('click', () => {
       const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
       menuToggle.setAttribute('aria-expanded', !isExpanded);
@@ -163,22 +165,25 @@
         menuToggle.setAttribute('aria-expanded', 'false');
       }
     });
-    
-    // Smooth Scroll
+
+    // Smooth Scroll for internal links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
         const targetId = this.getAttribute('href');
-        if (targetId === '#') return;
-        
-        e.preventDefault();
-        const target = document.querySelector(targetId);
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth' });
-          history.pushState(null, null, targetId);
+        // Only prevent default and scroll smoothly for valid internal links
+        if (targetId && targetId !== '#' && document.querySelector(targetId)) {
+            e.preventDefault();
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+                // Optional: Update URL hash without page jump (if desired)
+                // history.pushState(null, null, targetId);
+            }
         }
+        // If it's just "#", or target doesn't exist, let the default behavior happen (or do nothing)
       });
     });
-    
+
     // Update current year in copyright
     document.getElementById('current-year').textContent = new Date().getFullYear();
   </script>
