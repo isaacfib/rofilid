@@ -234,8 +234,8 @@ img {
 .hero-content {
   max-width: 800px;
   width: 100%; /* Take up available width up to max-width */
-  margin-left: auto;  /* <<< ADDED for robust centering */
-  margin-right: auto; /* <<< ADDED for robust centering */
+  margin-left: auto;
+  margin-right: auto;
   text-align: center; /* Ensure text *within* this block is centered */
 }
 
@@ -306,6 +306,23 @@ img {
   font-size: 1.5rem;
 }
 
+/* === ADDED: Style for links within card titles === */
+.card-title a {
+  color: inherit; /* Inherit color from the h3 (var(--color-primary)) */
+  text-decoration: none; /* Remove default underline */
+  transition: var(--transition-standard); /* Add smooth transition */
+}
+
+.card-title a:hover,
+.card-title a:focus {
+  /* Optional: Add hover/focus effect - e.g., subtle underline or color change */
+  /* text-decoration: underline; */
+  color: var(--color-primary-light); /* Slightly lighten on hover/focus */
+  outline: none; /* Remove default focus outline if adding custom style */
+}
+/* =============================================== */
+
+
 .service-list {
   list-style: none;
   margin: var(--spacing-md) 0;
@@ -320,14 +337,14 @@ img {
 }
 
 .service-list a {
-  color: var(--color-primary);
+  color: var(--color-primary); /* Link color within the list */
   text-decoration: none;
   transition: var(--transition-standard);
 }
 
 .service-list a:hover {
-  color: var(--color-primary-light);
-  text-decoration: none;
+  color: var(--color-primary-light); /* Hover color for list links */
+  /* text-decoration: underline; /* Optional underline on hover */
 }
 
 /* Keep .learn-more at the bottom */
@@ -727,6 +744,11 @@ img {
     padding: var(--spacing-md);
     page-break-inside: avoid; /* Try to keep cards from breaking across pages */
   }
+  /* Ensure card titles are visible in print */
+  .card-title a {
+      color: inherit !important; /* Use important for print overrides */
+      text-decoration: none !important;
+  }
 
   .site-footer {
     background-color: #fff;
@@ -762,15 +784,3 @@ img {
     height: 30px;
   }
 }
-
-/* Commented out as per user's original code */
-/* @media (max-width: 480px) {
-  .social-icon {
-    width: 15px;
-    height: 15px;
-  }
-  .social-link {
-    width: 15px;
-    height: 15px;
-  }
-} */
