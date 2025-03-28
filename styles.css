@@ -136,7 +136,7 @@ img {
 
 .header-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* This centers the nav block on desktop */
   align-items: center;
 }
 
@@ -201,21 +201,27 @@ img {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap; /* Prevent wrapping */
-  overflow-x: auto; /* Allow horizontal scrolling */
+  overflow-x: auto; /* Allow horizontal scrolling IF needed */
   -webkit-overflow-scrolling: touch; /* Smoother scrolling on iOS */
   position: absolute;
   top: 100%; /* Position below the header */
   left: 0;
   width: 100%;
   background-color: var(--color-primary);
-  /* ADDED more horizontal padding for scroll room */
+  /* Ensure sufficient horizontal padding */
   padding: var(--spacing-sm) var(--spacing-md);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   gap: var(--spacing-sm);
-  justify-content: flex-start; /* Better for scrolling */
+  justify-content: center; /* <<< Center the items */
   opacity: 1;
   transition: opacity 0.3s ease-out; /* Smooth transition */
+
+  /* Optional: Hide scrollbar visually */
+  /* scrollbar-width: none; */
+  /* -ms-overflow-style: none; */
 }
+/* #primary-navigation.active::-webkit-scrollbar { display: none; } */
+
 
 /* Hero Section */
 .hero-section {
@@ -306,7 +312,6 @@ img {
   font-size: 1.5rem;
 }
 
-/* === ADDED: Style for links within card titles === */
 .card-title a {
   color: inherit; /* Inherit color from the h3 (var(--color-primary)) */
   text-decoration: none; /* Remove default underline */
@@ -315,12 +320,9 @@ img {
 
 .card-title a:hover,
 .card-title a:focus {
-  /* Optional: Add hover/focus effect - e.g., subtle underline or color change */
-  /* text-decoration: underline; */
   color: var(--color-primary-light); /* Slightly lighten on hover/focus */
   outline: none; /* Remove default focus outline if adding custom style */
 }
-/* =============================================== */
 
 
 .service-list {
@@ -344,7 +346,6 @@ img {
 
 .service-list a:hover {
   color: var(--color-primary-light); /* Hover color for list links */
-  /* text-decoration: underline; /* Optional underline on hover */
 }
 
 /* Keep .learn-more at the bottom */
@@ -412,7 +413,6 @@ img {
 
 .contact-info {
   text-align: center;
-  /* Removed individual background, padding, shadow as they are on container now */
 }
 
 .contact-info i {
@@ -452,13 +452,8 @@ img {
   text-align: center; /* Center text for mobile */
 }
 
-.footer-left {
-  /* No specific styles needed now */
-}
-
-.footer-right {
-   /* No specific styles needed now */
-}
+.footer-left { }
+.footer-right { }
 
 .social-media {
   display: flex;
@@ -531,18 +526,14 @@ img {
     padding: var(--spacing-sm) var(--spacing-sm); /* Reduce padding slightly */
   }
 
-  /* body padding-top is removed, no need to adjust it */
-
   .hero-section h1 {
      font-size: 1.8rem; /* Smaller font size for small screens */
   }
-   /* Adjust hero padding slightly for small screens if needed */
    .hero-section {
      padding-top: calc(60px + var(--spacing-lg)); /* Example: smaller header clearance + space */
      padding-bottom: var(--spacing-lg);
      min-height: 450px; /* Adjust height */
    }
-
 
   .cta-content p {
     font-size: 1.3rem;
@@ -559,7 +550,6 @@ img {
 
 /* Tablet View and larger (where footer goes horizontal) */
 @media (min-width: 768px) {
-  /* Reset hero padding if it was changed for mobile */
   .hero-section {
      padding: var(--spacing-xxl) var(--spacing-md); /* Back to default */
      min-height: 600px; /* Back to default */
@@ -575,45 +565,31 @@ img {
   }
 
   .card {
-    flex: 0 1 320px; /* Allow cards to take up space */
-    /* max-width remains 320px */
+    flex: 0 1 320px;
   }
 
-  /* Footer layout */
   .footer-content {
-    flex-direction: row; /* Switch to horizontal layout */
-    justify-content: space-between; /* Space out left and right */
-    align-items: center; /* Vertically align logo and icons */
-    text-align: left; /* Reset text alignment */
-  }
-
-  .footer-left {
-     /* Adjust if needed */
-  }
-  .footer-right {
-     /* Adjust if needed */
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
   }
 
   .social-media {
-    justify-content: flex-end; /* Align icons to the right */
-    margin-top: 0; /* Ensure no extra margin */
+    justify-content: flex-end;
+    margin-top: 0;
   }
 
-  /* Contact Section Layout */
-  .contact-container {
-     /* No change needed, already handles content */
-  }
   .contact-info {
-     text-align: center; /* Keep centered or change if needed */
+     text-align: center;
   }
 
-  /* Social Icon Sizes adjustment (if needed, currently applies up to 767px) */
   .social-icon {
-    width: 30px; /* Back to default or adjust */
+    width: 30px;
     height: 30px;
   }
   .social-link {
-    width: 36px; /* Back to default or adjust */
+    width: 36px;
     height: 36px;
   }
 }
@@ -621,27 +597,19 @@ img {
 /* Smaller Desktop / Larger Tablet (up to 991px - Where Hamburger is visible) */
 @media (max-width: 991px) {
   .mobile-menu-toggle {
-      display: block; /* Show hamburger */
-      margin-left: auto; /* Push hamburger icon to the far right */
-      margin-right: 0; /* Explicitly set right margin to 0 */
+      display: block;
+      margin-left: auto;
+      margin-right: 0;
   }
 
   .connect-button {
-      display: none; /* Hide the 'Get in Touch' button */
+      display: none;
   }
-
-  /* Navigation list remains hidden by default (display: none;) */
-  /* #primary-navigation.active styles handle the display when opened */
 }
 
 
 /* Desktop View (992px and larger) */
 @media (min-width: 992px) {
-  /* body {
-    font-size: 1.1rem; /* Optional larger base font size */
-  /* } */
-
-  /* Reset hero padding if changed */
    .hero-section {
      padding: var(--spacing-xxl) var(--spacing-md); /* Back to default */
      min-height: 700px; /* Back to default */
@@ -657,17 +625,16 @@ img {
 
   /* --- Header Desktop Styles --- */
   .mobile-menu-toggle {
-    display: none; /* Hide hamburger */
+    display: none;
   }
 
   .connect-button {
-    display: inline-block; /* Ensure 'Get in Touch' is visible */
+    display: inline-block;
   }
 
   .nav-list {
-    display: flex; /* Show nav list items inline */
+    display: flex;
     gap: var(--spacing-md);
-    /* Reset mobile menu styles */
     position: static;
     width: auto;
     background-color: transparent;
@@ -675,26 +642,24 @@ img {
     padding: 0;
     opacity: 1;
     flex-direction: row;
-    flex-wrap: nowrap; /* Keep nowrap for desktop too */
+    flex-wrap: nowrap;
     top: auto;
     left: auto;
-    overflow-x: visible; /* Ensure no scrolling on desktop */
-  }
-  .nav-item {
-      /* No change needed */
+    overflow-x: visible;
   }
    .nav-link {
-     padding: var(--spacing-xs) var(--spacing-sm); /* Original padding */
-     font-size: 1rem; /* Ensure font size is reset if changed in mobile */
+     padding: var(--spacing-xs) var(--spacing-sm);
+     font-size: 1rem;
      white-space: nowrap;
    }
    #primary-navigation.active {
-      /* Desktop doesn't use .active, but reset just in case */
+      /* Reset mobile active styles */
       position: static;
       box-shadow: none;
       overflow-x: visible;
       padding: 0;
       gap: var(--spacing-md);
+      justify-content: center; /* Keep centered */
    }
 }
 
@@ -702,51 +667,49 @@ img {
 @media print {
   body {
     padding-top: 0;
-    font-size: 12pt; /* Adjust for print */
+    font-size: 12pt;
     color: #000;
     background-color: #fff;
   }
 
   .site-header,
   .cta-section,
-  .footer-right, /* Hide social media part */
+  .footer-right,
   .mobile-menu-toggle,
-  .connect-button, /* Hide buttons */
+  .connect-button,
   .cta-button {
-    display: none !important; /* Use important to override */
+    display: none !important;
   }
 
   .container {
     max-width: 100%;
-    padding: 0 1cm; /* Print margins */
+    padding: 0 1cm;
   }
 
   .hero-section {
     background: none;
     color: #000;
     margin-top: 0;
-    padding: var(--spacing-md) 0; /* Adjust print padding */
+    padding: var(--spacing-md) 0;
     min-height: auto;
     text-align: left;
-    display: block; /* Reset flex for print */
+    display: block;
   }
-   /* Ensure hero content is visible in print */
   .hero-content {
     padding: 0;
-    margin: 0; /* Reset margin */
-    max-width: 100%; /* Use full width */
-    text-align: left; /* Align left for print */
+    margin: 0;
+    max-width: 100%;
+    text-align: left;
   }
 
   .card {
     box-shadow: none;
     border: 1px solid #ccc;
     padding: var(--spacing-md);
-    page-break-inside: avoid; /* Try to keep cards from breaking across pages */
+    page-break-inside: avoid;
   }
-  /* Ensure card titles are visible in print */
   .card-title a {
-      color: inherit !important; /* Use important for print overrides */
+      color: inherit !important;
       text-decoration: none !important;
   }
 
@@ -757,7 +720,7 @@ img {
     padding: var(--spacing-md) var(--spacing-md);
   }
   .footer-left {
-     display: block !important; /* Ensure logo might show */
+     display: block !important;
   }
   .copyright {
      color: #555;
@@ -768,19 +731,18 @@ img {
      color: inherit;
   }
    a[href^="http"]:after {
-      /* content: " (" attr(href) ")"; */ /* Optionally show URLs */
-      /* font-size: 9pt; */
+      /* content: " (" attr(href) ")"; */
    }
 }
 
 /* Social Icon Sizes - Applies up to 767px */
-@media (max-width: 767px) { /* Changed from 768px to target below tablet */
+@media (max-width: 767px) {
   .social-icon {
     width: 25px;
     height: 25px;
   }
   .social-link {
-    width: 30px; /* Adjust link size slightly */
+    width: 30px;
     height: 30px;
   }
 }
