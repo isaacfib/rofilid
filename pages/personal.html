@@ -3,65 +3,317 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Personal Services - Rofilid</title>
+  <meta name="description" content="Rofilid - Personal financial knowledge, tools, and coaching for Nigerians and beyond.">
+  <title>Personal Financial Solutions - ROFILID</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <!-- Link to the main stylesheet -->
   <link rel="stylesheet" href="../styles.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Inline <style> block removed -->
 </head>
 <body>
-  <!-- Header Section -->
-  <header>
-    <div class="logo">
-      <a href="../index.html"><img src="../assets/images/logo.png" alt="Rofilid Logo"></a>
+  <!-- Header Section (Copied from index.html) -->
+  <header class="site-header">
+    <div class="container header-container">
+      <div class="logo">
+        <a href="../index.html" aria-label="Rofilid Home"> <!-- Adjusted path -->
+          <img src="../assets/images/rofilid-logo-white.svg" alt="Rofilid Logo" width="120" height="40" loading="eager"> <!-- Adjusted path -->
+        </a>
+      </div>
+      <nav aria-label="Main navigation">
+        <button class="mobile-menu-toggle" aria-expanded="false" aria-controls="primary-navigation">
+          <span class="sr-only">Menu</span>
+          <i class="fas fa-bars" aria-hidden="true"></i>
+        </button>
+        <ul id="primary-navigation" class="nav-list">
+          <li class="nav-item"><a href="../index.html" class="nav-link">Home</a></li> <!-- Adjusted path -->
+          <li class="nav-item"><a href="corporate.html" class="nav-link">Corporate</a></li>
+          <li class="nav-item"><a href="personal.html" class="nav-link">Personal</a></li>
+          <li class="nav-item"><a href="../index.html#services" class="nav-link">Services</a></li> <!-- Adjusted path -->
+        </ul>
+      </nav>
+      <a href="../index.html#services" class="connect-button" aria-label="Our Services">Our Services</a> <!-- Adjusted path -->
     </div>
-    <nav>
-      <ul>
-        <li><a href="corporate.html">Corporate</a></li>
-        <li><a href="personal.html">Personal</a></li>
-        <li><a href="../index.html#contact">Contact</a></li>
-      </ul>
-    </nav>
-    <button class="connect-button">Let's Connect</button>
   </header>
-  
-  <!-- Personal Services Content with Image -->
-  <section id="content">
-    <h1>Personal Services</h1>
-    <img src="../assets/images/personal-services.jpg" alt="Personal Services" class="content-image">
-    <p>Discover our personal finance offerings designed to empower you:</p>
-    <ul>
-      <li><a href="personal-finance-coaching.html">Personal Finance Coaching</a></li>
-      <li><a href="personal-finance-tools.html">Personal Finance Tools and Resources</a></li>
-    </ul>
-  </section>
-  
-  <!-- Footer Section -->
-  <footer>
-    <div class="logo">
-      <img src="../assets/images/logo.png" alt="Rofilid Logo" style="height: 30px;">
-    </div>
-    <p>© 2023 Rofilid. All rights reserved.</p>
-        <nav class="footer-nav" aria-label="Footer Navigation">
-          <a href="#terms" class="footer-link">Terms of Service</a>
-          <a href="#privacy" class="footer-link">Privacy Policy</a>
-          <a href="#contact" class="footer-link">Contact</a>
-        </nav>
-    <p>Contact: info@rofilid.com</p>
-    <div class="social-media">
-      <a href="https://twitter.com/rofilid"><i class="fab fa-x"></i></a>
-      <a href="https://youtube.com/rofilid"><i class="fab fa-youtube"></i></a>
-      <a href="https://instagram.com/rofilid"><i class="fab fa-instagram"></i></a>
-      <a href="https://facebook.com/rofilid"><i class="fab fa-facebook"></i></a>
+
+  <main>
+    <!-- I. Introduction Section -->
+    <section class="page-intro">
+      <div class="container">
+        <h1>Empower Yourself with Financial Knowledge</h1>
+        <p class="subheadline">Take control of your finances and secure your future.</p>
+        <p>Financial literacy is crucial for personal well-being, yet less than 50% of adults in Nigeria possess a basic understanding of financial principles, and only 40% have access to formal banking services. This highlights a significant need for accessible education. ROFILID provides resources, interactive tools, and expert coaching to help individuals, both in Nigeria and globally, make informed financial decisions, manage their money effectively, and achieve their financial aspirations.</p>
+      </div>
+    </section>
+
+    <p class="motivational-quote">Start your journey to <span class="accent-green">financial freedom</span> today.</p>
+
+    <!-- II. Personal Finance Resources (Literacy) -->
+    <section id="personal-resources" class="page-section bg-light">
+      <div class="container">
+        <h2>Learn and Grow</h2>
+        <p>Access a wealth of educational materials to enhance your financial knowledge.</p>
+
+        <div class="resource-items">
+          <article class="resource-item">
+            <h3>Blog & Articles</h3>
+            <p>Explore articles on budgeting, saving, investing, navigating finances in high-inflation environments (Nigeria-specific context), understanding local tax laws, and more. Content drawn from BasicPFC and original insights.</p>
+            <!-- Link to blog archive page (if exists) -->
+            <!-- <a href="#" class="learn-more">Read More Articles <span aria-hidden="true">→</span></a> -->
+          </article>
+
+          <article class="resource-item">
+            <h3>BasicPFC Insights</h3>
+            <p>Insights and practical tips from @basicpfc, presented accessibly. We translate social media knowledge into easy-to-digest formats right here on the website.</p>
+            <!-- Placeholder for potential feed or link -->
+          </article>
+
+          <article class="resource-item">
+            <h3>Why Financial Literacy Matters</h3>
+            <p>Understand the benefits:</p>
+            <ul>
+              <li>Empowerment to make sound decisions</li>
+              <li>Ability to avoid common scams and pitfalls</li>
+              <li>Improved overall well-being and reduced stress</li>
+              <li>Preparedness for emergencies</li>
+              <li>Clearer path to achieving financial goals</li>
+            </ul>
+          </article>
+
+          <article class="resource-item">
+             <h3>Impact on Productivity</h3>
+             <p>For business owners: An employee's personal finance health and awareness is directly linked to workplace productivity. Financial stress can lead to distraction and reduced focus. Empowering your team benefits everyone.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <p class="motivational-quote">Knowledge is power—especially when it comes to <span class="accent-green">your money</span>.</p>
+
+    <!-- III. Personal Finance Tools -->
+    <section id="personal-tools" class="page-section">
+      <div class="container">
+        <h2>Tools for Success</h2>
+        <p>Utilize our interactive tools to gain personalized insights and manage your finances effectively.</p>
+
+        <div class="tool-items">
+          <article class="tool-item">
+            <h3>Interactive Quizzes</h3>
+            <p>Test your understanding of key financial concepts with our short, engaging quizzes (approx. 5 questions each). Get instant feedback and tailored advice.</p>
+            <ul>
+                <li>Basic Financial Literacy Quiz</li>
+                <li>Debt Management Quiz</li>
+            </ul>
+            <!-- Placeholder for Quiz links/buttons -->
+             <button class="cta-button small quiz-button" disabled>Basic Literacy Quiz (Coming Soon)</button>
+             <button class="cta-button small quiz-button" disabled>Debt Management Quiz (Coming Soon)</button>
+          </article>
+
+          <article class="tool-item">
+            <h3>Financial Calculators</h3>
+            <p>Plan and visualize your financial future. Use our calculators for savings goals, understanding compound interest, and more. Defaults to NGN with options for other currencies.</p>
+            <!-- Placeholder for Calculator links/widgets -->
+            <div class="calculator-placeholder">[Compound Interest Calculator UI Placeholder - Coming Soon]</div>
+          </article>
+
+          <article class="tool-item">
+            <h3>Downloadable Templates</h3>
+            <p>Get started with practical templates (spreadsheets) for budgeting and expense tracking.</p>
+            <a href="#" class="download-link">[Download Basic Budget Template (Free)]</a> <br>
+            <a href="#" class="cta-button small standard-link">[Get Standard Template (Requires Email)]</a>
+            <!-- Replace # with actual file links or lead capture mechanism -->
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <p class="motivational-quote">Invest in yourself; learn to manage <span class="accent-green">your finances</span> effectively.</p>
+
+    <!-- IV. Personal Finance Coaching -->
+    <section id="personal-coaching" class="page-section bg-light">
+      <div class="container">
+        <h2>Get Personalized Guidance</h2>
+        <p>Work with our expert coaches to develop a customized financial plan and build healthy habits.</p>
+
+        <div class="coaching-content">
+            <div class="coaching-details">
+                <div class="coaching-item">
+                    <h3>What is Financial Coaching?</h3>
+                    <p>It's an educational partnership designed to help you understand your financial situation, set achievable goals, and develop the skills to manage your money effectively. Financial struggle doesn't mean you're bad with money; it often means you need guidance to use money as a tool to create your best life.</p>
+                </div>
+                <div class="coaching-item"> <!-- Removed style="margin-top: var(--spacing-lg);" - Handled by grid gap -->
+                    <h3>How It Helps</h3>
+                    <p>Our coaches can assist with:</p>
+                    <ul>
+                    <li>Managing debt effectively</li>
+                    <li>Creating realistic budgets and savings plans</li>
+                    <li>Navigating financial challenges (e.g., multiple income streams, inflation)</li>
+                    <li>Improving financial habits for long-term success</li>
+                    <li>Gaining confidence and control over your finances</li>
+                    </ul>
+                </div>
+             </div>
+
+            <div class="coaching-item">
+                <h3>Schedule a Session</h3>
+                <p>Interested in personalized coaching? Fill out the form below to express your interest, and we'll be in touch to discuss the next steps.</p>
+                <form class="coaching-request-form" action="#" method="POST"> <!-- Update action attribute -->
+                    <label for="coach-name">Name:</label>
+                    <input type="text" id="coach-name" name="name" required>
+
+                    <label for="coach-email">Email:</label>
+                    <input type="email" id="coach-email" name="email" required>
+
+                    <label for="coach-interest">Briefly describe what you'd like help with:</label>
+                    <textarea id="coach-interest" name="interest" rows="4"></textarea>
+
+                    <button type="submit" class="cta-button">Request Coaching Info</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="disclaimer">
+          <p><strong>Disclaimer:</strong> ROFILID's financial coaching services are educational in nature. We provide guidance and tools to help you make informed decisions, but we do not provide specific financial advice or recommend particular investment products. Please consult with a qualified financial advisor for personalized investment advice.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- V. Link to MMSBALLIOR -->
+     <section class="page-section"> <!-- Wrapped promo in a standard page section for consistent padding -->
+        <div class="container">
+            <div class="mmsballior-promo">
+              <h3>MMSBALLIOR: Financial Coaching for Teenagers</h3>
+              <p>Empower the next generation! MMSBALLIOR is our specialized program designed to teach teenagers essential personal finance concepts (Money Management, Saving, Budgeting, and more) in an engaging way.</p>
+              <a href="#" class="cta-button">Discover MMSBALLIOR</a> <!-- Link to MMSBALLIOR page/section -->
+            </div>
+        </div>
+     </section>
+
+
+  </main>
+
+  <!-- Footer Section (Copied from index.html) -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-left">
+          <div class="logo">
+            <a href="../index.html" aria-label="Rofilid Home"> <!-- Adjusted path -->
+              <img src="../assets/images/rofilid-logo-white.svg" alt="Rofilid Logo" width="120" height="40" loading="lazy"> <!-- Adjusted path -->
+            </a>
+          </div>
+        </div>
+        <div class="footer-right">
+          <div class="social-media">
+            <a href="https://facebook.com/rofilid" aria-label="Facebook" class="social-link" target="_blank" rel="noopener noreferrer">
+              <img src="../assets/images/facebook.png" alt="Facebook Icon" class="social-icon"> <!-- Adjusted path -->
+            </a>
+            <a href="https://instagram.com/rofi.lid" aria-label="Instagram" class="social-link" target="_blank" rel="noopener noreferrer">
+              <img src="../assets/images/instagram.png" alt="Instagram Icon" class="social-icon"> <!-- Adjusted path -->
+            </a>
+            <a href="https://linkedin.com/company/rofilid" aria-label="LinkedIn" class="social-link" target="_blank" rel="noopener noreferrer">
+              <img src="../assets/images/linkedin.png" alt="LinkedIn Icon" class="social-icon"> <!-- Adjusted path -->
+            </a>
+            <a href="https://twitter.com/rofilid" aria-label="X (Formerly Twitter)" class="social-link" target="_blank" rel="noopener noreferrer">
+              <img src="../assets/images/twitter.png" alt="Twitter Icon" class="social-icon"> <!-- Adjusted path -->
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="copyright">
+        <p>© <span id="current-year">2023</span> ROFILID Services Limited. All rights reserved.</p>
+      </div>
     </div>
   </footer>
 
-  <!-- JavaScript for smooth scrolling -->
+  <!-- Scripts (Copied from index.html) -->
   <script>
-    document.querySelectorAll('.connect-button').forEach(button => {
-      button.addEventListener('click', () => {
-        window.location.href = '../index.html#contact';
+    // Mobile Menu Toggle
+    const menuToggle = document.querySelector('.mobile-menu-toggle');
+    const primaryNav = document.querySelector('#primary-navigation');
+
+    if (menuToggle && primaryNav) { // Add null check
+        menuToggle.addEventListener('click', () => {
+        const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+        menuToggle.setAttribute('aria-expanded', !isExpanded);
+        primaryNav.classList.toggle('active');
+        });
+    }
+
+    // Auto-hide mobile menu on scroll
+    window.addEventListener('scroll', () => {
+      if (primaryNav && primaryNav.classList.contains('active')) { // Add null check
+        primaryNav.classList.remove('active');
+        if(menuToggle) { // Add null check
+            menuToggle.setAttribute('aria-expanded', 'false');
+        }
+      }
+    });
+
+    // Smooth Scroll for internal links (relative to current page)
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        // Only prevent default and scroll smoothly for valid internal links on THIS page
+        if (targetId && targetId !== '#' && document.querySelector(targetId)) {
+            e.preventDefault();
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                // Calculate scroll position considering fixed header height
+                const headerOffset = document.querySelector('.site-header')?.offsetHeight || 80; // Get header height or fallback
+                const elementPosition = targetElement.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: "smooth"
+                });
+            }
+        }
       });
     });
+
+    // Smooth scroll for links pointing to sections on the index page from other pages
+     document.querySelectorAll('a[href^="../index.html#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const targetId = this.hash; // Get the hash part (#services)
+            if (targetId) {
+                e.preventDefault(); // Prevent default jump
+                // Store target id and redirect
+                sessionStorage.setItem('scrollToId', targetId);
+                window.location.href = this.getAttribute('href').split('#')[0]; // Go to index.html
+            }
+        });
+    });
+
+    // On index.html load, check if we need to scroll
+    if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith('index.html')) {
+        const targetId = sessionStorage.getItem('scrollToId');
+        if (targetId && document.querySelector(targetId)) {
+            const targetElement = document.querySelector(targetId);
+             // Use timeout to allow page layout to settle
+            setTimeout(() => {
+                const headerOffset = document.querySelector('.site-header')?.offsetHeight || 80;
+                const elementPosition = targetElement.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+                sessionStorage.removeItem('scrollToId'); // Clean up
+            }, 100); // Adjust timeout if needed
+        }
+    }
+
+
+    // Update current year in copyright
+    const currentYearSpan = document.getElementById('current-year');
+    if(currentYearSpan){ // Add null check
+        currentYearSpan.textContent = new Date().getFullYear();
+    }
   </script>
 </body>
-</html> 
+</html>
