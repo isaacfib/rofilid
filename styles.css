@@ -426,7 +426,6 @@ img {
   display: flex;
   justify-content: flex-start;
   gap: var(--spacing-sm);
-  margin-top: var(--spacing-md);
 }
 
 .social-icon {
@@ -503,6 +502,7 @@ img {
 
   .social-media {
     justify-content: center;
+    margin-top: var(--spacing-md);
   }
 }
 
