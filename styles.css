@@ -503,6 +503,7 @@ img {
 
   .social-media {
     justify-content: center;
+    justify-content: space-between;
     /*margin-top: var(--spacing-md);*/
   }
 }
