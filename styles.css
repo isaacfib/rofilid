@@ -16,7 +16,7 @@
   --spacing-md: 20px;
   --spacing-lg: 30px;
   --spacing-xl: 40px;
-  --spacing-xxl: 80px;
+  --spacing-xxl: 80px; /* This conveniently matches the old body padding */
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-bold: 700;
@@ -39,7 +39,7 @@ body {
   line-height: 1.6;
   color: var(--color-text);
   background-color: var(--color-secondary);
-  padding-top: 80px; /* Adjust if header height changes */
+  /* padding-top: 80px; */ /* <<< REMOVED THIS LINE >>> */
   overflow-x: hidden;
 }
 
@@ -132,6 +132,9 @@ img {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px); /* Optional: Adds blur effect to background */
   -webkit-backdrop-filter: blur(5px); /* Safari support */
+  /* Ensure header height is accounted for in hero padding */
+  /* Approx height = padding-top + padding-bottom + line-height/logo-height */
+  /* Let's assume ~60-80px. Hero section padding-top: 80px is good. */
 }
 
 .header-container {
@@ -200,9 +203,9 @@ img {
 #primary-navigation.active {
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap; /* CHANGED: Prevent wrapping */
-  overflow-x: auto; /* ADDED: Allow horizontal scrolling */
-  -webkit-overflow-scrolling: touch; /* ADDED: Smoother scrolling on iOS */
+  flex-wrap: nowrap; /* Prevent wrapping */
+  overflow-x: auto; /* Allow horizontal scrolling */
+  -webkit-overflow-scrolling: touch; /* Smoother scrolling on iOS */
   position: absolute;
   top: 100%; /* Position below the header */
   left: 0;
@@ -212,7 +215,7 @@ img {
   padding: var(--spacing-sm) var(--spacing-md);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   gap: var(--spacing-sm);
-  justify-content: flex-start; /* CHANGED: Better for scrolling */
+  justify-content: flex-start; /* Better for scrolling */
   opacity: 1;
   transition: opacity 0.3s ease-out; /* Smooth transition */
 
@@ -232,19 +235,21 @@ img {
   background-size: cover;
   background-position: center;
   color: var(--color-secondary);
+  /* Padding: top/bottom = 80px, left/right = 20px */
+  /* The 80px top padding pushes content below the fixed header */
   padding: var(--spacing-xxl) var(--spacing-md);
   text-align: center;
-  margin-top: -80px;
-  min-height: 500px;
+  min-height: 500px; /* Or adjust as needed */
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: center; /* Vertically center content within the padded area */
+  justify-content: center; /* Horizontally center content */
+  /* Note: This section now starts at the very top of the viewport */
 }
 
 .hero-content {
   max-width: 800px;
-  margin: 0 auto;
-  padding: var(--spacing-xl) 0;
+  /* Removed margin: 0 auto; as justify-content on parent handles centering */
+  /* Removed padding: var(--spacing-xl) 0; as parent padding handles spacing */
 }
 
 .hero-section h1 {
@@ -522,13 +527,18 @@ img {
     padding: var(--spacing-sm) var(--spacing-sm); /* Reduce padding slightly */
   }
 
-  body {
-     padding-top: 70px; /* Adjust if header height changes slightly */
-  }
+  /* body padding-top is removed, no need to adjust it */
 
   .hero-section h1 {
      font-size: 1.8rem; /* Smaller font size for small screens */
   }
+   /* Adjust hero padding slightly for small screens if needed */
+   .hero-section {
+     padding-top: calc(60px + var(--spacing-lg)); /* Example: smaller header clearance + space */
+     padding-bottom: var(--spacing-lg);
+     min-height: 450px; /* Adjust height */
+   }
+
 
   .cta-content p {
     font-size: 1.3rem;
@@ -545,10 +555,11 @@ img {
 
 /* Tablet View and larger (where footer goes horizontal) */
 @media (min-width: 768px) {
+  /* Reset hero padding if it was changed for mobile */
   .hero-section {
-    min-height: 600px;
-  }
-
+     padding: var(--spacing-xxl) var(--spacing-md); /* Back to default */
+     min-height: 600px; /* Back to default */
+   }
   .hero-section h1 {
     font-size: 2.5rem;
   }
@@ -626,9 +637,11 @@ img {
     font-size: 1.1rem; /* Optional larger base font size */
   /* } */
 
-  .hero-section {
-    min-height: 700px;
-  }
+  /* Reset hero padding if changed */
+   .hero-section {
+     padding: var(--spacing-xxl) var(--spacing-md); /* Back to default */
+     min-height: 700px; /* Back to default */
+   }
 
   .hero-section h1 {
     font-size: 3rem;
@@ -708,9 +721,13 @@ img {
     background: none;
     color: #000;
     margin-top: 0;
-    padding: var(--spacing-md) 0;
+    padding: var(--spacing-md) 0; /* Adjust print padding */
     min-height: auto;
     text-align: left;
+  }
+   /* Ensure hero content is visible in print */
+  .hero-content {
+    padding: 0;
   }
 
   .card {
