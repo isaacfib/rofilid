@@ -155,6 +155,7 @@ img {
 /* Styles for nav items and links (apply when visible) */
 .nav-item {
   margin: 0;
+  flex-shrink: 0; /* Prevent items from shrinking by default */
 }
 
 .nav-link {
@@ -164,6 +165,7 @@ img {
   padding: var(--spacing-xs) var(--spacing-sm);
   display: block;
   transition: var(--transition-standard);
+  white-space: nowrap; /* Ensure link text itself doesn't wrap */
 }
 
 .nav-link:hover {
@@ -197,20 +199,32 @@ img {
 /* Style for the expanded mobile menu */
 #primary-navigation.active {
   display: flex;
-  flex-direction: row; /* Use row for wrapping links */
-  flex-wrap: wrap; /* Allow links to wrap */
+  flex-direction: row;
+  flex-wrap: nowrap; /* CHANGED: Prevent wrapping */
+  overflow-x: auto; /* ADDED: Allow horizontal scrolling */
+  -webkit-overflow-scrolling: touch; /* ADDED: Smoother scrolling on iOS */
   position: absolute;
   top: 100%; /* Position below the header */
   left: 0;
   width: 100%;
   background-color: var(--color-primary);
-  padding: var(--spacing-sm) var(--spacing-md); /* More padding */
+  /* ADDED more horizontal padding for scroll room */
+  padding: var(--spacing-sm) var(--spacing-md);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   gap: var(--spacing-sm);
-  justify-content: center; /* Center the wrapped links */
+  justify-content: flex-start; /* CHANGED: Better for scrolling */
   opacity: 1;
   transition: opacity 0.3s ease-out; /* Smooth transition */
+
+  /* Optional: Hide scrollbar visually if desired, while keeping functionality */
+  /* scrollbar-width: none; /* Firefox */
+  /* -ms-overflow-style: none;  /* IE and Edge */
 }
+/* Optional: Hide scrollbar visually for Webkit browsers */
+/* #primary-navigation.active::-webkit-scrollbar { */
+  /* display: none; */
+/* } */
+
 
 /* Hero Section */
 .hero-section {
@@ -486,6 +500,22 @@ img {
 /* === Responsive Design ===*/
 /* ======================== */
 
+/* === START: ADDED FOR VERY SMALL SCREENS === */
+@media (max-width: 400px) {
+    #primary-navigation.active {
+        gap: 5px; /* Reduce gap further */
+        padding-left: var(--spacing-sm); /* Ensure some padding */
+        padding-right: var(--spacing-sm);
+    }
+
+    #primary-navigation.active .nav-link {
+        font-size: 0.875rem; /* Slightly smaller font */
+        padding: var(--spacing-xs) 8px; /* Reduce padding */
+    }
+}
+/* === END: ADDED FOR VERY SMALL SCREENS === */
+
+
 /* Mobile Small (Up to 500px) */
 @media (max-width: 500px) {
   .site-header {
@@ -628,21 +658,26 @@ img {
     padding: 0;
     opacity: 1;
     flex-direction: row;
-    flex-wrap: nowrap;
+    flex-wrap: nowrap; /* Keep nowrap for desktop too */
     top: auto;
     left: auto;
+    overflow-x: visible; /* Ensure no scrolling on desktop */
   }
   .nav-item {
       /* No change needed */
   }
    .nav-link {
      padding: var(--spacing-xs) var(--spacing-sm); /* Original padding */
+     font-size: 1rem; /* Ensure font size is reset if changed in mobile */
+     white-space: nowrap;
    }
    #primary-navigation.active {
-      /* Reset mobile active styles if necessary, though display: flex above overrides */
+      /* Desktop doesn't use .active, but reset just in case */
       position: static;
       box-shadow: none;
-      /* etc. */
+      overflow-x: visible;
+      padding: 0;
+      gap: var(--spacing-md);
    }
 }
 
