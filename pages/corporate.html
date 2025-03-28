@@ -38,7 +38,7 @@
 
   <main>
     <!-- I. Overview Section -->
-    <section class="page-intro">
+    <section class="page-intro"> <!-- Padding-top adjusted via CSS -->
       <div class="container">
         <h1>Transform and Grow Your Business with ROFILID</h1>
         <p class="subheadline">Strategic digital solutions designed to enhance efficiency, expand your reach, and drive profitability.</p>
@@ -85,13 +85,14 @@
         <div class="container">
             <h2>Proven Results & Client Success</h2>
             <p class="section-description">We're proud of the partnerships we build and the results we deliver. Discover how we've helped other businesses thrive.</p>
-            <div class="case-study-placeholder">
+            <div class="case-study-placeholder"> <!-- Adjusted class name -->
                 <p><em>Client success stories and detailed case studies are currently being compiled and will be featured here soon.</em></p>
                 <div class="client-logos">
-                    <img src="https://via.placeholder.com/150x60.png?text=Client+Logo+1" alt="Client Logo 1 Placeholder">
-                    <img src="https://via.placeholder.com/130x50.png?text=Client+Logo+2" alt="Client Logo 2 Placeholder">
-                    <img src="https://via.placeholder.com/160x70.png?text=Client+Logo+3" alt="Client Logo 3 Placeholder">
-                    <img src="https://via.placeholder.com/140x55.png?text=Client+Logo+4" alt="Client Logo 4 Placeholder">
+                    <img src="https://via.placeholder.com/150x60.png?text=Client+Logo+1" alt="Client Logo 1 Placeholder" loading="lazy">
+                    <img src="https://via.placeholder.com/130x50.png?text=Client+Logo+2" alt="Client Logo 2 Placeholder" loading="lazy">
+                    <img src="https://via.placeholder.com/160x70.png?text=Client+Logo+3" alt="Client Logo 3 Placeholder" loading="lazy">
+                    <img src="https://via.placeholder.com/140x55.png?text=Client+Logo+4" alt="Client Logo 4 Placeholder" loading="lazy">
+                     <img src="https://via.placeholder.com/155x65.png?text=Client+Logo+5" alt="Client Logo 5 Placeholder" loading="lazy">
                 </div>
             </div>
         </div>
@@ -103,7 +104,7 @@
             <h2>Ready to Elevate Your Business?</h2>
             <p class="section-description">Request a free, no-obligation consultation to explore how ROFILID's digital solutions can drive growth for your company.</p>
 
-            <form class="consultation-form" action="#" method="POST"> <!-- Update action attribute -->
+            <form class="consultation-form" action="#" method="POST">
                 <div class="form-grid">
                     <div>
                         <label for="consult-name">Your Name:</label>
@@ -134,7 +135,6 @@
         </div>
     </section>
 
-
   </main>
 
   <!-- Footer Section -->
@@ -158,35 +158,27 @@
                      <ul>
                         <li><a href="../index.html">Home</a></li>
                         <li><a href="personal.html">Personal Solutions</a></li>
-                        <li><a href="../index.html#contact">Contact Us</a></li> <!-- Link to contact on index -->
+                        <li><a href="../index.html#contact">Contact Us</a></li>
                     </ul>
                  </div>
             </div>
         </div>
         <!-- Standard Footer Content -->
         <div class="footer-content">
-            <div class="footer-left">
-            <div class="logo">
+             <div class="footer-left">
+              <div class="logo">
                 <a href="../index.html" aria-label="Rofilid Home">
-                <img src="../assets/images/rofilid-logo-white.svg" alt="Rofilid Logo" width="120" height="40" loading="lazy">
+                  <img src="../assets/images/rofilid-logo-white.svg" alt="Rofilid Logo" width="120" height="40" loading="lazy">
                 </a>
-            </div>
+              </div>
             </div>
             <div class="footer-right">
-            <div class="social-media">
-                 <a href="https://facebook.com/rofilid" aria-label="Facebook" class="social-link" target="_blank" rel="noopener noreferrer">
-                    <img src="../assets/images/facebook.png" alt="Facebook Icon" class="social-icon">
-                </a>
-                <a href="https://instagram.com/rofi.lid" aria-label="Instagram" class="social-link" target="_blank" rel="noopener noreferrer">
-                    <img src="../assets/images/instagram.png" alt="Instagram Icon" class="social-icon">
-                </a>
-                <a href="https://linkedin.com/company/rofilid" aria-label="LinkedIn" class="social-link" target="_blank" rel="noopener noreferrer">
-                    <img src="../assets/images/linkedin.png" alt="LinkedIn Icon" class="social-icon">
-                </a>
-                <a href="https://twitter.com/rofilid" aria-label="X (Formerly Twitter)" class="social-link" target="_blank" rel="noopener noreferrer">
-                    <img src="../assets/images/twitter.png" alt="Twitter Icon" class="social-icon">
-                </a>
-            </div>
+              <div class="social-media">
+                 <a href="https://facebook.com/rofilid" aria-label="Facebook" class="social-link" target="_blank" rel="noopener noreferrer"><img src="../assets/images/facebook.png" alt="Facebook Icon" class="social-icon"></a>
+                 <a href="https://instagram.com/rofi.lid" aria-label="Instagram" class="social-link" target="_blank" rel="noopener noreferrer"><img src="../assets/images/instagram.png" alt="Instagram Icon" class="social-icon"></a>
+                 <a href="https://linkedin.com/company/rofilid" aria-label="LinkedIn" class="social-link" target="_blank" rel="noopener noreferrer"><img src="../assets/images/linkedin.png" alt="LinkedIn Icon" class="social-icon"></a>
+                 <a href="https://twitter.com/rofilid" aria-label="X (Formerly Twitter)" class="social-link" target="_blank" rel="noopener noreferrer"><img src="../assets/images/twitter.png" alt="Twitter Icon" class="social-icon"></a>
+              </div>
             </div>
         </div>
         <div class="copyright">
@@ -195,74 +187,18 @@
     </div>
   </footer>
 
-  <!-- Scripts (Standard - Copied) -->
+  <!-- Scripts (Standard) -->
    <script>
     // --- START Standard Scripts (Menu, Scroll, Year) ---
     const menuToggle = document.querySelector('.mobile-menu-toggle');
     const primaryNav = document.querySelector('#primary-navigation');
-
-    if (menuToggle && primaryNav) {
-        menuToggle.addEventListener('click', () => {
-        const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-        menuToggle.setAttribute('aria-expanded', !isExpanded);
-        primaryNav.classList.toggle('active');
-        });
-    }
-
-    window.addEventListener('scroll', () => {
-      if (primaryNav && primaryNav.classList.contains('active')) {
-        primaryNav.classList.remove('active');
-        if(menuToggle) {
-            menuToggle.setAttribute('aria-expanded', 'false');
-        }
-      }
-    });
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        const targetId = this.getAttribute('href');
-        if (targetId && targetId !== '#' && document.querySelector(targetId)) {
-            e.preventDefault();
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                const headerOffset = document.querySelector('.site-header')?.offsetHeight || 80;
-                const elementPosition = targetElement.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-            }
-        }
-      });
-    });
-
-     document.querySelectorAll('a[href^="../index.html#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            const targetId = this.hash;
-            if (targetId) {
-                e.preventDefault();
-                sessionStorage.setItem('scrollToId', targetId);
-                window.location.href = this.getAttribute('href').split('#')[0];
-            }
-        });
-    });
-
-    if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith('index.html')) {
-        const targetId = sessionStorage.getItem('scrollToId');
-        if (targetId && document.querySelector(targetId)) {
-            const targetElement = document.querySelector(targetId);
-            setTimeout(() => {
-                const headerOffset = document.querySelector('.site-header')?.offsetHeight || 80;
-                const elementPosition = targetElement.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-                sessionStorage.removeItem('scrollToId');
-            }, 100);
-        }
-    }
-
+    if(menuToggle && primaryNav){ menuToggle.addEventListener('click', () => { const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true'; menuToggle.setAttribute('aria-expanded', !isExpanded); primaryNav.classList.toggle('active'); }); }
+    window.addEventListener('scroll', () => { if (primaryNav && primaryNav.classList.contains('active')) { primaryNav.classList.remove('active'); if(menuToggle) { menuToggle.setAttribute('aria-expanded', 'false'); } } });
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => { anchor.addEventListener('click', function(e) { const targetId = this.getAttribute('href'); if (targetId && targetId !== '#' && document.querySelector(targetId)) { e.preventDefault(); const targetElement = document.querySelector(targetId); if (targetElement) { const headerOffset = document.querySelector('.site-header')?.offsetHeight || 80; const elementPosition = targetElement.getBoundingClientRect().top; const offsetPosition = elementPosition + window.pageYOffset - headerOffset; window.scrollTo({ top: offsetPosition, behavior: "smooth" }); } } }); });
+    document.querySelectorAll('a[href^="../index.html#"]').forEach(anchor => { anchor.addEventListener('click', function(e) { const targetId = this.hash; if (targetId) { e.preventDefault(); sessionStorage.setItem('scrollToId', targetId); window.location.href = this.getAttribute('href').split('#')[0]; } }); });
+    if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith('index.html')) { const targetId = sessionStorage.getItem('scrollToId'); if (targetId && document.querySelector(targetId)) { const targetElement = document.querySelector(targetId); setTimeout(() => { const headerOffset = document.querySelector('.site-header')?.offsetHeight || 80; const elementPosition = targetElement.getBoundingClientRect().top; const offsetPosition = elementPosition + window.pageYOffset - headerOffset; window.scrollTo({ top: offsetPosition, behavior: 'smooth' }); sessionStorage.removeItem('scrollToId'); }, 100); } }
     const currentYearSpan = document.getElementById('current-year');
-    if(currentYearSpan){
-        currentYearSpan.textContent = new Date().getFullYear();
-    }
+    if(currentYearSpan){currentYearSpan.textContent = new Date().getFullYear();}
      // --- END Standard Scripts ---
   </script>
 </body>
