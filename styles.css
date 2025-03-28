@@ -208,7 +208,7 @@ ul { /* Remove default padding */
 
 /* === Index Page: Hero === */
 .hero-section {
-  background-image: linear-gradient(rgba(12, 52, 61, 0.7), rgba(12, 52, 61, 0.75)), url('../assets/images/hero-background.jpg'); /* Adjusted path */
+  background-image: linear-gradient(rgba(12, 52, 61, 0.7), rgba(12, 52, 61, 0.75)), url('assets/images/hero-background.jpg'); /* Adjusted path */
   background-size: cover; background-position: center; color: var(--color-secondary);
   padding-top: calc(var(--header-height) + var(--spacing-xxl)); padding-bottom: var(--spacing-xxl); padding-left: var(--spacing-md); padding-right: var(--spacing-md);
   text-align: center; min-height: 60vh; max-height: 700px; display: flex; align-items: center; justify-content: center;
