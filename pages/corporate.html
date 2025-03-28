@@ -3,88 +3,255 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Corporate Services - Rofilid</title>
+  <meta name="description" content="Rofilid - Corporate solutions for digital transformation, automation, web development, and branding.">
+  <title>Corporate Solutions - ROFILID</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <!-- Link to the main stylesheet -->
   <link rel="stylesheet" href="../styles.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <!-- Header Section -->
-  <header>
-    <div class="logo">
-      <a href="../index.html"><img src="../assets/images/logo.png" alt="Rofilid Logo"></a>
+  <!-- Header Section (Copied) -->
+  <header class="site-header">
+    <div class="container header-container">
+      <div class="logo">
+        <a href="../index.html" aria-label="Rofilid Home"> <!-- Adjusted path -->
+          <img src="../assets/images/rofilid-logo-white.svg" alt="Rofilid Logo" width="120" height="40" loading="eager"> <!-- Adjusted path -->
+        </a>
+      </div>
+      <nav aria-label="Main navigation">
+        <button class="mobile-menu-toggle" aria-expanded="false" aria-controls="primary-navigation">
+          <span class="sr-only">Menu</span>
+          <i class="fas fa-bars" aria-hidden="true"></i>
+        </button>
+        <ul id="primary-navigation" class="nav-list">
+          <li class="nav-item"><a href="../index.html" class="nav-link">Home</a></li> <!-- Adjusted path -->
+          <li class="nav-item"><a href="corporate.html" class="nav-link">Corporate</a></li>
+          <li class="nav-item"><a href="personal.html" class="nav-link">Personal</a></li>
+          <li class="nav-item"><a href="../index.html#services" class="nav-link">Services</a></li> <!-- Adjusted path -->
+        </ul>
+      </nav>
+      <a href="../index.html#services" class="connect-button" aria-label="Our Services">Our Services</a> <!-- Adjusted path -->
     </div>
-    <nav>
-      <ul>
-        <li><a href="corporate.html">Corporate</a></li>
-        <li><a href="personal.html">Personal</a></li>
-        <li><a href="../index.html#contact">Contact</a></li>
-      </ul>
-    </nav>
-    <button class="connect-button">Let's Connect</button>
   </header>
-  
-  <!-- Corporate Services Content with Image -->
-  <section id="content">
-    <h1>Corporate Services</h1>
-    <img src="../assets/images/corporate-services.jpg" alt="Corporate Services" class="content-image">
-    <p>Explore our comprehensive corporate solutions including Digital Transformation, Process Automation, Website Development, and Visual Branding. Contact us to elevate your business efficiency and brand presence.</p>
-  </section>
 
-              <form id="contact-form" method="POST" action="/submit-form" class="contact-form">
-                <div class="form-group">
-                    <label for="name">Full Name <span aria-hidden="true">*</span><span class="sr-only">(required)</span></label>
-                    <input type="text" id="name" name="name" required aria-required="true" autocomplete="name"> </div>
+  <main>
+    <!-- I. Overview Section -->
+    <section class="page-intro">
+      <div class="container">
+        <h1>Grow Your Business with ROFILID</h1>
+        <p class="subheadline">Leverage digital transformation to enhance efficiency, reach more customers, and increase profitability.</p>
+        <p>ROFILID empowers businesses in Nigeria and globally to thrive in the digital age. We offer expert guidance and tailored solutions in digital transformation, automation, web development, and visual branding to help you overcome challenges and achieve significant growth.</p>
+      </div>
+    </section>
 
-                <div class="form-group">
-                    <label for="contact-email">Email <span aria-hidden="true">*</span><span class="sr-only">(required)</span></label>
-                    <input type="email" id="contact-email" name="email" required aria-required="true" autocomplete="email"> </div>
+    <!-- II. Services Offered Section -->
+    <section id="corp-services" class="page-section">
+      <div class="container">
+        <h2>Our Corporate Expertise</h2>
+        <p>We provide strategic solutions designed to meet the unique needs of your business.</p>
 
-                <div class="form-group">
-                    <label for="region">City/Region <span aria-hidden="true">*</span><span class="sr-only">(required)</span></label>
-                    <input type="text" id="region" name="region" required aria-required="true" autocomplete="address-level2"> </div>
+        <div class="service-items">
+          <article class="service-item">
+            <i class="fas fa-cogs service-icon"></i> <!-- Example Icon -->
+            <h3>Digital Transformation</h3>
+            <p>Integrate digital technology across all areas of your business, fundamentally changing how you operate and deliver value. We help Nigerian businesses adopt solutions like mobile payments or e-commerce platforms to enhance reach and convenience.</p>
+          </article>
 
-                <div class="form-group">
-                    <label for="message">Message <span aria-hidden="true">*</span><span class="sr-only">(required)</span></label>
-                    <textarea id="message" name="message" required aria-required="true" rows="4"></textarea>
+          <article class="service-item">
+            <i class="fas fa-robot service-icon"></i> <!-- Example Icon -->
+            <h3>Digital Automation</h3>
+            <p>Automate repetitive tasks and workflows using specialized software and technology. Increase operational efficiency, reduce errors, and achieve significant cost savings in your business processes.</p>
+          </article>
+
+          <article class="service-item">
+             <i class="fas fa-laptop-code service-icon"></i> <!-- Example Icon -->
+            <h3>Website Development</h3>
+            <p>Establish a strong online presence with a professional, user-friendly, and mobile-optimized website. Our services cover design, development, secure hosting, and ongoing maintenance.</p>
+          </article>
+
+          <article class="service-item">
+            <i class="fas fa-paint-brush service-icon"></i> <!-- Example Icon -->
+            <h3>Visual Branding</h3>
+            <p>Create a consistent and impactful brand identity with professional logo design, comprehensive brand guidelines, and other visual assets tailored to resonate with your target market, including culturally relevant elements for Nigerian audiences.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- III. Case Studies / Testimonials (Placeholder) -->
+    <section id="case-studies" class="page-section bg-light">
+        <div class="container">
+            <h2>Success Stories</h2>
+            <p>See how we've helped businesses like yours achieve their goals. (Case studies and testimonials coming soon).</p>
+            <div class="placeholder-content" style="border: 1px dashed var(--color-accent); padding: 40px; text-align: center; margin-top: 15px; color: var(--color-text-light);">
+                [Client Logos / Testimonial Snippets Placeholder]
+            </div>
+        </div>
+    </section>
+
+    <!-- IV. Call to Action - Free Consultation Form -->
+    <section id="consultation" class="page-section">
+        <div class="container">
+            <h2>Request a Free Consultation</h2>
+            <p>Let's discuss how ROFILID can help your business grow. Fill out the form below, and we'll get back to you shortly.</p>
+
+            <form class="consultation-form" action="#" method="POST"> <!-- Update action attribute -->
+                <div class="form-grid">
+                    <div>
+                        <label for="consult-name">Your Name:</label>
+                        <input type="text" id="consult-name" name="name" required>
+                    </div>
+                    <div>
+                        <label for="consult-email">Your Email:</label>
+                        <input type="email" id="consult-email" name="email" required>
+                    </div>
+                    <div>
+                        <label for="consult-business">Business Name:</label>
+                        <input type="text" id="consult-business" name="business_name" required>
+                    </div>
+                    <div>
+                        <label for="consult-location">Business Location (Optional):</label>
+                        <input type="text" id="consult-location" name="location">
+                    </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="phone">Phone</label>
-                    <input type="tel" id="phone" name="phone" autocomplete="tel"> </div>
-
-                <button type="submit" class="submit-button">Send Message</button>
+                <div>
+                    <label for="consult-needs">How can we help? (Briefly describe your needs):</label>
+                    <textarea id="consult-needs" name="needs" rows="5" required></textarea>
+                </div>
+                <div class="form-footer">
+                     <p class="privacy-note">We respect your privacy. Your information will only be used to contact you regarding your consultation request.</p>
+                    <button type="submit" class="cta-button large">Submit Request</button>
+                </div>
             </form>
-  
-  <!-- Footer Section -->
-  <footer>
-    <div class="logo">
-      <img src="../assets/images/logo.png" alt="Rofilid Logo" style="height: 30px;">
-    </div>
-    <p>© 2023 Rofilid. All rights reserved.</p>
-    <div>
-        <nav class="footer-nav" aria-label="Footer Navigation">
-          <a href="#terms" class="footer-link">Terms of Service</a>
-          <a href="#privacy" class="footer-link">Privacy Policy</a>
-          <a href="#contact" class="footer-link">Contact</a>
-        </nav>
-    </div>
-    <p>Contact: info@rofilid.com</p>
-    <div class="social-media">
-      <a href="https://twitter.com/rofilid"><i class="fab fa-x"></i></a>
-      <a href="https://youtube.com/rofilid"><i class="fab fa-youtube"></i></a>
-      <a href="https://instagram.com/rofilid"><i class="fab fa-instagram"></i></a>
-      <a href="https://facebook.com/rofilid"><i class="fab fa-facebook"></i></a>
+        </div>
+    </section>
+
+
+  </main>
+
+  <!-- Footer Section (Copied) -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-left">
+          <div class="logo">
+            <a href="../index.html" aria-label="Rofilid Home"> <!-- Adjusted path -->
+              <img src="../assets/images/rofilid-logo-white.svg" alt="Rofilid Logo" width="120" height="40" loading="lazy"> <!-- Adjusted path -->
+            </a>
+          </div>
+        </div>
+        <div class="footer-right">
+          <div class="social-media">
+            <a href="https://facebook.com/rofilid" aria-label="Facebook" class="social-link" target="_blank" rel="noopener noreferrer">
+              <img src="../assets/images/facebook.png" alt="Facebook Icon" class="social-icon"> <!-- Adjusted path -->
+            </a>
+            <a href="https://instagram.com/rofi.lid" aria-label="Instagram" class="social-link" target="_blank" rel="noopener noreferrer">
+              <img src="../assets/images/instagram.png" alt="Instagram Icon" class="social-icon"> <!-- Adjusted path -->
+            </a>
+            <a href="https://linkedin.com/company/rofilid" aria-label="LinkedIn" class="social-link" target="_blank" rel="noopener noreferrer">
+              <img src="../assets/images/linkedin.png" alt="LinkedIn Icon" class="social-icon"> <!-- Adjusted path -->
+            </a>
+            <a href="https://twitter.com/rofilid" aria-label="X (Formerly Twitter)" class="social-link" target="_blank" rel="noopener noreferrer">
+              <img src="../assets/images/twitter.png" alt="Twitter Icon" class="social-icon"> <!-- Adjusted path -->
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="copyright">
+        <p>© <span id="current-year">2023</span> ROFILID Services Limited. All rights reserved.</p>
+      </div>
     </div>
   </footer>
 
-  <!-- JavaScript for smooth scrolling -->
+  <!-- Scripts (Copied) -->
   <script>
-    document.querySelectorAll('.connect-button').forEach(button => {
-      button.addEventListener('click', () => {
-        window.location.href = '../index.html#contact';
+    // Mobile Menu Toggle
+    const menuToggle = document.querySelector('.mobile-menu-toggle');
+    const primaryNav = document.querySelector('#primary-navigation');
+
+    if (menuToggle && primaryNav) { // Add null check
+        menuToggle.addEventListener('click', () => {
+        const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+        menuToggle.setAttribute('aria-expanded', !isExpanded);
+        primaryNav.classList.toggle('active');
+        });
+    }
+
+    // Auto-hide mobile menu on scroll
+    window.addEventListener('scroll', () => {
+      if (primaryNav && primaryNav.classList.contains('active')) { // Add null check
+        primaryNav.classList.remove('active');
+        if(menuToggle) { // Add null check
+            menuToggle.setAttribute('aria-expanded', 'false');
+        }
+      }
+    });
+
+    // Smooth Scroll for internal links (relative to current page)
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        // Only prevent default and scroll smoothly for valid internal links on THIS page
+        if (targetId && targetId !== '#' && document.querySelector(targetId)) {
+            e.preventDefault();
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                // Calculate scroll position considering fixed header height
+                const headerOffset = document.querySelector('.site-header')?.offsetHeight || 80; // Get header height or fallback
+                const elementPosition = targetElement.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: "smooth"
+                });
+            }
+        }
       });
     });
+
+     // Smooth scroll for links pointing to sections on the index page from other pages
+     document.querySelectorAll('a[href^="../index.html#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const targetId = this.hash; // Get the hash part (#services)
+            if (targetId) {
+                e.preventDefault(); // Prevent default jump
+                // Store target id and redirect
+                sessionStorage.setItem('scrollToId', targetId);
+                window.location.href = this.getAttribute('href').split('#')[0]; // Go to index.html
+            }
+        });
+    });
+
+    // On index.html load, check if we need to scroll (copied logic)
+    if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith('index.html')) {
+        const targetId = sessionStorage.getItem('scrollToId');
+        if (targetId && document.querySelector(targetId)) {
+            const targetElement = document.querySelector(targetId);
+             // Use timeout to allow page layout to settle
+            setTimeout(() => {
+                const headerOffset = document.querySelector('.site-header')?.offsetHeight || 80;
+                const elementPosition = targetElement.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+                sessionStorage.removeItem('scrollToId'); // Clean up
+            }, 100); // Adjust timeout if needed
+        }
+    }
+
+
+    // Update current year in copyright
+    const currentYearSpan = document.getElementById('current-year');
+    if(currentYearSpan){ // Add null check
+        currentYearSpan.textContent = new Date().getFullYear();
+    }
   </script>
 </body>
 </html>
