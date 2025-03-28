@@ -503,7 +503,7 @@ img {
 
   .social-media {
     justify-content: center;
-    margin-top: var(--spacing-md);
+    /*margin-top: var(--spacing-md);*/
   }
 }
 
@@ -624,7 +624,7 @@ img {
   }
 }
 
-@media (max-width: 480px) {
+/* @media (max-width: 480px) {
   .social-icon {
     width: 15px;
     height: 15px;
@@ -633,4 +633,4 @@ img {
     width: 15px;
     height: 15px;
   }
-}
+} */
