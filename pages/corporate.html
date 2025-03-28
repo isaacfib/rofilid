@@ -30,6 +30,31 @@
     <img src="../assets/images/corporate-services.jpg" alt="Corporate Services" class="content-image">
     <p>Explore our comprehensive corporate solutions including Digital Transformation, Process Automation, Website Development, and Visual Branding. Contact us to elevate your business efficiency and brand presence.</p>
   </section>
+
+              <form id="contact-form" method="POST" action="/submit-form" class="contact-form">
+                <div class="form-group">
+                    <label for="name">Full Name <span aria-hidden="true">*</span><span class="sr-only">(required)</span></label>
+                    <input type="text" id="name" name="name" required aria-required="true" autocomplete="name"> </div>
+
+                <div class="form-group">
+                    <label for="contact-email">Email <span aria-hidden="true">*</span><span class="sr-only">(required)</span></label>
+                    <input type="email" id="contact-email" name="email" required aria-required="true" autocomplete="email"> </div>
+
+                <div class="form-group">
+                    <label for="region">City/Region <span aria-hidden="true">*</span><span class="sr-only">(required)</span></label>
+                    <input type="text" id="region" name="region" required aria-required="true" autocomplete="address-level2"> </div>
+
+                <div class="form-group">
+                    <label for="message">Message <span aria-hidden="true">*</span><span class="sr-only">(required)</span></label>
+                    <textarea id="message" name="message" required aria-required="true" rows="4"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="tel" id="phone" name="phone" autocomplete="tel"> </div>
+
+                <button type="submit" class="submit-button">Send Message</button>
+            </form>
   
   <!-- Footer Section -->
   <footer>
