@@ -310,6 +310,36 @@ img {
   text-decoration: none;
 }
 
+/* === Additions for Clickable Service Icons === */
+
+/* Style the service icon link itself */
+.card > a:first-child {
+  text-decoration: none; /* Remove underline from the icon link */
+  display: inline-block; /* Allows hover transforms and ensures proper layout */
+  line-height: 0;        /* Prevents potential extra space caused by line height */
+  border-radius: 5px;    /* Optional: Add border-radius for focus outline */
+}
+
+/* Optional: Add hover/focus effects specifically to the icon link */
+.card > a:first-child:hover {
+  opacity: 0.8; /* Example: Make icon slightly transparent on hover */
+  transition: opacity var(--transition-standard);
+}
+
+/* Optional: Add a subtle focus style for accessibility */
+.card > a:first-child:focus {
+  outline: 2px solid var(--color-primary-light);
+  outline-offset: 2px;
+}
+
+/*
+   Note: The existing '.card img' rule already handles the image size (64x64)
+   and the margin (0 auto var(--spacing-md)).
+   'margin: 0 auto' on the img should still center it correctly within
+   the 'inline-block' <a> tag because the parent '.card' has 'text-align: center'.
+   The 'margin-bottom: var(--spacing-md)' on the img provides the space below it.
+*/
+/* ============================================= */
 /* CTA Mid Section */
 .cta-section {
   background-color: var(--color-primary);
