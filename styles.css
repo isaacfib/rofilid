@@ -416,6 +416,7 @@ img {
   align-items: flex-start;
   gap: var(--spacing-md);
   margin-bottom: var(--spacing-md);
+  justify-content: space-between;
 }
 
 .footer-left {
