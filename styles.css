@@ -746,3 +746,317 @@ img {
     height: 30px;
   }
 }
+
+/* === Styles for Generic Page Structure (Can be used on multiple pages) === */
+
+.page-intro {
+  padding: var(--spacing-xl) 0 var(--spacing-xxl); /* Add more bottom padding */
+  text-align: center;
+  background-color: var(--color-background); /* Light background for intro */
+}
+
+.page-intro h1 {
+  margin-bottom: var(--spacing-sm);
+  color: var(--color-primary);
+  font-size: 2.5rem; /* Slightly larger intro heading */
+  font-weight: var(--font-weight-bold);
+}
+
+.page-intro .subheadline {
+  font-size: 1.25rem; /* Slightly larger subheadline */
+  color: var(--color-text-light);
+  margin-bottom: var(--spacing-md);
+  max-width: 700px; /* Constrain width */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.page-intro p:not(.subheadline) {
+  max-width: 800px; /* Constrain width of main paragraph */
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--color-text);
+}
+
+.page-section {
+  padding: var(--spacing-xxl) 0;
+}
+
+.page-section h2 {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+  font-size: 2.2rem;
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+}
+
+.page-section h3 {
+  margin-top: 0; /* Remove top margin if inside an item */
+  margin-bottom: var(--spacing-sm);
+  color: var(--color-primary-dark);
+  font-size: 1.4rem;
+  font-weight: var(--font-weight-medium);
+}
+
+.page-section > .container > p { /* Target direct paragraph children for intro text */
+  text-align: center;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: var(--spacing-xl); /* Add space below section intro */
+  color: var(--color-text-light);
+}
+
+
+.bg-light {
+  background-color: var(--color-background);
+}
+.bg-dark { /* Example if needed */
+    background-color: var(--color-primary-dark);
+    color: var(--color-secondary);
+}
+.bg-dark h2, .bg-dark h3, .bg-dark p {
+    color: var(--color-secondary);
+}
+.bg-dark .cta-button { /* Adjust buttons on dark backgrounds */
+    background-color: var(--color-secondary);
+    color: var(--color-primary-dark);
+}
+.bg-dark .cta-button:hover {
+    background-color: var(--color-accent);
+}
+
+
+/* === Styles Specific to Personal Solutions Page Elements === */
+
+.motivational-quote {
+  text-align: center;
+  font-style: italic;
+  color: var(--color-primary); /* Use primary color */
+  margin: var(--spacing-xxl) auto; /* Space it out */
+  max-width: 650px;
+  font-size: 1.2rem;
+  font-weight: var(--font-weight-medium);
+  padding: 0 var(--spacing-md); /* Add padding for smaller screens */
+}
+
+.accent-green {
+  /* Define your brand's vibrant green */
+  /* Example: Using a generic green, replace with your actual hex code */
+  color: #28a745; /* Example Green - CHANGE THIS */
+  font-weight: var(--font-weight-bold); /* Make it stand out */
+}
+
+
+/* --- Resource Items --- */
+.resource-items {
+  display: grid;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-lg);
+}
+.resource-item {
+  background-color: var(--color-secondary);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  border: 1px solid var(--color-accent); /* Subtle border */
+}
+.resource-item ul {
+    list-style: disc; /* Use standard bullets */
+    margin-top: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+    padding-left: var(--spacing-lg); /* Indent list */
+    color: var(--color-text-light);
+}
+.resource-item li {
+    margin-bottom: var(--spacing-xs);
+}
+
+/* --- Tool Items --- */
+.tool-items {
+  display: grid;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-lg);
+}
+.tool-item {
+  background-color: var(--color-secondary);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  border: 1px solid var(--color-accent); /* Subtle border */
+}
+.tool-item ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+}
+.tool-item li {
+    margin-bottom: var(--spacing-xs);
+    font-weight: var(--font-weight-medium);
+}
+.quiz-button, .download-link, .standard-link, .tool-item .cta-button {
+  margin-top: var(--spacing-md); /* More space above buttons/links */
+  margin-right: var(--spacing-sm); /* Space between buttons/links */
+}
+.download-link {
+  display: inline-block;
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+.download-link:hover {
+    color: var(--color-primary-light);
+}
+/* Make buttons within tools slightly smaller */
+.tool-item .cta-button.small {
+  font-size: 0.9rem;
+  padding: var(--spacing-xs) var(--spacing-sm);
+}
+/* Style for disabled buttons */
+.tool-item button:disabled {
+    background-color: var(--color-accent);
+    color: var(--color-text-light);
+    cursor: not-allowed;
+    transform: none; /* Disable hover transform */
+}
+.calculator-placeholder { /* Style the placeholder */
+    border: 1px dashed var(--color-accent);
+    padding: var(--spacing-xl);
+    text-align: center;
+    margin-top: var(--spacing-md);
+    color: var(--color-text-light);
+    background-color: #fdfdfd;
+    border-radius: var(--border-radius);
+}
+
+/* --- Coaching Section --- */
+.coaching-item {
+  background-color: var(--color-secondary);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  border: 1px solid var(--color-accent);
+}
+.coaching-details .coaching-item { /* Specific margin for stacked items */
+    margin-bottom: var(--spacing-lg);
+}
+.coaching-details .coaching-item:last-child {
+    margin-bottom: 0; /* Remove margin from last item in details column */
+}
+.coaching-item ul {
+    list-style: disc;
+    margin-top: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+    padding-left: var(--spacing-lg);
+    color: var(--color-text-light);
+}
+.coaching-item li {
+    margin-bottom: var(--spacing-xs);
+}
+.coaching-request-form label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-primary-dark);
+}
+.coaching-request-form input[type="text"],
+.coaching-request-form input[type="email"],
+.coaching-request-form textarea {
+    display: block;
+    width: 100%;
+    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-sm);
+    border: 1px solid var(--color-accent);
+    border-radius: var(--border-radius);
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+.coaching-request-form textarea {
+    resize: vertical; /* Allow vertical resize only */
+}
+.coaching-request-form button {
+    display: block;
+    width: 100%; /* Make button full width */
+    margin-top: var(--spacing-sm);
+}
+.coaching-content { /* Add gap for grid layout */
+    display: grid; /* Keep grid for layout structure */
+    gap: var(--spacing-xl); /* Ensure gap applies */
+    margin-top: var(--spacing-lg);
+}
+
+.disclaimer {
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+  margin-top: var(--spacing-xl);
+  border-top: 1px solid var(--color-accent);
+  padding-top: var(--spacing-lg);
+  text-align: center;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* --- MMSBALLIOR Promo --- */
+.mmsballior-promo {
+  background-color: var(--color-primary-dark);
+  color: var(--color-secondary);
+  padding: var(--spacing-xl) var(--spacing-lg); /* More padding */
+  border-radius: var(--border-radius);
+  text-align: center;
+  margin-top: 0; /* Remove top margin if inside a section */
+}
+.mmsballior-promo h3 {
+  color: var(--color-secondary);
+  margin-bottom: var(--spacing-sm);
+  font-size: 1.8rem;
+}
+.mmsballior-promo p {
+  margin-bottom: var(--spacing-md);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.mmsballior-promo .cta-button {
+    background-color: var(--color-secondary);
+    color: var(--color-primary-dark);
+    margin-top: var(--spacing-sm);
+}
+.mmsballior-promo .cta-button:hover {
+    background-color: var(--color-accent);
+}
+
+/* --- Responsive Adjustments for Layouts --- */
+@media (min-width: 768px) {
+  .page-intro h1 { font-size: 2.8rem; }
+  .page-section h2 { font-size: 2.5rem; }
+
+  .tool-items {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+  .resource-items {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns for resources */
+  }
+  .coaching-content {
+    grid-template-columns: 2fr 1fr; /* Layout for coaching section */
+    align-items: start; /* Align items to the top */
+  }
+   .coaching-details .coaching-item {
+      margin-bottom: var(--spacing-lg); /* Keep space between stacked items */
+   }
+}
+
+@media (min-width: 992px) {
+   .page-intro h1 { font-size: 3rem; }
+   .resource-items {
+      grid-template-columns: repeat(3, 1fr); /* 3 columns on larger screens */
+    }
+}
+
+/* Ensure container padding is respected within sections */
+.page-section > .container {
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+}
+
