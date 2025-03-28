@@ -1060,3 +1060,156 @@ img {
     padding-right: var(--spacing-md);
 }
 
+
+
+/* === Styles Specific to Corporate Solutions Page Elements === */
+
+/* --- Service Items --- */
+.service-items {
+  display: grid;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-lg);
+  /* Default to 1 column, adjust in media queries */
+}
+
+.service-item {
+  background-color: var(--color-secondary);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  border: 1px solid var(--color-accent);
+  text-align: center; /* Center content within service item */
+}
+
+.service-item .service-icon {
+  font-size: 2.5rem; /* Adjust icon size */
+  color: var(--color-primary); /* Use primary color for icons */
+  margin-bottom: var(--spacing-md);
+  display: inline-block; /* Allows margin auto to work if needed, or just margin bottom */
+}
+
+.service-item h3 {
+  color: var(--color-primary-dark);
+  font-size: 1.4rem;
+  margin-top: 0;
+  margin-bottom: var(--spacing-sm);
+}
+
+.service-item p {
+  color: var(--color-text-light);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* --- Consultation Form --- */
+.consultation-form {
+    margin-top: var(--spacing-xl);
+    max-width: 800px; /* Limit form width */
+    margin-left: auto;
+    margin-right: auto;
+    background-color: var(--color-background); /* Light background for form area */
+    padding: var(--spacing-lg) var(--spacing-xl);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--color-accent);
+    box-shadow: var(--box-shadow);
+}
+
+.consultation-form .form-grid {
+    display: grid;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md); /* Space before the textarea */
+}
+
+.consultation-form label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-primary-dark);
+}
+
+.consultation-form input[type="text"],
+.consultation-form input[type="email"],
+.consultation-form textarea {
+    display: block;
+    width: 100%;
+    padding: var(--spacing-sm);
+    border: 1px solid var(--color-accent);
+    border-radius: var(--border-radius);
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+.consultation-form input:focus,
+.consultation-form textarea:focus {
+    outline: 1px solid var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+
+.consultation-form textarea {
+    resize: vertical;
+    min-height: 100px; /* Ensure decent height */
+    margin-bottom: var(--spacing-lg); /* Space below textarea */
+}
+
+.consultation-form .form-footer {
+    margin-top: var(--spacing-md);
+    display: flex;
+    flex-direction: column; /* Stack privacy note and button */
+    align-items: center; /* Center items */
+}
+
+.consultation-form .privacy-note {
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+}
+
+.consultation-form .cta-button.large { /* Style for larger submit button */
+    padding: var(--spacing-sm) var(--spacing-xl);
+    font-size: 1.1rem;
+    width: auto; /* Don't force full width */
+    min-width: 200px; /* Give it some min width */
+}
+
+/* --- Responsive Adjustments for Corporate Page --- */
+@media (min-width: 768px) {
+  .service-items {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on tablet */
+  }
+  .consultation-form .form-grid {
+      grid-template-columns: repeat(2, 1fr); /* 2 columns for form grid */
+  }
+   .consultation-form .form-footer {
+      flex-direction: row; /* Place note and button side-by-side */
+      justify-content: space-between; /* Space them out */
+      align-items: center;
+   }
+    .consultation-form .privacy-note {
+        text-align: left;
+        margin-bottom: 0; /* Remove bottom margin when side-by-side */
+        margin-right: var(--spacing-md); /* Add right margin */
+    }
+    .consultation-form .cta-button.large {
+        margin-top: 0; /* Remove top margin */
+    }
+
+}
+
+@media (min-width: 992px) {
+  .service-items {
+    grid-template-columns: repeat(4, 1fr); /* 4 columns on desktop */
+  }
+}
+
+/* Placeholder Style */
+.placeholder-content {
+    border: 1px dashed var(--color-accent);
+    padding: var(--spacing-xxl) var(--spacing-lg);
+    text-align: center;
+    margin-top: var(--spacing-lg);
+    color: var(--color-text-light);
+    background-color: #fdfdfd;
+    border-radius: var(--border-radius);
+}
