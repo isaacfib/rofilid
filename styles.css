@@ -215,7 +215,7 @@ ul { /* Remove default padding */
 }
 .hero-content { max-width: 850px; width: 100%; margin-left: auto; margin-right: auto; text-align: center; }
 .hero-section h1 { /* Specific styles for Index hero */
-  font-weight: var(--font-weight-black); font-size: clamp(2rem, 7vw, 3.5rem); margin-bottom: var(--spacing-xl);
+  font-weight: var(--font-weight-black); font-size: clamp(2rem, 6.5vw, 3rem); margin-bottom: var(--spacing-xl);
   line-height: 1.2; color: var(--color-secondary); text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
 }
 .hero-section .cta-button {
