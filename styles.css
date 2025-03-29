@@ -257,7 +257,7 @@ ul ul li {
 /* === Index Page: Specific Styles (Preserved from v1.0.0) === */
 /* These styles apply only when not overridden by a more specific page class */
 .hero-section { /* Index Hero */
-  background-image: linear-gradient(rgba(12, 52, 61, 0.7), rgba(12, 52, 61, 0.75)), url('assets/images/hero-background.jpg'); /* Corrected path */
+  background-image: linear-gradient(rgba(12, 52, 61, 0.7), rgba(12, 52, 61, 0.75)), url('assets/images/hero-background.webp'); /* Corrected path */
   background-size: cover; background-position: center; color: var(--color-secondary);
   /* Inherits .page-intro padding initially, can override if needed */
    min-height: 60vh; max-height: 700px; display: flex; align-items: center; justify-content: center;
