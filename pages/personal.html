@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="personal-page"> <!-- Added class for CSS scoping -->
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,16 +7,18 @@
   <title>Personal Financial Solutions - ROFILID</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../styles.css">
+  <!-- Updated Font: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css"> <!-- Links to the merged v1.0.1 CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <!-- Header Section -->
+  <!-- Header Section (Structure remains, styling potentially updated via CSS) -->
   <header class="site-header">
     <div class="container header-container">
       <div class="logo">
         <a href="../index.html" aria-label="Rofilid Home">
+          <!-- Logo source remains, but CSS filter will change color for personal page -->
           <img src="../assets/images/rofilid-logo-white.svg" alt="Rofilid Logo" width="120" height="40" loading="eager">
         </a>
       </div>
@@ -28,7 +30,7 @@
         <ul id="primary-navigation" class="nav-list">
           <li class="nav-item"><a href="../index.html" class="nav-link">Home</a></li>
           <li class="nav-item"><a href="corporate.html" class="nav-link">Corporate</a></li>
-          <li class="nav-item"><a href="personal.html" class="nav-link active-page">Personal</a></li>
+          <li class="nav-item"><a href="personal.html" class="nav-link active-page">Personal</a></li> <!-- Marked as active -->
           <li class="nav-item"><a href="../index.html#services" class="nav-link">Services</a></li>
         </ul>
       </nav>
@@ -37,162 +39,210 @@
   </header>
 
   <main>
-    <!-- I. Introduction Section -->
+    <!-- I. Introduction Section (Updated structure & styling) -->
     <section class="page-intro">
       <div class="container">
         <h1>Empower Yourself with Financial Knowledge</h1>
         <p class="subheadline">Take control of your finances and secure your future, wherever you are.</p>
         <p>Financial literacy is crucial for personal well-being. In Nigeria, less than 50% of adults grasp basic financial principles, and access to formal banking remains a challenge for many (only 40%). ROFILID provides accessible resources, interactive tools, and expert coaching designed to help individuals in Nigeria and around the world make informed financial decisions, manage money effectively, and achieve lasting financial security.</p>
+        
+        <!-- New Stats Grid -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <i class="fas fa-users"></i>
+            <h4>10,000+ Empowered</h4>
+            <p>Individuals gaining financial freedom</p>
+          </div>
+          <div class="stat-card">
+            <i class="fas fa-chart-line"></i>
+            <h4>85% Success Rate</h4>
+            <p>Of users achieving their financial goals</p>
+          </div>
+          <div class="stat-card"> <!-- Added third stat for balance -->
+             <i class="fas fa-graduation-cap"></i>
+             <h4>150+ Resources</h4>
+             <p>Courses, articles, and tools available</p>
+           </div>
+        </div>
       </div>
     </section>
 
-    <p class="motivational-quote">Your journey to <span class="accent-green">financial freedom</span> and clarity starts now.</p>
-
-    <!-- II. Personal Finance Resources (Literacy) -->
+    <!-- II. Personal Finance Resources (New Structure/Layout) -->
     <section id="personal-resources" class="page-section bg-light">
       <div class="container">
         <h2>Learn and Grow</h2>
         <p class="section-description">Access a wealth of educational materials designed to enhance your financial understanding.</p>
 
-        <div class="resource-items">
-          <article class="resource-item">
-            <img src="https://via.placeholder.com/300x200?text=Blog+Articles" alt="Blog Articles" class="resource-image">
-            <h3>Blog & Articles</h3>
-            <p>Explore articles on budgeting, saving, investing, Nigeria-specific topics like navigating high inflation, understanding local tax nuances, and universal financial principles.</p>
-            <p><em>(Full Blog Coming Soon)</em></p>
+        <div class="resource-grid">
+          <!-- Blog Card -->
+          <article class="resource-card">
+            <div class="card-image">
+              <img src="../assets/images/placeholder-blog.webp" alt="Illustration of someone reading blog articles" loading="lazy"> <!-- Updated Placeholder Path -->
+            </div>
+            <div class="card-content">
+              <h3><i class="fas fa-newspaper card-icon"></i> Blog & Articles</h3>
+              <p>Explore articles on budgeting, saving, investing, Nigeria-specific topics like navigating high inflation, understanding local tax nuances, and universal financial principles.</p>
+              <div class="card-cta">
+                <a href="#" class="btn">Explore Latest Posts <i class="fas fa-arrow-right btn-icon-right"></i></a>
+                 <p class="status-note"><em>(Full Blog Coming Soon)</em></p>
+              </div>
+            </div>
           </article>
 
-          <article class="resource-item">
-            <img src="https://via.placeholder.com/300x200?text=BasicPFC+Insights" alt="BasicPFC Insights" class="resource-image">
-            <h3>BasicPFC Insights</h3>
-            <p>Practical tips and core concepts from @basicpfc, presented in easy-to-understand formats directly on our site. Simplifying financial knowledge from social media.</p>
-            <p><em>(Integration Coming Soon)</em></p>
-          </article>
-
-          <article class="resource-item">
-            <h3>Why Financial Literacy Matters</h3>
-            <p>Understanding finance empowers you to:</p>
-            <ul>
-              <li>Make sound financial decisions</li>
-              <li>Avoid common scams and costly mistakes</li>
-              <li>Reduce financial stress and improve well-being</li>
-              <li>Prepare effectively for emergencies</li>
-              <li>Confidently pursue and achieve financial goals</li>
-            </ul>
-          </article>
-
-          <article class="resource-item">
-            <img src="https://via.placeholder.com/300x200?text=Productivity" alt="Productivity" class="resource-image">
-            <h3>Productivity Link</h3>
-            <p>For Employers: Employee financial stress directly impacts focus and productivity. Investing in your team's financial literacy benefits both the individual and the business bottom line.</p>
+          <!-- Social Integration Card -->
+          <article class="resource-card social-integration">
+            <div class="card-header">
+              <i class="fab fa-instagram"></i>
+              <h3>@basicpfc Highlights</h3>
+            </div>
+             <p class="card-description">Practical tips & core concepts presented in easy-to-understand formats. Simplifying finance from social media.</p>
+            <div class="social-carousel">
+              <!-- Example Social Post -->
+              <div class="social-post">
+                <img src="../assets/images/placeholder-social.webp" alt="Mockup of a social media post about finance" loading="lazy"> <!-- Updated Placeholder Path -->
+                <div class="post-caption">"Budgeting doesn't have to be boring! Try this visual trick... #FinanceTips #Budgeting"</div>
+                <div class="post-engagement">
+                  <span><i class="fas fa-heart"></i> 1.8K</span>
+                  <span><i class="fas fa-comment"></i> 97</span>
+                </div>
+              </div>
+              <!-- Add more .social-post divs here for a real carousel -->
+            </div>
+             <div class="card-cta">
+                <a href="#" class="btn btn-outline">Follow on Instagram <i class="fab fa-instagram btn-icon-right"></i></a>
+                 <p class="status-note"><em>(Live Feed Coming Soon)</em></p>
+              </div>
           </article>
         </div>
       </div>
     </section>
 
-    <p class="motivational-quote">Knowledge is power—master <span class="accent-green">your money</span>, master your life.</p>
-
-    <!-- III. Personal Finance Tools -->
+    <!-- III. Personal Finance Tools (New Structure/Layout for Templates) -->
     <section id="personal-tools" class="page-section">
       <div class="container">
         <h2>Tools for Success</h2>
-        <p class="section-description">Utilize our interactive tools and resources to gain personalized insights and manage your finances more effectively.</p>
+        <p class="section-description">Utilize our premium templates and upcoming interactive tools to gain personalized insights and manage your finances more effectively.</p>
 
-        <!-- Calculators & Templates Grid -->
-        <div class="tool-items">
-          <article class="tool-item">
-            <h3>Financial Calculators</h3>
-            <p>Plan and visualize your savings goals, understand the power of compound interest, and more. Defaults to NGN with options for other major currencies.</p>
-            <div class="calculator-placeholder">
-              <i class="fas fa-calculator" style="font-size: 2rem; margin-bottom: 10px; color: var(--color-primary);"></i><br>
-              Compound Interest Calculator & Savings Planner<br>
-              <em>(Interactive Calculators Coming Soon)</em>
+         <!-- Calculators Coming Soon -->
+        <div class="coming-soon-feature">
+          <i class="fas fa-calculator"></i>
+          <h3>Interactive Financial Calculators</h3>
+          <p>Plan savings, visualize compound interest, and more. NGN defaults with multi-currency options.</p>
+          <span class="status-tag">Coming Soon!</span>
+        </div>
+
+        <!-- Templates Grid -->
+        <h3 class="section-sub-title">Downloadable Templates</h3>
+        <div class="template-grid">
+          <article class="template-card">
+            <div class="template-preview">
+              <img src="../assets/images/placeholder-template1.webp" alt="Smart Budget System template preview" loading="lazy"> <!-- Updated Placeholder Path -->
+              <span class="price-tag">Free</span> <!-- Updated Price -->
+            </div>
+            <div class="template-details">
+              <h3>Basic Budget Spreadsheet</h3>
+              <div class="template-variants">
+                 <span class="variant tool-icon"><i class="fas fa-file-excel"></i> Excel</span>
+                 <span class="variant tool-icon"><i class="fas fa-sheet-plastic"></i> Sheets</span> <!-- Example: Google Sheets Icon -->
+              </div>
+              <p>A simple yet effective template to get started with tracking income and expenses.</p>
+              <div class="template-actions">
+                <a href="#" class="btn btn-outline"><i class="fas fa-download"></i> Download Now</a>
+              </div>
+               <p class="status-note"><em>(Link placeholder)</em></p>
             </div>
           </article>
 
-          <article class="tool-item">
-            <h3>Downloadable Templates</h3>
-            <p>Get started with practical spreadsheet templates for budgeting and expense tracking.</p>
-            <i class="fas fa-file-excel" style="font-size: 2rem; margin: 10px 0; color: #1D6F42;"></i>
-            <div>
-              <a href="#" class="download-link">Download Basic Budget (Free)</a>
+          <article class="template-card">
+            <div class="template-preview">
+              <img src="../assets/images/placeholder-template2.webp" alt="Standard Budget Template preview" loading="lazy"> <!-- Updated Placeholder Path -->
+              <span class="price-tag">Email Required</span> <!-- Updated Price -->
             </div>
-            <div>
-              <a href="#" class="cta-button small standard-link">Get Standard Template (Requires Email)</a>
+            <div class="template-details">
+              <h3>Standard Budget System</h3>
+               <div class="template-variants">
+                   <span class="variant active">Standard</span>
+                   <span class="variant">50/30/20</span>
+                   <span class="variant tool-icon"><i class="fas fa-file-excel"></i> Excel</span>
+              </div>
+              <p>Comprehensive budgeting with basic calculations and structured categories.</p>
+              <div class="template-actions">
+                <a href="#" class="btn"><i class="fas fa-envelope"></i> Get via Email</a>
+              </div>
+               <p class="status-note"><em>(Link placeholder)</em></p>
             </div>
-            <p style="font-size: 0.8rem; margin-top: 15px;"><em>(Template links placeholder)</em></p>
           </article>
-        </div>
 
-        <!-- Quizzes Section (Separated) -->
-        <div class="quiz-section-container">
-          <h3 style="text-align: center; margin-bottom: var(--spacing-lg); color: var(--color-primary);">Test Your Knowledge</h3>
-          <!-- Quiz 1 Container - JS will populate these -->
-          <div id="quiz1-container" class="quiz-container">
-            <h4>Basic Financial Literacy Quiz</h4>
-            <div id="quiz1-question" class="quiz-question"></div>
-            <div id="quiz1-options" class="quiz-options"></div>
-            <div id="quiz1-feedback" class="quiz-feedback"></div>
-            <button id="quiz1-next" class="cta-button small quiz-next-btn" style="display: none;">Next Question</button>
-            <div id="quiz1-results" class="quiz-results"></div>
-          </div>
-          <!-- Quiz 2 Container - JS will populate these -->
-          <div id="quiz2-container" class="quiz-container">
-            <h4>Debt Management Quiz</h4>
-            <div id="quiz2-question" class="quiz-question"></div>
-            <div id="quiz2-options" class="quiz-options"></div>
-            <div id="quiz2-feedback" class="quiz-feedback"></div>
-            <button id="quiz2-next" class="cta-button small quiz-next-btn" style="display: none;">Next Question</button>
-            <div id="quiz2-results" class="quiz-results"></div>
-          </div>
+          <article class="template-card"> <!-- Added third template card example -->
+             <div class="template-preview">
+               <img src="../assets/images/placeholder-template3.webp" alt="Net Worth Tracker preview" loading="lazy"> <!-- Updated Placeholder Path -->
+               <span class="price-tag"><i class="fas fa-crown"></i> Premium</span> <!-- Premium Indicator -->
+             </div>
+             <div class="template-details">
+               <h3>Advanced Net Worth Tracker</h3>
+               <div class="template-variants">
+                    <span class="variant tool-icon"><i class="fas fa-chart-pie"></i> Visuals</span>
+                    <span class="variant tool-icon"><i class="fas fa-file-excel"></i> Excel</span>
+               </div>
+               <p>Track assets, liabilities, and visualize your financial health over time.</p>
+               <div class="template-actions">
+                 <a href="#" class="btn btn-outline"><i class="fas fa-search"></i> Learn More</a>
+                 <a href="#" class="btn btn-primary"><i class="fas fa-shopping-cart"></i> Purchase</a>
+               </div>
+                <p class="status-note"><em>(Coming Soon)</em></p>
+             </div>
+           </article>
         </div>
+         <!-- Quiz Section Removed in v1.0.1 HTML Structure -->
       </div>
     </section>
 
-    <p class="motivational-quote">Invest in yourself. Effective financial management is a skill <span class="accent-green">you can learn</span>.</p>
-
-    <!-- IV. Personal Finance Coaching -->
+    <!-- IV. Personal Finance Coaching (Kept original structure, but within new design context) -->
     <section id="personal-coaching" class="page-section bg-light">
       <div class="container">
         <h2>Get Personalized Guidance</h2>
         <p class="section-description">Work one-on-one with our expert coaches to develop a customized financial plan and build lasting healthy habits.</p>
 
-        <div class="coaching-content">
-          <div class="coaching-details">
-            <div class="coaching-item">
-              <img src="https://via.placeholder.com/300x200?text=Financial+Coaching" alt="Financial Coaching" class="coaching-image">
-              <h3>What is Financial Coaching?</h3>
-              <p>It's an educational partnership focused on empowering you. We help you understand your finances, set clear goals, and develop skills for effective money management. Facing financial challenges doesn't mean you're "bad" with money—it often means guidance can help you use it as a tool for a better life.</p>
+        <!-- Original Coaching Content Structure preserved -->
+        <div class="coaching-content-wrapper"> <!-- Wrapper for potential future layout adjustments -->
+            <div class="coaching-intro-area">
+                <div class="coaching-item">
+                     <!-- Placeholder replaced by icon emphasis -->
+                     <h3><i class="fas fa-question-circle coaching-icon"></i>What is Financial Coaching?</h3>
+                     <p>It's an educational partnership focused on empowering you. We help you understand your finances, set clear goals, and develop skills for effective money management. Facing financial challenges doesn't mean you're "bad" with money—it often means guidance can help you use it as a tool for a better life.</p>
+                </div>
+                <div class="coaching-item">
+                     <h3><i class="fas fa-hands-helping coaching-icon"></i>How It Helps</h3>
+                    <p>Our coaches provide support with:</p>
+                    <ul>
+                        <li>Creating actionable debt management strategies</li>
+                        <li>Building realistic budgets and savings plans</li>
+                        <li>Navigating Nigerian financial complexities (inflation, multiple incomes)</li>
+                        <li>Improving financial habits for long-term success</li>
+                        <li>Gaining confidence and reducing financial stress</li>
+                    </ul>
+                </div>
             </div>
-            <div class="coaching-item">
-              <h3>How It Helps</h3>
-              <p>Our coaches provide support with:</p>
-              <ul>
-                <li>Creating actionable debt management strategies</li>
-                <li>Building realistic budgets and savings plans</li>
-                <li>Navigating Nigerian financial complexities (inflation, multiple incomes)</li>
-                <li>Improving financial habits for long-term success</li>
-                <li>Gaining confidence and reducing financial stress</li>
-              </ul>
+
+             <div class="coaching-item coaching-cta-area"> <!-- Renamed from 'coaching-form-container' for clarity -->
+                 <h3><i class="fas fa-calendar-alt coaching-icon"></i>Schedule a Consultation</h3>
+                 <p>Ready for personalized support? Fill out the form below, and we'll contact you to discuss how our coaching can help you achieve your financial goals.</p>
+                 <form class="coaching-request-form" action="#" method="POST">
+                     <div class="form-group">
+                         <label for="coach-name">Name:</label>
+                         <input type="text" id="coach-name" name="name" required placeholder="Your Full Name">
+                     </div>
+                     <div class="form-group">
+                         <label for="coach-email">Email:</label>
+                         <input type="email" id="coach-email" name="email" required placeholder="your.email@example.com">
+                     </div>
+                     <div class="form-group">
+                        <label for="coach-interest">What financial area are you most interested in improving?</label>
+                        <textarea id="coach-interest" name="interest" rows="4" placeholder="E.g., Budgeting, Saving, Debt, Investing Basics..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Request Coaching Info</button>
+                </form>
             </div>
-          </div>
-
-          <div class="coaching-item">
-            <h3>Schedule a Session</h3>
-            <p>Ready for personalized support? Fill out the form below, and we'll contact you to discuss how our coaching can help you achieve your financial goals.</p>
-            <form class="coaching-request-form" action="#" method="POST">
-              <label for="coach-name">Name:</label>
-              <input type="text" id="coach-name" name="name" required placeholder="Your Full Name">
-
-              <label for="coach-email">Email:</label>
-              <input type="email" id="coach-email" name="email" required placeholder="your.email@example.com">
-
-              <label for="coach-interest">What financial area are you most interested in improving?</label>
-              <textarea id="coach-interest" name="interest" rows="4" placeholder="E.g., Budgeting, Saving, Debt, Investing Basics..."></textarea>
-
-              <button type="submit" class="cta-button">Request Coaching Information</button>
-            </form>
-          </div>
         </div>
 
         <div class="disclaimer">
@@ -201,286 +251,158 @@
       </div>
     </section>
 
-    <!-- V. Link to MMSBALLIOR -->
-    <section class="page-section section-tight">
-      <div class="container">
-        <div class="mmsballior-promo">
-          <h3>MMSBALLIOR: Financial Education for Teens</h3>
-          <p>Empower the next generation with crucial money skills! MMSBALLIOR is our specialized program teaching teens essential finance concepts (Money Management, Saving, Budgeting, etc.) in an engaging way.</p>
-          <a href="#" class="cta-button">Discover MMSBALLIOR</a>
+    <!-- V. Link to MMSBALLIOR (Updated structure & visual) -->
+     <section class="page-section section-tight">
+        <div class="container">
+            <div class="mmsballior-promo">
+                <div class="promo-content">
+                    <h3><i class="fas fa-child"></i> MMSBALLIOR: Financial Education for Teens</h3>
+                    <p>Empower the next generation with crucial money skills! MMSBALLIOR is our specialized program teaching teens essential finance concepts (Money Management, Saving, Budgeting, etc.) in an engaging way.</p>
+                    <a href="#" class="btn">Discover MMSBALLIOR <i class="fas fa-arrow-right btn-icon-right"></i></a>
+                 </div>
+                 <div class="promo-visual">
+                    <img src="../assets/images/placeholder-mmsballior.webp" alt="Illustration representing MMSBALLIOR program for teens" loading="lazy"> <!-- Updated Placeholder Path -->
+                </div>
+            </div>
         </div>
-      </div>
-    </section>
+     </section>
+
   </main>
 
-  <!-- Footer Section -->
+  <!-- Footer Section (Structure remains, styling updated via CSS) -->
   <footer class="site-footer">
     <div class="container">
-      <!-- Page Specific Footer Links -->
-      <div class="page-footer-links">
-        <div class="container">
-          <div>
-            <h4>Personal Solutions</h4>
-            <ul>
-              <li><a href="#personal-resources">Resources</a></li>
-              <li><a href="#personal-tools">Tools</a></li>
-              <li><a href="#personal-coaching">Coaching</a></li>
-              <li><a href="#">MMSBALLIOR</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4>Quick Links</h4>
-            <ul>
-              <li><a href="../index.html">Home</a></li>
-              <li><a href="corporate.html">Corporate Solutions</a></li>
-              <li><a href="../index.html#contact">Contact Us</a></li>
-            </ul>
-          </div>
+        <!-- Page Specific Footer Links -->
+        <div class="page-footer-links">
+            <!-- Container structure needed for flex/grid -->
+             <div class="container"> <!-- Ensure inner container for layout -->
+                 <div>
+                     <h4>Personal Solutions</h4>
+                     <ul>
+                         <li><a href="#personal-resources">Resources</a></li>
+                         <li><a href="#personal-tools">Tools</a></li>
+                         <li><a href="#personal-coaching">Coaching</a></li>
+                         <li><a href="#">MMSBALLIOR</a></li> <!-- Assumes this links to a separate page or section -->
+                     </ul>
+                 </div>
+                  <div>
+                     <h4>Quick Links</h4>
+                      <ul>
+                         <li><a href="../index.html">Home</a></li>
+                         <li><a href="corporate.html">Corporate Solutions</a></li>
+                         <li><a href="../index.html#contact">Contact Us</a></li>
+                     </ul>
+                  </div>
+            </div>
         </div>
-      </div>
-      <!-- Standard Footer Content -->
-      <div class="footer-content">
-        <div class="footer-left">
-          <div class="logo">
-            <a href="../index.html" aria-label="Rofilid Home">
-              <img src="../assets/images/rofilid-logo-white.svg" alt="Rofilid Logo" width="120" height="40" loading="lazy">
-            </a>
-          </div>
+        <!-- Standard Footer Content -->
+        <div class="footer-content">
+             <div class="footer-left">
+              <div class="logo">
+                <a href="../index.html" aria-label="Rofilid Home">
+                  <img src="../assets/images/rofilid-logo-white.svg" alt="Rofilid Logo" width="120" height="40" loading="lazy">
+                </a>
+              </div>
+            </div>
+            <div class="footer-right">
+              <div class="social-media">
+                 <a href="https://facebook.com/rofilid" aria-label="Facebook" class="social-link" target="_blank" rel="noopener noreferrer"><img src="../assets/images/facebook.png" alt="Facebook Icon" class="social-icon"></a>
+                 <a href="https://instagram.com/rofi.lid" aria-label="Instagram" class="social-link" target="_blank" rel="noopener noreferrer"><img src="../assets/images/instagram.png" alt="Instagram Icon" class="social-icon"></a>
+                 <a href="https://linkedin.com/company/rofilid" aria-label="LinkedIn" class="social-link" target="_blank" rel="noopener noreferrer"><img src="../assets/images/linkedin.png" alt="LinkedIn Icon" class="social-icon"></a>
+                 <a href="https://twitter.com/rofilid" aria-label="X (Formerly Twitter)" class="social-link" target="_blank" rel="noopener noreferrer"><img src="../assets/images/twitter.png" alt="Twitter Icon" class="social-icon"></a>
+              </div>
+            </div>
         </div>
-        <div class="footer-right">
-          <div class="social-media">
-            <a href="https://facebook.com/rofilid" aria-label="Facebook" class="social-link" target="_blank" rel="noopener noreferrer"><img src="../assets/images/facebook.png" alt="Facebook Icon" class="social-icon"></a>
-            <a href="https://instagram.com/rofi.lid" aria-label="Instagram" class="social-link" target="_blank" rel="noopener noreferrer"><img src="../assets/images/instagram.png" alt="Instagram Icon" class="social-icon"></a>
-            <a href="https://linkedin.com/company/rofilid" aria-label="LinkedIn" class="social-link" target="_blank" rel="noopener noreferrer"><img src="../assets/images/linkedin.png" alt="LinkedIn Icon" class="social-icon"></a>
-            <a href="https://twitter.com/rofilid" aria-label="X (Formerly Twitter)" class="social-link" target="_blank" rel="noopener noreferrer"><img src="../assets/images/twitter.png" alt="Twitter Icon" class="social-icon"></a>
-          </div>
+        <div class="copyright">
+            <p>© <span id="current-year">2024</span> ROFILID Services Limited. All rights reserved.</p>
         </div>
-      </div>
-      <div class="copyright">
-        <p>© <span id="current-year">2024</span> ROFILID Services Limited. All rights reserved.</p>
-      </div>
     </div>
   </footer>
 
-  <!-- Scripts (Includes Quiz Logic) -->
+  <!-- Reference external JS, assumed to contain menu, scroll, year logic etc. -->
+  <!-- Old embedded scripts (Quiz, Menu etc.) are REMOVED -->
+  <script src="../main.js"></script> <!-- Assumed path to global JS -->
+   <!-- Add script to update year dynamically if not in main.js -->
   <script>
-    // --- START Quiz Functionality ---
-    const quizzes = {
-      quiz1: {
-        containerId: 'quiz1-container',
-        questionId: 'quiz1-question',
-        optionsId: 'quiz1-options',
-        feedbackId: 'quiz1-feedback',
-        nextBtnId: 'quiz1-next',
-        resultsId: 'quiz1-results',
-        currentQuestionIndex: 0,
-        score: 0,
-        questions: [
-          { question: "What is the primary purpose of a budget?", options: ["To track your expenses", "To plan how to spend your money", "To save for future goals", "All of the above"], correctAnswer: 3, explanation: "A budget helps track, plan spending, and save towards goals." },
-          { question: "Which of the following is a benefit of saving money?", options: ["Preparing for emergencies", "Funding education", "Buying a house", "All of the above"], correctAnswer: 3, explanation: "Saving is crucial for emergencies, major goals like education, and large purchases." },
-          { question: "What does the term 'interest rate' refer to?", options: ["The cost of borrowing money", "The return on investment", "Both a and b", "Neither a nor b"], correctAnswer: 2, explanation: "Interest is the cost of borrowing or the return earned on savings/investments." },
-          { question: "In Nigeria, what is the main currency used?", options: ["Dollar", "Euro", "Naira", "Pound"], correctAnswer: 2, explanation: "The official currency of Nigeria is the Naira (NGN)." },
-          { question: "Which is a common way to access financial services in Nigeria?", options: ["Mobile money", "Bank branches", "ATMs", "All of the above"], correctAnswer: 3, explanation: "Nigerians use various methods including mobile money, banks, and ATMs." }
-        ]
-      },
-      quiz2: {
-        containerId: 'quiz2-container',
-        questionId: 'quiz2-question',
-        optionsId: 'quiz2-options',
-        feedbackId: 'quiz2-feedback',
-        nextBtnId: 'quiz2-next',
-        resultsId: 'quiz2-results',
-        currentQuestionIndex: 0,
-        score: 0,
-        questions: [
-          { question: "What is a loan?", options: ["Money given that you don't pay back", "Money you borrow and must repay, usually with interest", "A gift from the bank", "None of the above"], correctAnswer: 1, explanation: "A loan is borrowed money that requires repayment, typically with interest." },
-          { question: "What happens if you don't repay a loan on time?", options: ["Nothing happens", "You might pay extra fees or higher interest", "Your credit score improves", "You get more loans easily"], correctAnswer: 1, explanation: "Late payments usually result in penalties like fees or increased interest." },
-          { question: "In Nigeria, what is a common loan type for small businesses?", options: ["Mortgage", "Microfinance loan", "Student loan", "Car loan"], correctAnswer: 1, explanation: "Microfinance loans are specifically designed to support small businesses in Nigeria." },
-          { question: "What is a credit score?", options: ["How much money you have", "A rating of creditworthiness based on credit history", "The amount of debt you have", "Your income level"], correctAnswer: 1, explanation: "A credit score reflects your history of managing debt and predicts future repayment likelihood." },
-          { question: "How can you improve chances of getting a loan in Nigeria?", options: ["Good credit history", "Providing collateral", "Steady income", "All of the above"], correctAnswer: 3, explanation: "Lenders consider credit history, collateral (security), and income stability." }
-        ]
-      }
-    };
-
-    function displayQuestion(quizId) {
-      const quiz = quizzes[quizId];
-      if (!quiz || !quiz.questions || quiz.questions.length === 0) return;
-      const q = quiz.questions[quiz.currentQuestionIndex];
-      if (!q) return;
-
-      const questionEl = document.getElementById(quiz.questionId);
-      const optionsEl = document.getElementById(quiz.optionsId);
-      const feedbackEl = document.getElementById(quiz.feedbackId);
-      const nextBtn = document.getElementById(quiz.nextBtnId);
-      const resultsEl = document.getElementById(quiz.resultsId);
-
-      if (!questionEl || !optionsEl || !feedbackEl || !nextBtn || !resultsEl) return;
-
-      questionEl.textContent = `Q${quiz.currentQuestionIndex + 1}: ${q.question}`;
-      optionsEl.innerHTML = '';
-      feedbackEl.classList.remove('show');
-      nextBtn.style.display = 'none';
-      resultsEl.classList.remove('show');
-
-      q.options.forEach((option, index) => {
-        const label = document.createElement('label');
-        const input = document.createElement('input');
-        const span = document.createElement('span');
-        input.type = 'radio';
-        input.name = quizId + '-options';
-        input.value = index;
-        input.onclick = () => showFeedback(quizId, index);
-        label.appendChild(input);
-        span.textContent = ` ${option}`;
-        label.appendChild(span);
-        optionsEl.appendChild(label);
-      });
-    }
-
-    function showFeedback(quizId, selectedIndex) {
-      const quiz = quizzes[quizId];
-      if (!quiz || !quiz.questions || !quiz.questions[quiz.currentQuestionIndex]) return;
-      const q = quiz.questions[quiz.currentQuestionIndex];
-      if (typeof selectedIndex === 'undefined') return;
-
-      const feedbackEl = document.getElementById(quiz.feedbackId);
-      const nextBtn = document.getElementById(quiz.nextBtnId);
-      const optionsEl = document.getElementById(quiz.optionsId);
-
-      if (!feedbackEl || !nextBtn || !optionsEl) return;
-
-      const isCorrect = selectedIndex === q.correctAnswer;
-      feedbackEl.innerHTML = `<p><strong><i class="fas fa-${isCorrect ? 'check-circle' : 'times-circle'}"></i> ${isCorrect ? 'Correct!' : 'Incorrect.'}</strong> ${q.explanation}</p>`;
-      feedbackEl.className = `quiz-feedback ${isCorrect ? 'correct' : 'incorrect'}`;
-      feedbackEl.classList.add('show');
-
-      if (isCorrect) {
-        quiz.score++;
-      }
-
-      optionsEl.querySelectorAll('input').forEach(input => input.disabled = true);
-      optionsEl.querySelectorAll('label').forEach((label) => {
-        label.style.cursor = 'default';
-      });
-
-      if (quiz.currentQuestionIndex < quiz.questions.length - 1) {
-        nextBtn.style.display = 'inline-block';
-      } else {
-        showResults(quizId);
-      }
-    }
-
-    function nextQuestion(quizId) {
-      const quiz = quizzes[quizId];
-      if (!quiz) return;
-      quiz.currentQuestionIndex++;
-      if (quiz.currentQuestionIndex < quiz.questions.length) {
-        displayQuestion(quizId);
-      }
-    }
-
-    function showResults(quizId) {
-      const quiz = quizzes[quizId];
-      if (!quiz) return;
-      const resultsEl = document.getElementById(quiz.resultsId);
-      const nextBtn = document.getElementById(quiz.nextBtnId);
-
-      if (!resultsEl || !nextBtn) return;
-
-      nextBtn.style.display = 'none';
-      resultsEl.textContent = `Quiz Complete! Your Score: ${quiz.score} out of ${quiz.questions.length}`;
-      resultsEl.classList.add('show');
-
-      if (!resultsEl.querySelector('.quiz-restart-btn')) {
-        const restartBtn = document.createElement('button');
-        restartBtn.textContent = 'Restart Quiz';
-        restartBtn.className = 'cta-button small quiz-restart-btn';
-        restartBtn.style.marginTop = '15px';
-        restartBtn.style.display = 'inline-block';
-        restartBtn.onclick = () => restartQuiz(quizId);
-        resultsEl.appendChild(restartBtn);
-      }
-    }
-
-    function restartQuiz(quizId) {
-      const quiz = quizzes[quizId];
-      if (!quiz) return;
-      quiz.currentQuestionIndex = 0;
-      quiz.score = 0;
-      const resultsEl = document.getElementById(quiz.resultsId);
-      if (resultsEl) {
-        resultsEl.classList.remove('show');
-        const restartBtn = resultsEl.querySelector('.quiz-restart-btn');
-        if (restartBtn) {
-          resultsEl.removeChild(restartBtn);
+      document.addEventListener('DOMContentLoaded', function() {
+        const currentYearSpan = document.getElementById('current-year');
+        if(currentYearSpan) {
+            currentYearSpan.textContent = new Date().getFullYear();
         }
-      }
-      displayQuestion(quizId);
-    }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      if (document.getElementById('quiz1-container')) { displayQuestion('quiz1'); }
-      if (document.getElementById('quiz2-container')) { displayQuestion('quiz2'); }
-    });
-    // --- END Quiz Functionality ---
+        // Add simple tab-like behavior for template variants if needed
+        const templateCards = document.querySelectorAll('.template-card');
+        templateCards.forEach(card => {
+            const variants = card.querySelectorAll('.template-variants .variant:not(.tool-icon)');
+            variants.forEach(variant => {
+                variant.addEventListener('click', () => {
+                    // Remove active class from siblings
+                    variants.forEach(v => v.classList.remove('active'));
+                    // Add active class to clicked variant
+                    variant.classList.add('active');
+                    // Future: Could update preview image or details based on selected variant
+                });
+            });
+        });
 
-    // --- START Standard Scripts (Menu, Scroll, Year) ---
-    const menuToggle = document.querySelector('.mobile-menu-toggle');
-    const primaryNav = document.querySelector('#primary-navigation');
-    if (menuToggle && primaryNav) {
-      menuToggle.addEventListener('click', () => {
-        const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-        menuToggle.setAttribute('aria-expanded', !isExpanded);
-        primaryNav.classList.toggle('active');
+        // Basic mobile menu toggle if not handled in main.js
+         const menuToggle = document.querySelector('.mobile-menu-toggle');
+         const primaryNav = document.querySelector('#primary-navigation');
+         if(menuToggle && primaryNav) {
+             menuToggle.addEventListener('click', () => {
+               const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+               menuToggle.setAttribute('aria-expanded', !isExpanded);
+               primaryNav.classList.toggle('active');
+            });
+         }
+        // Smooth scroll for internal links if not in main.js
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', function(e) {
+            const targetId = this.getAttribute('href');
+            if (targetId && targetId !== '#' && document.querySelector(targetId)) {
+                e.preventDefault();
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const headerOffset = document.querySelector('.site-header')?.offsetHeight || 80; // Use dynamic header height
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
+                    });
+                }
+            }
+           });
+        });
+         // Handle cross-page scroll for index page anchors
+          document.querySelectorAll('a[href^="../index.html#"]').forEach(anchor => {
+             anchor.addEventListener('click', function(e) {
+                 const targetId = this.hash;
+                 if (targetId) {
+                     e.preventDefault();
+                     sessionStorage.setItem('scrollToId', targetId); // Store target fragment
+                     window.location.href = this.getAttribute('href').split('#')[0]; // Navigate to index.html
+                 }
+             });
+         });
+
+         // Check if we need to scroll on page load (specifically for index.html)
+         if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith('index.html')) {
+             const targetId = sessionStorage.getItem('scrollToId');
+             if (targetId && document.querySelector(targetId)) {
+                 const targetElement = document.querySelector(targetId);
+                  // Use setTimeout to ensure page layout is complete
+                 setTimeout(() => {
+                      const headerOffset = document.querySelector('.site-header')?.offsetHeight || 80;
+                      const elementPosition = targetElement.getBoundingClientRect().top;
+                      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                      sessionStorage.removeItem('scrollToId'); // Clean up
+                 }, 100); // Small delay
+             }
+         }
       });
-    }
-    window.addEventListener('scroll', () => {
-      if (primaryNav && primaryNav.classList.contains('active')) {
-        primaryNav.classList.remove('active');
-        if (menuToggle) { menuToggle.setAttribute('aria-expanded', 'false'); }
-      }
-    });
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        const targetId = this.getAttribute('href');
-        if (targetId && targetId !== '#' && document.querySelector(targetId)) {
-          e.preventDefault();
-          const targetElement = document.querySelector(targetId);
-          if (targetElement) {
-            const headerOffset = document.querySelector('.site-header')?.offsetHeight || 80;
-            const elementPosition = targetElement.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-            window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-          }
-        }
-      });
-    });
-    document.querySelectorAll('a[href^="../index.html#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        const targetId = this.hash;
-        if (targetId) {
-          e.preventDefault();
-          sessionStorage.setItem('scrollToId', targetId);
-          window.location.href = this.getAttribute('href').split('#')[0];
-        }
-      });
-    });
-    if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith('index.html')) {
-      const targetId = sessionStorage.getItem('scrollToId');
-      if (targetId && document.querySelector(targetId)) {
-        const targetElement = document.querySelector(targetId);
-        setTimeout(() => {
-          const headerOffset = document.querySelector('.site-header')?.offsetHeight || 80;
-          const elementPosition = targetElement.getBoundingClientRect().top;
-          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-          window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-          sessionStorage.removeItem('scrollToId');
-        }, 100);
-      }
-    }
-    const currentYearSpan = document.getElementById('current-year');
-    if (currentYearSpan) { currentYearSpan.textContent = new Date().getFullYear(); }
-    // --- END Standard Scripts ---
   </script>
 </body>
-            </html>
+</html>
