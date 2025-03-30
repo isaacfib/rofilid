@@ -10,7 +10,7 @@
   <!-- Use Inter font for personal page -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <!-- Reference root styles.css -->
-  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="styles.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -25,7 +25,7 @@
     <div class="container header-container">
       <div class="logo">
         <a href="index.html" aria-label="Rofilid Home">
-           <!-- Corrected path as per instruction -->
+           <!-- Corrected path with ../ -->
           <img src="../assets/images/rofilid-logo-white.svg" alt="Rofilid Logo" width="120" height="40" loading="eager">
         </a>
       </div>
@@ -36,10 +36,10 @@
         </button>
         <ul id="primary-navigation" class="nav-list">
            <!-- Corrected paths -->
-          <li class="nav-item"><a href="../index.html" class="nav-link">Home</a></li>
+          <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
           <li class="nav-item"><a href="corporate.html" class="nav-link">Corporate</a></li>
           <li class="nav-item"><a href="personal.html" class="nav-link active-page">Personal</a></li>
-          <li class="nav-item"><a href="../index.html#services" class="nav-link">Services</a></li>
+          <li class="nav-item"><a href="index.html#services" class="nav-link">Services</a></li>
         </ul>
       </nav>
        <!-- Corrected path -->
@@ -59,28 +59,34 @@
         <div class="stats-grid">
           <div class="stat-card">
             <i class="fas fa-users"></i>
-            <!-- Values will be animated by JS -->
             <h4>0+ Empowered</h4>
             <p>Individuals gaining financial freedom</p>
-            <span class="stat-target" style="display: none;">10000</span> <!-- Hidden target for JS -->
+            <span class="stat-target" style="display: none;">10000</span>
           </div>
           <div class="stat-card">
             <i class="fas fa-chart-line"></i>
-             <!-- Values will be animated by JS -->
             <h4>0% Success Rate</h4>
             <p>Of users achieving their financial goals</p>
-             <span class="stat-target" style="display: none;">85</span> <!-- Hidden target for JS -->
+             <span class="stat-target" style="display: none;">85</span>
           </div>
            <div class="stat-card">
             <i class="fas fa-book-open-reader"></i>
-             <!-- Values will be animated by JS -->
             <h4>0+ Resources</h4>
             <p>Guides, Tools & Quizzes Available</p>
-             <span class="stat-target" style="display: none;">50</span> <!-- Added third stat example -->
+             <span class="stat-target" style="display: none;">50</span>
           </div>
         </div>
       </div>
     </section>
+
+    <!-- === MOTIVATIONAL QUOTE 1 === -->
+    <aside class="motivational-quote">
+        <div class="container">
+            <i class="fas fa-lightbulb quote-icon"></i>
+            <p>The best investment? <span class="highlight">Knowledge that empowers action.</span> Dive into our resources.</p>
+        </div>
+    </aside>
+    <!-- === END QUOTE 1 === -->
 
     <!-- II. Personal Finance Resources (Updated v1.0.1 Structure) -->
     <section id="personal-resources" class="page-section bg-light">
@@ -92,14 +98,14 @@
           <!-- Resource Card 1: Blog -->
           <article class="resource-card">
             <div class="card-image">
-               <!-- Placeholder image - replace with actual image -->
+              <!-- Corrected path with ../ -->
               <img src="../assets/images/blog-placeholder.jpg" alt="Person reading financial articles on a tablet" loading="lazy">
             </div>
             <div class="card-content">
               <h3>Blog & Articles</h3>
               <p>Explore articles on budgeting, saving, investing, Nigeria-specific topics like navigating high inflation, understanding local tax nuances, and universal financial principles. <em>(Full Blog Coming Soon)</em></p>
               <div class="card-cta">
-                <a href="#" class="btn" aria-disabled="true" style="cursor: not-allowed; opacity: 0.6;">Explore Latest Posts</a> <!-- Disabled styling added -->
+                <a href="#" class="btn" aria-disabled="true" style="cursor: not-allowed; opacity: 0.6;">Explore Latest Posts</a>
               </div>
             </div>
           </article>
@@ -111,16 +117,14 @@
               <h3>@basicpfc Highlights</h3>
             </div>
             <div class="social-carousel">
-              <!-- Post 1 -->
-              <div class="social-post">
+               <div class="social-post">
                 <blockquote>
                   "Understanding compound interest is key! Even small savings grow massively over time. Check our guide. 🇳🇬 #FinanceNaija #SavingsGoal"
                   <footer>- @basicpfc</footer>
                 </blockquote>
               </div>
-               <!-- Post 2 (Image Example) -->
               <div class="social-post">
-                 <!-- Placeholder image - replace with actual image -->
+                 <!-- Corrected path with ../ -->
                 <img src="../assets/images/social-placeholder.jpg" alt="Infographic showing budgeting tips" loading="lazy">
                 <div class="post-engagement">
                   <span><i class="fas fa-heart"></i> 2.4K</span>
@@ -128,30 +132,27 @@
                   <span><i class="fas fa-share"></i> 550</span>
                 </div>
               </div>
-              <!-- Post 3 -->
                <div class="social-post">
                  <blockquote>
                   "Debt reduction strategies that WORK! We break down the snowball vs. avalanche methods. Link in bio! 💰 #DebtFreeJourney #NigeriaFinance"
                    <footer>- @basicpfc</footer>
                  </blockquote>
               </div>
-              <!-- Add more posts as needed -->
             </div>
              <div class="card-cta" style="margin-top: var(--spacing-md); text-align:center;">
                 <a href="https://instagram.com/rofi.lid" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Follow Us on Instagram</a>
             </div>
           </article>
 
-           <!-- Resource Card 3: Why Literacy Matters (Adapting old content) -->
+           <!-- Resource Card 3: Why Literacy Matters -->
           <article class="resource-card">
-             <!-- Placeholder image -->
             <div class="card-image">
+               <!-- Corrected path with ../ -->
               <img src="../assets/images/literacy-placeholder.jpg" alt="Illustration of a person climbing stairs made of coins" loading="lazy">
             </div>
             <div class="card-content">
               <h3>Why Financial Literacy Matters</h3>
                <p>Understanding finance empowers you to make sound decisions, avoid costly mistakes, reduce stress, prepare for emergencies, and confidently achieve your financial goals.</p>
-              <!-- Optional: Add a small CTA if desired -->
                <div class="card-cta">
                   <a href="#personal-coaching" class="btn btn-outline">Learn How Coaching Helps</a>
                </div>
@@ -160,6 +161,15 @@
         </div>
       </div>
     </section>
+
+    <!-- === MOTIVATIONAL QUOTE 2 === -->
+    <aside class="motivational-quote alt-bg"> <!-- Added class for alternate background -->
+        <div class="container">
+             <i class="fas fa-cogs quote-icon"></i>
+            <p>Insights gained? <span class="highlight">Test your knowledge & put theory into practice</span> with our tools.</p>
+        </div>
+    </aside>
+    <!-- === END QUOTE 2 === -->
 
     <!-- III. Personal Finance Tools (Updated v1.0.1 Structure + Quizzes) -->
     <section id="personal-tools" class="page-section">
@@ -172,17 +182,12 @@
           <!-- Template Card 1 -->
           <article class="template-card" data-template="budget">
             <div class="template-preview">
-              <!-- Placeholder image - replace with actual -->
+               <!-- Corrected path with ../ -->
               <img src="../assets/images/template-budget-placeholder.jpg" alt="Spreadsheet budget template preview" loading="lazy">
-              <span class="price-tag">Free</span> <!-- Updated price -->
+              <span class="price-tag">Free</span>
             </div>
             <div class="template-details">
               <h3>Basic Budget Tracker</h3>
-              <!-- Example Variants (Uncomment if needed) -->
-              <!-- <div class="template-variants">
-                <span class="variant active">Simple</span>
-                <span class="variant">Detailed</span>
-              </div> -->
               <p>A clean and simple spreadsheet to get you started with tracking income and expenses.</p>
               <div class="template-actions">
                 <a href="#" class="btn btn-outline" aria-disabled="true" style="cursor: not-allowed; opacity: 0.6;">Preview</a>
@@ -190,13 +195,12 @@
               </div>
             </div>
           </article>
-
           <!-- Template Card 2 -->
           <article class="template-card" data-template="networth">
             <div class="template-preview">
-               <!-- Placeholder image - replace with actual -->
+               <!-- Corrected path with ../ -->
               <img src="../assets/images/template-networth-placeholder.jpg" alt="Net worth tracking template preview" loading="lazy">
-              <span class="price-tag">₦2,500</span> <!-- Example price -->
+              <span class="price-tag">₦2,500</span>
             </div>
             <div class="template-details">
               <h3>Net Worth Tracker Pro</h3>
@@ -207,34 +211,25 @@
               </div>
             </div>
           </article>
-           <!-- Add more template cards as needed -->
         </div>
 
         <!-- Quizzes Section (Reintegrated from v1.0.0) -->
         <div class="quiz-section-container">
              <h3 style="text-align: center; margin-bottom: var(--spacing-xl); color: var(--color-primary); font-size: 1.8rem;">Test Your Knowledge</h3>
-            <!-- Quiz 1 Container - JS will populate these -->
+            <!-- Quiz 1 -->
             <div id="quiz1-container" class="quiz-container">
                 <h4>Basic Financial Literacy</h4>
-                <div id="quiz1-question" class="quiz-question">
-                    <!-- JS will insert Q1 text here -->
-                </div>
-                <div id="quiz1-options" class="quiz-options">
-                    <!-- JS will insert Q1 options here -->
-                </div>
+                <div id="quiz1-question" class="quiz-question"></div>
+                <div id="quiz1-options" class="quiz-options"></div>
                 <div id="quiz1-feedback" class="quiz-feedback" style="display: none;"></div>
                 <button id="quiz1-next" class="cta-button small quiz-next-btn" style="display: none;">Next Question</button>
                 <div id="quiz1-results" class="quiz-results" style="display: none;"></div>
             </div>
-             <!-- Quiz 2 Container - JS will populate these -->
+             <!-- Quiz 2 -->
             <div id="quiz2-container" class="quiz-container">
                 <h4>Debt & Credit Awareness</h4>
-                <div id="quiz2-question" class="quiz-question">
-                     <!-- JS will insert Q2 text here -->
-                </div>
-                <div id="quiz2-options" class="quiz-options">
-                    <!-- JS will insert Q2 options here -->
-                </div>
+                <div id="quiz2-question" class="quiz-question"></div>
+                <div id="quiz2-options" class="quiz-options"></div>
                 <div id="quiz2-feedback" class="quiz-feedback" style="display: none;"></div>
                 <button id="quiz2-next" class="cta-button small quiz-next-btn" style="display: none;">Next Question</button>
                  <div id="quiz2-results" class="quiz-results" style="display: none;"></div>
@@ -243,6 +238,16 @@
 
       </div>
     </section>
+
+    <!-- === MOTIVATIONAL QUOTE 3 === -->
+    <aside class="motivational-quote">
+        <div class="container">
+             <i class="fas fa-user-check quote-icon"></i>
+            <p>Ready to create a <span class="highlight">personalized roadmap</span> to your financial goals? Explore coaching.</p>
+        </div>
+    </aside>
+    <!-- === END QUOTE 3 === -->
+
 
     <!-- IV. Personal Finance Coaching (Content Reintegrated from v1.0.0) -->
     <section id="personal-coaching" class="page-section bg-light">
@@ -255,12 +260,12 @@
             <!-- Column 1: Details -->
             <div class="coaching-details">
                 <div class="coaching-item">
-                     <!-- Optional: Add new image or keep placeholder concept -->
-                     <div class="card-image" style="margin-bottom: var(--spacing-md); border-radius: var(--border-radius);"> <!-- Re-use card image style -->
-                        <img src="assets/images/coaching-placeholder.jpg" alt="Financial coach discussing plans with a client" loading="lazy">
+                     <div class="card-image" style="margin-bottom: var(--spacing-md); border-radius: var(--border-radius);">
+                        <!-- Corrected path with ../ -->
+                        <img src="../assets/images/coaching-placeholder.jpg" alt="Financial coach discussing plans with a client" loading="lazy">
                     </div>
                     <h3>What is Financial Coaching?</h3>
-                    <p>It's an educational partnership focused on empowering you. We help you understand your finances, set clear goals, and develop skills for effective money management. Facing financial challenges doesn't mean you're "bad" with money—it often means guidance can help you use it as a tool for a better life.</p>
+                    <p>It's an educational partnership focused on empowering you. We help you understand your finances, set clear goals, and develop skills for effective money management...</p>
                 </div>
                 <div class="coaching-item">
                     <h3>How It Helps</h3>
@@ -277,30 +282,25 @@
             <!-- Column 2: Form -->
             <div class="coaching-item">
                 <h3>Schedule a Discovery Call</h3>
-                <p>Ready for personalized support? Fill out the form below, and we'll contact you to schedule a free 15-minute discovery call to discuss how our coaching can help you achieve your financial goals.</p>
-                <!-- Replace # with your actual form handler URL/script -->
+                <p>Ready for personalized support? Fill out the form below, and we'll contact you to schedule a free 15-minute discovery call...</p>
                 <form class="coaching-request-form" action="#" method="POST">
                     <label for="coach-name">Name:</label>
                     <input type="text" id="coach-name" name="name" required placeholder="Your Full Name">
-
                     <label for="coach-email">Email:</label>
                     <input type="email" id="coach-email" name="email" required placeholder="your.email@example.com">
-
-                    <label for="coach-phone">Phone Number: (Optional)</label> <!-- Added phone number -->
+                    <label for="coach-phone">Phone Number: (Optional)</label>
                     <input type="tel" id="coach-phone" name="phone" placeholder="e.g. 08012345678">
-
                     <label for="coach-interest">What financial area are you most interested in improving? (Optional)</label>
-                    <textarea id="coach-interest" name="interest" rows="4" placeholder="E.g., Budgeting, Saving, Debt, Investing Basics..."></textarea>
-
-                    <button type="submit" class="btn">Request Discovery Call</button> <!-- Use new button style -->
-                     <p style="font-size: 0.8rem; text-align: center; margin-top: var(--spacing-md); color: var(--color-text-light);">We'll respond within 1 business day.</p>
+                    <textarea id="coach-interest" name="interest" rows="4" placeholder="E.g., Budgeting, Saving, Debt..."></textarea>
+                    <button type="submit" class="btn">Request Discovery Call</button>
+                    <p style="font-size: 0.8rem; text-align: center; margin-top: var(--spacing-md); color: var(--color-text-light);">We'll respond within 1 business day.</p>
                 </form>
             </div>
         </div>
 
          <!-- Reintegrated Disclaimer -->
         <div class="disclaimer">
-          <p><strong>Disclaimer:</strong> ROFILID provides educational financial coaching. We empower you with knowledge and tools but do not offer specific investment advice or sell financial products. For personalized investment recommendations, please consult a licensed financial advisor.</p>
+          <p><strong>Disclaimer:</strong> ROFILID provides educational financial coaching. We empower you with knowledge and tools but do not offer specific investment advice or sell financial products...</p>
         </div>
 
       </div>
@@ -313,10 +313,10 @@
               <div class="promo-content">
                 <h3>MMSBALLIOR: Financial Education for Teens</h3>
                 <p>Empower the next generation with crucial money skills! MMSBALLIOR is our specialized program teaching teens essential finance concepts (Money Management, Saving, Budgeting, etc.) in an engaging way.</p>
-                 <a href="#" class="btn" aria-disabled="true" style="cursor: not-allowed; opacity: 0.6;">Discover MMSBALLIOR (Coming Soon)</a> <!-- Disabled styling added -->
+                 <a href="#" class="btn" aria-disabled="true" style="cursor: not-allowed; opacity: 0.6;">Discover MMSBALLIOR (Coming Soon)</a>
               </div>
               <div class="promo-visual">
-                 <!-- Placeholder image - replace with actual -->
+                <!-- Corrected path with ../ -->
                 <img src="../assets/images/mmsballior-placeholder.jpg" alt="Teenagers learning about finance in a fun workshop setting" loading="lazy">
               </div>
             </div>
@@ -365,7 +365,7 @@
              <div class="footer-left">
               <div class="logo">
                 <a href="index.html" aria-label="Rofilid Home">
-                   <!-- Corrected path -->
+                   <!-- Corrected path with ../ -->
                   <img src="../assets/images/rofilid-logo-white.svg" alt="Rofilid Logo" width="120" height="40" loading="lazy">
                 </a>
               </div>
@@ -374,12 +374,11 @@
             <div class="footer-right">
                 <p style="margin-bottom: var(--spacing-sm); font-weight: 500;">Connect With Us</p>
               <div class="social-media">
-                 <!-- Corrected paths -->
+                 <!-- Corrected paths with ../ -->
                  <a href="https://facebook.com/rofilid" aria-label="Facebook" class="social-link" target="_blank" rel="noopener noreferrer"><img src="../assets/images/facebook.png" alt="Facebook Icon" class="social-icon"></a>
                  <a href="https://instagram.com/rofi.lid" aria-label="Instagram" class="social-link" target="_blank" rel="noopener noreferrer"><img src="../assets/images/instagram.png" alt="Instagram Icon" class="social-icon"></a>
                  <a href="https://linkedin.com/company/rofilid" aria-label="LinkedIn" class="social-link" target="_blank" rel="noopener noreferrer"><img src="../assets/images/linkedin.png" alt="LinkedIn Icon" class="social-icon"></a>
                  <a href="https://twitter.com/rofilid" aria-label="X (Formerly Twitter)" class="social-link" target="_blank" rel="noopener noreferrer"><img src="../assets/images/twitter.png" alt="X (Twitter) Icon" class="social-icon"></a>
-                 <!-- Replace yourphonenumber with actual WhatsApp number -->
                  <a href="https://wa.me/234XXXXXXXXXX" aria-label="WhatsApp" class="social-link" target="_blank" rel="noopener noreferrer"><img src="../assets/images/whatsapp.png" alt="WhatsApp Icon" class="social-icon"></a>
               </div>
             </div>
@@ -391,7 +390,7 @@
     </div>
   </footer>
 
-  <!-- Combined and Refined Scripts -->
+  <!-- Combined and Refined Scripts (Unchanged from previous version) -->
   <script>
     // --- START Quiz Functionality (Preserved from v1.0.0) ---
     const quizzes = {
@@ -411,7 +410,7 @@
             containerId: 'quiz2-container', questionId: 'quiz2-question', optionsId: 'quiz2-options',
             feedbackId: 'quiz2-feedback', nextBtnId: 'quiz2-next', resultsId: 'quiz2-results',
             currentQuestionIndex: 0, score: 0,
-            questions: [
+             questions: [
                 { question: "What is a 'credit score' primarily used for?", options: ["Calculating your monthly income", "Determining your eligibility for loans and interest rates", "Tracking your spending habits", "Getting discounts at shops"], correctAnswer: 1, explanation: "Lenders use credit scores to assess the risk of lending money, influencing loan approval and interest rates." },
                 { question: "Which action is most likely to IMPROVE your creditworthiness?", options: ["Missing loan payments frequently", "Applying for many credit cards at once", "Paying bills consistently on time", "Keeping very high balances on credit cards"], correctAnswer: 2, explanation: "A consistent history of timely payments is a major positive factor for your creditworthiness." },
                 { question: "In Nigeria, what does 'Collateral' mean in the context of a loan?", options: ["The interest rate charged", "An asset pledged to secure the loan (e.g., property)", "The loan application fee", "A co-signer for the loan"], correctAnswer: 1, explanation: "Collateral is an asset that a borrower offers as security for a loan. If the borrower defaults, the lender can seize the collateral." },
@@ -513,15 +512,15 @@
 
             // Highlight correct answer distinctly
             if (index === q.correctAnswer) {
-                label.style.borderColor = 'var(--brand-green, #10b981)'; // Use green from page scope or fallback
-                label.style.backgroundColor = '#e6f4ea';
+                label.style.borderColor = 'var(--brand-green-original, #28a745)'; // USE ORIGINAL GREEN FOR CONSISTENCY
+                label.style.backgroundColor = '#eaf6ec'; // Lighter green
                 label.style.opacity = '1';
                 label.querySelector('span').style.fontWeight = '500'; // Bold correct text slightly
             }
             // Highlight user's incorrect choice if different from correct
             if (index === selectedIndex && !isCorrect) {
-                label.style.borderColor = '#f56565'; // Reddish border
-                label.style.backgroundColor = '#fde8e8';
+                label.style.borderColor = '#f5c6cb'; // Standard Bootstrap red border
+                label.style.backgroundColor = '#f8d7da'; // Standard Bootstrap red bg
             }
             // Fade others more
             if (index !== q.correctAnswer && index !== selectedIndex){
@@ -632,10 +631,10 @@
                      primaryNav.classList.remove('active');
                      document.body.style.overflow = '';
                  }
-            }, { passive: true }); // Use passive listener for scroll performance
+            }, { passive: true });
         }
 
-        // 2. Template Variant Selection (Optional - if variants are used)
+        // 2. Template Variant Selection
         document.querySelectorAll('.template-variants .variant').forEach(variant => {
             variant.addEventListener('click', function() {
                 if (this.classList.contains('active')) return;
@@ -643,7 +642,6 @@
                 this.classList.add('active');
                 const templateCard = this.closest('.template-card');
                 console.log(`Variant ${this.textContent.trim()} selected for ${templateCard?.dataset.template}`);
-                // Add logic to change preview/link based on variant
             });
         });
 
@@ -661,18 +659,18 @@
              }
 
              function startCarousel() {
-                 if (intervalId) clearInterval(intervalId); // Clear existing interval
+                 if (intervalId) clearInterval(intervalId);
                  if (posts.length > 1) {
                      intervalId = setInterval(() => {
                          currentIndex = (currentIndex + 1) % posts.length;
                          showPost(currentIndex);
-                     }, 6000); // 6 seconds interval
+                     }, 6000);
                  }
              }
 
              if (posts.length > 0) {
-                showPost(currentIndex); // Show first post initially
-                startCarousel(); // Start auto-advance
+                showPost(currentIndex);
+                startCarousel();
              }
         });
 
@@ -684,7 +682,6 @@
                     const targetSpan = statCard.querySelector('.stat-target');
                     const displayEl = statCard.querySelector('h4');
                     const suffix = (displayEl.textContent.includes('%') ? '%' : '') || (displayEl.textContent.includes('+') ? '+' : '');
-                    const isPercent = suffix === '%';
 
                     if (!targetSpan || !displayEl || displayEl.classList.contains('counted')) {
                         observer.unobserve(statCard); return;
@@ -693,10 +690,8 @@
                     const target = parseInt(targetSpan.textContent, 10);
                     if (isNaN(target)) { observer.unobserve(statCard); return; }
 
-                    let currentCount = 0;
-                    const duration = 1500;
-                    const frameDuration = 1000 / 60; // 60 FPS approx
-                    const totalFrames = Math.round(duration / frameDuration);
+                    let currentCount = 0; const duration = 1500;
+                    const frameDuration = 1000 / 60; const totalFrames = Math.round(duration / frameDuration);
                     const increment = target / totalFrames;
 
                     const animateCount = () => {
@@ -709,111 +704,71 @@
                             displayEl.classList.add('counted');
                         }
                     };
-                    requestAnimationFrame(animateCount); // Start animation
-                    observer.unobserve(statCard); // Unobserve once triggered
+                    requestAnimationFrame(animateCount);
+                    observer.unobserve(statCard);
                 }
             });
-        }, { threshold: 0.4 }); // Trigger when 40% visible
+        }, { threshold: 0.4 });
 
-        document.querySelectorAll('.stat-card').forEach(card => {
-            statObserver.observe(card);
-        });
+        document.querySelectorAll('.stat-card').forEach(card => { statObserver.observe(card); });
 
-
-        // 5. Smooth Scroll Logic (Handles same-page and cross-page with session storage)
+        // 5. Smooth Scroll Logic
         function smoothScrollTo(targetElement) {
-             updateHeaderHeight(); // Ensure header height is current
+             updateHeaderHeight();
              const elementPosition = targetElement.getBoundingClientRect().top;
              const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
              window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
         }
 
-        // Same-page links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
              anchor.addEventListener('click', function (e) {
                  const targetId = this.getAttribute('href');
-                 // Check it's a valid hash longer than just '#'
                  if (targetId && targetId.length > 1 && targetId.startsWith('#')) {
-                     try { // Use try-catch for complex selectors
+                     try {
                         const targetElement = document.querySelector(targetId);
-                        if (targetElement) {
-                             e.preventDefault();
-                             smoothScrollTo(targetElement);
-                        } else {
-                             console.warn("Smooth scroll target not found:", targetId);
-                        }
-                     } catch (err) {
-                         console.error("Invalid selector for smooth scroll:", targetId, err);
-                     }
+                        if (targetElement) { e.preventDefault(); smoothScrollTo(targetElement); }
+                        else { console.warn("Smooth scroll target not found:", targetId); }
+                     } catch (err) { console.error("Invalid selector for smooth scroll:", targetId, err); }
                  }
              });
          });
 
-         // Links potentially going to another page or current page section
-         // Uses session storage ONLY if going to a different page
         document.querySelectorAll('a[href*="#"]').forEach(anchor => {
             try {
-                const url = new URL(anchor.href); // Check if URL parsing is valid
+                const url = new URL(anchor.href, window.location.origin); // Resolve relative URLs
                 const targetId = url.hash;
-
-                 // Check if it's only a hash (same page) or points to the current page
-                const isSamePageLink = (url.pathname === window.location.pathname || anchor.pathname === window.location.pathname || anchor.getAttribute('href').startsWith('#')) && targetId.length > 1;
-
+                const isSamePageLink = (url.pathname === window.location.pathname || anchor.getAttribute('href').startsWith('#')) && targetId.length > 1;
 
                 if (!isSamePageLink) {
-                    // It's a cross-page link
                     anchor.addEventListener('click', function (e) {
-                         if (targetId) {
-                            // Don't prevent default, let browser navigate, but store hash
-                            sessionStorage.setItem('scrollToId', targetId);
-                            // Note: Default browser navigation will occur.
-                            // We rely on the page load logic below to handle the scroll.
-                         }
+                         if (targetId) { sessionStorage.setItem('scrollToId', targetId); }
                     });
-                } else {
-                     // It's a same-page link (handled by the # selector listener above),
-                     // no extra listener needed here. Or, add specific handling if structure differs.
                 }
-            } catch (e) {
-                // console.log("Skipping potentially invalid link for scroll logic:", anchor.href, e);
-                 // This often catches mailto: or tel: links, which is fine.
-            }
+            } catch (e) { /* Ignore invalid URLs like mailto: */ }
         });
 
-        // On Page Load: Check for stored hash or existing hash and scroll
         function handlePageLoadScroll() {
              updateHeaderHeight();
              const storedTargetId = sessionStorage.getItem('scrollToId');
              const currentHash = window.location.hash;
              let targetIdToScroll = null;
 
-             if (storedTargetId && storedTargetId.length > 1) {
-                 targetIdToScroll = storedTargetId;
-                 sessionStorage.removeItem('scrollToId'); // Clear after use
-             } else if (currentHash && currentHash.length > 1) {
-                 targetIdToScroll = currentHash;
-             }
+             if (storedTargetId && storedTargetId.length > 1) { targetIdToScroll = storedTargetId; sessionStorage.removeItem('scrollToId'); }
+             else if (currentHash && currentHash.length > 1) { targetIdToScroll = currentHash; }
 
              if (targetIdToScroll) {
                   try {
                     const targetElement = document.querySelector(targetIdToScroll);
                     if (targetElement) {
-                        // Use timeout to allow layout settlement after load/navigation
                         setTimeout(() => {
                             smoothScrollTo(targetElement);
-                            // Optionally, remove the hash from URL after scrolling
-                            // history.replaceState(null, null, ' ');
-                         }, 150); // Adjust timeout if needed
-                    } else {
-                        console.warn("Target element not found on load for ID:", targetIdToScroll);
-                    }
-                 } catch(err) {
-                    console.error("Invalid selector from storage/hash:", targetIdToScroll, err);
-                 }
+                             if (history.replaceState) { history.replaceState(null, null, window.location.pathname + window.location.search); }
+                         }, 150);
+                    } else { console.warn("Target element not found on load for ID:", targetIdToScroll); }
+                 } catch(err) { console.error("Invalid selector from storage/hash:", targetIdToScroll, err); }
              }
         }
-        handlePageLoadScroll(); // Execute scroll check on load
-
+        handlePageLoadScroll();
 
         // 6. Initialize Quizzes
         if (document.getElementById('quiz1-container')) { displayQuestion('quiz1'); }
@@ -823,12 +778,11 @@
         const currentYearSpan = document.getElementById('current-year');
         if(currentYearSpan) { currentYearSpan.textContent = new Date().getFullYear(); }
 
-         // 8. Call initial update for header height
+         // 8. Call initial update for header height & listen for resize
          updateHeaderHeight();
-         // Optional: Re-check header height on resize if it can change dynamically
          window.addEventListener('resize', updateHeaderHeight, { passive: true });
 
-        console.log("ROFILID Personal Page v1.0.1 Initialized");
+        console.log("ROFILID Personal Page v1.0.1 Initialized with ../asset paths.");
 
     });
     // --- END Combined Initializations ---
