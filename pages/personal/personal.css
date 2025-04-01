@@ -1,0 +1,1083 @@
+/* ==========================================================================
+   ROFILID Personal & Quizzes Pages Styles
+   Description: Shared styles for personal.html and quizzes.html,
+                scoped via the '.personal-page' class on the <html> tag.
+                Includes theme variables, header/footer overrides, page layout,
+                cards, quotes, challenge components, and the quiz modal.
+   ========================================================================== */
+
+/* ======================================================================== */
+/* === START: Personal & Quizzes Page Specific Styles (.personal-page) === */
+/* ======================================================================== */
+
+.personal-page {
+  /* Theme Variables for these pages */
+  --color-primary-personal: var(--color-primary-original); /* #0c343d Teal */
+  --color-primary-light-personal: var(--color-primary-light-original); /* #1a4652 */
+  --color-primary-dark-personal: var(--color-primary-dark-original); /* #072329 */
+  --brand-green-personal: var(--brand-green-original); /* #28a745 Green */
+
+  --color-background: #f7fbfb;      /* Very light teal/cyan BG */
+  --color-accent: #e0f7fa;          /* Lighter Teal accent */
+  --color-text: #263238;            /* Dark Grey-Blue Text */
+  --color-text-light: #546e7a;       /* Medium Grey-Blue Text */
+  --border-radius: 8px;             /* Slightly rounder corners */
+  --box-shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -1px rgba(0, 0, 0, 0.05);
+  --box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+}
+
+/* Apply Inter font and specific BG/Text color */
+.personal-page body {
+    font-family: 'Inter', sans-serif;
+    background-color: #ffffff; /* Use white as base BG */
+    color: var(--color-text);
+}
+
+/* --- Header Overrides for Personal/Quizzes --- */
+.personal-page .site-header {
+    background: rgba(255, 255, 255, 0.98);
+    border-bottom: 1px solid #b2dfdb; /* Light Teal Border */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+/* Use Teal version of Logo - Requires teal logo image or filter */
+.personal-page .logo img {
+    /* If using a separate teal logo image: */
+    content: url(../../assets/images/common/rofilid-logo-teal.svg); /* Check path */
+    /* If using CSS filter on white logo (less ideal for specific color): */
+    /* filter: brightness(0) saturate(100%) invert(13%) sepia(17%) saturate(3694%) hue-rotate(154deg) brightness(94%) contrast(94%); */
+}
+/* Nav links use Teal */
+.personal-page .nav-link { color: var(--color-primary-personal); }
+.personal-page .nav-link:hover { color: var(--color-primary-dark-personal); opacity: 1; }
+.personal-page .nav-link:focus { outline-color: var(--color-primary-personal); }
+.personal-page .nav-list .nav-link.active-page { color: var(--color-primary-personal); border-bottom-color: var(--color-primary-personal); }
+.personal-page .nav-list .nav-link.active-page:hover { border-bottom-color: var(--color-primary-dark-personal); }
+.personal-page .mobile-menu-toggle { color: var(--color-primary-personal); } /* Teal Toggle */
+/* Mobile nav dropdown background */
+.personal-page #primary-navigation.active {
+    background-color: var(--color-secondary);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+.personal-page #primary-navigation.active .nav-link { color: var(--color-primary-personal); }
+.personal-page #primary-navigation.active .nav-link:hover { color: var(--color-primary-dark-personal); }
+.personal-page #primary-navigation.active .nav-link.active-page { border-bottom-color: var(--color-primary-personal); }
+/* Connect Button Use Teal */
+.personal-page .connect-button {
+    background-color: var(--color-primary-personal);
+    color: var(--color-secondary);
+    border: none;
+}
+.personal-page .connect-button:hover { background-color: var(--color-primary-light-personal); }
+
+/* --- Page Intro Overrides (Common to Personal & Quizzes) --- */
+.personal-page .page-intro {
+    /* padding uses global --header-height which should be updated by JS */
+    padding-top: calc(var(--header-height, 70px) + var(--spacing-xl));
+    padding-bottom: var(--spacing-xl); /* Reduced bottom padding */
+    background: linear-gradient(145deg, #ffffff 0%, #eefcff 100%); /* Even lighter gradient */
+    color: var(--color-text);
+    border-bottom: none;
+    text-align: center; /* Ensure centered */
+}
+.personal-page .page-intro h1 {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(2.2rem, 6vw, 3.2rem); /* Adjusted size */
+    font-weight: 700;
+    color: var(--color-primary-personal); /* Teal Heading */
+    line-height: 1.2;
+    text-shadow: none;
+    margin-bottom: var(--spacing-md);
+}
+.personal-page .page-intro .subheadline {
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    color: var(--color-text-light);
+    max-width: 800px;
+    margin: 0 auto var(--spacing-lg) auto;
+}
+.personal-page .page-intro p:not(.subheadline) {
+    color: var(--color-text-light);
+    max-width: 850px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+/* Style for quiz page intro's 'Back' link */
+.personal-page .quiz-page-intro p { margin-top: var(--spacing-lg); }
+/* Back/Inline link styles */
+.personal-page .link-back, .personal-page .link-inline {
+    color: var(--color-primary-personal);
+    text-decoration: underline;
+    font-weight: 500;
+}
+.personal-page .link-back:hover, .personal-page .link-inline:hover {
+    color: var(--color-primary-dark-personal);
+}
+.personal-page .link-back i { margin-right: 5px;}
+
+/* --- Section Titles (Personal/Quiz Override) --- */
+.personal-page .section-title {
+    color: var(--color-primary-personal); /* Teal title */
+}
+.personal-page .section-title::after {
+    background-color: var(--color-primary-personal); /* Teal underline */
+}
+
+/* --- Stats Grid Styling (Used on Personal) --- */
+.personal-page .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Adjust minmax */
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-xl);
+    margin-bottom: 0;
+}
+.personal-page .stat-card {
+    background: rgba(255, 255, 255, 0.9);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    text-align: center;
+    box-shadow: var(--box-shadow-light);
+    border: 1px solid var(--color-accent); /* Light Teal Border */
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+}
+.personal-page .stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow);
+}
+.personal-page .stat-card i {
+    font-size: 2rem;
+    color: var(--color-primary-personal); /* Teal Icon */
+    margin-bottom: var(--spacing-sm);
+    display: block;
+}
+.personal-page .stat-card h4 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-primary-dark-personal); /* Dark Teal */
+    margin-bottom: var(--spacing-xs);
+}
+.personal-page .stat-card p {
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+    line-height: 1.5;
+}
+
+/* --- Motivational Quote Styling (Used on Personal) --- */
+.personal-page .motivational-quote {
+    padding: var(--spacing-lg) 0; /* Reduced padding */
+    margin: var(--spacing-xl) 0;
+    background-color: #e8f5e9; /* Light Green */
+    border-top: 1px solid #c8e6c9;
+    border-bottom: 1px solid #c8e6c9;
+}
+.personal-page .motivational-quote .container {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    text-align: left;
+    max-width: 900px;
+}
+.personal-page .motivational-quote .quote-icon {
+    font-size: 1.8rem; /* Slightly smaller */
+    color: var(--brand-green-personal); /* Brand Green Icon */
+    flex-shrink: 0;
+    line-height: 1;
+    opacity: 0.9;
+}
+.personal-page .motivational-quote p {
+    font-size: clamp(1.05rem, 2.5vw, 1.25rem);
+    color: #1b5e20; /* Dark Green Text */
+    font-weight: 400;
+    line-height: 1.6;
+    font-style: normal;
+    margin: 0;
+}
+.personal-page .motivational-quote p .highlight {
+    font-weight: 600;
+    color: var(--brand-green-personal); /* Brand Green Highlight */
+    font-style: normal;
+}
+/* Alt quote style (Light Teal) */
+.personal-page .motivational-quote.alt-bg {
+    background-color: var(--color-accent); /* Light Teal */
+    border-top: 1px solid #b2ebf2;
+    border-bottom: 1px solid #b2ebf2;
+}
+.personal-page .motivational-quote.alt-bg p {
+    color: var(--color-primary-dark-personal); /* Dark Teal Text */
+}
+.personal-page .motivational-quote.alt-bg p .highlight {
+    color: #00796b; /* Medium Teal Highlight */
+}
+.personal-page .motivational-quote.alt-bg .quote-icon {
+    color: var(--color-primary-personal); /* Teal Icon */
+}
+
+/* --- Financial Fitness Challenge Styles (Common to Personal Intro & Full Quizzes) --- */
+.personal-page #financial-fitness-challenge-intro,
+.personal-page #full-financial-challenge { /* Section styles */
+   /* Use global .section-padding class for padding */
+   background-color: #fff; /* Ensure white BG if parent isn't */
+}
+.personal-page .challenge-theme {
+    margin-bottom: var(--spacing-xxl);
+}
+.personal-page .challenge-theme:last-child {
+    margin-bottom: var(--spacing-xl);
+}
+.personal-page .challenge-theme h3 {
+    font-size: clamp(1.4rem, 4vw, 1.7rem); /* Slightly smaller */
+    color: var(--color-primary-dark-personal);
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+    position: relative;
+    padding-bottom: var(--spacing-sm);
+}
+/* Green underline for theme titles */
+.personal-page .challenge-theme h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background-color: var(--brand-green-personal);
+    border-radius: 2px;
+}
+/* Grid for category cards */
+.personal-page .category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Adjusted minmax */
+    gap: var(--spacing-lg);
+}
+/* Category Card Styling */
+.personal-page .category-card {
+    background: var(--color-secondary);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow-light);
+    border: 1px solid var(--color-accent); /* Light teal border */
+    text-align: center;
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+.personal-page .category-card:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: var(--box-shadow);
+    border-color: var(--color-primary-light-personal);
+}
+.personal-page .category-card .category-icon {
+    font-size: 2.2rem; /* Adjusted size */
+    color: var(--color-primary-personal); /* Teal Icon */
+    margin-bottom: var(--spacing-md);
+    transition: transform 0.3s ease;
+}
+.personal-page .category-card:hover .category-icon {
+    transform: scale(1.1);
+}
+.personal-page .category-card h4 {
+    font-size: 1.15rem; /* Adjusted size */
+    color: var(--color-primary-dark-personal);
+    margin-bottom: var(--spacing-sm);
+    font-weight: 600;
+}
+.personal-page .category-card p {
+    font-size: 0.88rem; /* Adjusted size */
+    color: var(--color-text-light);
+    line-height: 1.5;
+    margin-bottom: var(--spacing-lg);
+    flex-grow: 1;
+    max-width: 95%;
+}
+.personal-page .category-card .start-quiz-btn {
+    /* Uses .btn base style below */
+    margin-top: auto;
+    width: 75%;
+    max-width: 180px;
+    font-size: 0.9rem; /* Smaller button */
+    padding: var(--spacing-xs) var(--spacing-md);
+}
+
+/* Link to Full Quiz Page Style (on personal.html) */
+.personal-page .full-challenge-link .btn.large { /* Target the specific large button */
+    /* Inherits .btn and .btn-outline styles */
+    padding: var(--spacing-md) var(--spacing-xl);
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+.personal-page .full-challenge-link .btn i {
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+.personal-page .full-challenge-link .btn:hover i {
+    transform: translateX(5px);
+}
+
+
+/* --- Personal Page Button Style (.btn base) --- */
+.personal-page .btn {
+    display: inline-block;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    background-color: var(--color-primary-personal); /* Teal */
+    color: var(--color-secondary);
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: var(--font-weight-medium);
+    transition: all 0.3s ease;
+    border: 1px solid var(--color-primary-personal);
+    cursor: pointer;
+    text-align: center;
+}
+.personal-page .btn:hover {
+    background-color: var(--color-primary-light-personal);
+    border-color: var(--color-primary-light-personal);
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow-light);
+}
+.personal-page .btn-outline {
+    background-color: transparent;
+    color: var(--color-primary-personal);
+    border: 1px solid var(--color-primary-personal);
+}
+.personal-page .btn-outline:hover {
+    background-color: rgba(12, 52, 61, 0.05); /* Very light teal hover */
+    color: var(--color-primary-dark-personal);
+    border-color: var(--color-primary-dark-personal);
+}
+/* Disabled States */
+.personal-page .btn:disabled,
+.personal-page .btn[aria-disabled="true"] {
+    background-color: #adb5bd;
+    border-color: #adb5bd;
+    color: #fff;
+    cursor: not-allowed;
+    opacity: 0.7;
+    transform: none;
+    box-shadow: none;
+}
+.personal-page .btn-outline:disabled,
+.personal-page .btn-outline[aria-disabled="true"] {
+    background-color: transparent;
+    border-color: #ced4da;
+    color: #6c757d;
+    cursor: not-allowed;
+    opacity: 0.7;
+    transform: none;
+    box-shadow: none;
+}
+
+
+/* --- Resources Section Styling (Personal Page) --- */
+.personal-page #personal-resources {
+     /* Uses .section-padding */
+    background-color: var(--color-background); /* Light BG */
+    padding-bottom: var(--spacing-xxl);
+}
+/* Section title already styled */
+.personal-page .resource-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Base */
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-xl);
+}
+.personal-page .resource-card {
+    background: var(--color-secondary);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow-light);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-accent); /* Light teal border */
+}
+.personal-page .resource-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow);
+}
+.personal-page .resource-card .card-image {
+    line-height: 0;
+    height: 200px;
+    overflow: hidden;
+    background-color: var(--color-accent);
+}
+.personal-page .resource-card .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.personal-page .resource-card .card-content {
+    padding: var(--spacing-lg);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+.personal-page .resource-card h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--color-primary-dark-personal);
+    margin-bottom: var(--spacing-sm);
+    margin-top: 0;
+}
+.personal-page .resource-card p {
+    font-size: 0.95rem;
+    color: var(--color-text-light);
+    line-height: 1.6;
+    margin-bottom: var(--spacing-lg);
+    flex-grow: 1;
+}
+.personal-page .resource-card .card-cta {
+    margin-top: auto;
+}
+/* Social Card Specifics */
+.personal-page .social-integration {
+    background: linear-gradient(135deg, #f0f9ff, #e0f2f7);
+    border: none;
+    padding: var(--spacing-lg);
+}
+.personal-page .social-integration .card-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+    color: var(--color-primary-dark-personal);
+}
+.personal-page .social-integration .card-header i {
+    font-size: 1.8rem;
+    color: #c13584; /* Instagram Pink/Purple */
+}
+.personal-page .social-integration .card-header h3 {
+    margin-bottom: 0;
+    font-size: 1.3rem;
+    color: inherit;
+}
+.personal-page .social-carousel {
+    overflow: hidden;
+    position: relative;
+    min-height: 150px; /* Adjust height */
+}
+.personal-page .social-post {
+    display: none;
+    animation: fadeIn 0.5s ease-in-out;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+.personal-page .social-post:first-child {
+    display: block;
+    position: relative;
+}
+.personal-page .social-post blockquote {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    font-style: italic;
+    color: var(--color-text);
+    margin: 0 0 var(--spacing-md) 0;
+    border-left: 4px solid var(--color-primary-personal);
+    position: relative;
+}
+.personal-page .social-post blockquote footer {
+    font-style: normal;
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-light);
+    font-size: 0.9em;
+    margin-top: var(--spacing-sm);
+    text-align: right;
+}
+.personal-page .social-post img {
+    border-radius: var(--border-radius);
+    margin-bottom: var(--spacing-sm);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    max-height: 120px;
+    object-fit: contain;
+}
+.personal-page .social-post .post-engagement {
+    display: flex;
+    gap: var(--spacing-md);
+    color: var(--color-text-light);
+    font-size: 0.9em;
+}
+.personal-page .social-post .post-engagement span i {
+    margin-right: 5px;
+    color: var(--color-primary-personal);
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* --- Tools Section (Templates only on Personal Page) --- */
+.personal-page #personal-tools {
+    /* Uses .section-padding */
+    background-color: #ffffff; /* White background */
+}
+/* Section title already styled */
+.personal-page .template-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-xl);
+    /* Bottom margin handled by section padding or next element */
+}
+.personal-page .template-card {
+    background: var(--color-secondary);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow-light);
+    border: 1px solid var(--color-accent); /* Light teal border */
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+.personal-page .template-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow);
+}
+.personal-page .template-preview {
+    position: relative;
+    line-height: 0;
+    height: 200px;
+    overflow: hidden;
+    background-color: var(--color-accent);
+}
+.personal-page .template-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.personal-page .price-tag {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    background: rgba(12, 52, 61, 0.9); /* Teal Tag */
+    color: var(--color-secondary);
+    padding: var(--spacing-xs) var(--spacing-md);
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.personal-page .template-details {
+    padding: var(--spacing-lg);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+.personal-page .template-details h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--color-primary-dark-personal);
+    margin-bottom: var(--spacing-sm);
+}
+.personal-page .template-details p {
+    font-size: 0.95rem;
+    color: var(--color-text-light);
+    line-height: 1.6;
+    flex-grow: 1;
+    margin-bottom: var(--spacing-lg);
+}
+.personal-page .template-actions {
+    margin-top: auto;
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+}
+.personal-page .template-actions .btn,
+.personal-page .template-actions .btn-outline {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 0.9rem; /* Smaller buttons */
+}
+
+/* --- Coaching Section Styling (Personal Page) --- */
+.personal-page #personal-coaching {
+     /* Uses .section-padding */
+    background-color: var(--color-background); /* Light BG */
+}
+/* Section title already styled */
+.personal-page .coaching-content {
+    display: grid;
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-xl);
+    grid-template-columns: 1fr; /* Base */
+}
+.personal-page .coaching-item {
+    background: var(--color-secondary);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow-light);
+    border: 1px solid var(--color-accent); /* Light teal border */
+}
+.personal-page .coaching-item h3 {
+    font-size: 1.4rem;
+    margin-bottom: var(--spacing-md);
+    color: var(--color-primary-dark-personal);
+    display: flex;
+    align-items: center;
+}
+/* Coaching Icons use Brand Green */
+.personal-page .coaching-item h3::before {
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: 1.1rem;
+    color: var(--brand-green-personal);
+    width: 20px;
+    text-align: center;
+    flex-shrink: 0;
+    margin-right: var(--spacing-sm);
+}
+/* Specific icons for coaching items */
+.personal-page .coaching-details .coaching-item:nth-child(1) h3::before { content: '\f05a'; } /* fa-info-circle */
+.personal-page .coaching-details .coaching-item:nth-child(2) h3::before { content: '\f5ad'; } /* fa-hands-helping */
+.personal-page .coaching-item:last-child h3::before { content: '\f073'; } /* fa-calendar-alt */
+
+.personal-page .coaching-item p,
+.personal-page .coaching-item ul {
+    font-size: 0.95rem;
+    color: var(--color-text-light);
+    line-height: 1.7;
+    margin-bottom: var(--spacing-md);
+}
+.personal-page .coaching-item ul {
+    list-style: none;
+    padding-left: 0;
+}
+.personal-page .coaching-item ul li {
+    position: relative;
+    padding-left: var(--spacing-lg);
+    margin-bottom: var(--spacing-sm);
+}
+.personal-page .coaching-item ul li::before {
+    content: '\f00c'; /* fa-check */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    position: absolute;
+    left: 0;
+    top: 4px;
+    color: var(--brand-green-personal); /* Green check */
+    font-size: 0.9em;
+}
+/* Coaching Request Form */
+.personal-page .coaching-request-form label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-primary-dark-personal);
+    font-size: 0.9rem;
+}
+.personal-page .coaching-request-form input,
+.personal-page .coaching-request-form textarea {
+    display: block;
+    width: 100%;
+    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid #cbd5e1; /* Adjusted border color */
+    border-radius: var(--border-radius);
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.5;
+    background-color: #fff;
+    transition: all 0.3s ease;
+    color: var(--color-text);
+}
+.personal-page .coaching-request-form input::placeholder,
+.personal-page .coaching-request-form textarea::placeholder {
+    color: #94a3b8;
+}
+.personal-page .coaching-request-form input:focus,
+.personal-page .coaching-request-form textarea:focus {
+    outline: none;
+    border-color: var(--color-primary-personal);
+    box-shadow: 0 0 0 3px rgba(12, 52, 61, 0.1);
+}
+.personal-page .coaching-request-form textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+.personal-page .coaching-request-form button {
+    /* Uses .btn base style */
+    display: block;
+    width: 100%;
+    margin-top: var(--spacing-sm);
+}
+/* Disclaimer */
+.personal-page .disclaimer {
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+    margin: var(--spacing-xl) auto 0;
+    border-top: 1px solid var(--color-accent);
+    padding-top: var(--spacing-lg);
+    text-align: center;
+    max-width: 800px;
+    line-height: 1.6;
+}
+.personal-page .disclaimer strong {
+    color: var(--color-text);
+}
+
+/* --- MMISBALIOR Promo Section --- */
+.personal-page .mmsballior-promo {
+    background: linear-gradient(135deg, var(--color-primary-personal), var(--color-primary-light-personal));
+    color: var(--color-secondary);
+    padding: var(--spacing-xl) var(--spacing-lg);
+    border-radius: var(--border-radius);
+    text-align: center;
+    box-shadow: var(--box-shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-lg);
+    overflow: hidden;
+}
+.personal-page .mmsballior-promo .promo-content {
+    max-width: 650px;
+}
+.personal-page .mmsballior-promo h3 {
+    color: var(--color-secondary);
+    margin-bottom: var(--spacing-md);
+    font-size: clamp(1.6rem, 4vw, 2rem);
+    font-weight: var(--font-weight-bold);
+    margin-top: 0;
+}
+.personal-page .mmsballior-promo p {
+    margin-bottom: var(--spacing-lg);
+    max-width: 600px;
+    margin: 0 auto var(--spacing-lg) auto;
+    color: rgba(255, 255, 255, 0.95);
+    line-height: 1.7;
+}
+.personal-page .mmsballior-promo .promo-visual {
+    line-height: 0;
+    width: 100%;
+    max-width: 450px;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    background-color: var(--color-accent);
+}
+.personal-page .mmsballior-promo .promo-visual img {
+    width: 100%;
+    height: auto;
+}
+.personal-page .mmsballior-promo .btn { /* Overrides base .btn */
+    background-color: var(--color-secondary);
+    color: var(--color-primary-dark-personal);
+    font-weight: var(--font-weight-bold);
+    padding: var(--spacing-sm) var(--spacing-xl);
+    margin-top: 0;
+    border: 1px solid transparent;
+}
+.personal-page .mmsballior-promo .btn:hover {
+    background-color: #f1f5f9;
+    color: var(--color-primary-dark-personal);
+    transform: translateY(-2px);
+}
+
+
+/* --- Quiz Modal Styles (Used by Personal & Quizzes pages) --- */
+.personal-page .quiz-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(38, 50, 56, 0.7); /* Use text color with alpha */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none; /* Hidden by default */
+    transition: opacity 0.3s ease-in-out;
+    padding: var(--spacing-md);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+/* Show when display:flex (triggered by JS) */
+.personal-page .quiz-modal-overlay[style*="display: flex"] {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.personal-page .quiz-modal-content {
+    background-color: #ffffff;
+    color: var(--color-text);
+    padding: var(--spacing-lg) var(--spacing-xl);
+    border-radius: var(--border-radius);
+    max-width: 650px; /* Slightly narrower */
+    width: 95%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    position: relative;
+    transform: scale(0.95);
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column; /* Added for better structure */
+}
+.personal-page .quiz-modal-overlay[style*="display: flex"] .quiz-modal-content {
+    transform: scale(1);
+}
+
+.personal-page .quiz-modal-close-btn {
+    position: absolute;
+    top: var(--spacing-sm);
+    right: var(--spacing-md);
+    background: transparent;
+    border: none;
+    font-size: 2rem;
+    color: var(--color-text-light);
+    cursor: pointer;
+    line-height: 1;
+    padding: 5px;
+}
+.personal-page .quiz-modal-close-btn:hover {
+    color: var(--color-primary-dark-personal);
+}
+
+.personal-page .quiz-modal-content h3#quiz-modal-title {
+    font-size: 1.5rem; /* Adjusted */
+    color: var(--color-primary-personal);
+    text-align: center;
+    margin: 0 auto var(--spacing-md) auto; /* Reduced bottom margin */
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--color-accent);
+    width: 100%;
+}
+
+.personal-page .quiz-modal-progress {
+    text-align: center;
+    font-size: 0.85rem; /* Smaller progress */
+    color: var(--color-text-light);
+    margin-bottom: var(--spacing-md);
+    background-color: var(--color-background);
+    padding: var(--spacing-xs) 0;
+    border-radius: 4px;
+}
+
+.personal-page .quiz-modal-question-area {
+    font-weight: 500;
+    margin-bottom: var(--spacing-lg);
+    color: var(--color-text);
+    font-size: 1.1rem; /* Adjusted */
+    line-height: 1.6;
+    padding: var(--spacing-sm) 0;
+    text-align: left; /* Changed from center */
+}
+
+.personal-page .quiz-modal-options-area {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md); /* Reduced */
+}
+.personal-page .quiz-modal-options-area .option-button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background-color: var(--color-secondary);
+    padding: var(--spacing-sm) var(--spacing-md); /* Adjusted padding */
+    border-radius: 6px; /* Slightly less round */
+    border: 1px solid #cbd5e1; /* Neutral border */
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+    color: var(--color-text);
+    font-family: inherit;
+}
+.personal-page .quiz-modal-options-area .option-button:hover:not(:disabled) {
+    background-color: #f8fafc; /* Very light grey */
+    border-color: var(--color-primary-personal);
+    transform: scale(1.01);
+}
+.personal-page .quiz-modal-options-area .option-button:disabled {
+    cursor: default;
+}
+/* Correct/Incorrect feedback states */
+.personal-page .quiz-modal-options-area .option-button.correct {
+    background-color: #e8f5e9 !important;
+    border-color: var(--brand-green-personal) !important;
+    color: #1b5e20 !important;
+    font-weight: 600;
+}
+.personal-page .quiz-modal-options-area .option-button.incorrect {
+    background-color: #fce4e4 !important;
+    border-color: #f5c6cb !important;
+    color: #721c24 !important;
+}
+.personal-page .quiz-modal-options-area .option-button.disabled:not(.correct):not(.incorrect) {
+    opacity: 0.65; /* Make non-selected options fade slightly */
+}
+
+/* Modal feedback text styling */
+.personal-page .quiz-modal-feedback {
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: 6px;
+    line-height: 1.6;
+    border-left-width: 4px;
+    border-left-style: solid;
+    animation: fadeIn 0.3s ease;
+    font-size: 0.95rem;
+}
+.personal-page .quiz-modal-feedback p { margin: 0; }
+.personal-page .quiz-modal-feedback strong { margin-right: 5px; display: block; margin-bottom: 3px; font-size: 1.05em; }
+.personal-page .quiz-modal-feedback.correct {
+    background-color: #e8f5e9;
+    color: #1b5e20;
+    border-left-color: var(--brand-green-personal);
+}
+.personal-page .quiz-modal-feedback.incorrect {
+    background-color: #fce4e4;
+    color: #721c24;
+    border-left-color: #f5c6cb;
+}
+
+/* Modal results styling */
+.personal-page .quiz-modal-results {
+    animation: fadeIn 0.5s ease;
+    text-align: center;
+    padding: var(--spacing-lg) var(--spacing-md);
+    background-color: var(--color-background);
+    border-radius: var(--border-radius);
+    margin-top: var(--spacing-md);
+}
+.personal-page .quiz-modal-results h4 {
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-primary-dark-personal);
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+.personal-page .quiz-modal-results p {
+    font-size: 1.1rem;
+    color: var(--color-text);
+    margin-bottom: 5px;
+}
+
+/* Modal navigation buttons */
+.personal-page .quiz-modal-navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+    flex-wrap: wrap;
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--color-accent); /* Separator */
+}
+/* Use .btn class as base, then modify size */
+.personal-page .quiz-modal-navigation .cta-button {
+    /* Inherits from .personal-page .btn */
+    font-size: 0.95rem;
+    padding: var(--spacing-xs) var(--spacing-md); /* Smaller padding */
+}
+/* Style Restart and Close as outline buttons */
+.personal-page .quiz-modal-navigation #quiz-modal-restart,
+.personal-page .quiz-modal-navigation #quiz-modal-close-results {
+    /* Inherits .btn and applies outline */
+    background-color: transparent;
+    color: var(--color-primary-personal);
+    border: 1px solid var(--color-primary-personal);
+}
+.personal-page .quiz-modal-navigation #quiz-modal-restart:hover,
+.personal-page .quiz-modal-navigation #quiz-modal-close-results:hover {
+    /* Inherits .btn-outline hover */
+    background-color: rgba(12, 52, 61, 0.05);
+    border-color: var(--color-primary-dark-personal);
+    color: var(--color-primary-dark-personal);
+}
+/* Next button uses primary solid style */
+.personal-page .quiz-modal-navigation #quiz-modal-next {
+   /* Inherits from .personal-page .btn directly */
+}
+
+/* --- Floating Background Animation --- */
+.personal-page .deco-blur {
+    position: fixed;
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, var(--color-primary-light-personal, #1a4652) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(130px);
+    opacity: 0.06;
+    z-index: -1;
+    animation: float 20s ease-in-out infinite alternate;
+    will-change: transform;
+    pointer-events: none;
+}
+.personal-page .deco-blur.blur-1 { top: 10%; left: 5%; animation-duration: 22s; }
+.personal-page .deco-blur.blur-2 {
+    bottom: 15%; right: 10%; animation-delay: 6s; animation-duration: 19s;
+    background: radial-gradient(circle, var(--brand-green-personal, #28a745) 0%, transparent 70%);
+    opacity: 0.05;
+}
+.personal-page .deco-blur.blur-3 { top: 60%; left: 50%; transform: translateX(-50%); animation-delay: 11s; animation-duration: 24s;}
+@keyframes float {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, -40px) scale(1.1); }
+    100% { transform: translate(0, 0) scale(1); }
+}
+
+/* --- Responsive Overrides for Personal/Quiz --- */
+@media (max-width: 400px) {
+  .personal-page .category-grid { grid-template-columns: 1fr; }
+  .personal-page .quiz-modal-content { padding: var(--spacing-md); }
+  .personal-page .quiz-modal-content h3 { font-size: 1.4rem; }
+  .personal-page .template-grid { grid-template-columns: 1fr; } /* Ensure templates stack */
+  .personal-page .resource-grid { grid-template-columns: 1fr; } /* Ensure resources stack */
+}
+
+@media (max-width: 500px) {
+  .personal-page .template-actions { flex-direction: column; }
+  .personal-page .motivational-quote .container { flex-direction: column; text-align: center; gap: var(--spacing-md); }
+  .personal-page .motivational-quote .quote-icon { margin-bottom: var(--spacing-xs); font-size: 1.8rem;}
+}
+
+@media (min-width: 576px) {
+    /* Allow 2 columns for categories on slightly larger small screens */
+     .personal-page .category-grid { grid-template-columns: repeat(2, 1fr); }
+ }
+
+@media (min-width: 768px) {
+  /* Personal page adjustments */
+  .personal-page .stats-grid { grid-template-columns: repeat(3, 1fr); }
+  .personal-page .resource-grid { grid-template-columns: repeat(2, 1fr); } /* Resource cards at 2 columns */
+  .personal-page .template-grid { grid-template-columns: repeat(2, 1fr); }
+  .personal-page .category-grid { grid-template-columns: repeat(3, 1fr); } /* Categories 3 columns */
+  .personal-page .coaching-content { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+  .personal-page .mmsballior-promo { flex-direction: row; text-align: left; gap: var(--spacing-xl); align-items: center; }
+  .personal-page .mmsballior-promo .promo-content { order: 1; flex: 1; }
+  .personal-page .mmsballior-promo .promo-visual { order: 2; flex: 0 0 40%; max-width: 350px;}
+  .personal-page .mmsballior-promo .btn { align-self: flex-start; }
+  .personal-page .page-footer-links .container { flex-direction: row; justify-content: space-around; align-items: flex-start; text-align: left; }
+  .personal-page .page-footer-links > .container > div { width: auto; } .personal-page .page-footer-links h4 { margin-bottom: var(--spacing-md); } .personal-page .page-footer-links ul { justify-content: flex-start; flex-direction: column; gap: var(--spacing-sm); }
+
+}
+
+@media (min-width: 992px) {
+  /* Personal page large screen layout */
+  .personal-page .resource-grid { grid-template-columns: repeat(3, 1fr); } /* Resource cards 3 cols */
+  .personal-page .template-grid { grid-template-columns: repeat(2, 1fr); } /* Templates stay 2 */
+  .personal-page .category-grid { grid-template-columns: repeat(4, 1fr); } /* Categories 4 cols */
+  .personal-page .coaching-content { grid-template-columns: 2fr 1fr; align-items: start; } /* Coaching layout */
+}
+
+@media (min-width: 1200px) {
+  /* Fine-tune very large screens */
+  .personal-page .page-intro h1 { font-size: 3.5rem; } /* Slightly adjust personal intro */
+  .personal-page .category-grid { grid-template-columns: repeat(5, 1fr); } /* Categories 5 cols */
+}
+
+/* --- Print Styles for Personal/Quiz --- */
+@media print {
+    .personal-page .btn, .personal-page .page-footer-links, .personal-page .mmsballior-promo, .personal-page .quiz-modal-overlay, .personal-page .template-actions, .personal-page .social-carousel, .personal-page .stats-grid, .personal-page .price-tag, .personal-page .deco-blur, .personal-page .motivational-quote, .personal-page .category-card .start-quiz-btn, .personal-page .quiz-modal-navigation button, .personal-page .coaching-request-form button { display: none !important; }
+    .personal-page .resource-card, .personal-page .template-card, .personal-page .coaching-item, .personal-page .category-card { box-shadow: none !important; border: 1px solid #ccc !important; padding: 0.5cm !important; page-break-inside: avoid; background: #fff !important; border-radius: 0 !important; }
+    .personal-page .card-image, .personal-page .template-preview, .personal-page .promo-visual img, .personal-page .stat-card i, .personal-page .category-icon { display: none !important; }
+    .personal-page .disclaimer { border: 1px solid #ccc; padding: 0.5cm; box-shadow: none; }
+    /* Quiz Modal Print */
+    .personal-page .quiz-modal-feedback { background-color: #f0f0f0 !important; color: #000 !important; border: 1px solid #ccc !important; border-left: none !important; }
+    .personal-page .quiz-modal-options-area .option-button { border-color: #eee !important; background-color: #fff !important; color: #000 !important; }
+}
