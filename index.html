@@ -1,3 +1,4 @@
+// File Location: /index.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <!-- Link to the global stylesheet -->
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -17,7 +19,8 @@
     <div class="container header-container">
       <div class="logo">
         <a href="index.html" aria-label="Rofilid Home">
-          <img src="assets/images/rofilid-logo-white.svg" alt="Rofilid Logo" width="120" height="40" loading="eager">
+          <!-- Updated Path -->
+          <img src="assets/images/common/rofilid-logo-white.svg" alt="Rofilid Logo" width="120" height="40" loading="eager">
         </a>
       </div>
       <nav aria-label="Main navigation">
@@ -27,21 +30,23 @@
         </button>
         <ul id="primary-navigation" class="nav-list">
           <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
-          <li class="nav-item"><a href="pages/corporate.html" class="nav-link">Corporate</a></li>
-          <li class="nav-item"><a href="pages/personal.html" class="nav-link">Personal</a></li>
+          <!-- Updated Path -->
+          <li class="nav-item"><a href="pages/corporate/corporate.html" class="nav-link">Corporate</a></li>
+          <!-- Updated Path -->
+          <li class="nav-item"><a href="pages/personal/personal.html" class="nav-link">Personal</a></li>
           <li class="nav-item"><a href="#services" class="nav-link">Services</a></li>
         </ul>
       </nav>
-      <a href="#services" class="connect-button" aria-label="Our Services">Our Services</a> <!-- Updated label for better description -->
+      <a href="#services" class="connect-button" aria-label="Our Services">Our Services</a>
     </div>
   </header>
 
   <main>
     <!-- Hero Section -->
     <section id="hero" class="hero-section">
-      <div class="container hero-content"> <!-- Combined container and hero-content for simpler centering -->
+      <div class="container hero-content">
         <h1>We deliver personal financial tools to individuals and support businesses with digital optimization and systems improvement.</h1>
-        <a href="#services" class="cta-button">Explore Our Services</a> <!-- Updated text for clarity -->
+        <a href="#services" class="cta-button">Explore Our Services</a>
       </div>
     </section>
 
@@ -52,39 +57,45 @@
         <div class="cards">
           <!-- Corporate Services Card -->
           <article class="card">
-            <a href="pages/corporate.html" aria-label="Explore Corporate Solutions">
-              <img src="assets/images/digital-transformation-icon.png" alt="" role="presentation" width="64" height="64" loading="lazy">
+            <!-- Updated Path -->
+            <a href="pages/corporate/corporate.html" aria-label="Explore Corporate Solutions">
+              <!-- Assuming this icon is corporate-specific -->
+              <img src="assets/images/corporate/digital-transformation-icon.png" alt="" role="presentation" width="64" height="64" loading="lazy">
             </a>
-            <!-- === UPDATED: Card title is now a link === -->
             <h3 class="card-title">
-              <a href="pages/corporate.html">Corporate Solutions</a>
+              <!-- Updated Path -->
+              <a href="pages/corporate/corporate.html">Corporate Solutions</a>
             </h3>
-            <!-- ========================================= -->
             <ul class="service-list">
-              <li><a href="pages/corporate.html">Digital Transformation</a></li>
-              <li><a href="pages/corporate.html">Website Development</a></li>
-              <li><a href="pages/corporate.html">Digital Automation</a></li>
-              <li><a href="pages/corporate.html">Visual Branding</a></li>
+              <!-- Updated Paths -->
+              <li><a href="pages/corporate/corporate.html">Digital Transformation</a></li>
+              <li><a href="pages/corporate/corporate.html">Website Development</a></li>
+              <li><a href="pages/corporate/corporate.html">Digital Automation</a></li>
+              <li><a href="pages/corporate/corporate.html">Visual Branding</a></li>
             </ul>
-            <a href="pages/corporate.html" class="learn-more">Explore Corporate Solutions <span aria-hidden="true">→</span></a>
+            <!-- Updated Path -->
+            <a href="pages/corporate/corporate.html" class="learn-more">Explore Corporate Solutions <span aria-hidden="true">→</span></a>
           </article>
           <!-- Personal Services Card -->
           <article class="card">
-            <a href="pages/personal.html" aria-label="Discover Personal Solutions">
-              <img src="assets/images/coaching-icon.png" alt="" role="presentation" width="64" height="64" loading="lazy">
+            <!-- Updated Path -->
+            <a href="pages/personal/personal.html" aria-label="Discover Personal Solutions">
+              <!-- Assuming this icon is personal-specific -->
+              <img src="assets/images/personal/coaching-icon.png" alt="" role="presentation" width="64" height="64" loading="lazy">
             </a>
-            <!-- === UPDATED: Card title is now a link === -->
             <h3 class="card-title">
-              <a href="pages/personal.html">Personal Solutions</a>
+              <!-- Updated Path -->
+              <a href="pages/personal/personal.html">Personal Solutions</a>
             </h3>
-            <!-- ========================================= -->
             <ul class="service-list">
-              <li><a href="pages/personal.html">Finance Resources</a></li>
-              <li><a href="pages/personal.html">Finance Coaching</a></li>
-              <li><a href="pages/personal.html">Finance Literacy</a></li>
-              <li><a href="pages/personal.html">Finance Tools</a></li>
+              <!-- Updated Paths -->
+              <li><a href="pages/personal/personal.html">Finance Resources</a></li>
+              <li><a href="pages/personal/personal.html">Finance Coaching</a></li>
+              <li><a href="pages/personal/personal.html">Finance Literacy</a></li>
+              <li><a href="pages/personal/personal.html">Finance Tools</a></li>
             </ul>
-            <a href="pages/personal.html" class="learn-more">Discover Personal Solutions <span aria-hidden="true">→</span></a>
+            <!-- Updated Path -->
+            <a href="pages/personal/personal.html" class="learn-more">Discover Personal Solutions <span aria-hidden="true">→</span></a>
           </article>
         </div>
       </div>
@@ -95,7 +106,7 @@
       <div class="container">
         <div class="cta-content">
           <p>Our goal is to help businesses and individuals gain better clarity, drive improved efficiency, and create lasting success through digital and personal financial solutions.</p>
-          <a href="#services" class="cta-button">Get in Touch</a>
+          <a href="#services" class="cta-button">Get in Touch</a> <!-- Assuming this links internally, if it's a contact form, update href -->
         </div>
       </div>
     </section>
@@ -123,23 +134,25 @@
         <div class="footer-left">
           <div class="logo">
             <a href="index.html" aria-label="Rofilid Home">
-              <img src="assets/images/rofilid-logo-white.svg" alt="Rofilid Logo" width="120" height="40" loading="lazy">
+              <!-- Updated Path -->
+              <img src="assets/images/common/rofilid-logo-white.svg" alt="Rofilid Logo" width="120" height="40" loading="lazy">
             </a>
           </div>
         </div>
         <div class="footer-right">
           <div class="social-media">
+             <!-- Updated Paths -->
             <a href="https://facebook.com/rofilid" aria-label="Facebook" class="social-link" target="_blank" rel="noopener noreferrer">
-              <img src="assets/images/facebook.png" alt="Facebook Icon" class="social-icon">
+              <img src="assets/images/common/facebook.png" alt="Facebook Icon" class="social-icon">
             </a>
             <a href="https://instagram.com/rofi.lid" aria-label="Instagram" class="social-link" target="_blank" rel="noopener noreferrer">
-              <img src="assets/images/instagram.png" alt="Instagram Icon" class="social-icon">
+              <img src="assets/images/common/instagram.png" alt="Instagram Icon" class="social-icon">
             </a>
             <a href="https://linkedin.com/company/rofilid" aria-label="LinkedIn" class="social-link" target="_blank" rel="noopener noreferrer">
-              <img src="assets/images/linkedin.png" alt="LinkedIn Icon" class="social-icon">
+              <img src="assets/images/common/linkedin.png" alt="LinkedIn Icon" class="social-icon">
             </a>
             <a href="https://twitter.com/rofilid" aria-label="X (Formerly Twitter)" class="social-link" target="_blank" rel="noopener noreferrer">
-              <img src="assets/images/twitter.png" alt="Twitter Icon" class="social-icon">
+              <img src="assets/images/common/twitter.png" alt="Twitter Icon" class="social-icon">
             </a>
           </div>
         </div>
@@ -149,47 +162,11 @@
       </div>
     </div>
   </footer>
+  </footer>
 
   <!-- Scripts -->
-  <script>
-    // Mobile Menu Toggle
-    const menuToggle = document.querySelector('.mobile-menu-toggle');
-    const primaryNav = document.querySelector('#primary-navigation');
+  <!-- Removed inline script -->
+  <script src="main.js" defer></script> <!-- Link to the external JS file -->
 
-    menuToggle.addEventListener('click', () => {
-      const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-      menuToggle.setAttribute('aria-expanded', !isExpanded);
-      primaryNav.classList.toggle('active');
-    });
-
-    // Auto-hide mobile menu on scroll
-    window.addEventListener('scroll', () => {
-      if (primaryNav.classList.contains('active')) {
-        primaryNav.classList.remove('active');
-        menuToggle.setAttribute('aria-expanded', 'false');
-      }
-    });
-
-    // Smooth Scroll for internal links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        const targetId = this.getAttribute('href');
-        // Only prevent default and scroll smoothly for valid internal links
-        if (targetId && targetId !== '#' && document.querySelector(targetId)) {
-            e.preventDefault();
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                targetElement.scrollIntoView({ behavior: 'smooth' });
-                // Optional: Update URL hash without page jump (if desired)
-                // history.pushState(null, null, targetId);
-            }
-        }
-        // If it's just "#", or target doesn't exist, let the default behavior happen (or do nothing)
-      });
-    });
-
-    // Update current year in copyright
-    document.getElementById('current-year').textContent = new Date().getFullYear();
-  </script>
 </body>
 </html>
