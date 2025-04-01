@@ -1,17 +1,14 @@
+// File Location: /styles.css
 /* ==========================================================================
-   ROFILID Global Styles - v2.1.0 (Split Quiz Page Update)
-   Supports: Index (v1.0.0), Corporate (v1.0.0), Personal (v2.1.0), Quizzes (v2.1.0)
-   Description: Preserves original index/corporate styles.
-                Applies new styling scoped via '.personal-page' to personal.html
-                and the new quizzes.html.
-                Includes styles for Challenge structure (themes/cards) & quiz modal.
-                Integrates Rofilid theme colors purposefully within .personal-page.
-                FIXED: Ensures index/corp H2 titles are centered & sized.
+   ROFILID Global Styles - v3.0.0 (Restructured)
+   Description: Core styles for reset, base elements, layout, utilities,
+                default header/footer, and index-page specific styles.
+                Corporate and Personal/Quiz styles are now in separate files.
    ========================================================================== */
 
-/* === Root Variables (Global Default + Originals for Selective Use) === */
+/* === Root Variables (Global Default) === */
 :root {
-  /* Original Theme Colors */
+  /* Original Theme Colors (kept for reference or potential reuse) */
   --color-primary-original: #0c343d; /* Teal */
   --color-primary-light-original: #1a4652;
   --color-primary-dark-original: #072329;
@@ -34,13 +31,13 @@
   --container-width: 1200px;
   --spacing-xs: 5px; --spacing-sm: 10px; --spacing-md: 20px; --spacing-lg: 30px; --spacing-xl: 40px; --spacing-xxl: 80px;
   --font-weight-regular: 400; --font-weight-medium: 500; --font-weight-bold: 700; --font-weight-black: 900;
-  --header-height: 70px; /* Default, updated by JS */
+  --header-height: 70px; /* Default, can be overridden */
 }
 
 /* === Base & Reset === */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; font-size: 16px; }
-body { font-family: 'Roboto', sans-serif; /* Default Font for Index/Corp */ line-height: 1.6; color: var(--color-text); background-color: var(--color-secondary); overflow-x: hidden; }
+body { font-family: 'Roboto', sans-serif; line-height: 1.6; color: var(--color-text); background-color: var(--color-secondary); overflow-x: hidden; }
 img { max-width: 100%; height: auto; display: block; }
 a { color: var(--color-primary); text-decoration: none; transition: var(--transition-standard); }
 a:hover { color: var(--color-primary-light); }
@@ -52,7 +49,7 @@ li { margin-bottom: var(--spacing-xs); } ul ul li { margin-bottom: var(--spacing
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
 .bg-light { background-color: var(--color-background); }
 
-/* === Buttons & Shared Link Styles (Default for Index/Corp) === */
+/* === Buttons & Shared Link Styles (Default) === */
 .cta-button, .connect-button { display: inline-block; background-color: var(--color-secondary); color: var(--color-primary); padding: var(--spacing-sm) var(--spacing-md); border: 1px solid var(--color-primary); border-radius: var(--border-radius); font-weight: var(--font-weight-medium); cursor: pointer; text-decoration: none; text-align: center; font-size: 1rem; transition: var(--transition-standard); }
 .cta-button:hover, .connect-button:hover { background-color: var(--color-primary); color: var(--color-secondary); transform: translateY(-2px); box-shadow: var(--box-shadow-light); }
 .cta-button:focus, .connect-button:focus { outline: 2px solid var(--color-primary-light); outline-offset: 2px; box-shadow: 0 0 0 3px rgba(12, 52, 61, 0.15); }
@@ -60,15 +57,16 @@ li { margin-bottom: var(--spacing-xs); } ul ul li { margin-bottom: var(--spacing
 .learn-more { display: inline-block; color: var(--color-primary); text-decoration: none; font-weight: var(--font-weight-medium); margin-top: var(--spacing-md); transition: var(--transition-standard); } .learn-more:hover { color: var(--color-primary-light); transform: translateX(5px); } .learn-more span { margin-left: var(--spacing-xs); display: inline-block; transition: transform 0.2s ease; } .learn-more:hover span { transform: translateX(3px); }
 .bg-dark .cta-button, .cta-section .cta-button { background-color: var(--color-secondary); color: var(--color-primary-dark); border-color: var(--color-secondary); }
 .bg-dark .cta-button:hover, .cta-section .cta-button:hover { background-color: var(--color-accent); color: var(--color-primary-dark); border-color: var(--color-accent); }
-/* Link Styling used in Personal/Quizzes intro */
-.link-back, .link-inline { color: var(--color-primary-original); text-decoration: underline; font-weight: 500;}
+/* Link Styling used in Personal/Quizzes intro - Keep here as a base? Or move? Move to personal/quizzes */
+/* .link-back, .link-inline { color: var(--color-primary-original); text-decoration: underline; font-weight: 500;}
 .link-back:hover, .link-inline:hover { color: var(--color-primary-dark-original); }
-.link-back i { margin-right: 5px;}
+.link-back i { margin-right: 5px;} */
 
-/* === Header (Shared Default Styling) === */
+/* === Header (Shared Default Styling - Teal) === */
 .site-header { background-color: rgba(12, 52, 61, 0.85); /* Default Teal Transparent */ color: var(--color-secondary); padding: var(--spacing-sm) 0; position: fixed; width: 100%; top: 0; left: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); height: var(--header-height); display: flex; align-items: center; border-bottom: 1px solid transparent; transition: background-color 0.3s ease, border-color 0.3s ease, height 0.3s ease; }
 .header-container { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: var(--container-width); margin: 0 auto; padding: 0 var(--spacing-md); }
-.logo img { height: 40px; width: auto; display: block; vertical-align: middle; filter: none; transition: filter 0.3s ease; } /* White logo default */
+/* Default uses white logo */
+.logo img { height: 40px; width: auto; display: block; vertical-align: middle; filter: none; transition: filter 0.3s ease; }
 /* Nav Shared Structure */
 .nav-list { display: none; list-style: none; padding-left: 0; } .nav-item { margin: 0; flex-shrink: 0; } .nav-link { color: var(--color-secondary); /* Default White */ text-decoration: none; font-weight: var(--font-weight-medium); padding: var(--spacing-xs) var(--spacing-sm); display: block; transition: color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease; white-space: nowrap; border-bottom: 2px solid transparent; } .nav-link:hover { opacity: 0.9; color: var(--color-secondary); } .nav-link:focus { outline: 1px solid var(--color-secondary); outline-offset: 2px; border-radius: var(--border-radius); } .nav-list .nav-link.active-page { font-weight: var(--font-weight-bold); border-bottom-color: var(--color-secondary); opacity: 1; } .nav-list .nav-link.active-page:hover { opacity: 1; border-bottom-color: var(--color-secondary); }
 .mobile-menu-toggle { background: transparent; border: none; color: var(--color-secondary); font-size: 1.8rem; cursor: pointer; display: none; padding: var(--spacing-xs); line-height: 1; transition: color 0.3s ease; }
@@ -76,35 +74,37 @@ li { margin-bottom: var(--spacing-xs); } ul ul li { margin-bottom: var(--spacing
 #primary-navigation.active { display: flex; flex-direction: row; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; position: absolute; top: 100%; left: 0; width: 100%; background-color: var(--color-primary); /* Default Teal BG */ padding: var(--spacing-sm) var(--spacing-md); box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25); gap: var(--spacing-sm); justify-content: center; opacity: 1; transition: opacity 0.3s ease-out, background-color 0.3s ease; }
 
 /* === Sections (Generic/Shared Styling) === */
-.page-section { padding: var(--spacing-xxl) 0; border-bottom: 1px solid #e0e0e0; /* Use lighter border default */ overflow: hidden; position: relative; }
-.page-section:last-of-type { border-bottom: none; }
-.page-section.section-tight { padding: var(--spacing-lg) 0; }
-/* *** INDEX PAGE HEADING FIX *** */
-.page-section h2 {
-    text-align: center; /* Ensure centering globally */
+/* Note: Renamed from page-section to avoid conflicts if reused; specific pages can use IDs */
+.section-padding { padding: var(--spacing-xxl) 0; border-bottom: 1px solid #e0e0e0; /* Use lighter border default */ overflow: hidden; position: relative; }
+.section-padding:last-of-type { border-bottom: none; }
+.section-tight { padding: var(--spacing-lg) 0; }
+/* Section Title Styling (Global Default) */
+.section-title {
+    text-align: center;
     margin-bottom: var(--spacing-md);
-    font-size: clamp(2rem, 5vw, 2.5rem); /* Keep existing size clamp */
+    font-size: clamp(2rem, 5vw, 2.5rem);
     color: var(--color-primary);
     font-weight: var(--font-weight-bold);
     position: relative;
     padding-bottom: var(--spacing-sm);
     font-family: 'Roboto', sans-serif; /* Default font */
 }
-.page-section h2::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 60px; height: 3px; background-color: var(--color-primary); /* Use default variable */ transition: background-color 0.3s ease; }
+.section-title::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 60px; height: 3px; background-color: var(--color-primary); /* Use default variable */ transition: background-color 0.3s ease; }
 /* Shared Section Description */
-.page-section > .container > p.section-description { text-align: center; max-width: 800px; margin: 0 auto var(--spacing-xl) auto; color: var(--color-text-light); font-size: 1.1rem; line-height: 1.7; }
-/* Generic Page Intro (Used by Corp/Personal, potentially overridden) */
+.section-description { text-align: center; max-width: 800px; margin: 0 auto var(--spacing-xl) auto; color: var(--color-text-light); font-size: 1.1rem; line-height: 1.7; }
+/* Generic Page Intro (Used by Corp, potentially overridden) */
+/* Note: Personal/Quiz pages have their own override */
 .page-intro { padding-top: calc(var(--header-height) + var(--spacing-xl)); padding-bottom: var(--spacing-xxl); text-align: center; background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light)); /* Default Teal gradient */ color: var(--color-secondary); border-bottom: 5px solid var(--color-primary-dark); position: relative; overflow: hidden; }
 .page-intro h1 { margin-bottom: var(--spacing-md); color: var(--color-secondary); font-size: clamp(2rem, 6vw, 3rem); font-weight: var(--font-weight-bold); text-shadow: 1px 1px 3px rgba(0,0,0,0.2); font-family: 'Roboto', sans-serif; transition: color 0.3s ease, font-size 0.3s ease; }
 .page-intro .subheadline { font-size: clamp(1.1rem, 3vw, 1.35rem); color: rgba(255, 255, 255, 0.9); margin: 0 auto var(--spacing-lg) auto; max-width: 750px; }
 .page-intro p:not(.subheadline) { max-width: 850px; margin: 0 auto; color: rgba(255, 255, 255, 0.9); line-height: 1.7; }
 
-/* === Index Page Specifics (PRESERVED) === */
-.hero-section { background-image: linear-gradient(rgba(12, 52, 61, 0.7), rgba(12, 52, 61, 0.75)), url('../assets/images/hero-background.jpg'); /* Corrected path assumed */ background-size: cover; background-position: center; color: var(--color-secondary); min-height: 60vh; max-height: 700px; display: flex; align-items: center; justify-content: center; padding-top: var(--header-height); text-align: center; }
+/* === Index Page Specifics === */
+.hero-section { background-image: linear-gradient(rgba(12, 52, 61, 0.7), rgba(12, 52, 61, 0.75)), url('assets/images/common/hero-background.jpg'); /* Updated path */ background-size: cover; background-position: center; color: var(--color-secondary); min-height: 60vh; max-height: 700px; display: flex; align-items: center; justify-content: center; padding-top: var(--header-height); text-align: center; }
 .hero-content { max-width: 850px; width: 100%; margin: 0 auto; }
 .hero-section h1 { font-weight: var(--font-weight-black); font-size: clamp(2.2rem, 7vw, 3.2rem); margin-bottom: var(--spacing-xl); line-height: 1.2; color: var(--color-secondary); text-shadow: 1px 1px 4px rgba(0,0,0,0.3); }
 .hero-section .cta-button { padding: var(--spacing-md) var(--spacing-xl); font-size: 1.1rem; font-weight: var(--font-weight-bold); background-color: var(--color-secondary); outline: none; border: 2px solid var(--color-secondary); color: var(--color-primary-dark); box-shadow: var(--box-shadow-light); } .hero-section .cta-button:hover { background-color: rgba(255, 255, 255, 0.9); color: var(--color-primary); transform: translateY(-3px) scale(1.03); box-shadow: var(--box-shadow); }
-.services-section { background-color: var(--color-background); padding: var(--spacing-xxl) 0; }
+.services-section { background-color: var(--color-background); /* Use section-padding class */ }
 .cards { display: flex; flex-direction: column; gap: var(--spacing-lg); max-width: calc(var(--container-width) - var(--spacing-md)); margin: 0 auto; align-items: center; }
 .card { background-color: var(--color-secondary); padding: var(--spacing-lg); border-radius: var(--border-radius); box-shadow: var(--box-shadow); width: 100%; max-width: 350px; text-align: center; transition: var(--transition-standard); display: flex; flex-direction: column; border: 1px solid #e0e0e0; /* Default border */} .card:hover { transform: translateY(-6px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12); }
 .card > a:first-child { text-decoration: none; display: block; line-height: 0; border-radius: 5px; margin-bottom: var(--spacing-lg); transition: transform 0.2s ease; } .card > a:first-child img { margin-bottom: 0; height: 60px; width: 60px; margin: 0 auto; } .card > a:first-child:hover { transform: scale(1.05); } .card > a:first-child:focus { outline: 2px solid var(--color-primary-light); outline-offset: 3px; }
@@ -113,250 +113,37 @@ li { margin-bottom: var(--spacing-xs); } ul ul li { margin-bottom: var(--spacing
 .card .learn-more { margin-top: auto; align-self: center; }
 .cta-section { background-color: var(--color-primary); padding: var(--spacing-xxl) var(--spacing-md); text-align: center; }
 .cta-content { max-width: 750px; margin: 0 auto; } .cta-content p { font-weight: var(--font-weight-regular); font-size: clamp(1.3rem, 4vw, 1.6rem); color: var(--color-secondary); margin-bottom: var(--spacing-lg); line-height: 1.6; }
-.contact-section { background-color: var(--color-background); padding: var(--spacing-xxl) 0; }
+.contact-section { background-color: var(--color-background); /* Use section-padding class */ }
 .contact-container { max-width: 700px; margin: 0 auto; background-color: var(--color-secondary); border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--box-shadow); padding: var(--spacing-xl); border: 1px solid #e0e0e0; /* Default border */}
 .contact-info { text-align: center; } .contact-info i { margin-right: var(--spacing-sm); color: var(--color-primary); font-size: 1.1em; width: 25px; text-align: center; } .contact-info address { font-style: normal; } .contact-info address p { font-size: 1.15rem; margin-bottom: var(--spacing-md); display: flex; align-items: center; justify-content: center; } .contact-info address a { color: var(--color-primary); font-weight: var(--font-weight-medium); } .contact-info address a:hover { color: var(--color-primary-light); text-decoration: underline; }
 
-/* === Corporate Page Specifics (PRESERVED) === */
-.service-items { display: grid; gap: var(--spacing-lg); margin-top: var(--spacing-xl); grid-template-columns: 1fr; } .service-item { background-color: var(--color-secondary); padding: var(--spacing-lg); border-radius: var(--border-radius); box-shadow: var(--box-shadow-light); border: 1px solid #e0e0e0; /* Default border */ text-align: center; display: flex; flex-direction: column; transition: all 0.3s ease; } .service-item:hover { transform: translateY(-5px); box-shadow: var(--box-shadow); } .service-item .service-icon { font-size: 2.8rem; color: var(--color-primary); margin-bottom: var(--spacing-md); display: block; transition: transform 0.3s ease; } .service-item:hover .service-icon { transform: scale(1.1); } .service-item h3 { font-size: 1.4rem; margin-bottom: var(--spacing-md); color: var(--color-primary); margin-top: 0; line-height: 1.4; } .service-item p { color: var(--color-text-light); font-size: 0.95rem; line-height: 1.7; flex-grow: 1; margin-bottom: var(--spacing-lg); }
-.consultation-form { margin-top: var(--spacing-xl); max-width: 850px; margin: 0 auto; background-color: var(--color-secondary); padding: var(--spacing-xl); border-radius: var(--border-radius); border: 1px solid #e0e0e0; /* Default border */ box-shadow: var(--box-shadow-light); } .consultation-form .form-grid { display: grid; gap: var(--spacing-lg); margin-bottom: var(--spacing-lg); grid-template-columns: 1fr; } .consultation-form label { display: block; margin-bottom: var(--spacing-xs); font-weight: var(--font-weight-medium); color: var(--color-text); font-size: 0.9rem; } .consultation-form input, .consultation-form textarea { display: block; width: 100%; padding: var(--spacing-sm) var(--spacing-md); border: 1px solid #e0e0e0; /* Default border */ border-radius: var(--border-radius); font-family: inherit; font-size: 1rem; line-height: 1.5; transition: all 0.2s ease; background-color: #fdfdfd; } .consultation-form input:focus, .consultation-form textarea:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(12, 52, 61, 0.15); } .consultation-form textarea { resize: vertical; min-height: 120px; margin-bottom: 0; } .consultation-form .form-footer { margin-top: var(--spacing-xl); display: flex; flex-direction: column; align-items: center; gap: var(--spacing-md); } .consultation-form .privacy-note { font-size: 0.85rem; color: var(--color-text-light); text-align: center; line-height: 1.5; } .consultation-form .cta-button.large { padding: var(--spacing-sm) var(--spacing-xl); font-size: 1.1rem; font-weight: var(--font-weight-medium); width: auto; min-width: 200px; max-width: 100%; background-color: var(--color-primary); color: var(--color-secondary); border: none; box-shadow: 0 2px 5px rgba(12, 52, 61, 0.2); } .consultation-form .cta-button.large:hover { background-color: var(--color-primary-light); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(12, 52, 61, 0.3); }
-.case-study-placeholder { border: none; padding: var(--spacing-xl) 0; text-align: center; margin-top: var(--spacing-lg); color: var(--color-text-light); background-color: transparent; border-radius: 0; } .case-study-placeholder p { font-style: italic; margin-bottom: var(--spacing-lg); }
-.client-logos { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--spacing-xl) var(--spacing-xxl); margin-top: var(--spacing-lg); filter: grayscale(100%); opacity: 0.5; transition: all 0.3s ease; } .client-logos:hover { filter: grayscale(0%); opacity: 1;} .client-logos img { max-height: 45px; width: auto; max-width: 140px; }
+/* === Corporate Page Specifics (MOVED TO corporate.css) === */
+/* Styles for .service-items, .consultation-form, etc. are no longer here */
 
 /* === Footer (Shared Default Styling - Teal) === */
-/* Applies globally */
 .site-footer { background-color: var(--color-primary-original); color: #e0f2f1; padding-top: var(--spacing-xl); padding-bottom: var(--spacing-lg); transition: background-color 0.3s ease; }
-.page-footer-links { padding: var(--spacing-lg) 0; margin-bottom: var(--spacing-xl); border-top: 1px solid rgba(255, 255, 255, 0.1); border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
-.page-footer-links .container { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-xl); text-align: center; } .page-footer-links > .container > div { width: 100%; } .page-footer-links h4 { margin-bottom: var(--spacing-md); color: #b2dfdb; font-size: 1.05rem; font-weight: var(--font-weight-medium); text-transform: uppercase; letter-spacing: 1px; } .page-footer-links ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: var(--spacing-sm) var(--spacing-lg); } .page-footer-links li { margin-bottom: 0; } .page-footer-links a { color: #e0f2f1; text-decoration: none; font-size: 0.95rem; transition: color 0.2s ease; } .page-footer-links a:hover { color: var(--color-secondary); text-decoration: underline; }
+/* Removed .page-footer-links as it wasn't in index.html, add back if needed globally */
 .footer-content { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-lg); margin-bottom: var(--spacing-xl); text-align: center; }
 .footer-left .logo img { height: 40px; filter: none !important; } /* ENSURE white logo */
 .social-media { display: flex; justify-content: center; gap: var(--spacing-md); } .social-link { color: var(--color-secondary); font-size: 1.5rem; transition: var(--transition-standard); display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background-color: rgba(255, 255, 255, 0.1); } .social-link:hover { background-color: rgba(255, 255, 255, 0.25); transform: translateY(-3px) scale(1.1); } .social-icon { width: 24px; height: 24px; display: block; margin: auto; }
 .copyright { text-align: center; padding-top: var(--spacing-lg); border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: var(--spacing-lg); } .copyright p { font-size: 0.9rem; color: #b2dfdb; }
 
 
-/* ======================================================================== */
-/* === START: Personal & Quizzes Page Specific Styles (.personal-page) === */
-/* ======================================================================== */
-
-.personal-page {
-  /* Theme Variables for these pages */
-  --color-background: #f7fbfb;      /* Very light teal/cyan BG */
-  --color-accent: #e0f7fa;          /* Lighter Teal accent */
-  --color-text: #263238;            /* Dark Grey-Blue Text */
-  --color-text-light: #546e7a;       /* Medium Grey-Blue Text */
-  --border-radius: 8px;             /* Slightly rounder corners */
-  --box-shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -1px rgba(0, 0, 0, 0.05);
-  --box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
-
-  /* Teal/Green colors are inherited from :root and used specifically below */
-}
-
-/* Apply Inter font and specific BG/Text color */
-.personal-page body { font-family: 'Inter', sans-serif; background-color: var(--color-secondary); color: var(--color-text); }
-
-/* --- Header Overrides for Personal/Quizzes --- */
-.personal-page .site-header { background: rgba(255, 255, 255, 0.98); border-bottom: 1px solid #b2dfdb; /* Light Teal Border */ backdrop-filter: blur(12px); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-/* Use Teal version of Logo */
-.personal-page .logo img { filter: brightness(0) saturate(100%) invert(13%) sepia(17%) saturate(3694%) hue-rotate(154deg) brightness(94%) contrast(94%); }
-/* Nav links use Teal */
-.personal-page .nav-link { color: var(--color-primary-original); } .personal-page .nav-link:hover { color: var(--color-primary-dark-original); opacity: 1; } .personal-page .nav-link:focus { outline-color: var(--color-primary-original); } .personal-page .nav-list .nav-link.active-page { color: var(--color-primary-original); border-bottom-color: var(--color-primary-original); } .personal-page .nav-list .nav-link.active-page:hover { border-bottom-color: var(--color-primary-dark-original); }
-.personal-page .mobile-menu-toggle { color: var(--color-primary-original); } /* Teal Toggle */
-.personal-page #primary-navigation.active { background-color: var(--color-secondary); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-.personal-page #primary-navigation.active .nav-link { color: var(--color-primary-original); } .personal-page #primary-navigation.active .nav-link:hover { color: var(--color-primary-dark-original); } .personal-page #primary-navigation.active .nav-link.active-page { border-bottom-color: var(--color-primary-original); }
-/* Connect Button Use Teal */
-.personal-page .connect-button { background-color: var(--color-primary-original); color: var(--color-secondary); border: none; } .personal-page .connect-button:hover { background-color: var(--color-primary-light-original); }
-
-/* --- Page Intro Overrides (Common to Personal & Quizzes) --- */
-.personal-page .page-intro { padding: calc(var(--header-height) + var(--spacing-xl)) 0 var(--spacing-xl); /* Reduced bottom padding */ background: linear-gradient(145deg, #ffffff 0%, #eefcff 100%); /* Even lighter gradient */ color: var(--color-text); border-bottom: none; }
-.personal-page .page-intro h1 { font-family: 'Inter', sans-serif; font-size: clamp(2.2rem, 6vw, 3.2rem); /* Adjusted size */ font-weight: 700; color: var(--color-primary-original); /* Teal Heading */ line-height: 1.2; text-shadow: none; margin-bottom: var(--spacing-md); }
-.personal-page .page-intro .subheadline { font-size: clamp(1.1rem, 3vw, 1.4rem); color: var(--color-text-light); max-width: 800px; margin-bottom: var(--spacing-lg); }
-.personal-page .page-intro p:not(.subheadline) { color: var(--color-text-light); max-width: 850px; }
-/* Style for quiz page intro's 'Back' link */
-.personal-page .quiz-page-intro p { margin-top: var(--spacing-lg); }
-
-/* --- Stats Grid Styling (Used on Personal) --- */
-.personal-page .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-lg); margin-top: var(--spacing-xl); margin-bottom: 0; }
-.personal-page .stat-card { background: rgba(255, 255, 255, 0.9); padding: var(--spacing-lg); border-radius: var(--border-radius); text-align: center; box-shadow: var(--box-shadow-light); border: 1px solid #e0f7fa; backdrop-filter: blur(5px); transition: all 0.3s ease; }
-.personal-page .stat-card:hover { transform: translateY(-5px); box-shadow: var(--box-shadow); }
-.personal-page .stat-card i { font-size: 2rem; color: var(--color-primary-original); /* Teal Icon */ margin-bottom: var(--spacing-sm); display: block; }
-.personal-page .stat-card h4 { font-size: 1.5rem; font-weight: 600; color: var(--color-primary-dark-original); /* Dark Teal */ margin-bottom: var(--spacing-xs); }
-.personal-page .stat-card p { font-size: 0.9rem; color: var(--color-text-light); line-height: 1.5; }
-
-/* --- Motivational Quote Styling (Used on Personal) --- */
-.personal-page .motivational-quote { padding: var(--spacing-lg) 0; /* Reduced padding */ margin: var(--spacing-xl) 0; background-color: #e8f5e9; /* Light Green */ border-top: 1px solid #c8e6c9; border-bottom: 1px solid #c8e6c9; }
-.personal-page .motivational-quote .container { display: flex; align-items: center; gap: var(--spacing-md); text-align: left; max-width: 900px; }
-.personal-page .motivational-quote .quote-icon { font-size: 1.8rem; /* Slightly smaller */ color: var(--brand-green-original); /* Brand Green Icon */ flex-shrink: 0; line-height: 1; opacity: 0.9; }
-.personal-page .motivational-quote p { font-size: clamp(1.05rem, 2.5vw, 1.25rem); color: #1b5e20; /* Dark Green Text */ font-weight: 400; line-height: 1.6; font-style: normal; margin: 0; }
-.personal-page .motivational-quote p .highlight { font-weight: 600; color: var(--brand-green); /* Brand Green Highlight */ font-style: normal; }
-/* Alt quote style (Light Teal) */
-.personal-page .motivational-quote.alt-bg { background-color: #e0f7fa; /* Light Teal */ border-top: 1px solid #b2ebf2; border-bottom: 1px solid #b2ebf2; }
-.personal-page .motivational-quote.alt-bg p { color: var(--color-primary-dark-original); } /* Dark Teal Text */
-.personal-page .motivational-quote.alt-bg p .highlight { color: #00796b; /* Medium Teal Highlight */ }
-.personal-page .motivational-quote.alt-bg .quote-icon { color: var(--color-primary-original); /* Teal Icon */ }
-
-/* --- Financial Fitness Challenge Styles (Common to Personal & Quizzes) --- */
-.personal-page #financial-fitness-challenge-intro,
-.personal-page #full-financial-challenge { /* Section styles */
-   /* padding-top: 0; Add padding if needed */
-   background-color: #fff; /* Ensure white BG */
-}
-.personal-page .challenge-theme { margin-bottom: var(--spacing-xxl); }
-.personal-page .challenge-theme:last-child { margin-bottom: var(--spacing-xl); }
-.personal-page .challenge-theme h3 { font-size: clamp(1.4rem, 4vw, 1.7rem); /* Slightly smaller */ color: var(--color-primary-dark-original); text-align: center; margin-bottom: var(--spacing-lg); position: relative; padding-bottom: var(--spacing-sm); }
-/* Green underline for theme titles */
-.personal-page .challenge-theme h3::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 50px; height: 3px; background-color: var(--brand-green-original); border-radius: 2px; }
-/* Grid for category cards */
-.personal-page .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Adjusted minmax */ gap: var(--spacing-lg); }
-/* Category Card Styling */
-.personal-page .category-card { background: var(--color-secondary); border-radius: var(--border-radius); box-shadow: var(--box-shadow-light); border: 1px solid #e0f7fa; /* Light teal border */ text-align: center; padding: var(--spacing-lg); display: flex; flex-direction: column; align-items: center; transition: all 0.3s ease; }
-.personal-page .category-card:hover { transform: translateY(-5px) scale(1.03); box-shadow: var(--box-shadow); border-color: var(--color-primary-light-original); }
-.personal-page .category-card .category-icon { font-size: 2.2rem; /* Adjusted size */ color: var(--color-primary-original); /* Teal Icon */ margin-bottom: var(--spacing-md); transition: transform 0.3s ease; }
-.personal-page .category-card:hover .category-icon { transform: scale(1.1); }
-.personal-page .category-card h4 { font-size: 1.15rem; /* Adjusted size */ color: var(--color-primary-dark-original); margin-bottom: var(--spacing-sm); font-weight: 600; }
-.personal-page .category-card p { font-size: 0.88rem; /* Adjusted size */ color: var(--color-text-light); line-height: 1.5; margin-bottom: var(--spacing-lg); flex-grow: 1; max-width: 95%; }
-.personal-page .category-card .start-quiz-btn { margin-top: auto; width: 75%; max-width: 180px; font-size: 0.9rem; /* Smaller button */ padding: var(--spacing-xs) var(--spacing-md); } /* Uses .btn teal style */
-
-/* Link to Full Quiz Page Style (on personal.html) */
-.personal-page .full-challenge-link .btn.large { /* Target the specific large button */
-    padding: var(--spacing-md) var(--spacing-xl);
-    font-size: 1.1rem;
-    font-weight: 600;
-    /* Inherits .btn-outline styles */
-}
-.personal-page .full-challenge-link .btn i { transition: transform 0.3s ease; display: inline-block; }
-.personal-page .full-challenge-link .btn:hover i { transform: translateX(5px); }
-
-
-/* --- Personal Page Button Style (.btn base) --- */
-.personal-page .btn { display: inline-block; padding: var(--spacing-sm) var(--spacing-lg); background-color: var(--color-primary-original); /* Teal */ color: var(--color-secondary); border-radius: 6px; text-decoration: none; font-weight: var(--font-weight-medium); transition: all 0.3s ease; border: 1px solid var(--color-primary-original); cursor: pointer; text-align: center; }
-.personal-page .btn:hover { background-color: var(--color-primary-light-original); border-color: var(--color-primary-light-original); transform: translateY(-2px); box-shadow: var(--box-shadow-light); }
-.personal-page .btn-outline { background-color: transparent; color: var(--color-primary-original); border: 1px solid var(--color-primary-original); }
-.personal-page .btn-outline:hover { background-color: rgba(12, 52, 61, 0.05); /* Very light teal hover */ color: var(--color-primary-dark-original); border-color: var(--color-primary-dark-original); }
-/* Disabled States */
-.personal-page .btn:disabled, .personal-page .btn[aria-disabled="true"] { background-color: #adb5bd; border-color: #adb5bd; color: #fff; cursor: not-allowed; opacity: 0.7; transform: none; box-shadow: none; }
-.personal-page .btn-outline:disabled, .personal-page .btn-outline[aria-disabled="true"] { background-color: transparent; border-color: #ced4da; color: #6c757d; cursor: not-allowed; opacity: 0.7; transform: none; box-shadow: none; }
-
-
-/* --- Resources Section Styling --- */
-/* Using shared styles with adjustments if needed */
-.personal-page #personal-resources { background-color: var(--color-secondary); padding-bottom: var(--spacing-xxl);}
-.personal-page #personal-resources h2 { color: var(--color-primary-original); } .personal-page #personal-resources h2::after { background-color: var(--color-primary-original); }
-.personal-page .resource-grid { display: grid; grid-template-columns: 1fr; gap: var(--spacing-xl); margin-top: var(--spacing-xl); } .personal-page .resource-card { background: var(--color-secondary); border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--box-shadow-light); transition: all 0.3s ease; display: flex; flex-direction: column; border: 1px solid var(--color-accent); } .personal-page .resource-card:hover { transform: translateY(-5px); box-shadow: var(--box-shadow); } .personal-page .resource-card .card-image { line-height: 0; height: 200px; overflow: hidden; background-color: var(--color-accent); } .personal-page .resource-card .card-image img { width: 100%; height: 100%; object-fit: cover; } .personal-page .resource-card .card-content { padding: var(--spacing-lg); flex-grow: 1; display: flex; flex-direction: column; } .personal-page .resource-card h3 { font-size: 1.3rem; font-weight: 600; color: var(--color-primary-dark-original); margin-bottom: var(--spacing-sm); margin-top: 0; } .personal-page .resource-card p { font-size: 0.95rem; color: var(--color-text-light); line-height: 1.6; margin-bottom: var(--spacing-lg); flex-grow: 1; } .personal-page .resource-card .card-cta { margin-top: auto; }
-/* Social Card Specifics */
-.personal-page .social-integration { background: linear-gradient(135deg, #f0f9ff, #e0f2f7); border: none; padding: var(--spacing-lg); } .personal-page .social-integration .card-header { display: flex; align-items: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-lg); color: var(--color-primary-dark-original); } .personal-page .social-integration .card-header i { font-size: 1.8rem; color: #c13584; } .personal-page .social-integration .card-header h3 { margin-bottom: 0; font-size: 1.3rem; color: inherit; } .personal-page .social-carousel { overflow: hidden; position: relative; height: 150px; /* Adjust height */ } .personal-page .social-post { display: none; animation: fadeIn 0.5s ease-in-out; position: absolute; top: 0; left: 0; width: 100%; } .personal-page .social-post:first-child { display: block; position: relative;} .personal-page .social-post blockquote { background-color: rgba(255, 255, 255, 0.9); padding: var(--spacing-md); border-radius: var(--border-radius); font-style: italic; color: var(--color-text); margin: 0 0 var(--spacing-md) 0; border-left: 4px solid var(--color-primary-original); position: relative; } .personal-page .social-post blockquote footer { font-style: normal; font-weight: var(--font-weight-medium); color: var(--color-text-light); font-size: 0.9em; margin-top: var(--spacing-sm); text-align: right; } .personal-page .social-post img { border-radius: var(--border-radius); margin-bottom: var(--spacing-sm); box-shadow: 0 2px 5px rgba(0,0,0,0.1); max-height: 120px; object-fit: contain;} .personal-page .social-post .post-engagement { display: flex; gap: var(--spacing-md); color: var(--color-text-light); font-size: 0.9em; } .personal-page .social-post .post-engagement span i { margin-right: 5px; color: var(--color-primary-original); } @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-/* --- Tools Section (Templates only) --- */
-.personal-page #personal-tools { background-color: var(--color-background); }
-.personal-page #personal-tools h2 { color: var(--color-primary-original); } .personal-page #personal-tools h2::after { background-color: var(--color-primary-original); }
-.personal-page .template-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--spacing-xl); margin-top: var(--spacing-xl); /* Removed bottom margin */ }
-.personal-page .template-card { background: var(--color-secondary); border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--box-shadow-light); border: 1px solid var(--color-accent); transition: all 0.3s ease; display: flex; flex-direction: column; } .personal-page .template-card:hover { transform: translateY(-5px); box-shadow: var(--box-shadow); }
-.personal-page .template-preview { position: relative; line-height: 0; height: 200px; overflow: hidden; background-color: var(--color-accent); } .personal-page .template-preview img { width: 100%; height: 100%; object-fit: cover; }
-.personal-page .price-tag { position: absolute; top: var(--spacing-md); right: var(--spacing-md); background: rgba(12, 52, 61, 0.9); /* Teal Tag */ color: var(--color-secondary); padding: var(--spacing-xs) var(--spacing-md); border-radius: 50px; font-weight: 600; font-size: 0.85rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-.personal-page .template-details { padding: var(--spacing-lg); flex-grow: 1; display: flex; flex-direction: column; } .personal-page .template-details h3 { font-size: 1.3rem; font-weight: 600; color: var(--color-primary-dark-original); margin-bottom: var(--spacing-sm); } .personal-page .template-details p { font-size: 0.95rem; color: var(--color-text-light); line-height: 1.6; flex-grow: 1; margin-bottom: var(--spacing-lg); }
-.personal-page .template-actions { margin-top: auto; display: flex; gap: var(--spacing-sm); flex-wrap: wrap; }
-.personal-page .template-actions .btn, .personal-page .template-actions .btn-outline { flex-grow: 1; text-align: center; font-size: 0.9rem; }
-
-/* --- Coaching Section Styling --- */
-.personal-page #personal-coaching { background-color: var(--color-background); padding-top: var(--spacing-xxl); /* Added padding back */ }
-.personal-page #personal-coaching h2 { color: var(--color-primary-original); } .personal-page #personal-coaching h2::after { background-color: var(--color-primary-original); }
-.personal-page .coaching-content { display: grid; gap: var(--spacing-xl); margin-top: var(--spacing-xl); grid-template-columns: 1fr; } .personal-page .coaching-item { background: var(--color-secondary); padding: var(--spacing-lg); border-radius: var(--border-radius); box-shadow: var(--box-shadow-light); border: 1px solid var(--color-accent); } .personal-page .coaching-item h3 { font-size: 1.4rem; margin-bottom: var(--spacing-md); color: var(--color-primary-dark-original); display: flex; align-items: center; }
-/* Coaching Icons use Brand Green */
-.personal-page .coaching-item h3::before { font-family: "Font Awesome 6 Free"; font-weight: 900; font-size: 1.1rem; color: var(--brand-green-original); width: 20px; text-align: center; flex-shrink: 0; margin-right: var(--spacing-sm); } .personal-page .coaching-details .coaching-item:nth-child(1) h3::before { content: '\f05a'; } .personal-page .coaching-details .coaching-item:nth-child(2) h3::before { content: '\f5ad'; } .personal-page .coaching-item:last-child h3::before { content: '\f073'; }
-.personal-page .coaching-item p, .personal-page .coaching-item ul { font-size: 0.95rem; color: var(--color-text-light); line-height: 1.7; margin-bottom: var(--spacing-md); } .personal-page .coaching-item ul { list-style: none; padding-left: 0; } .personal-page .coaching-item ul li { position: relative; padding-left: var(--spacing-lg); margin-bottom: var(--spacing-sm); } .personal-page .coaching-item ul li::before { content: '\f00c'; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; left: 0; top: 4px; color: var(--brand-green-original); /* Green check */ font-size: 0.9em; } .personal-page .coaching-request-form label { display: block; margin-bottom: var(--spacing-xs); font-weight: var(--font-weight-medium); color: var(--color-primary-dark-original); font-size: 0.9rem; } .personal-page .coaching-request-form input, .personal-page .coaching-request-form textarea { display: block; width: 100%; margin-bottom: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border: 1px solid #ced4da; /* Adjusted border color */ border-radius: var(--border-radius); font-family: inherit; font-size: 1rem; line-height: 1.5; background-color: #fff; transition: all 0.3s ease; color: var(--color-text); } .personal-page .coaching-request-form input::placeholder, .personal-page .coaching-request-form textarea::placeholder { color: #94a3b8; } .personal-page .coaching-request-form input:focus, .personal-page .coaching-request-form textarea:focus { outline: none; border-color: var(--color-primary-original); box-shadow: 0 0 0 3px rgba(12, 52, 61, 0.1); }
-.personal-page .coaching-request-form textarea { resize: vertical; min-height: 100px; } .personal-page .coaching-request-form button { display: block; width: 100%; margin-top: var(--spacing-sm); /* Uses .btn teal style */ }
-.personal-page .disclaimer { font-size: 0.9rem; color: var(--color-text-light); margin: var(--spacing-xl) auto 0; border-top: 1px solid var(--color-accent); padding-top: var(--spacing-lg); text-align: center; max-width: 800px; line-height: 1.6; } .personal-page .disclaimer strong { color: var(--color-text); }
-
-/* --- MMISBALIOR Promo Section --- */
-.personal-page .mmsballior-promo { background: linear-gradient(135deg, var(--color-primary-original), var(--color-primary-light-original)); color: var(--color-secondary); padding: var(--spacing-xl) var(--spacing-lg); border-radius: var(--border-radius); text-align: center; box-shadow: var(--box-shadow); display: flex; flex-direction: column; align-items: center; gap: var(--spacing-lg); overflow: hidden; }
-.personal-page .mmsballior-promo .promo-content { max-width: 650px; } .personal-page .mmsballior-promo h3 { color: var(--color-secondary); margin-bottom: var(--spacing-md); font-size: clamp(1.6rem, 4vw, 2rem); font-weight: var(--font-weight-bold); margin-top: 0; } .personal-page .mmsballior-promo p { margin-bottom: var(--spacing-lg); max-width: 600px; margin: 0 auto var(--spacing-lg) auto; color: rgba(255, 255, 255, 0.95); line-height: 1.7; } .personal-page .mmsballior-promo .promo-visual { line-height: 0; width: 100%; max-width: 450px; border-radius: var(--border-radius); overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); background-color: var(--color-accent); } .personal-page .mmsballior-promo .promo-visual img { width: 100%; height: auto; }
-.personal-page .mmsballior-promo .btn { background-color: var(--color-secondary); color: var(--color-primary-dark-original); font-weight: var(--font-weight-bold); padding: var(--spacing-sm) var(--spacing-xl); margin-top: 0; border: 1px solid transparent; } .personal-page .mmsballior-promo .btn:hover { background-color: #f1f5f9; color: var(--color-primary-dark-original); transform: translateY(-2px); }
-
-
-/* --- Quiz Modal Styles (Used by Personal & Quizzes pages) --- */
-.personal-page .quiz-modal-overlay { /* Needs .personal-page scope if variables differ */ position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(38, 50, 56, 0.7); /* Use text color with alpha */ display: flex; align-items: center; justify-content: center; z-index: 2000; opacity: 0; pointer-events: none; /* Hidden by default */ transition: opacity 0.3s ease-in-out; padding: var(--spacing-md); backdrop-filter: blur(5px); }
-.personal-page .quiz-modal-overlay[style*="display: flex"] { opacity: 1; pointer-events: auto; } /* Show when display:flex */
-
-.personal-page .quiz-modal-content { background-color: #ffffff; color: var(--color-text); padding: var(--spacing-lg) var(--spacing-xl); border-radius: var(--border-radius); max-width: 650px; /* Slightly narrower */ width: 95%; max-height: 90vh; overflow-y: auto; box-shadow: 0 15px 30px rgba(0,0,0,0.2); position: relative; transform: scale(0.95); transition: transform 0.3s ease-in-out; display: flex; flex-direction: column; /* Added for better structure */ }
-.personal-page .quiz-modal-overlay[style*="display: flex"] .quiz-modal-content { transform: scale(1); }
-
-.personal-page .quiz-modal-close-btn { position: absolute; top: var(--spacing-sm); right: var(--spacing-md); background: transparent; border: none; font-size: 2rem; color: var(--color-text-light); cursor: pointer; line-height: 1; padding: 5px; } .personal-page .quiz-modal-close-btn:hover { color: var(--color-primary-dark-original); }
-
-.personal-page .quiz-modal-content h3#quiz-modal-title { font-size: 1.5rem; /* Adjusted */ color: var(--color-primary-original); text-align: center; margin: 0 auto var(--spacing-md) auto; /* Reduced bottom margin */ padding-bottom: var(--spacing-sm); border-bottom: 2px solid var(--color-accent); width: 100%; }
-
-.personal-page .quiz-modal-progress { text-align: center; font-size: 0.85rem; /* Smaller progress */ color: var(--color-text-light); margin-bottom: var(--spacing-md); background-color: var(--color-background); padding: var(--spacing-xs) 0; border-radius: 4px; }
-
-.personal-page .quiz-modal-question-area { font-weight: 500; margin-bottom: var(--spacing-lg); color: var(--color-text); font-size: 1.1rem; /* Adjusted */ line-height: 1.6; padding: var(--spacing-sm) 0; text-align: left; /* Changed from center */ }
-
-.personal-page .quiz-modal-options-area { display: flex; flex-direction: column; gap: var(--spacing-sm); margin-bottom: var(--spacing-md); /* Reduced */ }
-.personal-page .quiz-modal-options-area .option-button { display: block; width: 100%; text-align: left; background-color: var(--color-secondary); padding: var(--spacing-sm) var(--spacing-md); /* Adjusted padding */ border-radius: 6px; /* Slightly less round */ border: 1px solid #cbd5e1; /* Neutral border */ cursor: pointer; transition: all 0.2s ease; font-size: 1rem; color: var(--color-text); font-family: inherit;}
-.personal-page .quiz-modal-options-area .option-button:hover:not(:disabled) { background-color: #f8fafc; /* Very light grey */ border-color: var(--color-primary-original); transform: scale(1.01); }
-.personal-page .quiz-modal-options-area .option-button:disabled { cursor: default; } /* Remove opacity change here */
-/* Correct/Incorrect feedback states */
-.personal-page .quiz-modal-options-area .option-button.correct { background-color: #e8f5e9 !important; border-color: var(--brand-green-original) !important; color: #1b5e20 !important; font-weight: 600; }
-.personal-page .quiz-modal-options-area .option-button.incorrect { background-color: #fce4e4 !important; border-color: #f5c6cb !important; color: #721c24 !important; }
-.personal-page .quiz-modal-options-area .option-button.disabled:not(.correct):not(.incorrect) { opacity: 0.65; /* Make non-selected options fade slightly */ }
-
-/* Modal feedback text styling */
-.personal-page .quiz-modal-feedback { margin-top: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: 6px; line-height: 1.6; border-left-width: 4px; border-left-style: solid; animation: fadeIn 0.3s ease; font-size: 0.95rem; }
-.personal-page .quiz-modal-feedback p { margin: 0; } .personal-page .quiz-modal-feedback strong { margin-right: 5px; display: block; margin-bottom: 3px; font-size: 1.05em; }
-.personal-page .quiz-modal-feedback.correct { background-color: #e8f5e9; color: #1b5e20; border-left-color: var(--brand-green-original); }
-.personal-page .quiz-modal-feedback.incorrect { background-color: #fce4e4; color: #721c24; border-left-color: #f5c6cb; }
-
-/* Modal results styling */
-.personal-page .quiz-modal-results { animation: fadeIn 0.5s ease; text-align: center; padding: var(--spacing-lg) var(--spacing-md); background-color: var(--color-background); border-radius: var(--border-radius); margin-top: var(--spacing-md); }
-.personal-page .quiz-modal-results h4 { margin-bottom: var(--spacing-sm); color: var(--color-primary-dark-original); font-size: 1.3rem; font-weight: 600;}
-.personal-page .quiz-modal-results p { font-size: 1.1rem; color: var(--color-text); margin-bottom: 5px; }
-
-/* Modal navigation buttons */
-.personal-page .quiz-modal-navigation { display: flex; justify-content: center; align-items: center; gap: var(--spacing-md); margin-top: var(--spacing-lg); flex-wrap: wrap; padding-top: var(--spacing-md); border-top: 1px solid var(--color-accent); /* Separator */ }
-/* Use .btn class as base, then modify size */
-.personal-page .quiz-modal-navigation .cta-button { font-size: 0.95rem; padding: var(--spacing-xs) var(--spacing-md); /* Smaller padding */}
-/* Style Restart and Close as outline buttons */
-.personal-page .quiz-modal-navigation #quiz-modal-restart,
-.personal-page .quiz-modal-navigation #quiz-modal-close-results {
-  background-color: transparent;
-  color: var(--color-primary-original);
-  border: 1px solid var(--color-primary-original);
-}
-.personal-page .quiz-modal-navigation #quiz-modal-restart:hover,
-.personal-page .quiz-modal-navigation #quiz-modal-close-results:hover {
-  background-color: rgba(12, 52, 61, 0.05);
-  border-color: var(--color-primary-dark-original);
-  color: var(--color-primary-dark-original);
-}
-/* Next button uses primary solid style */
-.personal-page .quiz-modal-navigation #quiz-modal-next {
-   /* Inherits from .personal-page .btn */
-}
-
-/* --- Floating Background Animation --- */
-.personal-page .deco-blur { position: fixed; width: 450px; height: 450px; background: radial-gradient(circle, var(--color-primary-light-original, #1a4652) 0%, transparent 70%); border-radius: 50%; filter: blur(130px); opacity: 0.06; z-index: -1; animation: float 20s ease-in-out infinite alternate; will-change: transform; pointer-events: none; }
-.personal-page .deco-blur.blur-1 { top: 10%; left: 5%; animation-duration: 22s; }
-.personal-page .deco-blur.blur-2 { bottom: 15%; right: 10%; animation-delay: 6s; animation-duration: 19s; background: radial-gradient(circle, var(--brand-green-original, #28a745) 0%, transparent 70%); opacity: 0.05; }
-.personal-page .deco-blur.blur-3 { top: 60%; left: 50%; transform: translateX(-50%); animation-delay: 11s; animation-duration: 24s;}
-@keyframes float { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(30px, -40px) scale(1.1); } 100% { transform: translate(0, 0) scale(1); } }
-
 /* ====================================================================== */
-/* === END: Personal & Quizzes Page Specific Styles (.personal-page) === */
+/* === Personal & Quizzes Styles (MOVED TO personal.css/quizzes.css) === */
 /* ====================================================================== */
 
 
 /* =========================== */
-/* === Responsive Overrides === */
+/* === Responsive Overrides (Global/Index/Defaults) === */
 /* =========================== */
-/* These apply globally but consider new personal page elements */
+/* Apply globally unless targeting specific elements moved elsewhere */
 @media (max-width: 400px) {
   :root { --spacing-md: 15px; --spacing-lg: 25px; --spacing-xl: 30px; }
   .container { padding: 0 var(--spacing-md); }
   #primary-navigation.active { gap: 5px; padding-left: var(--spacing-sm); padding-right: var(--spacing-sm); }
   #primary-navigation.active .nav-link { font-size: 0.875rem; padding: var(--spacing-xs) 8px; }
-  .cta-button, .connect-button, .personal-page .btn { padding: var(--spacing-sm) var(--spacing-md); font-size: 0.95rem;}
-  /* Personal page specific */
-  .personal-page .category-grid { grid-template-columns: 1fr; }
-  .personal-page .quiz-modal-content { padding: var(--spacing-md); }
-  .personal-page .quiz-modal-content h3 { font-size: 1.4rem; }
-  .personal-page .template-grid { grid-template-columns: 1fr; } /* Ensure templates stack */
-  .personal-page .resource-grid { grid-template-columns: 1fr; } /* Ensure resources stack */
+  .cta-button, .connect-button { padding: var(--spacing-sm) var(--spacing-md); font-size: 0.95rem;}
 }
 
 @media (max-width: 500px) {
@@ -368,45 +155,26 @@ li { margin-bottom: var(--spacing-xs); } ul ul li { margin-bottom: var(--spacing
   .footer-content { gap: var(--spacing-md); }
   .social-media { gap: var(--spacing-sm); }
   .social-link { width: 36px; height: 36px; } .social-icon { width: 20px; height: 20px; }
-  /* Personal page specific */
-  .personal-page .template-actions { flex-direction: column; }
-  .personal-page .motivational-quote .container { flex-direction: column; text-align: center; gap: var(--spacing-md); }
-  .personal-page .motivational-quote .quote-icon { margin-bottom: var(--spacing-xs); font-size: 1.8rem;}
 }
 
-@media (min-width: 576px) {
-    /* Allow 2 columns for categories on slightly larger small screens */
-     .personal-page .category-grid { grid-template-columns: repeat(2, 1fr); }
+/* Keep this rule for index/corp cards */
+ @media (min-width: 576px) {
+    /* No rules here specifically for index/corp needed */
  }
-
 
 @media (min-width: 768px) {
   :root { --header-height: 70px; }
   .site-header { height: var(--header-height); }
   .hero-section, .page-intro { padding-top: calc(var(--header-height) + var(--spacing-xl)); }
   .hero-section { min-height: 500px; }
-  .cards { flex-direction: row; flex-wrap: wrap; justify-content: center; } /* Index/Corp */
-  .card { flex: 0 1 calc(50% - var(--spacing-lg)); max-width: 350px; } /* Index/Corp */
+  /* Index page cards */
+  .cards { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+  .card { flex: 0 1 calc(50% - var(--spacing-lg)); max-width: 350px; }
+  /* Footer layout */
   .footer-content { flex-direction: row; justify-content: space-between; align-items: center; text-align: left; }
   .footer-right { text-align: right; }
   .social-media { justify-content: flex-end; margin-top: 0; }
-  .page-footer-links .container { flex-direction: row; justify-content: space-around; align-items: flex-start; text-align: left; }
-  .page-footer-links > .container > div { width: auto; } .page-footer-links h4 { margin-bottom: var(--spacing-md); } .page-footer-links ul { justify-content: flex-start; flex-direction: column; gap: var(--spacing-sm); }
-  .service-items { grid-template-columns: repeat(2, 1fr); } /* Corporate */
-  .consultation-form .form-grid { grid-template-columns: repeat(2, 1fr); } /* Corporate */
-  .consultation-form .form-footer { flex-direction: row; justify-content: space-between; align-items: center; } /* Corporate */
-  .consultation-form .privacy-note { text-align: left; margin-bottom: 0; margin-right: var(--spacing-md); flex-basis: 60%; } /* Corporate */
-  .consultation-form .cta-button.large { margin-top: 0; flex-shrink: 0; } /* Corporate */
-  /* Personal page adjustments */
-  .personal-page .stats-grid { grid-template-columns: repeat(3, 1fr); }
-  .personal-page .resource-grid { grid-template-columns: repeat(2, 1fr); } /* Resource cards at 2 columns */
-  .personal-page .template-grid { grid-template-columns: repeat(2, 1fr); }
-  .personal-page .category-grid { grid-template-columns: repeat(3, 1fr); } /* Categories 3 columns */
-  .personal-page .coaching-content { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
-  .personal-page .mmsballior-promo { flex-direction: row; text-align: left; gap: var(--spacing-xl); align-items: center; }
-  .personal-page .mmsballior-promo .promo-content { order: 1; flex: 1; }
-  .personal-page .mmsballior-promo .promo-visual { order: 2; flex: 0 0 40%; max-width: 350px;}
-  .personal-page .mmsballior-promo .btn { align-self: flex-start; }
+  /* Removed rules for service-items, consultation-form etc. */
 }
 
 @media (max-width: 991px) {
@@ -425,32 +193,24 @@ li { margin-bottom: var(--spacing-xs); } ul ul li { margin-bottom: var(--spacing
   /* Desktop Nav structure */
   .nav-list { display: flex; gap: var(--spacing-lg); position: static; width: auto; background-color: transparent; box-shadow: none; padding: 0; opacity: 1; flex-direction: row; flex-wrap: nowrap; top: auto; left: auto; overflow-x: visible; }
   #primary-navigation.active { /* Reset active state visually */ position: static; box-shadow: none; overflow-x: visible; padding: 0; gap: var(--spacing-lg); justify-content: flex-start; display: flex; background-color: transparent; }
-  /* Ensure Personal page nav reset maintains transparent BG */
-  .personal-page #primary-navigation.active { background-color: transparent; box-shadow: none; }
-  .cards .card { flex-basis: calc(33.333% - var(--spacing-lg) * 2 / 3); max-width: 360px; } /* Index */
-  .service-items { grid-template-columns: repeat(4, 1fr); } /* Corporate */
-  /* Personal page large screen layout */
-  .personal-page .resource-grid { grid-template-columns: repeat(3, 1fr); } /* Resource cards 3 cols */
-  .personal-page .template-grid { grid-template-columns: repeat(2, 1fr); } /* Templates stay 2 */
-  .personal-page .category-grid { grid-template-columns: repeat(4, 1fr); } /* Categories 4 cols */
-  .personal-page .coaching-content { grid-template-columns: 2fr 1fr; align-items: start; } /* Coaching layout */
+  /* Index cards */
+  .cards .card { flex-basis: calc(33.333% - var(--spacing-lg) * 2 / 3); max-width: 360px; }
+  /* Removed rules for service-items etc. */
 }
 
 @media (min-width: 1200px) {
   /* Fine-tune very large screens */
   .hero-section h1 { font-size: 3.8rem; }
-  .personal-page .page-intro h1 { font-size: 4rem; }
-  .page-section > .container > p.section-description { font-size: 1.15rem; }
-  .personal-page .category-grid { grid-template-columns: repeat(5, 1fr); } /* Categories 5 cols */
+  .section-description { font-size: 1.15rem; } /* Refined target */
 }
 
 /* =========================== */
-/* === Print Styles (Unchanged) === */
+/* === Print Styles (Global Defaults) === */
 /* =========================== */
 @media print {
     body { padding-top: 0; font-size: 10pt; color: #000; background-color: #fff; }
     :root { --color-primary: #000; --color-secondary: #fff; --color-text: #000; --color-background: #fff; --brand-green: #000; --border-radius: 0px; --box-shadow-light: none; --box-shadow: none; --color-primary-original: #000; --brand-green-original: #000; }
-    .site-header, .cta-section, .footer-right .social-media, .mobile-menu-toggle, .connect-button, .cta-button, .personal-page .btn, .page-footer-links, .mmsballior-promo, .quiz-modal-overlay, .consultation-form button, .template-actions, .template-variants, .social-carousel, .stats-grid, .price-tag, .deco-blur, .motivational-quote, .category-card .start-quiz-btn, .quiz-modal-navigation button { display: none !important; } /* Added modal buttons to hide */
+    .site-header, .cta-section, .footer-right .social-media, .mobile-menu-toggle, .connect-button, .cta-button, .page-footer-links, .deco-blur { display: none !important; } /* Simplified */
     .container { max-width: 100%; padding: 0 1cm; }
     a { color: inherit !important; text-decoration: none !important; }
     h1, h2, h3, h4, h5, h6 { color: #000 !important; text-shadow: none !important; font-family: 'Times New Roman', Times, serif !important; margin-bottom: 0.5em; page-break-after: avoid; }
@@ -458,14 +218,10 @@ li { margin-bottom: var(--spacing-xs); } ul ul li { margin-bottom: var(--spacing
     body { font-family: 'Times New Roman', Times, serif !important; }
     .hero-section, .page-intro { background: none !important; color: #000 !important; margin-top: 0 !important; padding: 1cm 0 !important; min-height: auto !important; text-align: left !important; display: block !important; border: none !important; }
     .hero-content, .page-intro .container { padding: 0 !important; margin: 0 !important; max-width: 100% !important; text-align: left !important; }
-    .page-section { padding: 1cm 0 !important; border-color: #ccc !important; page-break-inside: avoid; }
-    .page-section h2::after { display: none !important; }
-    .card, .resource-card, .template-card, .service-item, .coaching-item, .consultation-form, .category-card { box-shadow: none !important; border: 1px solid #ccc !important; padding: 0.5cm !important; page-break-inside: avoid; background: #fff !important; border-radius: 0 !important; }
-    .card-image, .template-preview, .service-icon, .card > a:first-child img, .client-logos img, .promo-visual img, .stat-card i, .category-icon { display: none !important; }
-    .disclaimer { border: 1px solid #ccc; padding: 0.5cm; box-shadow: none; }
-    /* Quiz Modal Print */
-    .quiz-modal-feedback { background-color: #f0f0f0 !important; color: #000 !important; border: 1px solid #ccc !important; border-left: none !important; }
-    .quiz-modal-options-area .option-button { border-color: #eee !important; background-color: #fff !important; color: #000 !important; }
+    .section-padding, .contact-section, .services-section { padding: 1cm 0 !important; border-color: #ccc !important; page-break-inside: avoid; } /* Example targets */
+    .section-title::after { display: none !important; }
+    .card, .contact-container { box-shadow: none !important; border: 1px solid #ccc !important; padding: 0.5cm !important; page-break-inside: avoid; background: #fff !important; border-radius: 0 !important; }
+    .card > a:first-child img, .client-logos img { display: none !important; } /* Simplified */
     /* Footer Print */
     .site-footer { background-color: #fff !important; color: #000 !important; border-top: 1px solid #ccc !important; padding: 1cm 0 !important; text-align: left !important; }
     .footer-left { display: block !important; float: none !important; } .footer-right { display: none !important; }
