@@ -165,6 +165,161 @@
 }
 
 /* --- Motivational Quote Styling (Used on Personal) --- */
+.personal-page {
+  /* Theme Variables for these pages */
+  --color-primary-personal: var(--color-primary-original); /* #0c343d Teal */
+  --color-primary-light-personal: var(--color-primary-light-original); /* #1a4652 */
+  --color-primary-dark-personal: var(--color-primary-dark-original); /* #072329 */
+  --brand-green-personal: var(--brand-green-original); /* #28a745 Green */
+
+  --color-background: #f7fbfb;      /* Very light teal/cyan BG */
+  --color-accent: #e0f7fa;          /* Lighter Teal accent */
+  --color-text: #263238;            /* Dark Grey-Blue Text */
+  --color-text-light: #546e7a;       /* Medium Grey-Blue Text */
+  --border-radius: 8px;             /* Slightly rounder corners */
+  --box-shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -1px rgba(0, 0, 0, 0.05);
+  --box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+}
+
+/* Apply Inter font and specific BG/Text color */
+.personal-page body {
+    font-family: 'Inter', sans-serif;
+    background-color: #ffffff; /* Use white as base BG */
+    color: var(--color-text);
+}
+
+/* --- Header Overrides for Personal/Quizzes --- */
+.personal-page .site-header {
+    background: rgba(255, 255, 255, 0.98);
+    border-bottom: 1px solid #b2dfdb; /* Light Teal Border */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+/* Use Teal version of Logo - Requires teal logo image or filter */
+.personal-page .logo img {
+    /* If using a separate teal logo image: */
+    content: url(../../assets/images/common/rofilid-logo-teal.svg); /* Check path */
+    /* If using CSS filter on white logo (less ideal for specific color): */
+    /* filter: brightness(0) saturate(100%) invert(13%) sepia(17%) saturate(3694%) hue-rotate(154deg) brightness(94%) contrast(94%); */
+}
+/* Nav links use Teal */
+.personal-page .nav-link { color: var(--color-primary-personal); }
+.personal-page .nav-link:hover { color: var(--color-primary-dark-personal); opacity: 1; }
+.personal-page .nav-link:focus { outline-color: var(--color-primary-personal); }
+.personal-page .nav-list .nav-link.active-page { color: var(--color-primary-personal); border-bottom-color: var(--color-primary-personal); }
+.personal-page .nav-list .nav-link.active-page:hover { border-bottom-color: var(--color-primary-dark-personal); }
+.personal-page .mobile-menu-toggle { color: var(--color-primary-personal); } /* Teal Toggle */
+/* Mobile nav dropdown background */
+.personal-page #primary-navigation.active {
+    background-color: var(--color-secondary);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+.personal-page #primary-navigation.active .nav-link { color: var(--color-primary-personal); }
+.personal-page #primary-navigation.active .nav-link:hover { color: var(--color-primary-dark-personal); }
+.personal-page #primary-navigation.active .nav-link.active-page { border-bottom-color: var(--color-primary-personal); }
+/* Connect Button Use Teal */
+.personal-page .connect-button {
+    background-color: var(--color-primary-personal);
+    color: var(--color-secondary);
+    border: none;
+}
+.personal-page .connect-button:hover { background-color: var(--color-primary-light-personal); }
+
+/* --- Page Intro Overrides (Common to Personal & Quizzes) --- */
+.personal-page .page-intro {
+    /* padding uses global --header-height which should be updated by JS */
+    padding-top: calc(var(--header-height, 70px) + var(--spacing-xl));
+    padding-bottom: var(--spacing-xl); /* Reduced bottom padding */
+    background: linear-gradient(145deg, #ffffff 0%, #eefcff 100%); /* Even lighter gradient */
+    color: var(--color-text);
+    border-bottom: none;
+    text-align: center; /* Ensure centered */
+}
+.personal-page .page-intro h1 {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(2.2rem, 6vw, 3.2rem); /* Adjusted size */
+    font-weight: 700;
+    color: var(--color-primary-personal); /* Teal Heading */
+    line-height: 1.2;
+    text-shadow: none;
+    margin-bottom: var(--spacing-md);
+}
+.personal-page .page-intro .subheadline {
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    color: var(--color-text-light);
+    max-width: 800px;
+    margin: 0 auto var(--spacing-lg) auto;
+}
+.personal-page .page-intro p:not(.subheadline) {
+    color: var(--color-text-light);
+    max-width: 850px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+/* Style for quiz page intro's 'Back' link */
+.personal-page .quiz-page-intro p { margin-top: var(--spacing-lg); }
+/* Back/Inline link styles */
+.personal-page .link-back, .personal-page .link-inline {
+    color: var(--color-primary-personal);
+    text-decoration: underline;
+    font-weight: 500;
+}
+.personal-page .link-back:hover, .personal-page .link-inline:hover {
+    color: var(--color-primary-dark-personal);
+}
+.personal-page .link-back i { margin-right: 5px;}
+
+/* --- Section Titles (Personal/Quiz Override) --- */
+.personal-page .section-title {
+    color: var(--color-primary-personal); /* Teal title */
+}
+.personal-page .section-title::after {
+    background-color: var(--color-primary-personal); /* Teal underline */
+}
+
+/* --- Stats Grid Styling (Used on Personal) --- */
+.personal-page .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Adjust minmax */
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-xl);
+    margin-bottom: 0;
+}
+.personal-page .stat-card {
+    background: rgba(255, 255, 255, 0.9);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    text-align: center;
+    box-shadow: var(--box-shadow-light);
+    border: 1px solid var(--color-accent); /* Light Teal Border */
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+}
+.personal-page .stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow);
+}
+.personal-page .stat-card i {
+    font-size: 2rem;
+    color: var(--color-primary-personal); /* Teal Icon */
+    margin-bottom: var(--spacing-sm);
+    display: block;
+}
+.personal-page .stat-card h4 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-primary-dark-personal); /* Dark Teal */
+    margin-bottom: var(--spacing-xs);
+}
+.personal-page .stat-card p {
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+    line-height: 1.5;
+}
+
+/* --- Motivational Quote Styling (Used on Personal) --- */
 .personal-page .motivational-quote {
     padding: var(--spacing-lg) 0; /* Reduced padding */
     margin: var(--spacing-xl) 0;
@@ -214,6 +369,7 @@
 .personal-page .motivational-quote.alt-bg .quote-icon {
     color: var(--color-primary-personal); /* Teal Icon */
 }
+
 
 /* --- Financial Fitness Challenge Styles (Common to Personal Intro & Full Quizzes) --- */
 .personal-page #financial-fitness-challenge-intro,
@@ -332,6 +488,7 @@
     border: 1px solid var(--color-primary-personal);
     cursor: pointer;
     text-align: center;
+    font-size: 0.95rem; /* Base button size adjust */
 }
 .personal-page .btn:hover {
     background-color: var(--color-primary-light-personal);
@@ -509,18 +666,17 @@
 }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-/* --- Tools Section (Templates only on Personal Page) --- */
+/* --- Marketplace/Tools Section (Templates) --- */
 .personal-page #personal-tools {
     /* Uses .section-padding */
     background-color: #ffffff; /* White background */
 }
-/* Section title already styled */
 .personal-page .template-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    /* More robust column definition for flexibility */
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); /* Adjust minmax */
     gap: var(--spacing-xl);
     margin-top: var(--spacing-xl);
-    /* Bottom margin handled by section padding or next element */
 }
 .personal-page .template-card {
     background: var(--color-secondary);
@@ -533,33 +689,43 @@
     flex-direction: column;
 }
 .personal-page .template-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-6px); /* Slightly more lift */
     box-shadow: var(--box-shadow);
+    border-color: var(--color-primary-light-personal); /* Darker teal border on hover */
 }
 .personal-page .template-preview {
     position: relative;
     line-height: 0;
-    height: 200px;
+    /* Aspect ratio preferred over fixed height for responsiveness */
+    aspect-ratio: 16 / 10; /* Adjust as needed */
     overflow: hidden;
     background-color: var(--color-accent);
 }
+/* Style for image sliding effect */
 .personal-page .template-preview img {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover; /* Ensure images cover the area */
+    transition: opacity 0.4s ease-in-out; /* Smooth fade */
 }
-.personal-page .price-tag {
-    position: absolute;
-    top: var(--spacing-md);
-    right: var(--spacing-md);
-    background: rgba(12, 52, 61, 0.9); /* Teal Tag */
-    color: var(--color-secondary);
-    padding: var(--spacing-xs) var(--spacing-md);
-    border-radius: 50px;
-    font-weight: 600;
-    font-size: 0.85rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+.personal-page .template-preview img:last-child {
+    opacity: 0; /* Hide the second image by default */
 }
+/* Show second image on hover/focus */
+.personal-page .template-card:hover .template-preview img:first-child,
+.personal-page .template-card:focus-within .template-preview img:first-child {
+    opacity: 0; /* Hide the first image */
+}
+.personal-page .template-card:hover .template-preview img:last-child,
+.personal-page .template-card:focus-within .template-preview img:last-child {
+    opacity: 1; /* Show the second image */
+}
+/* Price Tag Removed as price is now in actions */
+/* .personal-page .price-tag { ... } */
+
 .personal-page .template-details {
     padding: var(--spacing-lg);
     flex-grow: 1;
@@ -571,6 +737,7 @@
     font-weight: 600;
     color: var(--color-primary-dark-personal);
     margin-bottom: var(--spacing-sm);
+    line-height: 1.3; /* Added for better spacing */
 }
 .personal-page .template-details p {
     font-size: 0.95rem;
@@ -580,16 +747,27 @@
     margin-bottom: var(--spacing-lg);
 }
 .personal-page .template-actions {
-    margin-top: auto;
+    margin-top: auto; /* Push actions to the bottom */
     display: flex;
+    flex-direction: column; /* Stack buttons */
     gap: var(--spacing-sm);
-    flex-wrap: wrap;
 }
+/* Style buttons within actions */
 .personal-page .template-actions .btn,
 .personal-page .template-actions .btn-outline {
-    flex-grow: 1;
+    flex-grow: 1; /* Allow buttons to take full width if needed */
     text-align: center;
-    font-size: 0.9rem; /* Smaller buttons */
+    width: 100%; /* Ensure they take full width in column layout */
+    font-size: 0.9rem; /* Slightly smaller text */
+    padding: var(--spacing-xs) var(--spacing-sm); /* Adjust padding */
+}
+/* Add styling for the price/note */
+.personal-page .template-price-note {
+    font-size: 0.8rem;
+    color: var(--color-text-light);
+    text-align: center;
+    margin-top: var(--spacing-md); /* Add space above note */
+    line-height: 1.4;
 }
 
 /* --- Coaching Section Styling (Personal Page) --- */
@@ -718,8 +896,8 @@
     color: var(--color-text);
 }
 
-/* --- MMISBALIOR Promo Section --- */
-.personal-page .mmsballior-promo {
+/* --- MMISBALIOR Promo Section (Typo Corrected) --- */
+.personal-page .mmisbalior-promo { /* Typo Corrected */
     background: linear-gradient(135deg, var(--color-primary-personal), var(--color-primary-light-personal));
     color: var(--color-secondary);
     padding: var(--spacing-xl) var(--spacing-lg);
@@ -732,24 +910,24 @@
     gap: var(--spacing-lg);
     overflow: hidden;
 }
-.personal-page .mmsballior-promo .promo-content {
+.personal-page .mmisbalior-promo .promo-content { /* Typo Corrected */
     max-width: 650px;
 }
-.personal-page .mmsballior-promo h3 {
+.personal-page .mmisbalior-promo h3 { /* Typo Corrected */
     color: var(--color-secondary);
     margin-bottom: var(--spacing-md);
     font-size: clamp(1.6rem, 4vw, 2rem);
     font-weight: var(--font-weight-bold);
     margin-top: 0;
 }
-.personal-page .mmsballior-promo p {
+.personal-page .mmisbalior-promo p { /* Typo Corrected */
     margin-bottom: var(--spacing-lg);
     max-width: 600px;
     margin: 0 auto var(--spacing-lg) auto;
     color: rgba(255, 255, 255, 0.95);
     line-height: 1.7;
 }
-.personal-page .mmsballior-promo .promo-visual {
+.personal-page .mmisbalior-promo .promo-visual { /* Typo Corrected */
     line-height: 0;
     width: 100%;
     max-width: 450px;
@@ -758,11 +936,11 @@
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     background-color: var(--color-accent);
 }
-.personal-page .mmsballior-promo .promo-visual img {
+.personal-page .mmisbalior-promo .promo-visual img { /* Typo Corrected */
     width: 100%;
     height: auto;
 }
-.personal-page .mmsballior-promo .btn { /* Overrides base .btn */
+.personal-page .mmisbalior-promo .btn { /* Overrides base .btn */ /* Typo Corrected */
     background-color: var(--color-secondary);
     color: var(--color-primary-dark-personal);
     font-weight: var(--font-weight-bold);
@@ -770,7 +948,7 @@
     margin-top: 0;
     border: 1px solid transparent;
 }
-.personal-page .mmsballior-promo .btn:hover {
+.personal-page .mmisbalior-promo .btn:hover { /* Typo Corrected */
     background-color: #f1f5f9;
     color: var(--color-primary-dark-personal);
     transform: translateY(-2px);
@@ -778,6 +956,7 @@
 
 
 /* --- Quiz Modal Styles (Used by Personal & Quizzes pages) --- */
+/* ... (Keep existing quiz modal styles unchanged) ... */
 .personal-page .quiz-modal-overlay {
     position: fixed;
     top: 0;
@@ -994,7 +1173,9 @@
    /* Inherits from .personal-page .btn directly */
 }
 
+
 /* --- Floating Background Animation --- */
+/* ... (Keep existing background animation styles unchanged) ... */
 .personal-page .deco-blur {
     position: fixed;
     width: 450px;
@@ -1021,6 +1202,38 @@
     100% { transform: translate(0, 0) scale(1); }
 }
 
+/* --- Footer Style Improvements --- */
+.personal-page .site-footer {
+    /* Default footer is dark teal, colors should be fine but let's ensure */
+    background-color: var(--color-primary-original); /* Ensure dark background */
+    color: #b2dfdb; /* Base text color (light cyan) */
+}
+/* Ensure footer links inside page-footer-links have good contrast */
+.personal-page .page-footer-links ul li a {
+    color: #e0f2f7; /* Use a lighter cyan/near-white for links */
+    transition: color 0.2s ease;
+}
+.personal-page .page-footer-links ul li a:hover {
+    color: var(--color-secondary); /* White on hover */
+    text-decoration: underline;
+}
+/* Ensure footer headings are clear */
+.personal-page .page-footer-links h4 {
+    color: var(--color-secondary); /* White heading */
+    margin-bottom: var(--spacing-sm);
+}
+/* Ensure copyright text is readable */
+.personal-page .copyright p {
+    color: #80cbc4; /* Slightly dimmer cyan for copyright */
+}
+/* Ensure social links in footer are visible (already styled in global, but double check) */
+.personal-page .site-footer .social-link {
+    background-color: rgba(255, 255, 255, 0.1); /* Default semi-transparent white */
+}
+.personal-page .site-footer .social-link:hover {
+    background-color: rgba(255, 255, 255, 0.25); /* Brighter on hover */
+}
+
 /* --- Responsive Overrides for Personal/Quiz --- */
 @media (max-width: 400px) {
   .personal-page .category-grid { grid-template-columns: 1fr; }
@@ -1031,6 +1244,7 @@
 }
 
 @media (max-width: 500px) {
+  /* Template actions already column, this ensures consistency */
   .personal-page .template-actions { flex-direction: column; }
   .personal-page .motivational-quote .container { flex-direction: column; text-align: center; gap: var(--spacing-md); }
   .personal-page .motivational-quote .quote-icon { margin-bottom: var(--spacing-xs); font-size: 1.8rem;}
@@ -1039,41 +1253,78 @@
 @media (min-width: 576px) {
     /* Allow 2 columns for categories on slightly larger small screens */
      .personal-page .category-grid { grid-template-columns: repeat(2, 1fr); }
+     /* Templates at 2 columns earlier */
+     .personal-page .template-grid { grid-template-columns: repeat(2, 1fr); }
+     /* Resource cards at 2 columns earlier */
+     .personal-page .resource-grid { grid-template-columns: repeat(2, 1fr); }
+     /* Make template actions row again if desired */
+     /* .personal-page .template-actions { flex-direction: row; } */ /* Keep column for clarity? Decision: Keep column for now. */
  }
 
 @media (min-width: 768px) {
   /* Personal page adjustments */
   .personal-page .stats-grid { grid-template-columns: repeat(3, 1fr); }
-  .personal-page .resource-grid { grid-template-columns: repeat(2, 1fr); } /* Resource cards at 2 columns */
-  .personal-page .template-grid { grid-template-columns: repeat(2, 1fr); }
+  /* Resources stay 2 columns or go 3? Let's try 3 */
+  .personal-page .resource-grid { grid-template-columns: repeat(3, 1fr); }
+  /* Templates stay 2 columns or go 3? Keep at 2 for now */
+  /* .personal-page .template-grid { grid-template-columns: repeat(2, 1fr); } */
   .personal-page .category-grid { grid-template-columns: repeat(3, 1fr); } /* Categories 3 columns */
   .personal-page .coaching-content { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
-  .personal-page .mmsballior-promo { flex-direction: row; text-align: left; gap: var(--spacing-xl); align-items: center; }
-  .personal-page .mmsballior-promo .promo-content { order: 1; flex: 1; }
-  .personal-page .mmsballior-promo .promo-visual { order: 2; flex: 0 0 40%; max-width: 350px;}
-  .personal-page .mmsballior-promo .btn { align-self: flex-start; }
-  .personal-page .page-footer-links .container { flex-direction: row; justify-content: space-around; align-items: flex-start; text-align: left; }
-  .personal-page .page-footer-links > .container > div { width: auto; } .personal-page .page-footer-links h4 { margin-bottom: var(--spacing-md); } .personal-page .page-footer-links ul { justify-content: flex-start; flex-direction: column; gap: var(--spacing-sm); }
+  .personal-page .mmisbalior-promo { flex-direction: row; text-align: left; gap: var(--spacing-xl); align-items: center; } /* Typo Corrected */
+  .personal-page .mmisbalior-promo .promo-content { order: 1; flex: 1; } /* Typo Corrected */
+  .personal-page .mmisbalior-promo .promo-visual { order: 2; flex: 0 0 40%; max-width: 350px;} /* Typo Corrected */
+  .personal-page .mmisbalior-promo .btn { align-self: flex-start; } /* Typo Corrected */
 
+  /* Ensure Footer Link Section Layout */
+  .personal-page .page-footer-links {
+      padding-bottom: var(--spacing-xl); /* Add space before main footer content */
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Optional separator */
+      margin-bottom: var(--spacing-xl);
+  }
+  .personal-page .page-footer-links .container {
+      display: flex; /* Already flex, ensure direction */
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: flex-start;
+      text-align: left;
+      flex-wrap: wrap; /* Allow wrapping on medium screens */
+      gap: var(--spacing-lg);
+  }
+  .personal-page .page-footer-links > .container > div {
+      width: auto;
+      min-width: 150px; /* Ensure some minimum width */
+      flex-basis: 20%; /* Adjust basis */
+  }
+  .personal-page .page-footer-links h4 { margin-bottom: var(--spacing-md); }
+  .personal-page .page-footer-links ul {
+      justify-content: flex-start;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+  }
 }
 
 @media (min-width: 992px) {
   /* Personal page large screen layout */
-  .personal-page .resource-grid { grid-template-columns: repeat(3, 1fr); } /* Resource cards 3 cols */
-  .personal-page .template-grid { grid-template-columns: repeat(2, 1fr); } /* Templates stay 2 */
+  /* Resource cards stay 3 cols */
+  .personal-page .template-grid { grid-template-columns: repeat(3, 1fr); } /* Templates go 3 cols */
   .personal-page .category-grid { grid-template-columns: repeat(4, 1fr); } /* Categories 4 cols */
   .personal-page .coaching-content { grid-template-columns: 2fr 1fr; align-items: start; } /* Coaching layout */
+  .personal-page .page-footer-links > .container > div { flex-basis: auto; } /* Reset basis for more natural flow */
 }
 
 @media (min-width: 1200px) {
   /* Fine-tune very large screens */
-  .personal-page .page-intro h1 { font-size: 3.5rem; } /* Slightly adjust personal intro */
-  .personal-page .category-grid { grid-template-columns: repeat(5, 1fr); } /* Categories 5 cols */
+  .personal-page .page-intro h1 { font-size: 3.5rem; }
+  .personal-page .category-grid { grid-template-columns: repeat(4, 1fr); } /* Keep Categories 4 cols */
+  /* Maybe 5 template columns? */
+  .personal-page .template-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); } /* Use auto-fit for templates */
+
 }
 
 /* --- Print Styles for Personal/Quiz --- */
+/* ... (Keep existing print styles unchanged) ... */
 @media print {
-    .personal-page .btn, .personal-page .page-footer-links, .personal-page .mmsballior-promo, .personal-page .quiz-modal-overlay, .personal-page .template-actions, .personal-page .social-carousel, .personal-page .stats-grid, .personal-page .price-tag, .personal-page .deco-blur, .personal-page .motivational-quote, .personal-page .category-card .start-quiz-btn, .personal-page .quiz-modal-navigation button, .personal-page .coaching-request-form button { display: none !important; }
+    .personal-page .btn, .personal-page .page-footer-links, .personal-page .mmisbalior-promo, .personal-page .quiz-modal-overlay, .personal-page .template-actions, .personal-page .social-carousel, .personal-page .stats-grid, .personal-page .price-tag, .personal-page .deco-blur, .personal-page .motivational-quote, .personal-page .category-card .start-quiz-btn, .personal-page .quiz-modal-navigation button, .personal-page .coaching-request-form button { display: none !important; } /* Typo Corrected in selector */
     .personal-page .resource-card, .personal-page .template-card, .personal-page .coaching-item, .personal-page .category-card { box-shadow: none !important; border: 1px solid #ccc !important; padding: 0.5cm !important; page-break-inside: avoid; background: #fff !important; border-radius: 0 !important; }
     .personal-page .card-image, .personal-page .template-preview, .personal-page .promo-visual img, .personal-page .stat-card i, .personal-page .category-icon { display: none !important; }
     .personal-page .disclaimer { border: 1px solid #ccc; padding: 0.5cm; box-shadow: none; }
