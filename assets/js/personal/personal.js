@@ -1,16 +1,8 @@
-// File Location: /assets/js/personal/personal.js
-/* ==========================================================================
-   ROFILID Personal Page Specific Scripts - v1.0.0
-   Description: Scripts exclusive to the main Personal Solutions page.
-                Includes stats counter, social carousel, and INTRO quiz logic.
-                NOTE: Basic menu/year/scroll functionality handled by global main.js
-                      Full quiz logic is in quizzes.js
-   ========================================================================== */
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- START Personal Page Specific Components ---
 
-    // Social Carousel Logic
+    // Social Carousel Logic (No changes needed)
     const carousels = document.querySelectorAll('.social-carousel');
     carousels.forEach(carousel => {
         let currentIndex = 0;
@@ -20,6 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
         function showPost(index) {
             posts.forEach((post, i) => {
                 post.style.display = i === index ? 'block' : 'none';
+                // Accessibility: Mark active slide
+                post.setAttribute('aria-hidden', i !== index);
             });
         }
 
@@ -35,11 +29,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (posts.length > 0) {
             showPost(currentIndex); // Show first post initially
+            // Set initial aria-hidden states
+            posts.forEach((post, i) => {
+                 post.setAttribute('aria-hidden', i !== currentIndex);
+            });
             startCarousel();
         }
     });
 
-    // Stats Counter Logic
+    // Stats Counter Logic (No changes needed)
     const statObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -89,8 +87,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- START INTRO Quiz Logic (Theme 1 Only) ---
-    // Contains ONLY Theme 1 Questions (Categories 1-4) needed for this page
-    const allQuestions_Theme1 = [
+    // (Keep existing quiz questions and logic unchanged)
+     const allQuestions_Theme1 = [
          // Cat 1: Income & Financial Vitals
          { id: 1, categoryId: 1, themeId: 1, category: "Income & Financial Vitals", question: "What is the first essential step when starting to create a budget?", options: ["Calculate total monthly income", "List all fixed expenses", "Set long-term financial goals", "Track spending habits for a month"], correctAnswerIndex: 0, explanation: "Knowing your total income is fundamental; it's the basis upon which all budget allocations for expenses, savings, and goals are planned." },
          { id: 2, categoryId: 1, themeId: 1, category: "Income & Financial Vitals", question: "You earn ₦150,000 per month after tax and manage to save ₦22,500. What is your savings rate as a percentage of your income?", options: ["10%", "15%", "20%", "22.5%"], correctAnswerIndex: 1, explanation: "Savings Rate = (Amount Saved / Total Income) × 100. So, (₦22,500 / ₦150,000) × 100 = 15%." },
@@ -117,10 +115,8 @@ document.addEventListener('DOMContentLoaded', () => {
          { id: 20, categoryId: 4, themeId: 1, category: "Tracking & Managing Spending", question: "An item costs ₦25,000, but it's currently offered at a 20% discount. How much will you actually pay?", options: ["₦5,000", "₦20,000", "₦24,000", "₦30,000"], correctAnswerIndex: 1, explanation: "Discount Amount = ₦25,000 × 0.20 = ₦5,000. Final Price = ₦25,000 - ₦5,000 = ₦20,000." }
     ];
 
-    // Use the limited set of questions for this page's quiz logic
     const questionsForThisPage = allQuestions_Theme1;
 
-    // Quiz State & DOM References
     let currentQuizData = { questions: [], currentQuestionIndex: 0, score: 0, userAnswers: {} };
     const quizModal = document.getElementById('quiz-modal');
     const modalTitle = document.getElementById('quiz-modal-title');
@@ -135,7 +131,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalProgressCurrent = document.getElementById('quiz-modal-q-current');
     const modalProgressTotal = document.getElementById('quiz-modal-q-total');
 
-    // Quiz Functions (Identical logic, but use `questionsForThisPage`)
     function startQuiz(categoryId) {
         console.log(`Starting quiz for category ID: ${categoryId} on Personal Page`);
         const categoryQuestions = questionsForThisPage.filter(q => q.categoryId === categoryId);
@@ -144,9 +139,10 @@ document.addEventListener('DOMContentLoaded', () => {
              alert("Sorry, questions for this category could not be loaded.");
              return;
          }
-        if (categoryQuestions.length !== 5) {
-            console.warn(`Expected 5 questions, but found ${categoryQuestions.length} for category ID: ${categoryId}. Proceeding anyway.`);
-        }
+        // Allow quizzes with fewer than 5 questions if necessary, though data has 5
+        // if (categoryQuestions.length !== 5) {
+        //     console.warn(`Expected 5 questions, but found ${categoryQuestions.length} for category ID: ${categoryId}. Proceeding anyway.`);
+        // }
 
         currentQuizData = { questions: categoryQuestions, currentQuestionIndex: 0, score: 0, userAnswers: {} };
         if (modalTitle) modalTitle.textContent = categoryQuestions[0]?.category || 'Financial Fitness Quiz';
@@ -154,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (modalRestartBtn) modalRestartBtn.style.display = 'none';
         if (modalCloseResultsBtn) modalCloseResultsBtn.style.display = 'none';
         if (modalQuestionEl) modalQuestionEl.style.display = 'block';
-        if (modalOptionsEl) modalOptionsEl.style.display = 'block';
+        if (modalOptionsEl) modalOptionsEl.style.display = 'flex'; // Ensure options area uses flex
         if (modalFeedbackEl) modalFeedbackEl.style.display = 'none';
         const progressEl = modalProgressCurrent?.closest('.quiz-modal-progress');
         if (progressEl) progressEl.style.display = 'block';
@@ -167,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displayModalQuestion() {
         const quiz = currentQuizData;
-        if (!modalQuestionEl || !modalOptionsEl || !modalProgressCurrent) return; // Safety check
+        if (!modalQuestionEl || !modalOptionsEl || !modalProgressCurrent) return;
 
         if (quiz.currentQuestionIndex >= quiz.questions.length) {
             showModalResults();
@@ -175,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         const q = quiz.questions[quiz.currentQuestionIndex];
         modalQuestionEl.textContent = q.question;
-        modalOptionsEl.innerHTML = ''; // Clear previous options
+        modalOptionsEl.innerHTML = '';
         if (modalFeedbackEl) modalFeedbackEl.style.display = 'none';
         if (modalNextBtn) modalNextBtn.style.display = 'none';
         modalProgressCurrent.textContent = quiz.currentQuestionIndex + 1;
@@ -185,6 +181,9 @@ document.addEventListener('DOMContentLoaded', () => {
             button.textContent = option;
             button.className = 'option-button';
             button.setAttribute('data-index', index);
+            // Set ARIA role and initial state
+            button.setAttribute('role', 'button');
+            button.setAttribute('aria-pressed', 'false');
             button.onclick = () => handleModalOptionSelection(index);
             modalOptionsEl.appendChild(button);
         });
@@ -198,7 +197,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         buttons.forEach(button => {
             button.disabled = true;
-            button.onclick = null; // Remove listener
+            button.onclick = null;
+            // Update ARIA state for selected button
+            if (parseInt(button.getAttribute('data-index'), 10) === selectedIndex) {
+                button.setAttribute('aria-pressed', 'true');
+            }
         });
         quiz.userAnswers[q.id] = selectedIndex;
         showModalFeedback(selectedIndex, q.correctAnswerIndex, q.explanation);
@@ -213,40 +216,56 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!buttons || !modalFeedbackEl) return;
 
         buttons.forEach((button, index) => {
-            button.classList.remove('selected'); // Just in case
+            button.classList.remove('selected');
             if (index === correctIndex) {
                 button.classList.add('correct');
             } else if (index === selectedIndex) {
                 button.classList.add('incorrect');
             } else {
-                button.classList.add('disabled'); // Fade out non-selected, non-correct answers
+                button.classList.add('disabled');
             }
         });
 
         modalFeedbackEl.innerHTML = `<p><strong>${isCorrect ? 'Correct!' : 'Incorrect.'}</strong> ${explanation || ''}</p>`;
         modalFeedbackEl.className = `quiz-modal-feedback ${isCorrect ? 'correct' : 'incorrect'}`;
         modalFeedbackEl.style.display = 'block';
+        // ARIA: Announce feedback
+        modalFeedbackEl.setAttribute('role', 'alert');
+        modalFeedbackEl.setAttribute('aria-live', 'assertive');
+
 
         if (modalNextBtn) {
             if (quiz.currentQuestionIndex < quiz.questions.length - 1) {
                 modalNextBtn.style.display = 'inline-block';
+                modalNextBtn.focus(); // Focus next button
             } else {
                 modalNextBtn.style.display = 'none';
-                setTimeout(showModalResults, 1200); // Show results after a short delay
+                 // Show results slightly faster, focus restart
+                setTimeout(() => {
+                    showModalResults();
+                    if(modalRestartBtn) modalRestartBtn.focus();
+                }, 1000);
             }
         }
     }
 
     function nextModalQuestion() {
-        if (modalFeedbackEl) modalFeedbackEl.style.display = 'none';
+        if (modalFeedbackEl) {
+             modalFeedbackEl.style.display = 'none';
+             // ARIA: Remove alert role when hidden
+             modalFeedbackEl.removeAttribute('role');
+             modalFeedbackEl.removeAttribute('aria-live');
+        }
         if (modalNextBtn) modalNextBtn.style.display = 'none';
         currentQuizData.currentQuestionIndex++;
         displayModalQuestion();
+        // Focus the first option of the new question
+        const firstOption = modalOptionsEl?.querySelector('button');
+        if(firstOption) firstOption.focus();
     }
 
     function showModalResults() {
         const quiz = currentQuizData;
-        // Hide question/options/feedback
         if(modalQuestionEl) modalQuestionEl.style.display = 'none';
         if(modalOptionsEl) modalOptionsEl.style.display = 'none';
         if(modalFeedbackEl) modalFeedbackEl.style.display = 'none';
@@ -254,19 +273,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const progressEl = modalProgressCurrent?.closest('.quiz-modal-progress');
         if (progressEl) progressEl.style.display = 'none';
 
-        // Show results area
         if(modalResultsEl) {
+            const score = quiz.score;
+            const total = quiz.questions.length;
+            const percentage = total > 0 ? Math.round((score / total) * 100) : 0;
+            let feedbackMessage = 'Keep learning!';
+            if (percentage === 100) feedbackMessage = 'Excellent work!';
+            else if (percentage >= 60) feedbackMessage = 'Good job!';
+
             modalResultsEl.innerHTML = `
                 <h4>Quiz Complete!</h4>
-                <p>Your Score: ${quiz.score} out of ${quiz.questions.length}</p>
-                <p style="margin-top: 10px; font-size: 0.9em;">
-                    ${quiz.score === quiz.questions.length ? 'Excellent work!' : quiz.score >= Math.ceil(quiz.questions.length * 0.6) ? 'Good job!' : 'Keep learning!'}
-                </p>
+                <p>Your Score: ${score} out of ${total} (${percentage}%)</p>
+                <p style="margin-top: 10px; font-size: 1em;">${feedbackMessage}</p>
             `;
             modalResultsEl.style.display = 'block';
+            // ARIA: Announce results
+            modalResultsEl.setAttribute('role', 'alert');
+            modalResultsEl.setAttribute('aria-live', 'assertive');
         }
 
-        // Show restart/close buttons
         if(modalRestartBtn) modalRestartBtn.style.display = 'inline-block';
         if(modalCloseResultsBtn) modalCloseResultsBtn.style.display = 'inline-block';
     }
@@ -274,34 +299,52 @@ document.addEventListener('DOMContentLoaded', () => {
     function restartModalQuiz() {
         const categoryId = currentQuizData.questions[0]?.categoryId;
         if (categoryId) {
-            // Hide results, show question area again
-            if(modalResultsEl) modalResultsEl.style.display = 'none';
+            if(modalResultsEl) {
+                modalResultsEl.style.display = 'none';
+                // ARIA: Remove alert role
+                modalResultsEl.removeAttribute('role');
+                modalResultsEl.removeAttribute('aria-live');
+            }
             if(modalRestartBtn) modalRestartBtn.style.display = 'none';
             if(modalCloseResultsBtn) modalCloseResultsBtn.style.display = 'none';
-            startQuiz(categoryId); // Restart with the same category
+            startQuiz(categoryId);
+             // Focus the first option
+            const firstOption = modalOptionsEl?.querySelector('button');
+            if(firstOption) firstOption.focus();
         } else {
-            closeQuizModal(); // Fallback if category ID missing
+            closeQuizModal();
         }
     }
 
     function closeQuizModal() {
        if(quizModal) quizModal.style.display = 'none';
-       document.body.style.overflow = ''; // Restore background scroll
+       document.body.style.overflow = '';
 
-       // Optional: Minimal reset of modal state for next opening
+       // Minimal reset
        if(modalTitle) modalTitle.textContent = 'Quiz Title';
        if(modalQuestionEl) modalQuestionEl.textContent = '';
        if(modalOptionsEl) modalOptionsEl.innerHTML = '';
-       if(modalFeedbackEl) modalFeedbackEl.style.display = 'none';
-       if(modalResultsEl) modalResultsEl.style.display = 'none';
+       if(modalFeedbackEl) {
+           modalFeedbackEl.style.display = 'none';
+           modalFeedbackEl.removeAttribute('role');
+           modalFeedbackEl.removeAttribute('aria-live');
+       }
+        if(modalResultsEl) {
+           modalResultsEl.style.display = 'none';
+           modalResultsEl.removeAttribute('role');
+           modalResultsEl.removeAttribute('aria-live');
+        }
        if(modalRestartBtn) modalRestartBtn.style.display = 'none';
        if(modalCloseResultsBtn) modalCloseResultsBtn.style.display = 'none';
        if(modalNextBtn) modalNextBtn.style.display = 'none';
-       // Ensure areas are ready to be shown again if needed
        if(modalQuestionEl) modalQuestionEl.style.display = 'block';
-       if(modalOptionsEl) modalOptionsEl.style.display = 'block';
+       if(modalOptionsEl) modalOptionsEl.style.display = 'flex';
        const progressEl = modalProgressCurrent?.closest('.quiz-modal-progress');
        if (progressEl) progressEl.style.display = 'block';
+
+       // Return focus to the button that opened the modal if possible
+       // This requires storing the trigger element, which adds complexity.
+       // For now, just closing is sufficient.
     }
 
     // Attach Event Listeners for INTRO Quizzes
@@ -309,14 +352,14 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', (e) => {
            const card = e.target.closest('.category-card');
            const categoryId = card ? parseInt(card.dataset.categoryId, 10) : null;
-            // Only start quiz if category ID is valid (1-4 for this page)
             if (categoryId && categoryId >= 1 && categoryId <= 4) {
+               // Store the trigger button? (Optional for focus return)
+               // e.target.dataset.triggeredModal = 'true';
                startQuiz(categoryId);
            } else if (categoryId) {
                 console.warn(`Category ${categoryId} quiz should be taken on the full quiz page.`);
-                // Optionally redirect or show a message
                 alert("This quiz category is available on the main Quizzes page.");
-                window.location.href = 'quizzes.html';
+                window.location.href = 'quizzes.html'; // Redirect as planned
            } else {
                console.error("Missing or invalid category ID on card.");
            }
@@ -328,34 +371,106 @@ document.addEventListener('DOMContentLoaded', () => {
     if (modalCloseResultsBtn) modalCloseResultsBtn.addEventListener('click', closeQuizModal);
     if (modalNextBtn) modalNextBtn.addEventListener('click', nextModalQuestion);
     if (modalRestartBtn) modalRestartBtn.addEventListener('click', restartModalQuiz);
-    // Close modal if clicking outside the content
     if (quizModal) {
         quizModal.addEventListener('click', (e) => {
-            if (e.target === quizModal) { // Check if click is on the overlay itself
+            if (e.target === quizModal) {
+                closeQuizModal();
+            }
+        });
+         // Allow closing with Escape key
+        quizModal.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
                 closeQuizModal();
             }
         });
     }
-
     // --- END INTRO Quiz Logic ---
 
-     // --- START Potential Future Personal Scripts ---
-     // e.g., Template preview logic, form submissions for coaching
+    // --- START Template Purchase Logic (Placeholder) ---
+    document.querySelectorAll('.get-spreadsheet-btn').forEach(button => {
+        // Only add listener if the button is NOT disabled initially
+        if (button.getAttribute('aria-disabled') !== 'true') {
+            button.addEventListener('click', (e) => {
+                e.preventDefault(); // Prevent default link behavior if it's an <a>
+                const templateName = e.target.dataset.templateName || 'Spreadsheet Template';
+                const price = e.target.dataset.price || '10000';
+
+                // **Placeholder Action:**
+                // In a real implementation, this would likely:
+                // 1. Open a modal asking for the user's Gmail address.
+                // 2. Validate the email.
+                // 3. Redirect to a payment gateway (like Paystack, Flutterwave) with template details and price.
+                // 4. On successful payment confirmation (webhook/callback), grant access to the spreadsheet (e.g., via Google Apps Script or sharing).
+
+                alert(`To get the "${templateName}" (₦${parseInt(price).toLocaleString()}):\n\n1. Provide your Gmail address.\n2. Complete payment.\n\n(This feature is currently under development. Please check back soon!)`);
+
+                console.log(`Purchase initiated for: ${templateName}, Price: ${price}`);
+                // Example: openPurchaseModal(templateName, price);
+            });
+        } else {
+             // Optionally add a tooltip or message for disabled buttons
+             button.addEventListener('click', (e) => {
+                 e.preventDefault();
+                 // alert("This template download is not yet available. Please check back soon!");
+             });
+        }
+    });
+    // --- END Template Purchase Logic ---
+
+
+     // --- START Coaching Form Logic (Basic Validation Example) ---
      const coachingForm = document.querySelector('.coaching-request-form');
      if(coachingForm) {
          coachingForm.addEventListener('submit', (e) => {
-             // Basic check
+             // Example: Basic frontend validation
              const emailInput = coachingForm.querySelector('#coach-email');
-             if (emailInput && !emailInput.value.includes('@')) {
-                 // e.preventDefault(); // Uncomment to stop submission
-                 alert('Please enter a valid email for coaching request.');
+             if (emailInput && (!emailInput.value || !emailInput.value.includes('@'))) {
+                 e.preventDefault(); // Stop submission
+                 alert('Please enter a valid email address to request a discovery call.');
+                 emailInput.focus();
+                 return; // Stop further processing
              }
-             console.log("Coaching form submitted (example).");
-             // Add real submission logic (fetch, etc.)
+              // Prevent double submission (optional)
+             const submitButton = coachingForm.querySelector('button[type="submit"]');
+             if (submitButton) {
+                 submitButton.disabled = true;
+                 submitButton.textContent = 'Submitting...';
+             }
+
+             console.log("Coaching form submitted (Frontend validation passed - replace with actual submission logic like fetch).");
+             // **IMPORTANT**: Replace console.log with actual form submission (e.g., using fetch API to send data to a backend endpoint or a service like Formspree/Netlify Forms)
+             // Example using Fetch (requires backend endpoint):
+             /*
+             e.preventDefault(); // Prevent default ONLY if using fetch
+             const formData = new FormData(coachingForm);
+             fetch('/api/coaching-request', { // Replace with your actual endpoint
+                 method: 'POST',
+                 body: formData
+             })
+             .then(response => response.json())
+             .then(data => {
+                 console.log('Success:', data);
+                 alert('Thank you! Your request has been sent. We will contact you soon.');
+                 coachingForm.reset(); // Clear the form
+             })
+             .catch((error) => {
+                 console.error('Error:', error);
+                 alert('Sorry, there was an error submitting your request. Please try again later.');
+             })
+             .finally(() => {
+                 // Re-enable button regardless of success/error
+                 if (submitButton) {
+                     submitButton.disabled = false;
+                     submitButton.textContent = 'Request Discovery Call';
+                 }
+             });
+             */
+              // If NOT using fetch and relying on standard form action, remove e.preventDefault() above
+              // For now, let the default action proceed after logging
          });
      }
-     // --- END Potential Future Personal Scripts ---
+     // --- END Coaching Form Logic ---
 
-    console.log("Rofilid Personal Page Scripts Initialized.");
+    console.log("Rofilid Personal Page Scripts Initialized (v1.1.0).");
 
 }); // End DOMContentLoaded
