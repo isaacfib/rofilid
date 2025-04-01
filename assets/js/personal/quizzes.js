@@ -1,6 +1,6 @@
 // File Location: /assets/js/personal/quizzes.js
 /* ==========================================================================
-   ROFILID Full Quizzes Page Specific Scripts - v1.0.0
+   ROFILID Full Quizzes Page Specific Scripts
    Description: Scripts exclusive to the Full Financial Fitness Challenge page.
                 Includes the COMPLETE quiz logic (all questions) and listeners.
                 NOTE: Basic menu/year/scroll functionality handled by global main.js
