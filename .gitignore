@@ -1,0 +1,85 @@
+# File Location: /.gitignore
+
+# Dependency directories
+#----------------------------------------------------------------------------
+# Usually contains packages installed by npm or yarn
+node_modules/
+
+# Build output folders
+#----------------------------------------------------------------------------
+# Common names for compiled/optimized production assets
+dist/
+build/
+public/ # Often used by frameworks/build tools
+out/
+
+# Environment variables
+#----------------------------------------------------------------------------
+# Never commit your secrets! Use environment variables instead.
+.env
+.env.*
+# But DO commit example/template files
+!.env.example
+!.env.development.example
+!.env.production.example
+
+# Log files
+#----------------------------------------------------------------------------
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Operating System Files
+#----------------------------------------------------------------------------
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# IDE / Editor directories & files
+#----------------------------------------------------------------------------
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# JetBrains IDEs (WebStorm, etc.)
+.idea/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Other
+*.swp # Vim swap files
+
+# Temporary files
+#----------------------------------------------------------------------------
+*.tmp
+
+# Sass/Less cache folders (if you use preprocessors later)
+#----------------------------------------------------------------------------
+.sass-cache/
+.less-cache/
+
+# Optional: Test coverage reports (if you add testing later)
+#----------------------------------------------------------------------------
+# coverage/
+# .nyc_output/
+
+# Optional: Add any project-specific files/folders you generate
+# Example: generated-docs/
