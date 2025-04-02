@@ -328,116 +328,61 @@
 .personal-page .copyright p { font-size: 0.9rem; color: #80cbc4; }
 
 .personal-page #full-financial-challenge .quiz-accordion-container {
-    max-width: 900px; /* Constrain width for better readability */
+    max-width: 900px;
     margin-left: auto;
     margin-right: auto;
 }
 
 .personal-page .accordion-item {
-    border: 1px solid #e0f7fa; /* Subtle border */
+    border: 1px solid #e0f7fa;
     border-radius: var(--border-radius-large);
     margin-bottom: var(--spacing-lg);
-    background-color: #fff; /* White background for each item */
+    background-color: #fff;
     box-shadow: var(--box-shadow-light);
-    overflow: hidden; /* Needed for border-radius with children */
-     transition: box-shadow var(--transition-fast);
+    overflow: hidden; /* Keep overflow hidden */
+    transition: box-shadow var(--transition-fast);
 }
-.personal-page .accordion-item:last-child {
-    margin-bottom: 0;
-}
-.personal-page .accordion-item:hover {
-    border-color: #b2ebf2;
-    box-shadow: var(--box-shadow);
-}
-
-.personal-page .accordion-header {
-    margin: 0; /* Reset h3 margin */
-}
+.personal-page .accordion-item:last-child { margin-bottom: 0; }
+.personal-page .accordion-item:hover { border-color: #b2ebf2; box-shadow: var(--box-shadow); }
+.personal-page .accordion-header { margin: 0; }
 
 .personal-page .theme-toggle-button {
-    /* Reset Button Styles */
-    appearance: none;
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-    font: inherit;
-    color: inherit;
-    text-align: left;
-    cursor: pointer;
-
-    /* Styling */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: var(--spacing-md) var(--spacing-lg);
-    font-size: clamp(1.3rem, 4vw, 1.6rem); /* Theme title size */
-    font-weight: 600; /* Bolder theme title */
-    color: var(--color-primary-dark-personal);
-    background-color: #f0fcfd; /* Very light teal background for header */
-    border-bottom: 1px solid transparent; /* Separator when open */
-    transition: background-color var(--transition-fast), border-color var(--transition-fast);
+    appearance: none; background: none; border: none; padding: 0; margin: 0;
+    font: inherit; color: inherit; text-align: left; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    width: 100%; padding: var(--spacing-md) var(--spacing-lg);
+    font-size: clamp(1.3rem, 4vw, 1.6rem); font-weight: 600;
+    color: var(--color-primary-dark-personal); background-color: #f0fcfd;
+    border-bottom: 1px solid transparent; transition: background-color var(--transition-fast), border-color var(--transition-fast);
 }
-
-.personal-page .theme-toggle-button:hover {
-    background-color: #e6fafa; /* Slightly darker hover */
-    color: var(--color-primary-personal);
-}
-
-.personal-page .theme-toggle-button:focus-visible {
-    outline: 2px solid var(--color-primary-personal);
-    outline-offset: 2px;
-    z-index: 1; /* Ensure focus ring is visible */
-}
-
-.personal-page .theme-toggle-button .theme-icon {
-    font-size: 1rem; /* Adjust icon size */
-    color: var(--color-primary-personal);
-    margin-left: var(--spacing-md);
-    transition: transform 0.3s ease-out; /* Smooth rotation */
-    flex-shrink: 0;
-}
-
-/* Icon rotation when expanded */
-.personal-page .theme-toggle-button[aria-expanded="true"] .theme-icon {
-    transform: rotate(180deg);
-}
-
-/* Border separation when open */
-.personal-page .theme-toggle-button[aria-expanded="true"] {
-     border-bottom-color: #b2ebf2; /* Teal border when open */
-}
+.personal-page .theme-toggle-button:hover { background-color: #e6fafa; color: var(--color-primary-personal); }
+.personal-page .theme-toggle-button:focus-visible { outline: 2px solid var(--color-primary-personal); outline-offset: 2px; z-index: 1; }
+.personal-page .theme-toggle-button .theme-icon { font-size: 1rem; color: var(--color-primary-personal); margin-left: var(--spacing-md); transition: transform 0.3s ease-out; flex-shrink: 0; }
+.personal-page .theme-toggle-button[aria-expanded="true"] .theme-icon { transform: rotate(180deg); }
+.personal-page .theme-toggle-button[aria-expanded="true"] { border-bottom-color: #b2ebf2; }
 
 
 .personal-page .theme-content {
     max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.45s ease-out; /* Smooth transition */
-    background-color: #fff; /* Ensure content area is white */
-    padding: 0 var(--spacing-lg); /* Add padding only left/right initially */
+    overflow: hidden; /* Keep hidden */
+    transition: max-height 0.45s ease-out, padding-top 0.45s ease-out, padding-bottom 0.45s ease-out; /* Added padding to transition */
+    background-color: #fff;
+    /* Apply horizontal padding always, vertical padding only when open */
+    padding: 0 var(--spacing-lg);
 }
 
-/* Add top/bottom padding when content is visible */
-.personal-page .theme-content[style*="max-height"] { /* Target when JS sets max-height */
+/* Apply vertical padding when JS adds max-height */
+.personal-page .theme-content.open { /* Add a class via JS */
      padding-top: var(--spacing-xl);
      padding-bottom: var(--spacing-xl);
+     /* Set max-height via JS inline style */
 }
 
-/* Style the grid inside the content */
-.personal-page .theme-content .category-grid {
-    /* Grid styles are already defined, ensure they apply */
-    /* Reset margin if needed */
-    margin-top: 0;
-}
-.personal-page .theme-content .category-card {
-     /* Slightly reduce shadow/lift for cards within accordion */
-     box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-.personal-page .theme-content .category-card:hover {
-    transform: translateY(-5px); /* Less lift */
-     box-shadow: 0 6px 15px rgba(0,0,0,0.08);
-}
+
+.personal-page .theme-content .category-grid { margin-top: 0; }
+.personal-page .theme-content .category-card { box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+.personal-page .theme-content .category-card:hover { transform: translateY(-5px); box-shadow: 0 6px 15px rgba(0,0,0,0.08); }
+
 
 
 /* --- Responsive Overrides --- */
