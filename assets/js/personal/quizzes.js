@@ -8,7 +8,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    console.log("Rofilid Quizzes Page Script Initialized (v1.2.0 - Accordion).");
+    console.log("Rofilid Quizzes Page Script Initialized (v1.2.1 - Accordion Fix).");
 
     // --- START: Full Quiz Data (100 Questions - User Provided Source) ---
     const fullQuizData = [
@@ -143,7 +143,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Basic Data Validation ---
     if (fullQuizData.length !== 100) {
         console.error(`CRITICAL ERROR: Expected 100 questions, but found ${fullQuizData.length}. Quiz functionality may be compromised.`);
-        // alert("Error loading quiz data. Please check the console."); // Optional user alert
     }
 
     // --- Accordion Logic ---
@@ -158,29 +157,26 @@ document.addEventListener('DOMContentLoaded', () => {
             themeToggles.forEach(otherButton => {
                 const otherContentId = otherButton.getAttribute('aria-controls');
                 const otherContent = document.getElementById(otherContentId);
-                // Check if the other content exists before trying to style it
                 if (otherButton !== button && otherContent) {
                     otherButton.setAttribute('aria-expanded', 'false');
                     otherContent.style.maxHeight = null; // Collapse using max-height
+                    otherContent.classList.remove('open'); // Remove open class for padding
                 }
             });
 
             // --- Toggle the clicked theme ---
-            if (targetContent) { // Check if target content exists
+            if (targetContent) {
                 if (isExpanded) {
                     // Collapse clicked
                     button.setAttribute('aria-expanded', 'false');
                     targetContent.style.maxHeight = null;
+                    targetContent.classList.remove('open'); // Remove open class
                 } else {
                     // Expand clicked
                     button.setAttribute('aria-expanded', 'true');
-                    // Set max-height for animation (ensure content is visible before measuring scrollHeight)
-                    targetContent.style.display = 'block'; // Temporarily show to measure
+                    // Set max-height for animation
                     targetContent.style.maxHeight = targetContent.scrollHeight + "px";
-                     // Remove temporary display style if not needed after transition starts
-                    // Or rely solely on max-height transition
-                    // Let's remove it after a tiny delay to ensure transition starts
-                    // setTimeout(() => { targetContent.style.display = ''; }, 0); // Might cause flicker, let's skip
+                    targetContent.classList.add('open'); // Add open class for padding
                 }
             } else {
                  console.error(`Content area with ID ${targetContentId} not found.`);
