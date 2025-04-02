@@ -2,42 +2,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- START Personal Page Specific Components ---
 
-    // Social Carousel Logic REMOVED - Replaced by static preview in HTML/CSS
-
-    // Stats Counter Logic (No changes needed)
+    // Stats Counter Logic (No changes needed from v1.2.0)
     const statObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const statCard = entry.target;
                 const targetSpan = statCard.querySelector('.stat-target');
                 const displayEl = statCard.querySelector('h4');
-                // Ensure displayEl exists before accessing textContent
-                if (!targetSpan || !displayEl) {
-                     observer.unobserve(statCard);
-                     return;
-                 }
+                if (!targetSpan || !displayEl) { observer.unobserve(statCard); return; }
                 const suffix = (displayEl.textContent.includes('%') ? '%' : '') || (displayEl.textContent.includes('+') ? '+' : '');
-
-                if (displayEl.classList.contains('counted')) {
-                    observer.unobserve(statCard);
-                    return;
-                }
-
+                if (displayEl.classList.contains('counted')) { observer.unobserve(statCard); return; }
                 const target = parseInt(targetSpan.textContent, 10);
-                if (isNaN(target)) {
-                    observer.unobserve(statCard);
-                    return;
-                }
-
-                displayEl.textContent = `0${suffix}`; // Initialize at 0
-                displayEl.classList.add('counting'); // Optional: for styling during count
-
-                let currentCount = 0;
-                const duration = 1500; // ms
-                const stepTime = 20; // ms (~50fps)
-                const steps = duration / stepTime;
-                const increment = target / steps;
-
+                if (isNaN(target)) { observer.unobserve(statCard); return; }
+                displayEl.textContent = `0${suffix}`; displayEl.classList.add('counting');
+                let currentCount = 0; const duration = 1500; const stepTime = 20; const steps = duration / stepTime; const increment = target / steps;
                 const counter = () => {
                     currentCount += increment;
                     if (currentCount < target) {
@@ -45,27 +23,22 @@ document.addEventListener('DOMContentLoaded', () => {
                         setTimeout(counter, stepTime);
                     } else {
                         displayEl.textContent = target.toLocaleString() + suffix;
-                        displayEl.classList.add('counted');
-                        displayEl.classList.remove('counting');
+                        displayEl.classList.add('counted'); displayEl.classList.remove('counting');
                     }
                 };
-                setTimeout(counter, stepTime); // Start the counter
-                observer.unobserve(statCard); // Unobserve after starting
+                setTimeout(counter, stepTime); observer.unobserve(statCard);
             }
         });
     }, { threshold: 0.4 });
-
-    document.querySelectorAll('.stat-card').forEach(card => {
-        statObserver.observe(card);
-    });
+    document.querySelectorAll('.stat-card').forEach(card => { statObserver.observe(card); });
 
     // --- END Personal Page Specific Components ---
 
 
     // --- START INTRO Quiz Logic (Theme 1 Only) ---
-    // (Keep existing quiz questions and logic unchanged from v1.1.0)
+    // (Keep existing quiz questions - all 20)
      const allQuestions_Theme1 = [
-         // ... (Keep all 20 questions from previous version) ...
+        // ... (All 20 questions from previous versions) ...
          // Cat 1: Income & Financial Vitals
          { id: 1, categoryId: 1, themeId: 1, category: "Income & Financial Vitals", question: "What is the first essential step when starting to create a budget?", options: ["Calculate total monthly income", "List all fixed expenses", "Set long-term financial goals", "Track spending habits for a month"], correctAnswerIndex: 0, explanation: "Knowing your total income is fundamental; it's the basis upon which all budget allocations for expenses, savings, and goals are planned." },
          { id: 2, categoryId: 1, themeId: 1, category: "Income & Financial Vitals", question: "You earn ₦150,000 per month after tax and manage to save ₦22,500. What is your savings rate as a percentage of your income?", options: ["10%", "15%", "20%", "22.5%"], correctAnswerIndex: 1, explanation: "Savings Rate = (Amount Saved / Total Income) × 100. So, (₦22,500 / ₦150,000) × 100 = 15%." },
@@ -92,63 +65,80 @@ document.addEventListener('DOMContentLoaded', () => {
          { id: 20, categoryId: 4, themeId: 1, category: "Tracking & Managing Spending", question: "An item costs ₦25,000, but it's currently offered at a 20% discount. How much will you actually pay?", options: ["₦5,000", "₦20,000", "₦24,000", "₦30,000"], correctAnswerIndex: 1, explanation: "Discount Amount = ₦25,000 × 0.20 = ₦5,000. Final Price = ₦25,000 - ₦5,000 = ₦20,000." }
     ];
 
+    // Use the limited set of questions for this page's intro quiz logic
     const questionsForThisPage = allQuestions_Theme1;
+    const LAST_INTRO_CATEGORY_ID = 4; // Define the last category ID for intro quizzes
+
+    // Quiz State & DOM References
     let currentQuizData = { questions: [], currentQuestionIndex: 0, score: 0, userAnswers: {} };
+    let quizTriggerElement = null; // To store the button that opened the modal
+
     const quizModal = document.getElementById('quiz-modal');
-    // ... (Keep all other quiz DOM element const declarations) ...
     const modalTitle = document.getElementById('quiz-modal-title');
     const modalCloseBtn = document.getElementById('quiz-modal-close');
     const modalQuestionEl = document.getElementById('quiz-modal-question');
     const modalOptionsEl = document.getElementById('quiz-modal-options');
     const modalFeedbackEl = document.getElementById('quiz-modal-feedback');
-    const modalNextBtn = document.getElementById('quiz-modal-next');
+    const modalNextBtn = document.getElementById('quiz-modal-next'); // Button within quiz questions
     const modalResultsEl = document.getElementById('quiz-modal-results');
-    const modalRestartBtn = document.getElementById('quiz-modal-restart');
-    const modalCloseResultsBtn = document.getElementById('quiz-modal-close-results');
     const modalProgressCurrent = document.getElementById('quiz-modal-q-current');
     const modalProgressTotal = document.getElementById('quiz-modal-q-total');
+    // NEW elements for results navigation
+    const modalNextQuizBtn = document.getElementById('quiz-modal-next-quiz');
+    const modalRestartBtn = document.getElementById('quiz-modal-restart');
+    const modalCloseResultsBtn = document.getElementById('quiz-modal-close-results');
+    const modalFullChallengePrompt = document.getElementById('quiz-modal-full-challenge-prompt');
 
-
-    // ... (Keep the functions: startQuiz, displayModalQuestion, handleModalOptionSelection, showModalFeedback, nextModalQuestion, showModalResults, restartModalQuiz, closeQuizModal unchanged from v1.1.0) ...
+    // Quiz Functions
     function startQuiz(categoryId) {
         console.log(`Starting quiz for category ID: ${categoryId} on Personal Page`);
         const categoryQuestions = questionsForThisPage.filter(q => q.categoryId === categoryId);
+
         if (categoryQuestions.length === 0) {
-             console.error("No questions found in questionsForThisPage for category ID:", categoryId);
-             alert("Sorry, questions for this category could not be loaded.");
-             return;
-         }
+            console.error("No questions found for category ID:", categoryId);
+            alert("Sorry, questions for this category could not be loaded.");
+            return;
+        }
 
         currentQuizData = { questions: categoryQuestions, currentQuestionIndex: 0, score: 0, userAnswers: {} };
+
+        // Reset Modal UI elements for a new quiz
         if (modalTitle) modalTitle.textContent = categoryQuestions[0]?.category || 'Financial Fitness Quiz';
         if (modalResultsEl) modalResultsEl.style.display = 'none';
-        if (modalRestartBtn) modalRestartBtn.style.display = 'none';
-        if (modalCloseResultsBtn) modalCloseResultsBtn.style.display = 'none';
-        if (modalQuestionEl) modalQuestionEl.style.display = 'block';
-        if (modalOptionsEl) modalOptionsEl.style.display = 'flex'; // Ensure options area uses flex
         if (modalFeedbackEl) modalFeedbackEl.style.display = 'none';
+        if (modalQuestionEl) modalQuestionEl.style.display = 'block';
+        if (modalOptionsEl) modalOptionsEl.style.display = 'flex';
         const progressEl = modalProgressCurrent?.closest('.quiz-modal-progress');
         if (progressEl) progressEl.style.display = 'block';
         if (modalProgressTotal) modalProgressTotal.textContent = currentQuizData.questions.length;
 
-        displayModalQuestion();
-        if(quizModal) quizModal.style.display = 'flex';
-        document.body.style.overflow = 'hidden'; // Prevent background scroll
+        // Hide all results navigation buttons initially
+        if (modalNextQuizBtn) modalNextQuizBtn.style.display = 'none';
+        if (modalRestartBtn) modalRestartBtn.style.display = 'none';
+        if (modalCloseResultsBtn) modalCloseResultsBtn.style.display = 'none';
+        if (modalFullChallengePrompt) modalFullChallengePrompt.style.display = 'none';
+        if (modalNextBtn) modalNextBtn.style.display = 'none'; // Hide question nav button too
+
+        displayModalQuestion(); // Display the first question
+        if (quizModal) quizModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
     }
 
     function displayModalQuestion() {
         const quiz = currentQuizData;
         if (!modalQuestionEl || !modalOptionsEl || !modalProgressCurrent) return;
 
+        // Check if quiz is finished (should be handled before calling this, but safe check)
         if (quiz.currentQuestionIndex >= quiz.questions.length) {
             showModalResults();
             return;
         }
+
         const q = quiz.questions[quiz.currentQuestionIndex];
         modalQuestionEl.textContent = q.question;
-        modalOptionsEl.innerHTML = '';
-        if (modalFeedbackEl) modalFeedbackEl.style.display = 'none';
-        if (modalNextBtn) modalNextBtn.style.display = 'none';
+        modalOptionsEl.innerHTML = ''; // Clear previous options
+        if (modalFeedbackEl) modalFeedbackEl.style.display = 'none'; // Hide feedback
+        if (modalNextBtn) modalNextBtn.style.display = 'none'; // Hide 'Next Question' button until answer selected
         modalProgressCurrent.textContent = quiz.currentQuestionIndex + 1;
 
         q.options.forEach((option, index) => {
@@ -161,7 +151,8 @@ document.addEventListener('DOMContentLoaded', () => {
             button.onclick = () => handleModalOptionSelection(index);
             modalOptionsEl.appendChild(button);
         });
-         // Focus first option on new question display
+
+        // Focus first option on new question display
         const firstOption = modalOptionsEl.querySelector('button');
         if (firstOption) firstOption.focus();
     }
@@ -173,8 +164,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!buttons) return;
 
         buttons.forEach(button => {
-            button.disabled = true;
-            button.onclick = null;
+            button.disabled = true; // Disable all options
+            button.onclick = null; // Remove listener
             if (parseInt(button.getAttribute('data-index'), 10) === selectedIndex) {
                 button.setAttribute('aria-pressed', 'true');
             }
@@ -191,6 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const buttons = modalOptionsEl?.querySelectorAll('button');
         if (!buttons || !modalFeedbackEl) return;
 
+        // Apply correct/incorrect classes
         buttons.forEach((button, index) => {
             button.classList.remove('selected');
             if (index === correctIndex) {
@@ -202,48 +194,54 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        // Show feedback text
         modalFeedbackEl.innerHTML = `<p><strong>${isCorrect ? 'Correct!' : 'Incorrect.'}</strong> ${explanation || ''}</p>`;
         modalFeedbackEl.className = `quiz-modal-feedback ${isCorrect ? 'correct' : 'incorrect'}`;
         modalFeedbackEl.style.display = 'block';
         modalFeedbackEl.setAttribute('role', 'alert');
         modalFeedbackEl.setAttribute('aria-live', 'assertive');
 
+        // Show 'Next Question' button or trigger results
         if (modalNextBtn) {
             if (quiz.currentQuestionIndex < quiz.questions.length - 1) {
                 modalNextBtn.style.display = 'inline-block';
-                modalNextBtn.focus();
+                modalNextBtn.focus(); // Focus the next button
             } else {
                 modalNextBtn.style.display = 'none';
-                setTimeout(() => {
-                    showModalResults();
-                    if(modalRestartBtn) modalRestartBtn.focus();
-                }, 1000);
+                // Finished last question, show final results after a delay
+                setTimeout(showModalResults, 1200); // Delay before showing final score
             }
         }
     }
 
     function nextModalQuestion() {
+        // Hide feedback and button
         if (modalFeedbackEl) {
-             modalFeedbackEl.style.display = 'none';
-             modalFeedbackEl.removeAttribute('role');
-             modalFeedbackEl.removeAttribute('aria-live');
+            modalFeedbackEl.style.display = 'none';
+            modalFeedbackEl.removeAttribute('role');
+            modalFeedbackEl.removeAttribute('aria-live');
         }
         if (modalNextBtn) modalNextBtn.style.display = 'none';
+
+        // Increment question index and display
         currentQuizData.currentQuestionIndex++;
         displayModalQuestion();
-        // Focus handled in displayModalQuestion
     }
 
     function showModalResults() {
         const quiz = currentQuizData;
-        if(modalQuestionEl) modalQuestionEl.style.display = 'none';
-        if(modalOptionsEl) modalOptionsEl.style.display = 'none';
-        if(modalFeedbackEl) modalFeedbackEl.style.display = 'none';
-        if(modalNextBtn) modalNextBtn.style.display = 'none';
+        const finishedCategoryId = quiz.questions[0]?.categoryId; // Get ID of the quiz just finished
+
+        // Hide question/options/feedback/question-nav
+        if (modalQuestionEl) modalQuestionEl.style.display = 'none';
+        if (modalOptionsEl) modalOptionsEl.style.display = 'none';
+        if (modalFeedbackEl) modalFeedbackEl.style.display = 'none';
+        if (modalNextBtn) modalNextBtn.style.display = 'none';
         const progressEl = modalProgressCurrent?.closest('.quiz-modal-progress');
         if (progressEl) progressEl.style.display = 'none';
 
-        if(modalResultsEl) {
+        // --- Display Score ---
+        if (modalResultsEl) {
             const score = quiz.score;
             const total = quiz.questions.length;
             const percentage = total > 0 ? Math.round((score / total) * 100) : 0;
@@ -261,187 +259,195 @@ document.addEventListener('DOMContentLoaded', () => {
             modalResultsEl.setAttribute('aria-live', 'assertive');
         }
 
-        if(modalRestartBtn) modalRestartBtn.style.display = 'inline-block';
-        if(modalCloseResultsBtn) modalCloseResultsBtn.style.display = 'inline-block';
-         // Focus restart button by default on results
-         if(modalRestartBtn) modalRestartBtn.focus();
+        // --- Conditional Navigation/Prompt ---
+        if (modalNextQuizBtn) modalNextQuizBtn.style.display = 'none'; // Hide by default
+        if (modalFullChallengePrompt) modalFullChallengePrompt.style.display = 'none'; // Hide by default
+
+        if (finishedCategoryId && finishedCategoryId < LAST_INTRO_CATEGORY_ID) {
+            // If it's an intro quiz BUT NOT the last one, show "Next Quiz"
+            const nextCategoryId = finishedCategoryId + 1;
+            if (modalNextQuizBtn) {
+                modalNextQuizBtn.style.display = 'inline-block';
+                modalNextQuizBtn.setAttribute('data-next-category-id', nextCategoryId); // Store next ID
+            }
+        } else if (finishedCategoryId && finishedCategoryId === LAST_INTRO_CATEGORY_ID) {
+            // If it IS the last intro quiz, show the prompt
+            if (modalFullChallengePrompt) {
+                modalFullChallengePrompt.style.display = 'block';
+            }
+        }
+        // Always show Restart and Close options on results screen
+        if (modalRestartBtn) modalRestartBtn.style.display = 'inline-block';
+        if (modalCloseResultsBtn) modalCloseResultsBtn.style.display = 'inline-block';
+
+        // Focus the first available action button (Next Quiz > Restart)
+        if (modalNextQuizBtn && modalNextQuizBtn.style.display !== 'none') {
+            modalNextQuizBtn.focus();
+        } else if (modalRestartBtn && modalRestartBtn.style.display !== 'none') {
+             modalRestartBtn.focus();
+        }
     }
 
     function restartModalQuiz() {
         const categoryId = currentQuizData.questions[0]?.categoryId;
         if (categoryId) {
-            if(modalResultsEl) {
+            // Reset results UI
+            if (modalResultsEl) {
                 modalResultsEl.style.display = 'none';
                 modalResultsEl.removeAttribute('role');
                 modalResultsEl.removeAttribute('aria-live');
             }
-            if(modalRestartBtn) modalRestartBtn.style.display = 'none';
-            if(modalCloseResultsBtn) modalCloseResultsBtn.style.display = 'none';
-            startQuiz(categoryId);
-            // Focus handled in displayModalQuestion
+            // Hide all results navigation
+            if (modalNextQuizBtn) modalNextQuizBtn.style.display = 'none';
+            if (modalRestartBtn) modalRestartBtn.style.display = 'none';
+            if (modalCloseResultsBtn) modalCloseResultsBtn.style.display = 'none';
+            if (modalFullChallengePrompt) modalFullChallengePrompt.style.display = 'none';
+
+            startQuiz(categoryId); // Restart with the same category
         } else {
-            closeQuizModal();
+            closeQuizModal(quizTriggerElement); // Fallback if category ID missing
         }
     }
 
-     function closeQuizModal(triggerElement = null) {
-       if(quizModal) quizModal.style.display = 'none';
-       document.body.style.overflow = '';
+    function handleNextQuizClick(event) {
+        const nextCategoryId = parseInt(event.target.dataset.nextCategoryId, 10);
+        if (!isNaN(nextCategoryId)) {
+             // Reset results UI before starting next
+            if (modalResultsEl) {
+                modalResultsEl.style.display = 'none';
+                modalResultsEl.removeAttribute('role');
+                modalResultsEl.removeAttribute('aria-live');
+            }
+            if (modalNextQuizBtn) modalNextQuizBtn.style.display = 'none';
+            if (modalRestartBtn) modalRestartBtn.style.display = 'none';
+            if (modalCloseResultsBtn) modalCloseResultsBtn.style.display = 'none';
+            if (modalFullChallengePrompt) modalFullChallengePrompt.style.display = 'none';
 
-       // Reset modal state
-       if(modalTitle) modalTitle.textContent = 'Quiz Title';
-       if(modalQuestionEl) modalQuestionEl.textContent = '';
-       if(modalOptionsEl) modalOptionsEl.innerHTML = '';
-       if(modalFeedbackEl) {
-           modalFeedbackEl.style.display = 'none';
-           modalFeedbackEl.removeAttribute('role');
-           modalFeedbackEl.removeAttribute('aria-live');
-       }
-        if(modalResultsEl) {
-           modalResultsEl.style.display = 'none';
-           modalResultsEl.removeAttribute('role');
-           modalResultsEl.removeAttribute('aria-live');
+            startQuiz(nextCategoryId);
+        } else {
+            console.error("Could not determine next category ID.");
         }
-       if(modalRestartBtn) modalRestartBtn.style.display = 'none';
-       if(modalCloseResultsBtn) modalCloseResultsBtn.style.display = 'none';
-       if(modalNextBtn) modalNextBtn.style.display = 'none';
-       if(modalQuestionEl) modalQuestionEl.style.display = 'block';
-       if(modalOptionsEl) modalOptionsEl.style.display = 'flex';
-       const progressEl = modalProgressCurrent?.closest('.quiz-modal-progress');
-       if (progressEl) progressEl.style.display = 'block';
-
-       // Return focus to the trigger element if provided
-       if (triggerElement) {
-           triggerElement.focus();
-       }
     }
 
-    // Store the element that triggered the modal
-    let quizTriggerElement = null;
+
+    function closeQuizModal(triggerElement = null) {
+        if (quizModal) quizModal.style.display = 'none';
+        document.body.style.overflow = '';
+
+        // Minimal reset of modal state for next opening
+        if (modalTitle) modalTitle.textContent = 'Quiz Title';
+        if (modalQuestionEl) modalQuestionEl.textContent = '';
+        if (modalOptionsEl) modalOptionsEl.innerHTML = '';
+        if (modalFeedbackEl) {
+            modalFeedbackEl.style.display = 'none';
+            modalFeedbackEl.removeAttribute('role');
+            modalFeedbackEl.removeAttribute('aria-live');
+        }
+        if (modalResultsEl) {
+            modalResultsEl.style.display = 'none';
+            modalResultsEl.removeAttribute('role');
+            modalResultsEl.removeAttribute('aria-live');
+        }
+        // Ensure all nav buttons are hidden on close
+        if (modalNextBtn) modalNextBtn.style.display = 'none';
+        if (modalNextQuizBtn) modalNextQuizBtn.style.display = 'none';
+        if (modalRestartBtn) modalRestartBtn.style.display = 'none';
+        if (modalCloseResultsBtn) modalCloseResultsBtn.style.display = 'none';
+        if (modalFullChallengePrompt) modalFullChallengePrompt.style.display = 'none';
+
+        // Restore visibility of core areas
+        if (modalQuestionEl) modalQuestionEl.style.display = 'block';
+        if (modalOptionsEl) modalOptionsEl.style.display = 'flex';
+        const progressEl = modalProgressCurrent?.closest('.quiz-modal-progress');
+        if (progressEl) progressEl.style.display = 'block';
+
+        // Return focus
+        if (triggerElement) {
+            triggerElement.focus();
+            quizTriggerElement = null; // Reset trigger element
+        }
+    }
 
     // Attach Event Listeners for INTRO Quizzes
     document.querySelectorAll('#financial-fitness-challenge-intro .start-quiz-btn').forEach(button => {
         button.addEventListener('click', (e) => {
-           const card = e.target.closest('.category-card');
-           const categoryId = card ? parseInt(card.dataset.categoryId, 10) : null;
-            if (categoryId && categoryId >= 1 && categoryId <= 4) {
-               quizTriggerElement = e.target; // Store the button that was clicked
-               startQuiz(categoryId);
-           } else if (categoryId) {
+            const card = e.target.closest('.category-card');
+            const categoryId = card ? parseInt(card.dataset.categoryId, 10) : null;
+            if (categoryId && categoryId >= 1 && categoryId <= LAST_INTRO_CATEGORY_ID) { // Check against last intro ID
+                quizTriggerElement = e.target; // Store the trigger
+                startQuiz(categoryId);
+            } else if (categoryId) {
                 console.warn(`Category ${categoryId} quiz should be taken on the full quiz page.`);
                 alert("This quiz category is available on the main Quizzes page.");
                 window.location.href = 'quizzes.html';
-           } else {
-               console.error("Missing or invalid category ID on card.");
-           }
+            } else {
+                console.error("Missing or invalid category ID on card.");
+            }
         });
     });
 
     // Attach Modal Button Listeners
     if (modalCloseBtn) modalCloseBtn.addEventListener('click', () => closeQuizModal(quizTriggerElement));
-    if (modalCloseResultsBtn) modalCloseResultsBtn.addEventListener('click', () => closeQuizModal(quizTriggerElement));
+    if (modalCloseResultsBtn) modalCloseResultsBtn.addEventListener('click', () => closeQuizModal(quizTriggerElement)); // Use stored trigger
     if (modalNextBtn) modalNextBtn.addEventListener('click', nextModalQuestion);
     if (modalRestartBtn) modalRestartBtn.addEventListener('click', restartModalQuiz);
+    if (modalNextQuizBtn) modalNextQuizBtn.addEventListener('click', handleNextQuizClick); // Listener for NEW button
     if (quizModal) {
         quizModal.addEventListener('click', (e) => {
-            if (e.target === quizModal) {
-                closeQuizModal(quizTriggerElement);
-            }
+            if (e.target === quizModal) { closeQuizModal(quizTriggerElement); }
         });
         quizModal.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeQuizModal(quizTriggerElement);
-            }
+            if (e.key === 'Escape') { closeQuizModal(quizTriggerElement); }
         });
     }
     // --- END INTRO Quiz Logic ---
 
 
     // --- START Template Purchase Logic (Placeholder) ---
-    document.querySelectorAll('.get-spreadsheet-btn').forEach(button => {
-        // Check if button should be active based on aria-disabled or a class
-        const isDisabled = button.getAttribute('aria-disabled') === 'true' || button.classList.contains('disabled'); // Example check
-
+    // (Keep template purchase logic from v1.3.0) ...
+     document.querySelectorAll('.get-spreadsheet-btn').forEach(button => {
+        const isDisabled = button.getAttribute('aria-disabled') === 'true' || button.classList.contains('disabled');
         if (!isDisabled) {
             button.addEventListener('click', (e) => {
                 e.preventDefault();
-                const templateName = e.target.dataset.templateName || 'Spreadsheet Template';
-                const price = e.target.dataset.price || '10000';
-
-                // **Placeholder Action:**
+                const templateName = e.target.closest('.btn').dataset.templateName || 'Spreadsheet Template'; // Target button correctly
+                const price = e.target.closest('.btn').dataset.price || '10000';
                 alert(`To get the "${templateName}" (₦${parseInt(price).toLocaleString()}):\n\n1. Provide your Gmail address.\n2. Complete payment.\n\n(Purchase flow coming soon!)`);
                 console.log(`Purchase initiated for: ${templateName}, Price: ${price}`);
             });
         } else {
-            // Make disabled buttons non-interactive
-            button.style.pointerEvents = 'none'; // Prevent clicks on visually disabled
-             button.addEventListener('click', (e) => e.preventDefault()); // Backup prevention
+             button.style.pointerEvents = 'none';
+             button.addEventListener('click', (e) => e.preventDefault());
         }
     });
-    // --- END Template Purchase Logic ---
 
 
      // --- START Coaching Form Logic (Basic Validation Example) ---
+     // (Keep coaching form logic from v1.3.0) ...
      const coachingForm = document.querySelector('.coaching-request-form');
      if(coachingForm) {
          coachingForm.addEventListener('submit', (e) => {
              const emailInput = coachingForm.querySelector('#coach-email');
              const submitButton = coachingForm.querySelector('button[type="submit"]');
-
-             // Frontend Validation
              if (emailInput && (!emailInput.value || !emailInput.value.includes('@'))) {
-                 e.preventDefault();
-                 alert('Please enter a valid email address to request a discovery call.');
-                 emailInput.focus();
-                 // Ensure button is enabled if validation fails early
-                 if (submitButton) {
-                     submitButton.disabled = false;
-                     submitButton.textContent = 'Request Discovery Call';
-                 }
+                 e.preventDefault(); alert('Please enter a valid email address to request a discovery call.'); emailInput.focus();
+                 if (submitButton) { submitButton.disabled = false; submitButton.textContent = 'Request Discovery Call'; }
                  return;
              }
-
-             // Disable button on submission attempt
-             if (submitButton) {
-                 submitButton.disabled = true;
-                 submitButton.textContent = 'Submitting...';
-             }
-
+             if (submitButton) { submitButton.disabled = true; submitButton.textContent = 'Submitting...'; }
              console.log("Coaching form submitted (Replace with actual submission).");
-
-             // **IMPORTANT**: Add real submission logic (fetch or rely on form action)
-             // For demo, let default action proceed OR use fetch and prevent default
-             // If using fetch, remember to re-enable the button in .finally()
-
-             // Example: Simulating success after 1 second for demo if NOT using fetch/action
-              /*
-              e.preventDefault(); // Needed if simulating here
-              setTimeout(() => {
-                 alert('Thank you! Your request has been sent.');
-                 coachingForm.reset();
-                 if (submitButton) {
-                     submitButton.disabled = false;
-                     submitButton.textContent = 'Request Discovery Call';
-                 }
-              }, 1000);
-              */
          });
      }
-     // --- END Coaching Form Logic ---
 
      // --- Blog Card Button ---
-     // Add simple navigation or placeholder for the enabled blog button
+     // (Keep blog button logic from v1.3.0) ...
      const blogButton = document.querySelector('.resource-card .card-cta a[href="blog.html"]');
      if(blogButton) {
         blogButton.addEventListener('click', (e) => {
-            // If blog.html doesn't exist yet, prevent default and show message
-            // Otherwise, let the link work normally.
-            // For now, assume it will exist:
             console.log('Navigating to Blog page (blog.html)...');
         });
      }
 
-
-    console.log("Rofilid Personal Page Scripts Initialized (v1.2.0).");
+    console.log("Rofilid Personal Page Scripts Initialized (v1.4.0 - Next Quiz Logic).");
 
 }); // End DOMContentLoaded
