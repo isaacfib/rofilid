@@ -381,6 +381,109 @@
 .personal-page .theme-content .category-card { box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
 .personal-page .theme-content .category-card:hover { transform: translateY(-5px); box-shadow: 0 6px 15px rgba(0,0,0,0.08); }
 
+
+/* Enhanced Hero Section Styling */
+.personal-page .page-intro {
+    padding-top: calc(var(--header-height, 70px) + var(--spacing-xl));
+    padding-bottom: var(--spacing-xxl);
+    background: linear-gradient(165deg, #f7fbfb 0%, #e0f7fa 100%);
+    color: var(--color-text);
+    text-align: center;
+    border-bottom: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.personal-page .hero-stat {
+    display: inline-block;
+    background-color: var(--color-primary-personal);
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border-radius: 30px;
+    margin-bottom: var(--spacing-lg);
+    box-shadow: 0 4px 10px rgba(12, 52, 61, 0.2);
+    transform: translateY(0);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.personal-page .hero-stat:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(12, 52, 61, 0.25);
+}
+
+.personal-page .page-intro h1 {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(2.4rem, 6vw, 3.8rem);
+    font-weight: 800;
+    color: var(--color-primary-personal);
+    line-height: 1.2;
+    margin-bottom: var(--spacing-md);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.personal-page .page-intro .subheadline {
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    color: var(--color-text-light);
+    max-width: 650px;
+    margin: 0 auto var(--spacing-xl) auto;
+    font-weight: 500;
+}
+
+.personal-page .hero-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+    margin-bottom: var(--spacing-xxl);
+}
+
+.personal-page .hero-actions .btn {
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    min-width: 180px;
+}
+
+.personal-page .hero-actions .btn-primary {
+    background-color: var(--brand-green-personal);
+    border-color: var(--brand-green-personal);
+    color: white;
+}
+
+.personal-page .hero-actions .btn-primary:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+.personal-page .stats-grid {
+    margin-top: 0;
+}
+
+.personal-page .stat-card {
+    border: none;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+@media (max-width: 767px) {
+    .personal-page .hero-actions {
+        flex-direction: column;
+        align-items: center;
+        gap: var(--spacing-sm);
+    }
+    
+    .personal-page .hero-actions .btn {
+        width: 80%;
+        max-width: 300px;
+    }
+}
+
+
+
 /* --- Responsive Overrides --- */
 @media (max-width: 991px) {
   /* Hamburger Menu Display Fix */
