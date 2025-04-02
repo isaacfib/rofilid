@@ -1,23 +1,13 @@
-/* ==========================================================================
-   ROFILID Personal & Quizzes Pages Styles - v1.3.0 (Richer Styling - Complete)
-   Description: Styling enhancements for a cleaner, modern, creative feel.
-                Focus on button interactions, card refinements, transitions.
-   ========================================================================== */
-
-/* --- Root Variables & Base --- */
 .personal-page {
   /* Theme Variables */
   --color-primary-personal: #0c343d; /* Teal */
   --color-primary-light-personal: #1a4652;
   --color-primary-dark-personal: #072329;
   --brand-green-personal: #28a745; /* Green */
-
   --color-background: #f7fbfb;      /* Very light teal/cyan BG */
   --color-accent: #e0f7fa;          /* Lighter Teal accent */
   --color-text: #263238;            /* Dark Grey-Blue Text */
   --color-text-light: #546e7a;       /* Medium Grey-Blue Text */
-
-  /* Refined Styling Variables */
   --border-radius: 6px;             /* Slightly reduced default radius */
   --border-radius-large: 10px;      /* For larger elements like cards */
   --box-shadow-light: 0 4px 10px -2px rgba(0, 0, 0, 0.06); /* Softer light shadow */
@@ -25,1170 +15,346 @@
   --box-shadow-inset: inset 0 2px 4px rgba(0,0,0,0.04); /* Subtle inset for inputs */
   --transition-fast: all 0.2s ease-out;
   --transition-medium: all 0.3s ease-out;
-
-  /* Keep existing spacing, etc. from v1.0 */
   --spacing-xs: 5px; --spacing-sm: 10px; --spacing-md: 20px; --spacing-lg: 30px; --spacing-xl: 40px; --spacing-xxl: 80px;
   --font-weight-regular: 400; --font-weight-medium: 500; --font-weight-bold: 700; --font-weight-black: 900;
   --header-height: 70px; /* Default, updated by JS */
-  --container-width: 1200px; /* Ensure this is defined or inherited */
+  --container-width: 1200px;
 }
 
-.personal-page body {
+.personal-page body { /* ... Keep body styles ... */
     font-family: 'Inter', sans-serif;
-    background-color: #ffffff; /* Use white as base BG */
+    background-color: #ffffff;
     color: var(--color-text);
-    -webkit-font-smoothing: antialiased; /* Smoother fonts */
+    -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
+
 /* --- Header Overrides --- */
-.personal-page .site-header {
-    background: rgba(255, 255, 255, 0.97); /* Slightly less transparent */
-    border-bottom: 1px solid #d0e0e3; /* Softer border */
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    box-shadow: 0 1px 4px rgba(0,0,0,0.04); /* Softer shadow */
-    /* Keep height, position, z-index etc from global or previous version */
-     padding: var(--spacing-sm) 0;
-     position: fixed;
-     width: 100%;
-     top: 0;
-     left: 0;
-     z-index: 1000;
-     height: var(--header-height);
-     display: flex;
-     align-items: center;
-     transition: background-color 0.3s ease, border-color 0.3s ease, height 0.3s ease;
-}
-/* **FIX**: Target Header Logo SPECIFICALLY */
-.personal-page .site-header .logo img {
-    content: url(../../assets/images/common/rofilid-logo-teal.svg); /* Check path */
-    /* Ensure other logo styles like height/width are appropriate */
-    height: 40px;
-    width: auto;
-    display: block;
-    vertical-align: middle;
-    filter: none;
-}
-/* Nav links use Teal */
-.personal-page .nav-link {
-    color: var(--color-primary-personal);
-    font-weight: 500; /* Medium weight */
-    /* Keep other nav-link styles from global/previous */
-    text-decoration: none;
-    padding: var(--spacing-xs) var(--spacing-sm);
-    display: block;
-    transition: color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
-    white-space: nowrap;
-    border-bottom: 2px solid transparent;
-}
+/* ... (Keep Header styles from v1.3.0) ... */
+.personal-page .site-header { background: rgba(255, 255, 255, 0.97); border-bottom: 1px solid #d0e0e3; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 1px 4px rgba(0,0,0,0.04); padding: var(--spacing-sm) 0; position: fixed; width: 100%; top: 0; left: 0; z-index: 1000; height: var(--header-height); display: flex; align-items: center; transition: background-color 0.3s ease, border-color 0.3s ease, height 0.3s ease; }
+.personal-page .site-header .logo img { content: url(../../assets/images/common/rofilid-logo-teal.svg); height: 40px; width: auto; display: block; vertical-align: middle; filter: none; }
+.personal-page .nav-link { color: var(--color-primary-personal); font-weight: 500; text-decoration: none; padding: var(--spacing-xs) var(--spacing-sm); display: block; transition: color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease; white-space: nowrap; border-bottom: 2px solid transparent; }
 .personal-page .nav-link:hover { color: var(--color-primary-dark-personal); opacity: 1; }
 .personal-page .nav-link:focus { outline: 1px solid var(--color-primary-personal); outline-offset: 2px; border-radius: var(--border-radius); }
-.personal-page .nav-list .nav-link.active-page {
-    color: var(--color-primary-personal);
-    border-bottom-color: var(--color-primary-personal);
-    font-weight: 600; /* Bold active */
-    opacity: 1;
-}
+.personal-page .nav-list .nav-link.active-page { color: var(--color-primary-personal); border-bottom-color: var(--color-primary-personal); font-weight: 600; opacity: 1; }
 .personal-page .nav-list .nav-link.active-page:hover { border-bottom-color: var(--color-primary-dark-personal); }
-.personal-page .mobile-menu-toggle {
-    color: var(--color-primary-personal); /* Teal Toggle */
-     /* Keep other toggle styles from global/previous */
-     background: transparent;
-     border: none;
-     font-size: 1.8rem;
-     cursor: pointer;
-     display: none; /* Hidden by default on desktop */
-     padding: var(--spacing-xs);
-     line-height: 1;
-     transition: color 0.3s ease;
-}
-/* Mobile nav dropdown */
-.personal-page #primary-navigation.active {
-    background-color: var(--color-secondary);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    /* Keep other active styles from global/previous */
-    display: flex; /* Should be set by JS, ensure display works */
-    flex-direction: column; /* Default mobile stack */
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    padding: var(--spacing-sm) var(--spacing-md);
-    gap: var(--spacing-sm);
-    opacity: 1;
-    transition: opacity 0.3s ease-out, transform 0.3s ease-out, background-color 0.3s ease;
-}
+.personal-page .mobile-menu-toggle { color: var(--color-primary-personal); background: transparent; border: none; font-size: 1.8rem; cursor: pointer; display: none; padding: var(--spacing-xs); line-height: 1; transition: color 0.3s ease; }
+.personal-page #primary-navigation.active { background-color: var(--color-secondary); box-shadow: 0 10px 20px rgba(0,0,0,0.1); display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; width: 100%; padding: var(--spacing-sm) var(--spacing-md); gap: var(--spacing-sm); opacity: 1; transition: opacity 0.3s ease-out, transform 0.3s ease-out, background-color 0.3s ease; }
 .personal-page #primary-navigation.active .nav-link { color: var(--color-primary-personal); }
 .personal-page #primary-navigation.active .nav-link:hover { color: var(--color-primary-dark-personal); }
 .personal-page #primary-navigation.active .nav-link.active-page { border-bottom-color: var(--color-primary-personal); }
-/* Connect Button */
-.personal-page .connect-button {
-    background-color: var(--color-primary-personal);
-    color: var(--color-secondary);
-    border: none;
-    padding: 8px 18px; /* Adjust padding */
-    transition: var(--transition-medium);
-    border-radius: var(--border-radius);
-    /* Keep other connect button styles */
-    display: inline-block;
-    font-weight: var(--font-weight-medium);
-    cursor: pointer;
-    text-decoration: none;
-    text-align: center;
-    font-size: 1rem;
-    white-space: nowrap;
-}
-.personal-page .connect-button:hover {
-    background-color: var(--color-primary-light-personal);
-    transform: translateY(-2px);
-    box-shadow: 0 3px 8px rgba(12, 52, 61, 0.2);
-}
-.personal-page .connect-button:focus-visible {
-    outline: 2px solid var(--color-primary-light-personal);
-    outline-offset: 2px;
-    box-shadow: 0 0 0 3px rgba(12, 52, 61, 0.15);
-}
+.personal-page .connect-button { background-color: var(--color-primary-personal); color: var(--color-secondary); border: none; padding: 8px 18px; transition: var(--transition-medium); border-radius: var(--border-radius); display: inline-block; font-weight: var(--font-weight-medium); cursor: pointer; text-decoration: none; text-align: center; font-size: 1rem; white-space: nowrap; }
+.personal-page .connect-button:hover { background-color: var(--color-primary-light-personal); transform: translateY(-2px); box-shadow: 0 3px 8px rgba(12, 52, 61, 0.2); }
+.personal-page .connect-button:focus-visible { outline: 2px solid var(--color-primary-light-personal); outline-offset: 2px; box-shadow: 0 0 0 3px rgba(12, 52, 61, 0.15); }
+
 
 /* --- Page Intro Overrides --- */
-.personal-page .page-intro {
-    padding-top: calc(var(--header-height, 70px) + var(--spacing-xl));
-    padding-bottom: var(--spacing-xl);
-    background: linear-gradient(140deg, #f7fbfb 0%, #e6fafa 100%); /* Very subtle gradient */
-    color: var(--color-text);
-    text-align: center;
-    border-bottom: none; /* Ensure no extra border */
-    position: relative;
-    overflow: hidden;
-}
-.personal-page .page-intro h1 {
-    font-family: 'Inter', sans-serif; /* Ensure font */
-    font-size: clamp(2.4rem, 6vw, 3.5rem); /* Slightly larger */
-    font-weight: 700;
-    color: var(--color-primary-personal);
-    line-height: 1.25;
-    text-shadow: none; /* Remove any inherited shadow */
-    margin-bottom: var(--spacing-md);
-}
-.personal-page .page-intro .subheadline {
-    font-size: clamp(1.15rem, 3vw, 1.45rem); /* Slightly larger */
-    color: var(--color-text-light);
-    max-width: 800px;
-    margin: 0 auto var(--spacing-lg) auto;
-}
-.personal-page .page-intro p:not(.subheadline) {
-    color: var(--color-text-light);
-    max-width: 850px;
-    margin: 0 auto;
-    line-height: 1.75; /* Increase slightly */
-}
-/* Back/Inline link styles (if used on quiz page intro, keep) */
-.personal-page .link-back, .personal-page .link-inline {
-    color: var(--color-primary-personal);
-    text-decoration: underline;
-    font-weight: 500;
-}
-.personal-page .link-back:hover, .personal-page .link-inline:hover {
-    color: var(--color-primary-dark-personal);
-}
+/* ... (Keep Page Intro styles from v1.3.0) ... */
+.personal-page .page-intro { padding-top: calc(var(--header-height, 70px) + var(--spacing-xl)); padding-bottom: var(--spacing-xl); background: linear-gradient(140deg, #f7fbfb 0%, #e6fafa 100%); color: var(--color-text); text-align: center; border-bottom: none; position: relative; overflow: hidden; }
+.personal-page .page-intro h1 { font-family: 'Inter', sans-serif; font-size: clamp(2.4rem, 6vw, 3.5rem); font-weight: 700; color: var(--color-primary-personal); line-height: 1.25; text-shadow: none; margin-bottom: var(--spacing-md); }
+.personal-page .page-intro .subheadline { font-size: clamp(1.15rem, 3vw, 1.45rem); color: var(--color-text-light); max-width: 800px; margin: 0 auto var(--spacing-lg) auto; }
+.personal-page .page-intro p:not(.subheadline) { color: var(--color-text-light); max-width: 850px; margin: 0 auto; line-height: 1.75; }
+.personal-page .link-back, .personal-page .link-inline { color: var(--color-primary-personal); text-decoration: underline; font-weight: 500; }
+.personal-page .link-back:hover, .personal-page .link-inline:hover { color: var(--color-primary-dark-personal); }
 .personal-page .link-back i { margin-right: 5px;}
 
 /* --- Section Titles --- */
-.personal-page .section-title {
-    text-align: center;
-    margin-bottom: var(--spacing-lg); /* More space below */
-    font-size: clamp(2rem, 5vw, 2.5rem); /* Keep size */
-    color: var(--color-primary-personal);
-    font-weight: 700; /* Ensure bold */
-    position: relative;
-    padding-bottom: var(--spacing-sm);
-    font-family: 'Inter', sans-serif; /* Ensure font */
-}
-.personal-page .section-title::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 65px; /* Slightly wider */
-    height: 3px; /* Slightly thicker */
-    background-color: var(--color-primary-personal);
-    border-radius: 2px;
-    margin-top: 5px; /* Add small gap */
-    transition: width 0.3s ease;
-}
-.personal-page .section-description {
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto var(--spacing-xl) auto; /* Keep existing margin */
-    color: var(--color-text-light);
-    font-size: 1.1rem;
-    line-height: 1.7;
-}
+/* ... (Keep Section Title styles from v1.3.0) ... */
+.personal-page .section-title { text-align: center; margin-bottom: var(--spacing-lg); font-size: clamp(2rem, 5vw, 2.5rem); color: var(--color-primary-personal); font-weight: 700; position: relative; padding-bottom: var(--spacing-sm); font-family: 'Inter', sans-serif; }
+.personal-page .section-title::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 65px; height: 3px; background-color: var(--color-primary-personal); border-radius: 2px; margin-top: 5px; transition: width 0.3s ease; }
+.personal-page .section-description { text-align: center; max-width: 800px; margin: 0 auto var(--spacing-xl) auto; color: var(--color-text-light); font-size: 1.1rem; line-height: 1.7; }
 
 /* --- Stats Grid Styling --- */
-.personal-page .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: var(--spacing-lg);
-    margin-top: var(--spacing-xl);
-    margin-bottom: 0; /* Keep margin */
-}
-.personal-page .stat-card {
-    background: #ffffff; /* Solid white */
-    padding: var(--spacing-lg);
-    border-radius: var(--border-radius-large); /* Larger radius */
-    text-align: center;
-    box-shadow: var(--box-shadow-light);
-    border: 1px solid #e0f7fa; /* Very subtle border */
-    backdrop-filter: none; /* Remove blur if using solid bg */
-    transition: var(--transition-medium);
-}
-.personal-page .stat-card:hover {
-    transform: translateY(-6px) scale(1.02); /* More pronounced hover */
-    box-shadow: var(--box-shadow);
-    border-color: #b2ebf2; /* Slightly stronger border on hover */
-}
-.personal-page .stat-card i {
-    font-size: 2.2rem; /* Slightly larger */
-    color: var(--color-primary-personal);
-    margin-bottom: var(--spacing-md); /* More space */
-    display: block;
-    transition: transform 0.3s ease;
-}
-.personal-page .stat-card:hover i {
-    transform: scale(1.15); /* Increased scale */
-}
-.personal-page .stat-card h4 {
-    font-size: 1.6rem;
-    font-weight: 600;
-    color: var(--color-primary-dark-personal);
-    margin-bottom: var(--spacing-xs);
-    line-height: 1.2;
-}
-.personal-page .stat-card p {
-    font-size: 0.9rem;
-    color: var(--color-text-light);
-    line-height: 1.5;
-}
+/* ... (Keep Stats Grid styles from v1.3.0) ... */
+.personal-page .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--spacing-lg); margin-top: var(--spacing-xl); margin-bottom: 0; }
+.personal-page .stat-card { background: #ffffff; padding: var(--spacing-lg); border-radius: var(--border-radius-large); text-align: center; box-shadow: var(--box-shadow-light); border: 1px solid #e0f7fa; backdrop-filter: none; transition: var(--transition-medium); }
+.personal-page .stat-card:hover { transform: translateY(-6px) scale(1.02); box-shadow: var(--box-shadow); border-color: #b2ebf2; }
+.personal-page .stat-card i { font-size: 2.2rem; color: var(--color-primary-personal); margin-bottom: var(--spacing-md); display: block; transition: transform 0.3s ease; }
+.personal-page .stat-card:hover i { transform: scale(1.15); }
+.personal-page .stat-card h4 { font-size: 1.6rem; font-weight: 600; color: var(--color-primary-dark-personal); margin-bottom: var(--spacing-xs); line-height: 1.2; }
+.personal-page .stat-card p { font-size: 0.9rem; color: var(--color-text-light); line-height: 1.5; }
 
 /* --- Motivational Quote Styling --- */
-.personal-page .motivational-quote {
-    padding: var(--spacing-xl) 0; /* More padding */
-    margin: var(--spacing-xxl) 0; /* More margin */
-    background-color: #e8f5e9; /* Light Green */
-    border-top: 1px solid #c8e6c9;
-    border-bottom: 1px solid #c8e6c9;
-}
-.personal-page .motivational-quote .container {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-lg); /* Increased gap */
-    text-align: left;
-    max-width: 900px;
-}
-.personal-page .motivational-quote .quote-icon {
-    font-size: 2rem; /* Larger icon */
-    color: var(--brand-green-personal); /* Brand Green Icon */
-    flex-shrink: 0;
-    line-height: 1;
-    opacity: 0.9;
-}
-.personal-page .motivational-quote p {
-    font-size: clamp(1.1rem, 2.5vw, 1.35rem); /* Larger text */
-    color: #1b5e20; /* Dark Green Text */
-    font-weight: 400;
-    line-height: 1.6;
-    font-style: normal;
-    margin: 0;
-}
-.personal-page .motivational-quote p .highlight {
-    font-weight: 600;
-    color: var(--brand-green-personal); /* Brand Green Highlight */
-    font-style: normal;
-}
-/* Alt quote style (Light Teal) */
-.personal-page .motivational-quote.alt-bg {
-    background-color: var(--color-accent); /* Light Teal */
-    border-top: 1px solid #b2ebf2;
-    border-bottom: 1px solid #b2ebf2;
-}
-.personal-page .motivational-quote.alt-bg p {
-    color: var(--color-primary-dark-personal); /* Dark Teal Text */
-}
-.personal-page .motivational-quote.alt-bg p .highlight {
-    color: #00796b; /* Medium Teal Highlight */
-}
-.personal-page .motivational-quote.alt-bg .quote-icon {
-    color: var(--color-primary-personal); /* Teal Icon */
-}
+/* ... (Keep Motivational Quote styles from v1.3.0) ... */
+.personal-page .motivational-quote { padding: var(--spacing-xl) 0; margin: var(--spacing-xxl) 0; background-color: #e8f5e9; border-top: 1px solid #c8e6c9; border-bottom: 1px solid #c8e6c9; }
+.personal-page .motivational-quote .container { display: flex; align-items: center; gap: var(--spacing-lg); text-align: left; max-width: 900px; }
+.personal-page .motivational-quote .quote-icon { font-size: 2rem; color: var(--brand-green-personal); flex-shrink: 0; line-height: 1; opacity: 0.9; }
+.personal-page .motivational-quote p { font-size: clamp(1.1rem, 2.5vw, 1.35rem); color: #1b5e20; font-weight: 400; line-height: 1.6; font-style: normal; margin: 0; }
+.personal-page .motivational-quote p .highlight { font-weight: 600; color: var(--brand-green-personal); font-style: normal; }
+.personal-page .motivational-quote.alt-bg { background-color: var(--color-accent); border-top: 1px solid #b2ebf2; border-bottom: 1px solid #b2ebf2; }
+.personal-page .motivational-quote.alt-bg p { color: var(--color-primary-dark-personal); }
+.personal-page .motivational-quote.alt-bg p .highlight { color: #00796b; }
+.personal-page .motivational-quote.alt-bg .quote-icon { color: var(--color-primary-personal); }
 
-/* --- Personal Page Button Style (.btn base) --- Enhancements --- */
-.personal-page .btn {
-    display: inline-flex; /* Use flex for icon alignment */
-    align-items: center;
-    justify-content: center;
-    gap: 8px; /* Space between icon and text */
-    padding: 10px 20px; /* Slightly adjusted padding */
-    background-color: var(--color-primary-personal);
-    color: var(--color-secondary);
-    border-radius: var(--border-radius);
-    text-decoration: none;
-    font-weight: 500; /* Medium weight */
-    transition: var(--transition-fast);
-    border: 1px solid var(--color-primary-personal);
-    cursor: pointer;
-    text-align: center;
-    font-size: 0.95rem;
-    line-height: 1.4; /* Ensure consistent line height */
-}
-.personal-page .btn i {
-    font-size: 1em; /* Match icon size to text roughly */
-    line-height: 1; /* Prevent icon affecting line height */
-}
-.personal-page .btn:hover {
-    background-color: var(--color-primary-light-personal);
-    border-color: var(--color-primary-light-personal);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(12, 52, 61, 0.15); /* Slightly stronger hover shadow */
-}
-.personal-page .btn:focus-visible { /* Enhanced focus */
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(12, 52, 61, 0.2);
-}
-/* Outline Button */
-.personal-page .btn-outline {
-    background-color: transparent;
-    color: var(--color-primary-personal);
-    border: 1px solid var(--color-primary-personal);
-}
-.personal-page .btn-outline:hover {
-    background-color: rgba(12, 52, 61, 0.05);
-    color: var(--color-primary-dark-personal);
-    border-color: var(--color-primary-dark-personal);
-    box-shadow: none; /* Outline buttons often don't need hover shadow */
-    transform: translateY(-2px); /* Add lift to outline hover too */
-}
-.personal-page .btn-outline:focus-visible {
-     outline: none;
-     border-color: var(--color-primary-dark-personal);
-     box-shadow: 0 0 0 3px rgba(12, 52, 61, 0.15);
-}
-/* Disabled States */
-.personal-page .btn:disabled,
-.personal-page .btn[aria-disabled="true"] {
-    background-color: #e9ecef; /* Lighter grey */
-    border-color: #e9ecef;
-    color: #adb5bd; /* Lighter text */
-    cursor: not-allowed;
-    opacity: 1; /* Don't use opacity, use color changes */
-    transform: none;
-    box-shadow: none;
-    pointer-events: none; /* Prevent accidental interaction */
-}
-.personal-page .btn-outline:disabled,
-.personal-page .btn-outline[aria-disabled="true"] {
-    background-color: transparent;
-    border-color: #ced4da;
-    color: #adb5bd;
-    cursor: not-allowed;
-    opacity: 1;
-    transform: none;
-    box-shadow: none;
-    pointer-events: none;
-}
-
+/* --- Personal Page Button Style (.btn base) --- */
+/* ... (Keep Button styles from v1.3.0) ... */
+.personal-page .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 20px; background-color: var(--color-primary-personal); color: var(--color-secondary); border-radius: var(--border-radius); text-decoration: none; font-weight: 500; transition: var(--transition-fast); border: 1px solid var(--color-primary-personal); cursor: pointer; text-align: center; font-size: 0.95rem; line-height: 1.4; }
+.personal-page .btn i { font-size: 1em; line-height: 1; }
+.personal-page .btn:hover { background-color: var(--color-primary-light-personal); border-color: var(--color-primary-light-personal); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(12, 52, 61, 0.15); }
+.personal-page .btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(12, 52, 61, 0.2); }
+.personal-page .btn-outline { background-color: transparent; color: var(--color-primary-personal); border: 1px solid var(--color-primary-personal); }
+.personal-page .btn-outline:hover { background-color: rgba(12, 52, 61, 0.05); color: var(--color-primary-dark-personal); border-color: var(--color-primary-dark-personal); box-shadow: none; transform: translateY(-2px); }
+.personal-page .btn-outline:focus-visible { outline: none; border-color: var(--color-primary-dark-personal); box-shadow: 0 0 0 3px rgba(12, 52, 61, 0.15); }
+.personal-page .btn:disabled, .personal-page .btn[aria-disabled="true"] { background-color: #e9ecef; border-color: #e9ecef; color: #adb5bd; cursor: not-allowed; opacity: 1; transform: none; box-shadow: none; pointer-events: none; }
+.personal-page .btn-outline:disabled, .personal-page .btn-outline[aria-disabled="true"] { background-color: transparent; border-color: #ced4da; color: #adb5bd; cursor: not-allowed; opacity: 1; transform: none; box-shadow: none; pointer-events: none; }
 
 /* --- Resources Section --- */
-.personal-page #personal-resources {
-    background-color: var(--color-background);
-    padding-bottom: var(--spacing-xxl);
-    /* Use global section padding */
-}
-.personal-page .resource-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); /* Adjust minmax */
-    gap: var(--spacing-xl);
-    margin-top: var(--spacing-xl);
-}
-.personal-page .resource-card {
-    background: var(--color-secondary);
-    border-radius: var(--border-radius-large); /* Use larger radius */
-    overflow: hidden;
-    box-shadow: var(--box-shadow-light);
-    transition: var(--transition-medium);
-    display: flex;
-    flex-direction: column;
-    border: 1px solid #e0f7fa; /* Subtle border */
-}
-.personal-page .resource-card:hover {
-    transform: translateY(-8px); /* Increase lift */
-    box-shadow: var(--box-shadow);
-    border-color: #b2ebf2;
-}
-.personal-page .resource-card .card-image {
-    /* height: 200px; */ /* Remove fixed height, use aspect-ratio */
-    aspect-ratio: 16 / 9; /* Common aspect ratio */
-    overflow: hidden;
-    background-color: var(--color-accent);
-    line-height: 0; /* Ensure no extra space */
-}
-.personal-page .resource-card .card-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.4s ease; /* Add subtle zoom */
-    display: block; /* Ensure display block */
-}
-.personal-page .resource-card:hover .card-image img {
-    transform: scale(1.05);
-}
-.personal-page .resource-card .card-content {
-    padding: var(--spacing-lg);
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-}
-.personal-page .resource-card h3 {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: var(--color-primary-dark-personal);
-    margin-bottom: var(--spacing-sm);
-    margin-top: 0; /* Reset margin */
-}
-.personal-page .resource-card p {
-    font-size: 0.95rem;
-    color: var(--color-text-light);
-    line-height: 1.7;
-    margin-bottom: var(--spacing-lg);
-    flex-grow: 1;
-}
-.personal-page .resource-card .card-cta {
-    margin-top: auto; /* Pushes button to bottom */
-}
-.personal-page .resource-card .card-cta .btn {
-    width: 100%; /* Make card buttons full width */
-}
-
+/* ... (Keep Resources Section styles from v1.3.0) ... */
+.personal-page #personal-resources { background-color: var(--color-background); padding-bottom: var(--spacing-xxl); }
+.personal-page .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: var(--spacing-xl); margin-top: var(--spacing-xl); }
+.personal-page .resource-card { background: var(--color-secondary); border-radius: var(--border-radius-large); overflow: hidden; box-shadow: var(--box-shadow-light); transition: var(--transition-medium); display: flex; flex-direction: column; border: 1px solid #e0f7fa; }
+.personal-page .resource-card:hover { transform: translateY(-8px); box-shadow: var(--box-shadow); border-color: #b2ebf2; }
+.personal-page .resource-card .card-image { aspect-ratio: 16 / 9; overflow: hidden; background-color: var(--color-accent); line-height: 0; }
+.personal-page .resource-card .card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; display: block; }
+.personal-page .resource-card:hover .card-image img { transform: scale(1.05); }
+.personal-page .resource-card .card-content { padding: var(--spacing-lg); flex-grow: 1; display: flex; flex-direction: column; }
+.personal-page .resource-card h3 { font-size: 1.3rem; font-weight: 600; color: var(--color-primary-dark-personal); margin-bottom: var(--spacing-sm); margin-top: 0; }
+.personal-page .resource-card p { font-size: 0.95rem; color: var(--color-text-light); line-height: 1.7; margin-bottom: var(--spacing-lg); flex-grow: 1; }
+.personal-page .resource-card .card-cta { margin-top: auto; }
+.personal-page .resource-card .card-cta .btn { width: 100%; }
 
 /* --- ENHANCED Social Integration Card Styles --- */
-.personal-page .social-integration {
-    background: linear-gradient(135deg, #edf8fa, #f7fbfb); /* Even softer gradient */
-    padding: var(--spacing-lg);
-    border-radius: var(--border-radius-large);
-    border: 1px solid #e0f7fa;
-}
-.personal-page .social-integration .card-header {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    margin-bottom: var(--spacing-lg);
-    color: var(--color-primary-dark-personal);
-}
-.personal-page .social-integration .card-header i { /* Header Icon */
-    font-size: 1.8rem;
-    color: var(--color-primary-personal); /* Teal hash */
-}
-.personal-page .social-integration .card-header h3 {
-    margin-bottom: 0;
-    font-size: 1.3rem;
-    color: inherit;
-}
-.personal-page .social-feed-preview {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md); /* Reduced gap */
-    margin-bottom: var(--spacing-xl);
-}
-.personal-page .social-post-preview {
-    background-color: #fff; /* White background for posts */
-    padding: var(--spacing-md);
-    border-radius: var(--border-radius); /* Standard radius */
-    border: 1px solid #e8e8e8; /* Softer border */
-    font-size: 0.9rem;
-    line-height: 1.6;
-    box-shadow: none; /* Remove shadow */
-    position: relative;
-    padding-left: 48px; /* More space for icon */
-    transition: background-color 0.2s ease;
-}
-.personal-page .social-post-preview:hover {
-    background-color: #f8f9fa; /* Subtle hover */
-}
-.personal-page .social-post-preview i { /* Platform icon */
-    position: absolute;
-    left: 15px;
-    top: 15px;
-    font-size: 1.6rem;
-    width: 25px;
-    text-align: center;
-    opacity: 0.8; /* Slightly fade icon */
-}
+/* ... (Keep Social Card styles from v1.3.0) ... */
+.personal-page .social-integration { background: linear-gradient(135deg, #edf8fa, #f7fbfb); padding: var(--spacing-lg); border-radius: var(--border-radius-large); border: 1px solid #e0f7fa; }
+.personal-page .social-integration .card-header { display: flex; align-items: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-lg); color: var(--color-primary-dark-personal); }
+.personal-page .social-integration .card-header i { font-size: 1.8rem; color: var(--color-primary-personal); }
+.personal-page .social-integration .card-header h3 { margin-bottom: 0; font-size: 1.3rem; color: inherit; }
+.personal-page .social-feed-preview { display: flex; flex-direction: column; gap: var(--spacing-md); margin-bottom: var(--spacing-xl); }
+.personal-page .social-post-preview { background-color: #fff; padding: var(--spacing-md); border-radius: var(--border-radius); border: 1px solid #e8e8e8; font-size: 0.9rem; line-height: 1.6; box-shadow: none; position: relative; padding-left: 48px; transition: background-color 0.2s ease; }
+.personal-page .social-post-preview:hover { background-color: #f8f9fa; }
+.personal-page .social-post-preview i { position: absolute; left: 15px; top: 15px; font-size: 1.6rem; width: 25px; text-align: center; opacity: 0.8; }
 .personal-page .social-post-preview.instagram i { color: #c13584; }
 .personal-page .social-post-preview.twitter i { color: #1DA1F2; }
 .personal-page .social-post-preview.youtube i { color: #FF0000; }
-/* Specific style for Insta image */
-.personal-page .social-post-preview.instagram {
-    padding: 0; /* Remove padding for image */
-    padding-bottom: var(--spacing-md); /* Add padding below image */
-    padding-left: 0; /* Reset icon padding */
-    line-height: 0; /* Reset line-height */
-}
-.personal-page .social-post-preview.instagram img {
-    width: 100%;
-    height: 160px; /* Slightly taller */
-    object-fit: cover;
-    border-top-left-radius: var(--border-radius);
-    border-top-right-radius: var(--border-radius);
-    margin-bottom: var(--spacing-sm);
-    display: block;
-}
-.personal-page .social-post-preview.instagram p {
-    padding: 0 var(--spacing-md); /* Add horizontal padding back for text */
-    line-height: 1.6; /* Restore line height for text */
-}
-.personal-page .social-post-preview p {
-    margin: 0;
-    color: var(--color-text);
-}
-.personal-page .social-post-preview .social-handle {
-    color: var(--color-primary-personal);
-    font-weight: 500;
-    text-decoration: none;
-}
-.personal-page .social-post-preview .social-handle:hover {
-    text-decoration: underline;
-}
-/* Follow Links at Bottom */
-.personal-page .social-follow-links {
-    margin-top: auto; /* Push to bottom */
-    text-align: center;
-    padding-top: var(--spacing-lg); /* More space */
-    border-top: 1px solid #d0e0e3; /* Softer border */
-}
-.personal-page .social-follow-links p {
-    font-size: 1rem; /* Larger text */
-    color: var(--color-text-light);
-    margin-bottom: var(--spacing-md);
-    font-weight: 500;
-}
-.personal-page .social-icons-inline {
-    display: flex;
-    justify-content: center;
-    gap: var(--spacing-xl); /* Wider gap */
-}
-.personal-page .social-icons-inline a {
-    color: var(--color-text-light); /* Use text light for subtle icons */
-    font-size: 1.7rem; /* Adjust size */
-    transition: var(--transition-fast);
-}
-.personal-page .social-icons-inline a:hover {
-    color: var(--color-primary-personal); /* Teal hover */
-    transform: translateY(-3px); /* Add lift */
-}
+.personal-page .social-post-preview.instagram { padding: 0; padding-bottom: var(--spacing-md); padding-left: 0; line-height: 0; }
+.personal-page .social-post-preview.instagram img { width: 100%; height: 160px; object-fit: cover; border-top-left-radius: var(--border-radius); border-top-right-radius: var(--border-radius); margin-bottom: var(--spacing-sm); display: block; }
+.personal-page .social-post-preview.instagram p { padding: 0 var(--spacing-md); line-height: 1.6; }
+.personal-page .social-post-preview p { margin: 0; color: var(--color-text); }
+.personal-page .social-post-preview .social-handle { color: var(--color-primary-personal); font-weight: 500; text-decoration: none; }
+.personal-page .social-post-preview .social-handle:hover { text-decoration: underline; }
+.personal-page .social-follow-links { margin-top: auto; text-align: center; padding-top: var(--spacing-lg); border-top: 1px solid #d0e0e3; }
+.personal-page .social-follow-links p { font-size: 1rem; color: var(--color-text-light); margin-bottom: var(--spacing-md); font-weight: 500; }
+.personal-page .social-icons-inline { display: flex; justify-content: center; gap: var(--spacing-xl); }
+.personal-page .social-icons-inline a { color: var(--color-text-light); font-size: 1.7rem; transition: var(--transition-fast); }
+.personal-page .social-icons-inline a:hover { color: var(--color-primary-personal); transform: translateY(-3px); }
 
 /* --- Financial Fitness Challenge Intro Section --- */
-.personal-page #financial-fitness-challenge-intro {
-    background-color: #fff; /* Ensure white BG */
-    /* Use global section padding */
-}
-.personal-page .challenge-theme {
-    margin-bottom: 0; /* Remove bottom margin as it's the only theme here */
-}
-/* Grid for category cards */
-.personal-page .category-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Adjusted minmax */
-    gap: var(--spacing-lg);
-}
-/* Category Card Styling */
-.personal-page .category-card {
-    background: var(--color-secondary);
-    border-radius: var(--border-radius-large); /* Use large radius */
-    box-shadow: var(--box-shadow-light);
-    border: 1px solid var(--color-accent);
-    text-align: center;
-    padding: var(--spacing-lg);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: var(--transition-medium);
-}
-.personal-page .category-card:hover {
-    transform: translateY(-8px) scale(1.03); /* Increase hover effect */
-    box-shadow: var(--box-shadow);
-    border-color: var(--color-primary-light-personal);
-}
-.personal-page .category-card .category-icon {
-    font-size: 2.4rem; /* Larger icon */
-    color: var(--color-primary-personal);
-    margin-bottom: var(--spacing-md);
-    transition: transform 0.3s ease;
-}
-.personal-page .category-card:hover .category-icon {
-    transform: scale(1.15); /* More icon pop */
-}
-.personal-page .category-card h4 {
-    font-size: 1.2rem; /* Slightly larger */
-    color: var(--color-primary-dark-personal);
-    margin-bottom: var(--spacing-sm);
-    font-weight: 600;
-}
-.personal-page .category-card p {
-    font-size: 0.9rem; /* Slightly larger */
-    color: var(--color-text-light);
-    line-height: 1.6;
-    margin-bottom: var(--spacing-lg);
-    flex-grow: 1;
-    max-width: 95%;
-}
-.personal-page .category-card .start-quiz-btn {
-    margin-top: auto;
-    width: 80%; /* More width */
-    max-width: 200px;
-    font-size: 0.9rem;
-    padding: 8px 16px; /* Adjust padding */
-}
-
-/* Link to Full Quiz Page Style */
-.personal-page .full-challenge-link .btn.large {
-    padding: var(--spacing-md) var(--spacing-xl);
-    font-size: 1.1rem;
-    font-weight: 600;
-}
-.personal-page .full-challenge-link .btn i {
-    transition: transform 0.3s ease;
-    display: inline-block;
-}
-.personal-page .full-challenge-link .btn:hover i {
-    transform: translateX(6px); /* Slightly more nudge */
-}
+/* ... (Keep Challenge styles from v1.3.0) ... */
+.personal-page #financial-fitness-challenge-intro { background-color: #fff; /* Use global section padding */ }
+.personal-page .challenge-theme { margin-bottom: 0; }
+.personal-page .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--spacing-lg); }
+.personal-page .category-card { background: var(--color-secondary); border-radius: var(--border-radius-large); box-shadow: var(--box-shadow-light); border: 1px solid var(--color-accent); text-align: center; padding: var(--spacing-lg); display: flex; flex-direction: column; align-items: center; transition: var(--transition-medium); }
+.personal-page .category-card:hover { transform: translateY(-8px) scale(1.03); box-shadow: var(--box-shadow); border-color: var(--color-primary-light-personal); }
+.personal-page .category-card .category-icon { font-size: 2.4rem; color: var(--color-primary-personal); margin-bottom: var(--spacing-md); transition: transform 0.3s ease; }
+.personal-page .category-card:hover .category-icon { transform: scale(1.15); }
+.personal-page .category-card h4 { font-size: 1.2rem; color: var(--color-primary-dark-personal); margin-bottom: var(--spacing-sm); font-weight: 600; }
+.personal-page .category-card p { font-size: 0.9rem; color: var(--color-text-light); line-height: 1.6; margin-bottom: var(--spacing-lg); flex-grow: 1; max-width: 95%; }
+.personal-page .category-card .start-quiz-btn { margin-top: auto; width: 80%; max-width: 200px; font-size: 0.9rem; padding: 8px 16px; }
+.personal-page .full-challenge-link .btn.large { padding: var(--spacing-md) var(--spacing-xl); font-size: 1.1rem; font-weight: 600; }
+.personal-page .full-challenge-link .btn i { transition: transform 0.3s ease; display: inline-block; }
+.personal-page .full-challenge-link .btn:hover i { transform: translateX(6px); }
 
 /* --- Marketplace/Tools Section (Templates) --- */
-.personal-page #personal-tools {
-    background-color: var(--color-background); /* Use light BG */
-    /* Use global section padding */
-}
-.personal-page .template-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 310px), 1fr)); /* Slightly larger min */
-    gap: var(--spacing-xl);
-    margin-top: var(--spacing-xl);
-}
-.personal-page .template-card {
-    background: var(--color-secondary);
-    border-radius: var(--border-radius-large); /* Large radius */
-    overflow: hidden;
-    box-shadow: var(--box-shadow-light);
-    border: 1px solid #e0f7fa; /* Subtle border */
-    transition: var(--transition-medium);
-    display: flex;
-    flex-direction: column;
-}
-.personal-page .template-card:hover {
-    transform: translateY(-8px); /* More lift */
-    box-shadow: var(--box-shadow);
-    border-color: #b2ebf2;
-}
-.personal-page .template-preview {
-    position: relative;
-    line-height: 0;
-    aspect-ratio: 16 / 10;
-    overflow: hidden;
-    background-color: var(--color-accent);
-    border-bottom: 1px solid #e0f7fa; /* Add subtle border */
-}
-.personal-page .template-preview img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: opacity 0.5s ease-in-out; /* Slower fade */
-    display: block;
-}
+/* ... (Keep Marketplace styles from v1.3.0) ... */
+.personal-page #personal-tools { background-color: var(--color-background); /* Use global section padding */ }
+.personal-page .template-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 310px), 1fr)); gap: var(--spacing-xl); margin-top: var(--spacing-xl); }
+.personal-page .template-card { background: var(--color-secondary); border-radius: var(--border-radius-large); overflow: hidden; box-shadow: var(--box-shadow-light); border: 1px solid #e0f7fa; transition: var(--transition-medium); display: flex; flex-direction: column; }
+.personal-page .template-card:hover { transform: translateY(-8px); box-shadow: var(--box-shadow); border-color: #b2ebf2; }
+.personal-page .template-preview { position: relative; line-height: 0; aspect-ratio: 16 / 10; overflow: hidden; background-color: var(--color-accent); border-bottom: 1px solid #e0f7fa; }
+.personal-page .template-preview img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 0.5s ease-in-out; display: block; }
 .personal-page .template-preview img:last-child { opacity: 0; }
-.personal-page .template-card:hover .template-preview img:first-child,
-.personal-page .template-card:focus-within .template-preview img:first-child { opacity: 0; }
-.personal-page .template-card:hover .template-preview img:last-child,
-.personal-page .template-card:focus-within .template-preview img:last-child { opacity: 1; }
-.personal-page .template-details {
-    padding: var(--spacing-lg);
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-}
-.personal-page .template-details h3 {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: var(--color-primary-dark-personal);
-    margin-bottom: var(--spacing-sm);
-    line-height: 1.3;
-}
-.personal-page .template-details p {
-    font-size: 0.95rem;
-    color: var(--color-text-light);
-    line-height: 1.7;
-    flex-grow: 1;
-    margin-bottom: var(--spacing-lg);
-}
-.personal-page .template-actions {
-    margin-top: auto; /* Push actions to the bottom */
-    display: flex;
-    flex-direction: column; /* Stack buttons */
-    gap: var(--spacing-sm);
-}
-.personal-page .template-actions .btn,
-.personal-page .template-actions .btn-outline {
-    width: 100%; /* Keep buttons full width */
-    /* Icons handled by base .btn style */
-}
-/* Ensure text aligns with icon */
-.personal-page .template-actions .btn span,
-.personal-page .template-actions .btn-outline span {
-    flex-grow: 1; /* Allow text to take remaining space */
-    text-align: center;
-}
-.personal-page .template-price-note {
-    font-size: 0.85rem; /* Slightly larger */
-    color: var(--color-text-light);
-    text-align: center;
-    margin-top: var(--spacing-md);
-    line-height: 1.4;
-}
+.personal-page .template-card:hover .template-preview img:first-child, .personal-page .template-card:focus-within .template-preview img:first-child { opacity: 0; }
+.personal-page .template-card:hover .template-preview img:last-child, .personal-page .template-card:focus-within .template-preview img:last-child { opacity: 1; }
+.personal-page .template-details { padding: var(--spacing-lg); flex-grow: 1; display: flex; flex-direction: column; }
+.personal-page .template-details h3 { font-size: 1.3rem; font-weight: 600; color: var(--color-primary-dark-personal); margin-bottom: var(--spacing-sm); line-height: 1.3; }
+.personal-page .template-details p { font-size: 0.95rem; color: var(--color-text-light); line-height: 1.7; flex-grow: 1; margin-bottom: var(--spacing-lg); }
+.personal-page .template-actions { margin-top: auto; display: flex; flex-direction: column; gap: var(--spacing-sm); }
+.personal-page .template-actions .btn, .personal-page .template-actions .btn-outline { width: 100%; }
+.personal-page .template-actions .btn span, .personal-page .template-actions .btn-outline span { flex-grow: 1; text-align: center; }
+.personal-page .template-price-note { font-size: 0.85rem; color: var(--color-text-light); text-align: center; margin-top: var(--spacing-md); line-height: 1.4; }
 
 /* --- Coaching Section Styling --- */
-.personal-page #personal-coaching {
-    background-color: #fff; /* White BG */
-    /* Use global section padding */
-}
-.personal-page .coaching-content {
-    display: grid;
-    gap: var(--spacing-xl);
-    margin-top: var(--spacing-xl);
-    grid-template-columns: 1fr; /* Base */
-}
-.personal-page .coaching-item {
-    background: var(--color-secondary);
-    padding: var(--spacing-xl); /* More padding */
-    border-radius: var(--border-radius-large); /* Large radius */
-    box-shadow: var(--box-shadow-light);
-    border: 1px solid var(--color-accent);
-    transition: var(--transition-medium);
-}
-.personal-page .coaching-item:hover { /* Subtle hover for coaching items */
-     box-shadow: var(--box-shadow);
-     border-color: #b2ebf2;
-}
-.personal-page .coaching-item h3 {
-    font-size: 1.4rem;
-    margin-bottom: var(--spacing-md);
-    color: var(--color-primary-dark-personal);
-    display: flex;
-    align-items: center;
-}
-.personal-page .coaching-item h3::before {
-    font-family: "Font Awesome 6 Free";
-    font-weight: 900;
-    font-size: 1.1rem;
-    color: var(--brand-green-personal);
-    width: 25px; /* Ensure width */
-    text-align: center;
-    flex-shrink: 0;
-    margin-right: var(--spacing-sm);
-}
-.personal-page .coaching-details .coaching-item:nth-child(1) h3::before { content: '\f05a'; } /* fa-info-circle */
-.personal-page .coaching-details .coaching-item:nth-child(2) h3::before { content: '\f5ad'; } /* fa-hands-helping */
-.personal-page .coaching-item:last-child h3::before { content: '\f073'; } /* fa-calendar-alt */
-.personal-page .coaching-item .card-image { /* Style image within coaching */
-     margin-bottom: var(--spacing-md);
-     border-radius: var(--border-radius);
-     overflow: hidden; /* Ensure image respects radius */
-     line-height: 0;
-}
-.personal-page .coaching-item .card-image img {
-     display: block;
-     width: 100%;
-     height: auto;
-}
-.personal-page .coaching-item p,
-.personal-page .coaching-item ul {
-    font-size: 1rem; /* Slightly larger text */
-    color: var(--color-text-light);
-    line-height: 1.75; /* Increased line height */
-    margin-bottom: var(--spacing-md);
-}
-.personal-page .coaching-item ul {
-    list-style: none;
-    padding-left: 0;
-}
-.personal-page .coaching-item ul li {
-    position: relative;
-    padding-left: var(--spacing-lg);
-    margin-bottom: var(--spacing-sm);
-}
-.personal-page .coaching-item ul li::before {
-    content: '\f00c'; /* fa-check */
-    font-family: "Font Awesome 6 Free";
-    font-weight: 900;
-    position: absolute;
-    left: 0;
-    top: 6px; /* Adjust vertical alignment */
-    color: var(--brand-green-personal); /* Green check */
-    font-size: 0.9em;
-}
-/* Coaching Request Form */
-.personal-page .coaching-request-form label {
-    display: block;
-    margin-bottom: var(--spacing-xs);
-    font-weight: 500; /* Medium weight */
-    color: var(--color-primary-dark-personal);
-    font-size: 0.9rem;
-}
-.personal-page .coaching-request-form input,
-.personal-page .coaching-request-form textarea {
-    display: block;
-    width: 100%;
-    margin-bottom: var(--spacing-md);
-    padding: 12px 15px; /* More padding */
-    border: 1px solid #cbd5e1;
-    border-radius: var(--border-radius);
-    font-family: inherit;
-    font-size: 1rem;
-    line-height: 1.5;
-    background-color: #fff;
-    transition: var(--transition-fast);
-    color: var(--color-text);
-    box-shadow: var(--box-shadow-inset); /* Subtle inset */
-}
-.personal-page .coaching-request-form input::placeholder,
-.personal-page .coaching-request-form textarea::placeholder {
-    color: #94a3b8;
-}
-.personal-page .coaching-request-form input:focus,
-.personal-page .coaching-request-form textarea:focus {
-    outline: none;
-    border-color: var(--color-primary-personal);
-    box-shadow: 0 0 0 3px rgba(12, 52, 61, 0.1), var(--box-shadow-inset); /* Keep inset on focus */
-}
-.personal-page .coaching-request-form textarea {
-    resize: vertical;
-    min-height: 110px;
-}
-.personal-page .coaching-request-form button {
-    display: block;
-    width: 100%;
-    margin-top: var(--spacing-sm);
-    /* Base button styles apply */
-}
-.personal-page .form-response-note { /* Style the note below form */
-    font-size: 0.85rem;
-    text-align: center;
-    margin-top: var(--spacing-md);
-    color: var(--color-text-light);
-}
-/* Disclaimer */
-.personal-page .disclaimer {
-    font-size: 0.9rem;
-    color: var(--color-text-light);
-    margin: var(--spacing-xl) auto 0;
-    border-top: 1px solid var(--color-accent);
-    padding-top: var(--spacing-lg);
-    text-align: center;
-    max-width: 800px;
-    line-height: 1.7;
-}
-.personal-page .disclaimer strong {
-    color: var(--color-text);
-}
+/* ... (Keep Coaching styles from v1.3.0) ... */
+.personal-page #personal-coaching { background-color: #fff; /* Use global section padding */ }
+.personal-page .coaching-content { display: grid; gap: var(--spacing-xl); margin-top: var(--spacing-xl); grid-template-columns: 1fr; }
+.personal-page .coaching-item { background: var(--color-secondary); padding: var(--spacing-xl); border-radius: var(--border-radius-large); box-shadow: var(--box-shadow-light); border: 1px solid var(--color-accent); transition: var(--transition-medium); }
+.personal-page .coaching-item:hover { box-shadow: var(--box-shadow); border-color: #b2ebf2; }
+.personal-page .coaching-item h3 { font-size: 1.4rem; margin-bottom: var(--spacing-md); color: var(--color-primary-dark-personal); display: flex; align-items: center; }
+.personal-page .coaching-item h3::before { font-family: "Font Awesome 6 Free"; font-weight: 900; font-size: 1.1rem; color: var(--brand-green-personal); width: 25px; text-align: center; flex-shrink: 0; margin-right: var(--spacing-sm); }
+.personal-page .coaching-details .coaching-item:nth-child(1) h3::before { content: '\f05a'; }
+.personal-page .coaching-details .coaching-item:nth-child(2) h3::before { content: '\f5ad'; }
+.personal-page .coaching-item:last-child h3::before { content: '\f073'; }
+.personal-page .coaching-item .card-image { margin-bottom: var(--spacing-md); border-radius: var(--border-radius); overflow: hidden; line-height: 0; }
+.personal-page .coaching-item .card-image img { display: block; width: 100%; height: auto; }
+.personal-page .coaching-item p, .personal-page .coaching-item ul { font-size: 1rem; color: var(--color-text-light); line-height: 1.75; margin-bottom: var(--spacing-md); }
+.personal-page .coaching-item ul { list-style: none; padding-left: 0; }
+.personal-page .coaching-item ul li { position: relative; padding-left: var(--spacing-lg); margin-bottom: var(--spacing-sm); }
+.personal-page .coaching-item ul li::before { content: '\f00c'; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; left: 0; top: 6px; color: var(--brand-green-personal); font-size: 0.9em; }
+.personal-page .coaching-request-form label { display: block; margin-bottom: var(--spacing-xs); font-weight: 500; color: var(--color-primary-dark-personal); font-size: 0.9rem; }
+.personal-page .coaching-request-form input, .personal-page .coaching-request-form textarea { display: block; width: 100%; margin-bottom: var(--spacing-md); padding: 12px 15px; border: 1px solid #cbd5e1; border-radius: var(--border-radius); font-family: inherit; font-size: 1rem; line-height: 1.5; background-color: #fff; transition: var(--transition-fast); color: var(--color-text); box-shadow: var(--box-shadow-inset); }
+.personal-page .coaching-request-form input::placeholder, .personal-page .coaching-request-form textarea::placeholder { color: #94a3b8; }
+.personal-page .coaching-request-form input:focus, .personal-page .coaching-request-form textarea:focus { outline: none; border-color: var(--color-primary-personal); box-shadow: 0 0 0 3px rgba(12, 52, 61, 0.1), var(--box-shadow-inset); }
+.personal-page .coaching-request-form textarea { resize: vertical; min-height: 110px; }
+.personal-page .coaching-request-form button { display: block; width: 100%; margin-top: var(--spacing-sm); }
+.personal-page .form-response-note { font-size: 0.85rem; text-align: center; margin-top: var(--spacing-md); color: var(--color-text-light); }
+.personal-page .disclaimer { font-size: 0.9rem; color: var(--color-text-light); margin: var(--spacing-xl) auto 0; border-top: 1px solid var(--color-accent); padding-top: var(--spacing-lg); text-align: center; max-width: 800px; line-height: 1.7; }
+.personal-page .disclaimer strong { color: var(--color-text); }
 
 /* --- MMISBALIOR Promo Section --- */
-.personal-page #mmisbalior-section {
-    background-color: var(--color-background); /* Light BG */
-    /* Use global section padding */
-}
-.personal-page .mmisbalior-promo {
-    background: linear-gradient(135deg, var(--color-primary-personal), var(--color-primary-light-personal));
-    color: var(--color-secondary);
-    padding: var(--spacing-xl) var(--spacing-lg);
-    border-radius: var(--border-radius-large); /* Larger radius */
-    text-align: center;
-    box-shadow: 0 8px 25px -8px rgba(12, 52, 61, 0.3); /* Promo shadow */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-lg);
-    overflow: hidden;
-}
+/* ... (Keep MMISBALIOR styles from v1.3.0) ... */
+.personal-page #mmisbalior-section { background-color: var(--color-background); /* Use global section padding */ }
+.personal-page .mmisbalior-promo { background: linear-gradient(135deg, var(--color-primary-personal), var(--color-primary-light-personal)); color: var(--color-secondary); padding: var(--spacing-xl) var(--spacing-lg); border-radius: var(--border-radius-large); text-align: center; box-shadow: 0 8px 25px -8px rgba(12, 52, 61, 0.3); display: flex; flex-direction: column; align-items: center; gap: var(--spacing-lg); overflow: hidden; }
 .personal-page .mmisbalior-promo .promo-content { max-width: 650px; }
-.personal-page .mmisbalior-promo h3 {
-    color: var(--color-secondary);
-    margin-bottom: var(--spacing-md);
-    font-size: clamp(1.7rem, 4vw, 2.1rem); /* Slightly larger */
-    font-weight: 700;
-    margin-top: 0;
-}
-.personal-page .mmisbalior-promo p {
-    margin-bottom: var(--spacing-lg);
-    max-width: 600px;
-    margin: 0 auto var(--spacing-lg) auto;
-    color: rgba(255, 255, 255, 0.95);
-    line-height: 1.75; /* Increased line height */
-}
-.personal-page .mmisbalior-promo .promo-visual {
-    line-height: 0;
-    width: 100%;
-    max-width: 450px;
-    border-radius: var(--border-radius); /* Standard radius for image */
-    overflow: hidden;
-    background-color: var(--color-accent);
-}
-.personal-page .mmisbalior-promo .promo-visual img {
-    width: 100%;
-    height: auto;
-    display: block; /* Ensure no extra space */
-}
-.personal-page .mmisbalior-promo .btn { /* Specific style for this button */
-    background-color: var(--color-secondary);
-    color: var(--color-primary-dark-personal);
-    font-weight: 600; /* Slightly bolder */
-    padding: 12px 25px; /* More padding */
-    margin-top: 0;
-    border: 1px solid transparent;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    /* Base button icon styles apply */
-}
-.personal-page .mmisbalior-promo .btn:hover {
-    background-color: #f1f5f9;
-    color: var(--color-primary-dark-personal);
-    transform: translateY(-3px); /* More lift */
-    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
-}
+.personal-page .mmisbalior-promo h3 { color: var(--color-secondary); margin-bottom: var(--spacing-md); font-size: clamp(1.7rem, 4vw, 2.1rem); font-weight: 700; margin-top: 0; }
+.personal-page .mmisbalior-promo p { margin-bottom: var(--spacing-lg); max-width: 600px; margin: 0 auto var(--spacing-lg) auto; color: rgba(255, 255, 255, 0.95); line-height: 1.75; }
+.personal-page .mmisbalior-promo .promo-visual { line-height: 0; width: 100%; max-width: 450px; border-radius: var(--border-radius); overflow: hidden; background-color: var(--color-accent); }
+.personal-page .mmisbalior-promo .promo-visual img { width: 100%; height: auto; display: block; }
+.personal-page .mmisbalior-promo .btn { background-color: var(--color-secondary); color: var(--color-primary-dark-personal); font-weight: 600; padding: 12px 25px; margin-top: 0; border: 1px solid transparent; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+.personal-page .mmisbalior-promo .btn:hover { background-color: #f1f5f9; color: var(--color-primary-dark-personal); transform: translateY(-3px); box-shadow: 0 6px 15px rgba(0,0,0,0.15); }
+
 
 /* --- Quiz Modal Styles --- */
-/* Styles unchanged from v1.2.0 - Keeping existing look */
-.personal-page .quiz-modal-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background-color: rgba(38, 50, 56, 0.7); display: flex;
-    align-items: center; justify-content: center; z-index: 2000;
-    opacity: 0; pointer-events: none; transition: opacity 0.3s ease-in-out;
-    padding: var(--spacing-md); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+/* Add styles for new button and prompt */
+.personal-page .quiz-modal-prompt {
+    /* Based on quiz-results, but simpler */
+    padding: var(--spacing-md) var(--spacing-md) 0 var(--spacing-md); /* Padding top/sides, no bottom */
+    background-color: transparent; /* Blend in */
+    border-top: 1px solid var(--color-accent);
+    margin-top: var(--spacing-md);
+    text-align: center;
 }
-.personal-page .quiz-modal-overlay[style*="display: flex"] { opacity: 1; pointer-events: auto; }
-.personal-page .quiz-modal-content {
-    background-color: #ffffff; color: var(--color-text);
-    padding: var(--spacing-lg) var(--spacing-xl); border-radius: var(--border-radius-large); /* Use larger radius */
-    max-width: 650px; width: 95%; max-height: 90vh; overflow-y: auto;
-    box-shadow: 0 15px 30px rgba(0,0,0,0.2); position: relative;
-    transform: scale(0.95); transition: transform 0.3s ease-in-out;
-    display: flex; flex-direction: column;
+.personal-page .quiz-modal-prompt p {
+    font-size: 0.9em;
+    color: var(--color-text-light);
+    margin-bottom: 0;
+    line-height: 1.5;
 }
-.personal-page .quiz-modal-overlay[style*="display: flex"] .quiz-modal-content { transform: scale(1); }
-.personal-page .quiz-modal-close-btn {
-    position: absolute; top: var(--spacing-sm); right: var(--spacing-md);
-    background: transparent; border: none; font-size: 2rem;
-    color: var(--color-text-light); cursor: pointer; line-height: 1; padding: 5px;
-}
-.personal-page .quiz-modal-close-btn:hover { color: var(--color-primary-dark-personal); }
-.personal-page .quiz-modal-content h3#quiz-modal-title {
-    font-size: 1.5rem; color: var(--color-primary-personal); text-align: center;
-    margin: 0 auto var(--spacing-md) auto; padding-bottom: var(--spacing-sm);
-    border-bottom: 2px solid var(--color-accent); width: 100%;
-}
-.personal-page .quiz-modal-progress {
-    text-align: center; font-size: 0.85rem; color: var(--color-text-light);
-    margin-bottom: var(--spacing-md); background-color: var(--color-background);
-    padding: var(--spacing-xs) 0; border-radius: 4px;
-}
-.personal-page .quiz-modal-question-area {
-    font-weight: 500; margin-bottom: var(--spacing-lg); color: var(--color-text);
-    font-size: 1.1rem; line-height: 1.6; padding: var(--spacing-sm) 0; text-align: left;
-}
-.personal-page .quiz-modal-options-area { display: flex; flex-direction: column; gap: var(--spacing-sm); margin-bottom: var(--spacing-md); }
-.personal-page .quiz-modal-options-area .option-button {
-    display: block; width: 100%; text-align: left; background-color: var(--color-secondary);
-    padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--border-radius); /* Standard radius */
-    border: 1px solid #cbd5e1; cursor: pointer; transition: var(--transition-fast);
-    font-size: 1rem; color: var(--color-text); font-family: inherit;
-}
-.personal-page .quiz-modal-options-area .option-button:hover:not(:disabled) {
-    background-color: #f8fafc; border-color: var(--color-primary-personal); transform: scale(1.01);
-}
-.personal-page .quiz-modal-options-area .option-button:disabled { cursor: default; }
-.personal-page .quiz-modal-options-area .option-button.correct { background-color: #e8f5e9 !important; border-color: var(--brand-green-personal) !important; color: #1b5e20 !important; font-weight: 600; }
-.personal-page .quiz-modal-options-area .option-button.incorrect { background-color: #fce4e4 !important; border-color: #f5c6cb !important; color: #721c24 !important; }
-.personal-page .quiz-modal-options-area .option-button.disabled:not(.correct):not(.incorrect) { opacity: 0.65; }
-.personal-page .quiz-modal-feedback {
-    margin-top: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md);
-    border-radius: var(--border-radius); line-height: 1.6; border-left-width: 4px;
-    border-left-style: solid; animation: fadeIn 0.3s ease; font-size: 0.95rem;
-}
-.personal-page .quiz-modal-feedback p { margin: 0; }
-.personal-page .quiz-modal-feedback strong { margin-right: 5px; display: block; margin-bottom: 3px; font-size: 1.05em; }
-.personal-page .quiz-modal-feedback.correct { background-color: #e8f5e9; color: #1b5e20; border-left-color: var(--brand-green-personal); }
-.personal-page .quiz-modal-feedback.incorrect { background-color: #fce4e4; color: #721c24; border-left-color: #f5c6cb; }
-.personal-page .quiz-modal-results {
-    animation: fadeIn 0.5s ease; text-align: center; padding: var(--spacing-lg) var(--spacing-md);
-    background-color: var(--color-background); border-radius: var(--border-radius-large); margin-top: var(--spacing-md);
-}
-.personal-page .quiz-modal-results h4 { margin-bottom: var(--spacing-sm); color: var(--color-primary-dark-personal); font-size: 1.3rem; font-weight: 600; }
-.personal-page .quiz-modal-results p { font-size: 1.1rem; color: var(--color-text); margin-bottom: 5px; }
+/* Inherit .link-inline style for the link */
+
 .personal-page .quiz-modal-navigation {
+    /* Keep existing styles */
     display: flex; justify-content: center; align-items: center; gap: var(--spacing-md);
     margin-top: var(--spacing-lg); flex-wrap: wrap; padding-top: var(--spacing-md);
     border-top: 1px solid var(--color-accent);
 }
-.personal-page .quiz-modal-navigation .cta-button { font-size: 0.95rem; padding: var(--spacing-xs) var(--spacing-md); /* Base .btn styles applied */ }
+/* Style for the new Next Quiz button */
+.personal-page .quiz-modal-navigation #quiz-modal-next-quiz {
+    /* Base styles from .btn apply */
+    /* Ensure it looks like primary button */
+    background-color: var(--color-primary-personal);
+    color: var(--color-secondary);
+    border-color: var(--color-primary-personal);
+    /* Ensure small size */
+     font-size: 0.95rem; padding: var(--spacing-xs) var(--spacing-md);
+}
+.personal-page .quiz-modal-navigation #quiz-modal-next-quiz:hover {
+    background-color: var(--color-primary-light-personal);
+    border-color: var(--color-primary-light-personal);
+    /* Base hover transform/shadow applies */
+}
+/* Ensure Restart and Close buttons use outline style */
 .personal-page .quiz-modal-navigation #quiz-modal-restart,
-.personal-page .quiz-modal-navigation #quiz-modal-close-results { /* Apply outline styles */ background-color: transparent; color: var(--color-primary-personal); border: 1px solid var(--color-primary-personal); }
+.personal-page .quiz-modal-navigation .quiz-close-btn { /* Use new class */
+    /* Apply outline styles */
+    background-color: transparent;
+    color: var(--color-primary-personal);
+    border: 1px solid var(--color-primary-personal);
+     /* Ensure small size */
+     font-size: 0.95rem; padding: var(--spacing-xs) var(--spacing-md);
+}
 .personal-page .quiz-modal-navigation #quiz-modal-restart:hover,
-.personal-page .quiz-modal-navigation #quiz-modal-close-results:hover { background-color: rgba(12, 52, 61, 0.05); border-color: var(--color-primary-dark-personal); color: var(--color-primary-dark-personal); transform: translateY(-2px); }
-.personal-page .quiz-modal-navigation #quiz-modal-next { /* Solid style (base .btn) applies */ }
+.personal-page .quiz-modal-navigation .quiz-close-btn:hover {
+    background-color: rgba(12, 52, 61, 0.05);
+    border-color: var(--color-primary-dark-personal);
+    color: var(--color-primary-dark-personal);
+    transform: translateY(-2px); /* Add lift */
+}
+/* ... Keep rest of quiz modal styles from v1.3.0 ... */
+.personal-page .quiz-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(38, 50, 56, 0.7); display: flex; align-items: center; justify-content: center; z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease-in-out; padding: var(--spacing-md); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
+.personal-page .quiz-modal-overlay[style*="display: flex"] { opacity: 1; pointer-events: auto; }
+.personal-page .quiz-modal-content { background-color: #ffffff; color: var(--color-text); padding: var(--spacing-lg) var(--spacing-xl); border-radius: var(--border-radius-large); max-width: 650px; width: 95%; max-height: 90vh; overflow-y: auto; box-shadow: 0 15px 30px rgba(0,0,0,0.2); position: relative; transform: scale(0.95); transition: transform 0.3s ease-in-out; display: flex; flex-direction: column; }
+.personal-page .quiz-modal-overlay[style*="display: flex"] .quiz-modal-content { transform: scale(1); }
+.personal-page .quiz-modal-close-btn { position: absolute; top: var(--spacing-sm); right: var(--spacing-md); background: transparent; border: none; font-size: 2rem; color: var(--color-text-light); cursor: pointer; line-height: 1; padding: 5px; }
+.personal-page .quiz-modal-close-btn:hover { color: var(--color-primary-dark-personal); }
+.personal-page .quiz-modal-content h3#quiz-modal-title { font-size: 1.5rem; color: var(--color-primary-personal); text-align: center; margin: 0 auto var(--spacing-md) auto; padding-bottom: var(--spacing-sm); border-bottom: 2px solid var(--color-accent); width: 100%; }
+.personal-page .quiz-modal-progress { text-align: center; font-size: 0.85rem; color: var(--color-text-light); margin-bottom: var(--spacing-md); background-color: var(--color-background); padding: var(--spacing-xs) 0; border-radius: 4px; }
+.personal-page .quiz-modal-question-area { font-weight: 500; margin-bottom: var(--spacing-lg); color: var(--color-text); font-size: 1.1rem; line-height: 1.6; padding: var(--spacing-sm) 0; text-align: left; }
+.personal-page .quiz-modal-options-area { display: flex; flex-direction: column; gap: var(--spacing-sm); margin-bottom: var(--spacing-md); }
+.personal-page .quiz-modal-options-area .option-button { display: block; width: 100%; text-align: left; background-color: var(--color-secondary); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--border-radius); border: 1px solid #cbd5e1; cursor: pointer; transition: var(--transition-fast); font-size: 1rem; color: var(--color-text); font-family: inherit; }
+.personal-page .quiz-modal-options-area .option-button:hover:not(:disabled) { background-color: #f8fafc; border-color: var(--color-primary-personal); transform: scale(1.01); }
+.personal-page .quiz-modal-options-area .option-button:disabled { cursor: default; }
+.personal-page .quiz-modal-options-area .option-button.correct { background-color: #e8f5e9 !important; border-color: var(--brand-green-personal) !important; color: #1b5e20 !important; font-weight: 600; }
+.personal-page .quiz-modal-options-area .option-button.incorrect { background-color: #fce4e4 !important; border-color: #f5c6cb !important; color: #721c24 !important; }
+.personal-page .quiz-modal-options-area .option-button.disabled:not(.correct):not(.incorrect) { opacity: 0.65; }
+.personal-page .quiz-modal-feedback { margin-top: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--border-radius); line-height: 1.6; border-left-width: 4px; border-left-style: solid; animation: fadeIn 0.3s ease; font-size: 0.95rem; }
+.personal-page .quiz-modal-feedback p { margin: 0; }
+.personal-page .quiz-modal-feedback strong { margin-right: 5px; display: block; margin-bottom: 3px; font-size: 1.05em; }
+.personal-page .quiz-modal-feedback.correct { background-color: #e8f5e9; color: #1b5e20; border-left-color: var(--brand-green-personal); }
+.personal-page .quiz-modal-feedback.incorrect { background-color: #fce4e4; color: #721c24; border-left-color: #f5c6cb; }
+.personal-page .quiz-modal-results { animation: fadeIn 0.5s ease; text-align: center; padding: var(--spacing-lg) var(--spacing-md); background-color: var(--color-background); border-radius: var(--border-radius-large); margin-top: var(--spacing-md); }
+.personal-page .quiz-modal-results h4 { margin-bottom: var(--spacing-sm); color: var(--color-primary-dark-personal); font-size: 1.3rem; font-weight: 600; }
+.personal-page .quiz-modal-results p { font-size: 1.1rem; color: var(--color-text); margin-bottom: 5px; }
+
 
 /* --- Floating Background Animation --- */
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes float {
-    0% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(30px, -40px) scale(1.1); }
-    100% { transform: translate(0, 0) scale(1); }
-}
-.personal-page .deco-blur {
-    position: fixed; width: 450px; height: 450px;
-    background: radial-gradient(circle, var(--color-primary-light-personal, #1a4652) 0%, transparent 70%);
-    border-radius: 50%; filter: blur(130px); opacity: 0.06; z-index: -1;
-    animation: float 20s ease-in-out infinite alternate; will-change: transform; pointer-events: none;
-}
+@keyframes float { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(30px, -40px) scale(1.1); } 100% { transform: translate(0, 0) scale(1); } }
+.personal-page .deco-blur { position: fixed; width: 450px; height: 450px; background: radial-gradient(circle, var(--color-primary-light-personal, #1a4652) 0%, transparent 70%); border-radius: 50%; filter: blur(130px); opacity: 0.06; z-index: -1; animation: float 20s ease-in-out infinite alternate; will-change: transform; pointer-events: none; }
 .personal-page .deco-blur.blur-1 { top: 10%; left: 5%; animation-duration: 22s; }
 .personal-page .deco-blur.blur-2 { bottom: 15%; right: 10%; animation-delay: 6s; animation-duration: 19s; background: radial-gradient(circle, var(--brand-green-personal, #28a745) 0%, transparent 70%); opacity: 0.05; }
 .personal-page .deco-blur.blur-3 { top: 60%; left: 50%; transform: translateX(-50%); animation-delay: 11s; animation-duration: 24s;}
 
 /* --- Footer Style Improvements --- */
-.personal-page .site-footer {
-    background-color: var(--color-primary-original);
-    color: #b2dfdb; /* Base light text */
-    padding-top: var(--spacing-xl);
-    padding-bottom: var(--spacing-lg);
-}
-.personal-page .page-footer-links {
-    padding-bottom: var(--spacing-xl);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15); /* Slightly more visible border */
-    margin-bottom: var(--spacing-xl);
-}
+/* ... (Keep Footer styles from v1.3.0) ... */
+.personal-page .site-footer { background-color: var(--color-primary-original); color: #b2dfdb; padding-top: var(--spacing-xl); padding-bottom: var(--spacing-lg); }
+.personal-page .page-footer-links { padding-bottom: var(--spacing-xl); border-bottom: 1px solid rgba(255, 255, 255, 0.15); margin-bottom: var(--spacing-xl); }
 .personal-page .page-footer-links ul { list-style: none; padding: 0; margin: 0; }
 .personal-page .page-footer-links ul li { margin-bottom: var(--spacing-sm); }
-.personal-page .page-footer-links ul li a {
-    color: #e0f2f7; /* Lighter link color */
-    transition: color 0.2s ease, padding-left 0.2s ease;
-    display: inline-block; /* Needed for padding effect */
-    padding: 2px 0;
-    text-decoration: none;
-}
-.personal-page .page-footer-links ul li a:hover {
-    color: #fff; /* White hover */
-    text-decoration: none; /* Keep no underline */
-    padding-left: 5px; /* Nudge effect */
-}
-.personal-page .page-footer-links h4 {
-    color: #fff; /* White heading */
-    margin-bottom: var(--spacing-md);
-    font-weight: 600; /* Bolder */
-    font-size: 1.1rem;
-}
-.personal-page .footer-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--spacing-lg);
-    margin-bottom: var(--spacing-xl);
-}
+.personal-page .page-footer-links ul li a { color: #e0f2f7; transition: color 0.2s ease, padding-left 0.2s ease; display: inline-block; padding: 2px 0; text-decoration: none; }
+.personal-page .page-footer-links ul li a:hover { color: #fff; text-decoration: none; padding-left: 5px; }
+.personal-page .page-footer-links h4 { color: #fff; margin-bottom: var(--spacing-md); font-weight: 600; font-size: 1.1rem; }
+.personal-page .footer-content { display: flex; justify-content: space-between; align-items: center; gap: var(--spacing-lg); margin-bottom: var(--spacing-xl); }
 .personal-page .footer-left { flex-shrink: 0; }
-.personal-page .footer-left .logo img { display: block; } /* Ensure logo visible */
-.personal-page .footer-tagline {
-    margin-top: var(--spacing-sm);
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.75); /* Slightly more opaque */
-}
+.personal-page .footer-left .logo img { display: block; }
+.personal-page .footer-tagline { margin-top: var(--spacing-sm); font-size: 0.9rem; color: rgba(255, 255, 255, 0.75); }
 .personal-page .footer-right { text-align: right; }
-.personal-page .footer-connect-title {
-    margin-bottom: var(--spacing-md);
-    font-weight: 500;
-    color: #fff; /* White */
-}
-.personal-page .social-media {
-    display: flex;
-    justify-content: flex-end;
-    gap: var(--spacing-md);
-}
-.personal-page .social-link {
-    color: #e0f2f7; /* Icon color */
-    font-size: 1.3rem; /* Adjust icon size */
-    transition: var(--transition-fast);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.1); /* Add subtle border */
-}
-.personal-page .social-link i { line-height: 1; } /* Ensure icon centered */
-.personal-page .social-link:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.3);
-    color: #fff; /* Brighter icon */
-    transform: translateY(-3px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-.personal-page .copyright {
-    text-align: center;
-    padding-top: var(--spacing-lg);
-    border-top: 1px solid rgba(255, 255, 255, 0.15); /* Match link separator */
-    margin-top: var(--spacing-lg);
-}
-.personal-page .copyright p {
-    font-size: 0.9rem;
-    color: #80cbc4; /* Slightly dimmer cyan */
-}
+.personal-page .footer-connect-title { margin-bottom: var(--spacing-md); font-weight: 500; color: #fff; }
+.personal-page .social-media { display: flex; justify-content: flex-end; gap: var(--spacing-md); }
+.personal-page .social-link { color: #e0f2f7; font-size: 1.3rem; transition: var(--transition-fast); display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.1); }
+.personal-page .social-link i { line-height: 1; }
+.personal-page .social-link:hover { background-color: rgba(255, 255, 255, 0.2); border-color: rgba(255, 255, 255, 0.3); color: #fff; transform: translateY(-3px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+.personal-page .copyright { text-align: center; padding-top: var(--spacing-lg); border-top: 1px solid rgba(255, 255, 255, 0.15); margin-top: var(--spacing-lg); }
+.personal-page .copyright p { font-size: 0.9rem; color: #80cbc4; }
 
 
 /* --- Responsive Overrides --- */
+/* ... (Keep Responsive styles from v1.3.0) ... */
 @media (max-width: 767px) { /* Mobile/Tablet */
-    /* Footer Mobile Centering */
     .personal-page .footer-content { flex-direction: column; align-items: center; text-align: center; }
     .personal-page .footer-left, .personal-page .footer-right { width: 100%; display: flex; flex-direction: column; align-items: center; }
-    .personal-page .footer-right { text-align: center; } /* Ensure title centered */
+    .personal-page .footer-right { text-align: center; }
     .personal-page .social-media { justify-content: center; }
     .personal-page .page-footer-links .footer-links-container { flex-direction: column; align-items: center; text-align: center; }
     .personal-page .page-footer-links .footer-links-container > div { width: 100%; margin-bottom: var(--spacing-lg); }
-    .personal-page .page-footer-links ul { align-items: center; }
-    .personal-page .page-footer-links h4 { margin-bottom: var(--spacing-sm); }
-    /* Ensure single column layouts */
-    .personal-page .resource-grid,
-    .personal-page .template-grid,
-    .personal-page .category-grid, /* Ensure categories stack if needed */
-    .personal-page .coaching-content { grid-template-columns: 1fr; }
-    .personal-page .mmisbalior-promo { flex-direction: column; } /* Stack promo */
-    .personal-page .motivational-quote .container { flex-direction: column; text-align: center; } /* Stack quote */
+     .personal-page .page-footer-links ul { align-items: center; }
+     .personal-page .page-footer-links h4 { margin-bottom: var(--spacing-sm); }
+     .personal-page .resource-grid, .personal-page .template-grid, .personal-page .category-grid, .personal-page .coaching-content { grid-template-columns: 1fr; }
+    .personal-page .mmisbalior-promo { flex-direction: column; }
+    .personal-page .motivational-quote .container { flex-direction: column; text-align: center; }
 }
-
 @media (max-width: 500px) { /* Smaller mobile */
     .personal-page .social-post-preview { padding-left: var(--spacing-md); padding-right: var(--spacing-md); }
-    .personal-page .social-post-preview i { display: none; } /* Hide social icon if too cramped */
-    .personal-page .template-actions { gap: var(--spacing-xs); } /* Reduce gap */
-    .personal-page .btn { padding: 8px 15px; font-size: 0.9rem; } /* Smaller buttons */
+    .personal-page .social-post-preview i { display: none; }
+    .personal-page .template-actions { gap: var(--spacing-xs); }
+    .personal-page .btn { padding: 8px 15px; font-size: 0.9rem; }
 }
-
 @media (min-width: 576px) { /* Small tablets up */
-     /* Restore some grid layouts earlier if desired */
      .personal-page .category-grid { grid-template-columns: repeat(2, 1fr); }
      .personal-page .template-grid { grid-template-columns: repeat(2, 1fr); }
      .personal-page .resource-grid { grid-template-columns: repeat(2, 1fr); }
 }
-
 @media (min-width: 768px) { /* Desktop */
-    /* Restore desktop footer layout */
     .personal-page .footer-content { flex-direction: row; text-align: left; }
     .personal-page .footer-left { align-items: flex-start; }
     .personal-page .footer-right { align-items: flex-end; text-align: right; }
@@ -1196,50 +362,22 @@
     .personal-page .page-footer-links .footer-links-container { flex-direction: row; align-items: flex-start; text-align: left; flex-wrap: nowrap; gap: var(--spacing-lg);}
     .personal-page .page-footer-links .footer-links-container > div { width: auto; flex-basis: 0; flex-grow: 1; margin-bottom: 0; }
     .personal-page .page-footer-links ul { align-items: flex-start; }
-    /* Restore Desktop Grids */
     .personal-page .stats-grid { grid-template-columns: repeat(3, 1fr); }
     .personal-page .resource-grid { grid-template-columns: repeat(3, 1fr); }
-    .personal-page .category-grid { grid-template-columns: repeat(4, 1fr); } /* Wider category grid */
-    .personal-page .coaching-content { grid-template-columns: 2fr 1fr; } /* Split layout */
-    .personal-page .mmisbalior-promo { flex-direction: row; text-align: left; } /* Row layout for promo */
-    .personal-page .motivational-quote .container { flex-direction: row; text-align: left; } /* Row layout for quote */
+    .personal-page .category-grid { grid-template-columns: repeat(4, 1fr); }
+    .personal-page .coaching-content { grid-template-columns: 2fr 1fr; }
+    .personal-page .mmisbalior-promo { flex-direction: row; text-align: left; }
+    .personal-page .motivational-quote .container { flex-direction: row; text-align: left; }
 }
-
 @media (min-width: 992px) { /* Larger Desktop */
-    .personal-page .template-grid { grid-template-columns: repeat(3, 1fr); } /* Templates 3 wide */
+    .personal-page .template-grid { grid-template-columns: repeat(3, 1fr); }
 }
-
 @media (min-width: 1200px) { /* XL Desktop */
   .personal-page .page-intro h1 { font-size: 3.5rem; }
-  .personal-page .template-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 310px), 1fr)); } /* Use auto-fit for flexibility */
+  .personal-page .template-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 310px), 1fr)); }
 }
 
 
 /* --- Print Styles --- */
-@media print {
-    body { padding-top: 0; font-size: 10pt; color: #000; background-color: #fff; font-family: 'Times New Roman', Times, serif !important; }
-    .personal-page { --color-primary-personal: #000; --color-secondary: #fff; --color-text: #000; --color-background: #fff; --brand-green-personal: #000; --border-radius: 0px; --box-shadow-light: none; --box-shadow: none; }
-    .personal-page .site-header, .personal-page .page-footer-links, .personal-page .footer-right .social-media, .personal-page .mobile-menu-toggle, .personal-page .connect-button,
-    .personal-page .btn, .personal-page .mmisbalior-promo, .personal-page .quiz-modal-overlay, .personal-page .template-actions, .personal-page .social-integration,
-    .personal-page .stats-grid, .personal-page .deco-blur, .personal-page .motivational-quote, .personal-page .category-card .start-quiz-btn,
-    .personal-page .quiz-modal-navigation button, .personal-page .coaching-request-form button, .personal-page .full-challenge-link { display: none !important; }
-    .personal-page .container { max-width: 100%; padding: 0 1cm; }
-    .personal-page a { color: inherit !important; text-decoration: none !important; }
-    .personal-page h1, .personal-page h2, .personal-page h3, .personal-page h4 { color: #000 !important; text-shadow: none !important; font-family: 'Times New Roman', Times, serif !important; margin-bottom: 0.5em; page-break-after: avoid; }
-    .personal-page p, .personal-page li { color: #000 !important; font-family: 'Times New Roman', Times, serif !important; line-height: 1.4; }
-    .personal-page .page-intro { background: none !important; color: #000 !important; margin-top: 0 !important; padding: 1cm 0 !important; min-height: auto !important; text-align: left !important; display: block !important; border: none !important; }
-    .personal-page .page-intro .container { padding: 0 !important; margin: 0 !important; max-width: 100% !important; text-align: left !important; }
-    .personal-page section { padding: 1cm 0 !important; border-color: #ccc !important; page-break-inside: avoid; }
-    .personal-page .section-title::after { display: none !important; }
-    .personal-page .resource-card, .personal-page .template-card, .personal-page .coaching-item, .personal-page .category-card { box-shadow: none !important; border: 1px solid #ccc !important; padding: 0.5cm !important; page-break-inside: avoid; background: #fff !important; border-radius: 0 !important; }
-    .personal-page .card-image, .personal-page .template-preview, .personal-page .promo-visual img, .personal-page .stat-card i, .personal-page .category-icon { display: none !important; }
-    .personal-page .disclaimer { border: 1px solid #ccc; padding: 0.5cm; box-shadow: none; }
-    .personal-page .quiz-modal-feedback { background-color: #f0f0f0 !important; color: #000 !important; border: 1px solid #ccc !important; border-left: none !important; }
-    .personal-page .quiz-modal-options-area .option-button { border-color: #eee !important; background-color: #fff !important; color: #000 !important; }
-    .personal-page .site-footer { background-color: #fff !important; color: #000 !important; border-top: 1px solid #ccc !important; padding: 1cm 0 !important; text-align: left !important; }
-    .personal-page .footer-left { display: block !important; float: none !important; }
-    .personal-page .footer-right { display: none !important; }
-    .personal-page .footer-left .logo img { filter: invert(1) grayscale(1) !important; height: 30px; }
-    .personal-page .footer-content { flex-direction: column; align-items: flex-start; }
-    .personal-page .copyright { color: #555 !important; border-top-color: #ccc !important; padding-top: 0.5cm; margin-top: 1cm;}
-}
+/* ... (Keep Print styles from v1.3.0) ... */
+@media print { body { padding-top: 0; font-size: 10pt; color: #000; background-color: #fff; font-family: 'Times New Roman', Times, serif !important; } .personal-page { --color-primary-personal: #000; --color-secondary: #fff; --color-text: #000; --color-background: #fff; --brand-green-personal: #000; --border-radius: 0px; --box-shadow-light: none; --box-shadow: none; } .personal-page .site-header, .personal-page .page-footer-links, .personal-page .footer-right .social-media, .personal-page .mobile-menu-toggle, .personal-page .connect-button, .personal-page .btn, .personal-page .mmisbalior-promo, .personal-page .quiz-modal-overlay, .personal-page .template-actions, .personal-page .social-integration, .personal-page .stats-grid, .personal-page .deco-blur, .personal-page .motivational-quote, .personal-page .category-card .start-quiz-btn, .personal-page .quiz-modal-navigation button, .personal-page .coaching-request-form button, .personal-page .full-challenge-link { display: none !important; } .personal-page .container { max-width: 100%; padding: 0 1cm; } .personal-page a { color: inherit !important; text-decoration: none !important; } .personal-page h1, .personal-page h2, .personal-page h3, .personal-page h4 { color: #000 !important; text-shadow: none !important; font-family: 'Times New Roman', Times, serif !important; margin-bottom: 0.5em; page-break-after: avoid; } .personal-page p, .personal-page li { color: #000 !important; font-family: 'Times New Roman', Times, serif !important; line-height: 1.4; } .personal-page .page-intro { background: none !important; color: #000 !important; margin-top: 0 !important; padding: 1cm 0 !important; min-height: auto !important; text-align: left !important; display: block !important; border: none !important; } .personal-page .page-intro .container { padding: 0 !important; margin: 0 !important; max-width: 100% !important; text-align: left !important; } .personal-page section { padding: 1cm 0 !important; border-color: #ccc !important; page-break-inside: avoid; } .personal-page .section-title::after { display: none !important; } .personal-page .resource-card, .personal-page .template-card, .personal-page .coaching-item, .personal-page .category-card { box-shadow: none !important; border: 1px solid #ccc !important; padding: 0.5cm !important; page-break-inside: avoid; background: #fff !important; border-radius: 0 !important; } .personal-page .card-image, .personal-page .template-preview, .personal-page .promo-visual img, .personal-page .stat-card i, .personal-page .category-icon { display: none !important; } .personal-page .disclaimer { border: 1px solid #ccc; padding: 0.5cm; box-shadow: none; } .personal-page .quiz-modal-feedback { background-color: #f0f0f0 !important; color: #000 !important; border: 1px solid #ccc !important; border-left: none !important; } .personal-page .quiz-modal-options-area .option-button { border-color: #eee !important; background-color: #fff !important; color: #000 !important; } .personal-page .site-footer { background-color: #fff !important; color: #000 !important; border-top: 1px solid #ccc !important; padding: 1cm 0 !important; text-align: left !important; } .personal-page .footer-left { display: block !important; float: none !important; } .personal-page .footer-right { display: none !important; } .personal-page .footer-left .logo img { filter: invert(1) grayscale(1) !important; height: 30px; } .personal-page .footer-content { flex-direction: column; align-items: flex-start; } .personal-page .copyright { color: #555 !important; border-top-color: #ccc !important; padding-top: 0.5cm; margin-top: 1cm;} }
