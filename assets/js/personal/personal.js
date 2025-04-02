@@ -2,40 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- START Personal Page Specific Components ---
 
-    // Social Carousel Logic (No changes needed)
-    const carousels = document.querySelectorAll('.social-carousel');
-    carousels.forEach(carousel => {
-        let currentIndex = 0;
-        const posts = carousel.querySelectorAll('.social-post');
-        let intervalId = null;
-
-        function showPost(index) {
-            posts.forEach((post, i) => {
-                post.style.display = i === index ? 'block' : 'none';
-                // Accessibility: Mark active slide
-                post.setAttribute('aria-hidden', i !== index);
-            });
-        }
-
-        function startCarousel() {
-            if (intervalId) clearInterval(intervalId);
-            if (posts.length > 1) {
-                intervalId = setInterval(() => {
-                    currentIndex = (currentIndex + 1) % posts.length;
-                    showPost(currentIndex);
-                }, 6000); // Change slide every 6 seconds
-            }
-        }
-
-        if (posts.length > 0) {
-            showPost(currentIndex); // Show first post initially
-            // Set initial aria-hidden states
-            posts.forEach((post, i) => {
-                 post.setAttribute('aria-hidden', i !== currentIndex);
-            });
-            startCarousel();
-        }
-    });
+    // Social Carousel Logic REMOVED - Replaced by static preview in HTML/CSS
 
     // Stats Counter Logic (No changes needed)
     const statObserver = new IntersectionObserver((entries, observer) => {
@@ -44,9 +11,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 const statCard = entry.target;
                 const targetSpan = statCard.querySelector('.stat-target');
                 const displayEl = statCard.querySelector('h4');
+                // Ensure displayEl exists before accessing textContent
+                if (!targetSpan || !displayEl) {
+                     observer.unobserve(statCard);
+                     return;
+                 }
                 const suffix = (displayEl.textContent.includes('%') ? '%' : '') || (displayEl.textContent.includes('+') ? '+' : '');
 
-                if (!targetSpan || !displayEl || displayEl.classList.contains('counted')) {
+                if (displayEl.classList.contains('counted')) {
                     observer.unobserve(statCard);
                     return;
                 }
@@ -57,27 +29,31 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-                let currentCount = 0;
-                const duration = 1500; // Animation duration in ms
-                const frameDuration = 1000 / 60; // 60 fps
-                const totalFrames = Math.round(duration / frameDuration);
-                const increment = target / totalFrames;
+                displayEl.textContent = `0${suffix}`; // Initialize at 0
+                displayEl.classList.add('counting'); // Optional: for styling during count
 
-                const animateCount = () => {
+                let currentCount = 0;
+                const duration = 1500; // ms
+                const stepTime = 20; // ms (~50fps)
+                const steps = duration / stepTime;
+                const increment = target / steps;
+
+                const counter = () => {
                     currentCount += increment;
                     if (currentCount < target) {
                         displayEl.textContent = Math.ceil(currentCount).toLocaleString() + suffix;
-                        requestAnimationFrame(animateCount);
+                        setTimeout(counter, stepTime);
                     } else {
                         displayEl.textContent = target.toLocaleString() + suffix;
-                        displayEl.classList.add('counted'); // Prevent re-counting
+                        displayEl.classList.add('counted');
+                        displayEl.classList.remove('counting');
                     }
                 };
-                requestAnimationFrame(animateCount);
-                observer.unobserve(statCard); // Unobserve after animation starts
+                setTimeout(counter, stepTime); // Start the counter
+                observer.unobserve(statCard); // Unobserve after starting
             }
         });
-    }, { threshold: 0.4 }); // Trigger when 40% visible
+    }, { threshold: 0.4 });
 
     document.querySelectorAll('.stat-card').forEach(card => {
         statObserver.observe(card);
@@ -87,8 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- START INTRO Quiz Logic (Theme 1 Only) ---
-    // (Keep existing quiz questions and logic unchanged)
+    // (Keep existing quiz questions and logic unchanged from v1.1.0)
      const allQuestions_Theme1 = [
+         // ... (Keep all 20 questions from previous version) ...
          // Cat 1: Income & Financial Vitals
          { id: 1, categoryId: 1, themeId: 1, category: "Income & Financial Vitals", question: "What is the first essential step when starting to create a budget?", options: ["Calculate total monthly income", "List all fixed expenses", "Set long-term financial goals", "Track spending habits for a month"], correctAnswerIndex: 0, explanation: "Knowing your total income is fundamental; it's the basis upon which all budget allocations for expenses, savings, and goals are planned." },
          { id: 2, categoryId: 1, themeId: 1, category: "Income & Financial Vitals", question: "You earn ₦150,000 per month after tax and manage to save ₦22,500. What is your savings rate as a percentage of your income?", options: ["10%", "15%", "20%", "22.5%"], correctAnswerIndex: 1, explanation: "Savings Rate = (Amount Saved / Total Income) × 100. So, (₦22,500 / ₦150,000) × 100 = 15%." },
@@ -116,9 +93,9 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     const questionsForThisPage = allQuestions_Theme1;
-
     let currentQuizData = { questions: [], currentQuestionIndex: 0, score: 0, userAnswers: {} };
     const quizModal = document.getElementById('quiz-modal');
+    // ... (Keep all other quiz DOM element const declarations) ...
     const modalTitle = document.getElementById('quiz-modal-title');
     const modalCloseBtn = document.getElementById('quiz-modal-close');
     const modalQuestionEl = document.getElementById('quiz-modal-question');
@@ -131,6 +108,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalProgressCurrent = document.getElementById('quiz-modal-q-current');
     const modalProgressTotal = document.getElementById('quiz-modal-q-total');
 
+
+    // ... (Keep the functions: startQuiz, displayModalQuestion, handleModalOptionSelection, showModalFeedback, nextModalQuestion, showModalResults, restartModalQuiz, closeQuizModal unchanged from v1.1.0) ...
     function startQuiz(categoryId) {
         console.log(`Starting quiz for category ID: ${categoryId} on Personal Page`);
         const categoryQuestions = questionsForThisPage.filter(q => q.categoryId === categoryId);
@@ -139,10 +118,6 @@ document.addEventListener('DOMContentLoaded', () => {
              alert("Sorry, questions for this category could not be loaded.");
              return;
          }
-        // Allow quizzes with fewer than 5 questions if necessary, though data has 5
-        // if (categoryQuestions.length !== 5) {
-        //     console.warn(`Expected 5 questions, but found ${categoryQuestions.length} for category ID: ${categoryId}. Proceeding anyway.`);
-        // }
 
         currentQuizData = { questions: categoryQuestions, currentQuestionIndex: 0, score: 0, userAnswers: {} };
         if (modalTitle) modalTitle.textContent = categoryQuestions[0]?.category || 'Financial Fitness Quiz';
@@ -181,12 +156,14 @@ document.addEventListener('DOMContentLoaded', () => {
             button.textContent = option;
             button.className = 'option-button';
             button.setAttribute('data-index', index);
-            // Set ARIA role and initial state
             button.setAttribute('role', 'button');
             button.setAttribute('aria-pressed', 'false');
             button.onclick = () => handleModalOptionSelection(index);
             modalOptionsEl.appendChild(button);
         });
+         // Focus first option on new question display
+        const firstOption = modalOptionsEl.querySelector('button');
+        if (firstOption) firstOption.focus();
     }
 
     function handleModalOptionSelection(selectedIndex) {
@@ -198,7 +175,6 @@ document.addEventListener('DOMContentLoaded', () => {
         buttons.forEach(button => {
             button.disabled = true;
             button.onclick = null;
-            // Update ARIA state for selected button
             if (parseInt(button.getAttribute('data-index'), 10) === selectedIndex) {
                 button.setAttribute('aria-pressed', 'true');
             }
@@ -229,18 +205,15 @@ document.addEventListener('DOMContentLoaded', () => {
         modalFeedbackEl.innerHTML = `<p><strong>${isCorrect ? 'Correct!' : 'Incorrect.'}</strong> ${explanation || ''}</p>`;
         modalFeedbackEl.className = `quiz-modal-feedback ${isCorrect ? 'correct' : 'incorrect'}`;
         modalFeedbackEl.style.display = 'block';
-        // ARIA: Announce feedback
         modalFeedbackEl.setAttribute('role', 'alert');
         modalFeedbackEl.setAttribute('aria-live', 'assertive');
-
 
         if (modalNextBtn) {
             if (quiz.currentQuestionIndex < quiz.questions.length - 1) {
                 modalNextBtn.style.display = 'inline-block';
-                modalNextBtn.focus(); // Focus next button
+                modalNextBtn.focus();
             } else {
                 modalNextBtn.style.display = 'none';
-                 // Show results slightly faster, focus restart
                 setTimeout(() => {
                     showModalResults();
                     if(modalRestartBtn) modalRestartBtn.focus();
@@ -252,16 +225,13 @@ document.addEventListener('DOMContentLoaded', () => {
     function nextModalQuestion() {
         if (modalFeedbackEl) {
              modalFeedbackEl.style.display = 'none';
-             // ARIA: Remove alert role when hidden
              modalFeedbackEl.removeAttribute('role');
              modalFeedbackEl.removeAttribute('aria-live');
         }
         if (modalNextBtn) modalNextBtn.style.display = 'none';
         currentQuizData.currentQuestionIndex++;
         displayModalQuestion();
-        // Focus the first option of the new question
-        const firstOption = modalOptionsEl?.querySelector('button');
-        if(firstOption) firstOption.focus();
+        // Focus handled in displayModalQuestion
     }
 
     function showModalResults() {
@@ -287,13 +257,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p style="margin-top: 10px; font-size: 1em;">${feedbackMessage}</p>
             `;
             modalResultsEl.style.display = 'block';
-            // ARIA: Announce results
             modalResultsEl.setAttribute('role', 'alert');
             modalResultsEl.setAttribute('aria-live', 'assertive');
         }
 
         if(modalRestartBtn) modalRestartBtn.style.display = 'inline-block';
         if(modalCloseResultsBtn) modalCloseResultsBtn.style.display = 'inline-block';
+         // Focus restart button by default on results
+         if(modalRestartBtn) modalRestartBtn.focus();
     }
 
     function restartModalQuiz() {
@@ -301,26 +272,23 @@ document.addEventListener('DOMContentLoaded', () => {
         if (categoryId) {
             if(modalResultsEl) {
                 modalResultsEl.style.display = 'none';
-                // ARIA: Remove alert role
                 modalResultsEl.removeAttribute('role');
                 modalResultsEl.removeAttribute('aria-live');
             }
             if(modalRestartBtn) modalRestartBtn.style.display = 'none';
             if(modalCloseResultsBtn) modalCloseResultsBtn.style.display = 'none';
             startQuiz(categoryId);
-             // Focus the first option
-            const firstOption = modalOptionsEl?.querySelector('button');
-            if(firstOption) firstOption.focus();
+            // Focus handled in displayModalQuestion
         } else {
             closeQuizModal();
         }
     }
 
-    function closeQuizModal() {
+     function closeQuizModal(triggerElement = null) {
        if(quizModal) quizModal.style.display = 'none';
        document.body.style.overflow = '';
 
-       // Minimal reset
+       // Reset modal state
        if(modalTitle) modalTitle.textContent = 'Quiz Title';
        if(modalQuestionEl) modalQuestionEl.textContent = '';
        if(modalOptionsEl) modalOptionsEl.innerHTML = '';
@@ -342,10 +310,14 @@ document.addEventListener('DOMContentLoaded', () => {
        const progressEl = modalProgressCurrent?.closest('.quiz-modal-progress');
        if (progressEl) progressEl.style.display = 'block';
 
-       // Return focus to the button that opened the modal if possible
-       // This requires storing the trigger element, which adds complexity.
-       // For now, just closing is sufficient.
+       // Return focus to the trigger element if provided
+       if (triggerElement) {
+           triggerElement.focus();
+       }
     }
+
+    // Store the element that triggered the modal
+    let quizTriggerElement = null;
 
     // Attach Event Listeners for INTRO Quizzes
     document.querySelectorAll('#financial-fitness-challenge-intro .start-quiz-btn').forEach(button => {
@@ -353,13 +325,12 @@ document.addEventListener('DOMContentLoaded', () => {
            const card = e.target.closest('.category-card');
            const categoryId = card ? parseInt(card.dataset.categoryId, 10) : null;
             if (categoryId && categoryId >= 1 && categoryId <= 4) {
-               // Store the trigger button? (Optional for focus return)
-               // e.target.dataset.triggeredModal = 'true';
+               quizTriggerElement = e.target; // Store the button that was clicked
                startQuiz(categoryId);
            } else if (categoryId) {
                 console.warn(`Category ${categoryId} quiz should be taken on the full quiz page.`);
                 alert("This quiz category is available on the main Quizzes page.");
-                window.location.href = 'quizzes.html'; // Redirect as planned
+                window.location.href = 'quizzes.html';
            } else {
                console.error("Missing or invalid category ID on card.");
            }
@@ -367,52 +338,44 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Attach Modal Button Listeners
-    if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeQuizModal);
-    if (modalCloseResultsBtn) modalCloseResultsBtn.addEventListener('click', closeQuizModal);
+    if (modalCloseBtn) modalCloseBtn.addEventListener('click', () => closeQuizModal(quizTriggerElement));
+    if (modalCloseResultsBtn) modalCloseResultsBtn.addEventListener('click', () => closeQuizModal(quizTriggerElement));
     if (modalNextBtn) modalNextBtn.addEventListener('click', nextModalQuestion);
     if (modalRestartBtn) modalRestartBtn.addEventListener('click', restartModalQuiz);
     if (quizModal) {
         quizModal.addEventListener('click', (e) => {
             if (e.target === quizModal) {
-                closeQuizModal();
+                closeQuizModal(quizTriggerElement);
             }
         });
-         // Allow closing with Escape key
         quizModal.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                closeQuizModal();
+                closeQuizModal(quizTriggerElement);
             }
         });
     }
     // --- END INTRO Quiz Logic ---
 
+
     // --- START Template Purchase Logic (Placeholder) ---
     document.querySelectorAll('.get-spreadsheet-btn').forEach(button => {
-        // Only add listener if the button is NOT disabled initially
-        if (button.getAttribute('aria-disabled') !== 'true') {
+        // Check if button should be active based on aria-disabled or a class
+        const isDisabled = button.getAttribute('aria-disabled') === 'true' || button.classList.contains('disabled'); // Example check
+
+        if (!isDisabled) {
             button.addEventListener('click', (e) => {
-                e.preventDefault(); // Prevent default link behavior if it's an <a>
+                e.preventDefault();
                 const templateName = e.target.dataset.templateName || 'Spreadsheet Template';
                 const price = e.target.dataset.price || '10000';
 
                 // **Placeholder Action:**
-                // In a real implementation, this would likely:
-                // 1. Open a modal asking for the user's Gmail address.
-                // 2. Validate the email.
-                // 3. Redirect to a payment gateway (like Paystack, Flutterwave) with template details and price.
-                // 4. On successful payment confirmation (webhook/callback), grant access to the spreadsheet (e.g., via Google Apps Script or sharing).
-
-                alert(`To get the "${templateName}" (₦${parseInt(price).toLocaleString()}):\n\n1. Provide your Gmail address.\n2. Complete payment.\n\n(This feature is currently under development. Please check back soon!)`);
-
+                alert(`To get the "${templateName}" (₦${parseInt(price).toLocaleString()}):\n\n1. Provide your Gmail address.\n2. Complete payment.\n\n(Purchase flow coming soon!)`);
                 console.log(`Purchase initiated for: ${templateName}, Price: ${price}`);
-                // Example: openPurchaseModal(templateName, price);
             });
         } else {
-             // Optionally add a tooltip or message for disabled buttons
-             button.addEventListener('click', (e) => {
-                 e.preventDefault();
-                 // alert("This template download is not yet available. Please check back soon!");
-             });
+            // Make disabled buttons non-interactive
+            button.style.pointerEvents = 'none'; // Prevent clicks on visually disabled
+             button.addEventListener('click', (e) => e.preventDefault()); // Backup prevention
         }
     });
     // --- END Template Purchase Logic ---
@@ -422,55 +385,63 @@ document.addEventListener('DOMContentLoaded', () => {
      const coachingForm = document.querySelector('.coaching-request-form');
      if(coachingForm) {
          coachingForm.addEventListener('submit', (e) => {
-             // Example: Basic frontend validation
              const emailInput = coachingForm.querySelector('#coach-email');
+             const submitButton = coachingForm.querySelector('button[type="submit"]');
+
+             // Frontend Validation
              if (emailInput && (!emailInput.value || !emailInput.value.includes('@'))) {
-                 e.preventDefault(); // Stop submission
+                 e.preventDefault();
                  alert('Please enter a valid email address to request a discovery call.');
                  emailInput.focus();
-                 return; // Stop further processing
+                 // Ensure button is enabled if validation fails early
+                 if (submitButton) {
+                     submitButton.disabled = false;
+                     submitButton.textContent = 'Request Discovery Call';
+                 }
+                 return;
              }
-              // Prevent double submission (optional)
-             const submitButton = coachingForm.querySelector('button[type="submit"]');
+
+             // Disable button on submission attempt
              if (submitButton) {
                  submitButton.disabled = true;
                  submitButton.textContent = 'Submitting...';
              }
 
-             console.log("Coaching form submitted (Frontend validation passed - replace with actual submission logic like fetch).");
-             // **IMPORTANT**: Replace console.log with actual form submission (e.g., using fetch API to send data to a backend endpoint or a service like Formspree/Netlify Forms)
-             // Example using Fetch (requires backend endpoint):
-             /*
-             e.preventDefault(); // Prevent default ONLY if using fetch
-             const formData = new FormData(coachingForm);
-             fetch('/api/coaching-request', { // Replace with your actual endpoint
-                 method: 'POST',
-                 body: formData
-             })
-             .then(response => response.json())
-             .then(data => {
-                 console.log('Success:', data);
-                 alert('Thank you! Your request has been sent. We will contact you soon.');
-                 coachingForm.reset(); // Clear the form
-             })
-             .catch((error) => {
-                 console.error('Error:', error);
-                 alert('Sorry, there was an error submitting your request. Please try again later.');
-             })
-             .finally(() => {
-                 // Re-enable button regardless of success/error
+             console.log("Coaching form submitted (Replace with actual submission).");
+
+             // **IMPORTANT**: Add real submission logic (fetch or rely on form action)
+             // For demo, let default action proceed OR use fetch and prevent default
+             // If using fetch, remember to re-enable the button in .finally()
+
+             // Example: Simulating success after 1 second for demo if NOT using fetch/action
+              /*
+              e.preventDefault(); // Needed if simulating here
+              setTimeout(() => {
+                 alert('Thank you! Your request has been sent.');
+                 coachingForm.reset();
                  if (submitButton) {
                      submitButton.disabled = false;
                      submitButton.textContent = 'Request Discovery Call';
                  }
-             });
-             */
-              // If NOT using fetch and relying on standard form action, remove e.preventDefault() above
-              // For now, let the default action proceed after logging
+              }, 1000);
+              */
          });
      }
      // --- END Coaching Form Logic ---
 
-    console.log("Rofilid Personal Page Scripts Initialized (v1.1.0).");
+     // --- Blog Card Button ---
+     // Add simple navigation or placeholder for the enabled blog button
+     const blogButton = document.querySelector('.resource-card .card-cta a[href="blog.html"]');
+     if(blogButton) {
+        blogButton.addEventListener('click', (e) => {
+            // If blog.html doesn't exist yet, prevent default and show message
+            // Otherwise, let the link work normally.
+            // For now, assume it will exist:
+            console.log('Navigating to Blog page (blog.html)...');
+        });
+     }
+
+
+    console.log("Rofilid Personal Page Scripts Initialized (v1.2.0).");
 
 }); // End DOMContentLoaded
