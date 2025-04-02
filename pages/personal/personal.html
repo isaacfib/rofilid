@@ -45,7 +45,7 @@
     </header>
 
     <main>
-        <!-- I. Introduction Section -->
+        <!-- I. Introduction Section (Stays First) -->
         <section class="page-intro">
              <div class="container">
                  <h1>Empower Yourself with Financial Knowledge</h1>
@@ -59,7 +59,7 @@
             </div>
         </section>
 
-        <!-- Quote 1 -->
+        <!-- Quote 1 (Stays Second) -->
         <aside class="motivational-quote">
             <div class="container">
                 <i class="fas fa-lightbulb quote-icon"></i>
@@ -67,43 +67,125 @@
             </div>
         </aside>
 
-        <!-- II. Resources Section -->
+        <!-- II. Resources Section (Stays Third - Contains Updated Blog & Social Card) -->
          <section id="personal-resources" class="section-padding bg-light">
              <div class="container">
                  <h2 class="section-title">Learn and Grow</h2>
                  <p class="section-description">Access a wealth of educational materials designed to enhance your financial understanding.</p>
                  <div class="resource-grid">
+                     <!-- Blog Card Updated -->
                      <article class="resource-card">
                           <div class="card-image"> <img src="../../assets/images/personal/blog.jpg" alt="Person reading financial articles" loading="lazy"> </div>
-                         <div class="card-content"> <h3>Blog & Articles</h3> <p>Explore articles on budgeting, saving, investing, Nigeria-specific topics... <em>(Full Blog Coming Soon)</em></p> <div class="card-cta"> <a href="#" class="btn" aria-disabled="true" style="cursor: not-allowed; opacity: 0.6;">Explore Latest Posts</a> </div> </div>
-                    </article>
-                    <article class="resource-card social-integration">
-                        <div class="card-header"> <i class="fab fa-instagram"></i> <h3>@rofi.lid Highlights</h3> </div>
-                         <div class="social-carousel">
-                             <div class="social-post"> <blockquote>"Compound interest is key!... 🇳🇬 #FinanceNaija #SavingsGoal"<footer>- @rofi.lid</footer></blockquote> </div>
-                              <div class="social-post"> <img src="../../assets/images/personal/resource-social-placeholder.jpg" alt="Budgeting tips infographic" loading="lazy"> <div class="post-engagement"> <span><i class="fas fa-heart"></i> 2.4K</span> <span><i class="fas fa-comment"></i> 184</span> <span><i class="fas fa-share"></i> 550</span> </div> </div>
-                             <div class="social-post"> <blockquote>"Debt reduction strategies that WORK!... 💰 #DebtFreeJourney #NigeriaFinance"<footer>- @rofi.lid</footer></blockquote> </div>
+                         <div class="card-content">
+                             <h3>Recent Blog Posts</h3>
+                             <p>Explore insights on budgeting strategies, investing in Nigeria, building effective savings habits, and understanding debt management...</p>
+                             <div class="card-cta">
+                                 <a href="blog.html" class="btn">Explore Blog</a> <!-- Link enabled, points to future blog page -->
+                             </div>
                          </div>
-                          <div class="card-cta" style="margin-top: var(--spacing-md); text-align:center;"> <a href="https://instagram.com/rofi.lid" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Follow Us on Instagram</a> </div>
                     </article>
+                    <!-- Enhanced Social Integration Card -->
+                    <article class="resource-card social-integration">
+                        <div class="card-header">
+                            <i class="fas fa-hashtag"></i> <!-- Generic Social Icon -->
+                            <h3>BasicPFC Social Feed</h3>
+                        </div>
+                        <div class="social-feed-preview">
+                            <!-- Example Instagram Post -->
+                            <div class="social-post-preview instagram">
+                                <img src="../../assets/images/personal/social-insta-placeholder.jpg" alt="BasicPFC Instagram Post Preview" loading="lazy">
+                                <p>Tip: Automate your savings! Even small amounts add up... <a href="https://instagram.com/basicpfc" target="_blank" rel="noopener noreferrer" class="social-handle">#SavingsTip #BasicPFC</a></p>
+                            </div>
+                             <!-- Example X/Twitter Post -->
+                            <div class="social-post-preview twitter">
+                                <i class="fab fa-twitter"></i>
+                                <p>"Understanding compound interest is crucial for long-term wealth. Start early! 📈🇳🇬 <a href="https://x.com/basicpfc" target="_blank" rel="noopener noreferrer" class="social-handle">#FinanceNaija #Investing #BasicPFC</a>"</p>
+                            </div>
+                            <!-- Example YouTube Mention -->
+                            <div class="social-post-preview youtube">
+                                <i class="fab fa-youtube"></i>
+                                <p>New Video: Step-by-Step Guide to Creating Your First Budget. Watch now on <a href="https://www.youtube.com/@basicpfc" target="_blank" rel="noopener noreferrer" class="social-handle">YouTube @basicpfc</a>!</p>
+                            </div>
+                        </div>
+                        <div class="card-cta social-follow-links">
+                            <p>Follow BasicPFC for daily tips:</p>
+                            <div class="social-icons-inline">
+                                <a href="https://instagram.com/basicpfc" target="_blank" rel="noopener noreferrer" aria-label="BasicPFC on Instagram"><i class="fab fa-instagram"></i></a>
+                                <a href="https://x.com/basicpfc" target="_blank" rel="noopener noreferrer" aria-label="BasicPFC on X"><i class="fab fa-twitter"></i></a>
+                                <a href="https://facebook.com/basicpfc" target="_blank" rel="noopener noreferrer" aria-label="BasicPFC on Facebook"><i class="fab fa-facebook"></i></a>
+                                <a href="https://www.youtube.com/@basicpfc" target="_blank" rel="noopener noreferrer" aria-label="BasicPFC on YouTube"><i class="fab fa-youtube"></i></a>
+                            </div>
+                        </div>
+                    </article>
+                     <!-- Financial Literacy Card -->
                      <article class="resource-card">
                          <div class="card-image"> <img src="../../assets/images/personal/resource-literacy-placeholder.jpg" alt="Stairs made of coins" loading="lazy"> </div>
-                          <div class="card-content"> <h3>Why Financial Literacy Matters</h3> <p>Understanding personal finance empowers you to make sound decisions, avoid costly mistakes, reduce stress, prepare for emergencies...</p> <div class="card-cta"> <a href="#personal-coaching" class="btn btn-outline">Learn How Coaching Helps</a> </div> </div>
+                          <div class="card-content">
+                              <h3>Why Financial Literacy Matters</h3>
+                              <p>Understanding personal finance empowers you to make sound decisions, avoid costly mistakes, reduce stress, prepare for emergencies...</p>
+                              <div class="card-cta">
+                                  <a href="#personal-coaching" class="btn btn-outline">Learn How Coaching Helps</a>
+                              </div>
+                          </div>
                      </article>
                 </div>
             </div>
         </section>
 
-         <!-- Quote 2 -->
+         <!-- Quote 2 (Stays Fourth) -->
         <aside class="motivational-quote alt-bg">
             <div class="container">
                 <i class="fas fa-cogs quote-icon"></i>
-                 <p>Ready to apply what you've learned? <span class="highlight">Use our tools & test your knowledge.</span></p>
+                 <p>Ready to apply what you've learned? <span class="highlight">Test your knowledge & explore our tools.</span></p> <!-- Adjusted Text Slightly -->
             </div>
          </aside>
 
-        <!-- III. Tools & Quizzes Section -->
-        <section id="personal-tools" class="section-padding">
+         <!-- III. Financial Fitness Challenge Intro (Moved Here - Fifth) -->
+         <section id="financial-fitness-challenge-intro" class="section-padding section-tight"> <!-- Added standard padding -->
+             <div class="container">
+                 <h2 class="section-title">Test Your Financial Groundwork</h2> <!-- Promoted to Section Title -->
+                 <p class="section-description" style="margin-bottom: var(--spacing-xl);">Before grabbing tools, check your understanding with these fundamental quizzes. Each has 5 questions with instant feedback.</p>
+                 <!-- Only Theme 1 Displayed Here -->
+                 <div class="challenge-theme">
+                     <!-- Removed H3 from here as it's now the Section Title -->
+                     <div class="category-grid">
+                         <article class="category-card" data-category-id="1">
+                             <i class="fas fa-piggy-bank category-icon"></i>
+                             <h4>Income & Financial Vitals</h4>
+                             <p>Understanding income & your overall standing.</p>
+                             <button class="btn start-quiz-btn">Start Quiz</button>
+                         </article>
+                         <article class="category-card" data-category-id="2">
+                             <i class="fas fa-sack-dollar category-icon"></i>
+                             <h4>Savings Essentials</h4>
+                             <p>The why and how of building savings.</p>
+                             <button class="btn start-quiz-btn">Start Quiz</button>
+                         </article>
+                         <article class="category-card" data-category-id="3">
+                             <i class="fas fa-calculator category-icon"></i>
+                             <h4>Budgeting Basics</h4>
+                             <p>Creating and sticking to a plan.</p>
+                             <button class="btn start-quiz-btn">Start Quiz</button>
+                         </article>
+                         <article class="category-card" data-category-id="4">
+                             <i class="fas fa-receipt category-icon"></i>
+                             <h4>Tracking & Managing Spending</h4>
+                             <p>Knowing where your money goes.</p>
+                             <button class="btn start-quiz-btn">Start Quiz</button>
+                         </article>
+                     </div>
+                 </div>
+                 <!-- Link to Full Quiz Page -->
+                 <div class="full-challenge-link" style="text-align: center; margin-top: var(--spacing-xl);">
+                     <a href="quizzes.html" class="btn btn-outline large">
+                         Explore All 20 Financial Fitness Quizzes <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
+                     </a>
+                 </div>
+             </div>
+         </section>
+
+        <!-- IV. Marketplace / Tools Section (Templates Only - Moved Here - Sixth) -->
+        <section id="personal-tools" class="section-padding bg-light"> <!-- Changed BG -->
             <div class="container">
                 <h2 class="section-title">Marketplace: Templates & Tools</h2>
                  <p class="section-description">Download free printable templates or get interactive spreadsheets to manage your finances effectively.</p>
@@ -114,14 +196,14 @@
                     <article class="template-card" data-template="line-budget">
                          <div class="template-preview">
                              <img src="../../assets/images/personal/LineBudget.JPG" alt="Line-Item Budget template preview 1" loading="lazy">
-                             <img src="../../assets/images/personal/LineBudget2.jpg" alt="Line-Item Budget template preview 2" loading="lazy"> <!-- Added Second Image -->
+                             <img src="../../assets/images/personal/LineBudget2.jpg" alt="Line-Item Budget template preview 2" loading="lazy">
                          </div>
                          <div class="template-details">
                              <h3>Line-Item Budget</h3>
                              <p>Detailed budget planning by tracking every income source and expense category.</p>
                              <div class="template-actions">
-                                 <a href="#" class="btn btn-outline" aria-disabled="true" style="cursor: not-allowed; opacity: 0.6;">Download PDF (Free)</a>
-                                 <a href="#" class="btn get-spreadsheet-btn" aria-disabled="true" style="cursor: not-allowed; opacity: 0.6;" data-price="10000" data-template-name="Line-Item Budget">Get Spreadsheet (₦10,000)</a>
+                                 <a href="#" class="btn btn-outline">Download PDF (Free)</a> <!-- Enable when ready -->
+                                 <a href="#" class="btn get-spreadsheet-btn" data-price="10000" data-template-name="Line-Item Budget">Get Spreadsheet (₦10,000)</a> <!-- Enable when ready -->
                              </div>
                              <p class="template-price-note">Spreadsheet requires a Gmail account for access.</p>
                          </div>
@@ -130,112 +212,71 @@
                     <article class="template-card" data-template="networth">
                         <div class="template-preview">
                             <img src="../../assets/images/personal/NetWorth.JPG" alt="Net Worth Statement template preview 1" loading="lazy">
-                            <img src="../../assets/images/personal/NetWorth2.jpg" alt="Net Worth Statement template preview 2" loading="lazy"> <!-- Added Second Image -->
+                            <img src="../../assets/images/personal/NetWorth2.jpg" alt="Net Worth Statement template preview 2" loading="lazy">
                         </div>
                          <div class="template-details">
                              <h3>Net Worth Statement</h3>
                              <p>Understand your financial position by tracking assets and liabilities over time.</p>
-                             <div class="template-actions">
-                                 <a href="#" class="btn btn-outline" aria-disabled="true" style="cursor: not-allowed; opacity: 0.6;">Download PDF (Free)</a>
-                                 <a href="#" class="btn get-spreadsheet-btn" aria-disabled="true" style="cursor: not-allowed; opacity: 0.6;" data-price="10000" data-template-name="Net Worth Statement">Get Spreadsheet (₦10,000)</a>
+                              <div class="template-actions">
+                                 <a href="#" class="btn btn-outline">Download PDF (Free)</a>
+                                 <a href="#" class="btn get-spreadsheet-btn" data-price="10000" data-template-name="Net Worth Statement">Get Spreadsheet (₦10,000)</a>
                              </div>
                              <p class="template-price-note">Spreadsheet requires a Gmail account for access.</p>
                          </div>
                      </article>
-                     <!-- Template 3: Personal Cashflow Statement (NEW) -->
+                     <!-- Template 3: Personal Cashflow Statement -->
                      <article class="template-card" data-template="cashflow">
                          <div class="template-preview">
-                             <img src="../../assets/images/personal/Cashflow1.jpg" alt="Personal Cashflow Statement template preview 1" loading="lazy"> <!-- Placeholder Path -->
-                             <img src="../../assets/images/personal/Cashflow2.jpg" alt="Personal Cashflow Statement template preview 2" loading="lazy"> <!-- Placeholder Path -->
+                             <img src="../../assets/images/personal/Cashflow1.jpg" alt="Personal Cashflow Statement template preview 1" loading="lazy">
+                             <img src="../../assets/images/personal/Cashflow2.jpg" alt="Personal Cashflow Statement template preview 2" loading="lazy">
                          </div>
                          <div class="template-details">
                              <h3>Personal Cashflow Statement</h3>
                              <p>Track the flow of money in and out of your finances over a specific period.</p>
-                             <div class="template-actions">
-                                 <a href="#" class="btn btn-outline" aria-disabled="true" style="cursor: not-allowed; opacity: 0.6;">Download PDF (Free)</a>
-                                 <a href="#" class="btn get-spreadsheet-btn" aria-disabled="true" style="cursor: not-allowed; opacity: 0.6;" data-price="10000" data-template-name="Personal Cashflow Statement">Get Spreadsheet (₦10,000)</a>
+                              <div class="template-actions">
+                                 <a href="#" class="btn btn-outline">Download PDF (Free)</a>
+                                 <a href="#" class="btn get-spreadsheet-btn" data-price="10000" data-template-name="Personal Cashflow Statement">Get Spreadsheet (₦10,000)</a>
                              </div>
                              <p class="template-price-note">Spreadsheet requires a Gmail account for access.</p>
                          </div>
                     </article>
-                    <!-- Template 4: 50/30/20 Budget Template (NEW) -->
+                    <!-- Template 4: 50/30/20 Budget Template -->
                     <article class="template-card" data-template="50-30-20">
                         <div class="template-preview">
-                            <img src="../../assets/images/personal/Budget503020_1.jpg" alt="50/30/20 Budget template preview 1" loading="lazy"> <!-- Placeholder Path -->
-                            <img src="../../assets/images/personal/Budget503020_2.jpg" alt="50/30/20 Budget template preview 2" loading="lazy"> <!-- Placeholder Path -->
+                            <img src="../../assets/images/personal/Budget503020_1.jpg" alt="50/30/20 Budget template preview 1" loading="lazy">
+                            <img src="../../assets/images/personal/Budget503020_2.jpg" alt="50/30/20 Budget template preview 2" loading="lazy">
                         </div>
                          <div class="template-details">
                              <h3>50/30/20 Budget Template</h3>
                              <p>Allocate your income: 50% Needs, 30% Wants, 20% Savings & Debt.</p>
-                             <div class="template-actions">
-                                 <a href="#" class="btn btn-outline" aria-disabled="true" style="cursor: not-allowed; opacity: 0.6;">Download PDF (Free)</a>
-                                 <a href="#" class="btn get-spreadsheet-btn" aria-disabled="true" style="cursor: not-allowed; opacity: 0.6;" data-price="10000" data-template-name="50/30/20 Budget">Get Spreadsheet (₦10,000)</a>
+                              <div class="template-actions">
+                                 <a href="#" class="btn btn-outline">Download PDF (Free)</a>
+                                 <a href="#" class="btn get-spreadsheet-btn" data-price="10000" data-template-name="50/30/20 Budget">Get Spreadsheet (₦10,000)</a>
                              </div>
                              <p class="template-price-note">Spreadsheet requires a Gmail account for access.</p>
                          </div>
                      </article>
-                     <!-- Template 5: Line-Item Budget Expense Tracker (NEW) -->
+                     <!-- Template 5: Line-Item Budget Expense Tracker -->
                      <article class="template-card" data-template="expense-tracker">
                          <div class="template-preview">
-                             <img src="../../assets/images/personal/ExpenseTracker1.jpg" alt="Expense Tracker template preview 1" loading="lazy"> <!-- Placeholder Path -->
-                             <img src="../../assets/images/personal/ExpenseTracker2.jpg" alt="Expense Tracker template preview 2" loading="lazy"> <!-- Placeholder Path -->
+                             <img src="../../assets/images/personal/ExpenseTracker1.jpg" alt="Expense Tracker template preview 1" loading="lazy">
+                             <img src="../../assets/images/personal/ExpenseTracker2.jpg" alt="Expense Tracker template preview 2" loading="lazy">
                          </div>
                          <div class="template-details">
                              <h3>Line-Item Budget Expense Tracker</h3>
                              <p>A companion tool to easily log daily expenses for your line-item budget.</p>
-                             <div class="template-actions">
-                                 <a href="#" class="btn btn-outline" aria-disabled="true" style="cursor: not-allowed; opacity: 0.6;">Download PDF (Free)</a>
-                                 <a href="#" class="btn get-spreadsheet-btn" aria-disabled="true" style="cursor: not-allowed; opacity: 0.6;" data-price="10000" data-template-name="Line-Item Expense Tracker">Get Spreadsheet (₦10,000)</a>
+                              <div class="template-actions">
+                                 <a href="#" class="btn btn-outline">Download PDF (Free)</a>
+                                 <a href="#" class="btn get-spreadsheet-btn" data-price="10000" data-template-name="Line-Item Expense Tracker">Get Spreadsheet (₦10,000)</a>
                              </div>
                              <p class="template-price-note">Spreadsheet requires a Gmail account for access.</p>
                          </div>
                     </article>
                 </div><!-- End Template Grid -->
-
-                <!-- Financial Fitness Challenge - INTRO Section -->
-                <div id="financial-fitness-challenge-intro" class="section-padding section-tight" style="padding-top: var(--spacing-xxl);">
-                     <h3 style="text-align: center; margin-bottom: var(--spacing-xl); color: var(--color-primary); font-size: clamp(1.6rem, 4vw, 2rem);">Test Your Financial Groundwork</h3>
-                     <p class="section-description" style="margin-bottom: var(--spacing-lg);">Start with these fundamental quizzes. Each has 5 questions with instant feedback.</p>
-                     <!-- Only Theme 1 Displayed Here -->
-                     <div class="challenge-theme">
-                         <div class="category-grid">
-                              <article class="category-card" data-category-id="1">
-                                <i class="fas fa-piggy-bank category-icon"></i>
-                                  <h4>Income & Financial Vitals</h4>
-                                <p>Understanding income & your overall standing.</p>
-                                 <button class="btn start-quiz-btn">Start Quiz</button>
-                             </article>
-                            <article class="category-card" data-category-id="2">
-                                 <i class="fas fa-sack-dollar category-icon"></i>
-                                  <h4>Savings Essentials</h4>
-                                <p>The why and how of building savings.</p>
-                                 <button class="btn start-quiz-btn">Start Quiz</button>
-                            </article>
-                            <article class="category-card" data-category-id="3">
-                                 <i class="fas fa-calculator category-icon"></i>
-                                  <h4>Budgeting Basics</h4>
-                                 <p>Creating and sticking to a plan.</p>
-                                <button class="btn start-quiz-btn">Start Quiz</button>
-                            </article>
-                            <article class="category-card" data-category-id="4">
-                                <i class="fas fa-receipt category-icon"></i>
-                                 <h4>Tracking & Managing Spending</h4>
-                                <p>Knowing where your money goes.</p>
-                                <button class="btn start-quiz-btn">Start Quiz</button>
-                            </article>
-                        </div>
-                    </div>
-                    <!-- Link to Full Quiz Page -->
-                    <div class="full-challenge-link" style="text-align: center; margin-top: var(--spacing-xl);">
-                        <a href="quizzes.html" class="btn btn-outline large">
-                             Explore All 20 Financial Fitness Quizzes <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
-                        </a>
-                    </div>
-                </div><!-- End #financial-fitness-challenge-intro -->
             </div><!-- End #personal-tools container -->
         </section>
 
-         <!-- Quote 3 -->
+         <!-- Quote 3 (Stays Seventh) -->
          <aside class="motivational-quote">
             <div class="container">
                 <i class="fas fa-user-check quote-icon"></i>
@@ -243,8 +284,8 @@
              </div>
         </aside>
 
-         <!-- IV. Coaching Section -->
-        <section id="personal-coaching" class="section-padding bg-light">
+         <!-- V. Coaching Section (Stays Eighth) -->
+        <section id="personal-coaching" class="section-padding"> <!-- Removed bg-light -->
             <div class="container">
                 <h2 class="section-title">Get Personalized Guidance</h2>
                 <p class="section-description">Work one-on-one with our expert coaches to develop a customized financial plan and build lasting healthy habits.</p>
@@ -277,14 +318,14 @@
              </div>
         </section>
 
-         <!-- V. MMISBALIOR Section (Typo Corrected) -->
-          <section class="section-padding section-tight">
+         <!-- VI. MMISBALIOR Section (Stays Last - Ninth) -->
+          <section class="section-padding section-tight bg-light"> <!-- Added bg-light -->
               <div class="container">
-                  <div class="mmisbalior-promo"> <!-- Typo Corrected -->
+                  <div class="mmisbalior-promo">
                      <div class="promo-content">
-                         <h3>MMISBALIOR: Financial Education for Teens</h3> <!-- Typo Corrected -->
+                         <h3>MMISBALIOR: Financial Education for Teens</h3>
                          <p>Empower the next generation with crucial money skills! MMISBALIOR is our specialized program teaching teens essential finance concepts...</p>
-                          <a href="#" class="btn" aria-disabled="true" style="cursor: not-allowed; opacity: 0.6;">Discover MMISBALIOR (Coming Soon)</a> <!-- Typo Corrected in Text -->
+                          <a href="#" class="btn" aria-disabled="true" style="cursor: not-allowed; opacity: 0.6;">Discover MMISBALIOR (Coming Soon)</a>
                      </div>
                      <div class="promo-visual">
                           <img src="../../assets/images/personal/mmisbalior.jpg" alt="Teens learning about finance" loading="lazy">
@@ -314,37 +355,41 @@
         </div>
      </div>
 
-     <!-- Footer Section (Social Links Updated) -->
+     <!-- Footer Section -->
      <footer class="site-footer">
          <div class="container">
+            <!-- Footer Links Section -->
             <div class="page-footer-links">
-                <div class="container">
+                <div class="container footer-links-container"> <!-- Added class for specific targeting -->
                      <div> <h4>Personal Solutions</h4> <ul> <li><a href="#financial-fitness-challenge-intro">Fitness Challenge Intro</a></li> <li><a href="quizzes.html">All Quizzes</a></li> <li><a href="#personal-tools">Templates</a></li> <li><a href="#personal-resources">Resources</a></li> <li><a href="#personal-coaching">Coaching</a></li> <li><a href="#">MMISBALIOR (Teens)</a></li> </ul> </div>
                      <div> <h4>Quick Links</h4> <ul> <li><a href="../../index.html">Home</a></li> <li><a href="../corporate/corporate.html">Corporate Solutions</a></li> <li><a href="../../index.html#services">Our Services</a></li> <li><a href="../../index.html#contact">Contact Us</a></li> </ul> </div>
-                    <div> <h4>Company</h4> <ul> <li><a href="#">About Us</a></li> <li><a href="#">Blog</a></li> <li><a href="#">Privacy Policy</a></li> <li><a href="#">Terms of Service</a></li> </ul> </div>
+                    <div> <h4>Company</h4> <ul> <li><a href="#">About Us</a></li> <li><a href="blog.html">Blog</a></li> <!-- Link added --> <li><a href="#">Privacy Policy</a></li> <li><a href="#">Terms of Service</a></li> </ul> </div>
                  </div>
             </div>
+            <!-- Main Footer Content -->
             <div class="footer-content">
                  <div class="footer-left">
-                    <div class="logo"> <a href="../../index.html" aria-label="Rofilid Home"> <img src="../../assets/images/common/rofilid-logo-white.svg" alt="Rofilid Logo" width="120" height="40" loading="lazy"> </a> </div>
+                    <div class="logo">
+                        <a href="../../index.html" aria-label="Rofilid Home">
+                            <!-- Ensure correct path and visibility -->
+                            <img src="../../assets/images/common/rofilid-logo-white.svg" alt="Rofilid Logo" width="120" height="40" loading="lazy">
+                        </a>
+                    </div>
                      <p style="margin-top: var(--spacing-sm); font-size: 0.9rem; color: rgba(255, 255, 255, 0.7);">Empowering financial futures.</p>
                  </div>
                  <div class="footer-right">
-                     <p style="margin-bottom: var(--spacing-sm); font-weight: 500;">Connect With BasicPFC</p> <!-- Updated Text -->
+                     <p style="margin-bottom: var(--spacing-sm); font-weight: 500;">Connect With BasicPFC</p>
                     <div class="social-media">
-                         <!-- BasicPFC Links Updated -->
                          <a href="https://facebook.com/basicpfc" aria-label="Facebook" class="social-link" target="_blank" rel="noopener noreferrer"><img src="../../assets/images/common/facebook.png" alt="Facebook Icon" class="social-icon"></a>
                         <a href="https://instagram.com/basicpfc" aria-label="Instagram" class="social-link" target="_blank" rel="noopener noreferrer"><img src="../../assets/images/common/instagram.png" alt="Instagram Icon" class="social-icon"></a>
-                        <!-- LinkedIn remains Rofilid -->
                         <a href="https://linkedin.com/company/rofilid" aria-label="LinkedIn" class="social-link" target="_blank" rel="noopener noreferrer"><img src="../../assets/images/common/linkedin.png" alt="LinkedIn Icon" class="social-icon"></a>
                         <a href="https://x.com/basicpfc" aria-label="X (Formerly Twitter)" class="social-link" target="_blank" rel="noopener noreferrer"><img src="../../assets/images/common/twitter.png" alt="X (Twitter) Icon" class="social-icon"></a>
-                         <!-- YouTube Added -->
-                         <a href="https://www.youtube.com/@basicpfc" aria-label="YouTube" class="social-link" target="_blank" rel="noopener noreferrer"> <img src="../../assets/images/common/youtube.png" alt="YouTube Icon" class="social-icon"></a> <!-- Assuming youtube.png exists -->
-                         <!-- WhatsApp remains Rofilid? Assuming yes, kept placeholder -->
+                         <a href="https://www.youtube.com/@basicpfc" aria-label="YouTube" class="social-link" target="_blank" rel="noopener noreferrer"> <img src="../../assets/images/common/youtube.png" alt="YouTube Icon" class="social-icon"></a>
                          <a href="https://wa.me/234XXXXXXXXXX" aria-label="WhatsApp" class="social-link" target="_blank" rel="noopener noreferrer"> <img src="../../assets/images/common/whatsapp.png" alt="WhatsApp Icon" class="social-icon"></a>
                      </div>
                 </div>
              </div>
+            <!-- Copyright -->
             <div class="copyright"> <p>© <span id="current-year">2024</span> ROFILID Services Limited. All rights reserved.</p> </div>
         </div>
     </footer>
