@@ -1,58 +1,103 @@
 /* ==========================================================================
-   ROFILID Personal & Quizzes Pages Styles - v1.5.2 (Menu & Footer Fixes)
-   Description: Fixed hamburger menu display and desktop footer layout
-                for personal page. Includes all previous styling enhancements.
+   ROFILID Personal Page Styles - Redesigned v2.0
+   Description: Redesigned personal page focusing on value-first approach,
+                credibility building, simplified navigation, and enhanced UI
+                based on feedback. Respects existing theme colors.
    ========================================================================== */
 
 /* --- Root Variables & Base --- */
 .personal-page {
-  /* Theme Variables */
+  /* Theme Variables (Keep consistent with original, adjust if needed) */
   --color-primary-personal: #0c343d; /* Teal */
   --color-primary-light-personal: #1a4652;
   --color-primary-dark-personal: #072329;
   --brand-green-personal: #28a745; /* Green */
+  --color-secondary: #ffffff;       /* White */
   --color-background: #f7fbfb;      /* Very light teal/cyan BG */
-  --color-accent: #e0f7fa;          /* Lighter Teal accent */
+  --color-light-accent: #e0f7fa;     /* Lighter Teal accent */
+  --color-light: #f8f9fa;           /* Very Light Grey */
   --color-text: #263238;            /* Dark Grey-Blue Text */
   --color-text-light: #546e7a;       /* Medium Grey-Blue Text */
-  --border-radius: 6px;             /* Slightly reduced default radius */
-  --border-radius-large: 10px;      /* For larger elements like cards */
-  --box-shadow-light: 0 4px 10px -2px rgba(0, 0, 0, 0.06); /* Softer light shadow */
-  --box-shadow: 0 10px 20px -5px rgba(12, 52, 61, 0.12); /* More defined shadow */
-  --box-shadow-inset: inset 0 2px 4px rgba(0,0,0,0.04); /* Subtle inset for inputs */
+  --color-text-lighter: #78909c;      /* Lighter grey text */
+  --color-border: #d0e0e3;          /* Light border color */
+  --color-success: #28a745;
+  --color-success-light: #e8f5e9;
+  --color-danger: #dc3545;
+  --color-danger-light: #fce4e4;
+  --color-warning: #ffc107;
+
+  /* Layout & Spacing */
+  --border-radius: 6px;
+  --border-radius-large: 10px;
+  --box-shadow-light: 0 4px 10px -2px rgba(0, 0, 0, 0.06);
+  --box-shadow: 0 10px 20px -5px rgba(12, 52, 61, 0.12);
+  --box-shadow-strong: 0 12px 28px rgba(12, 52, 61, 0.18);
+  --box-shadow-inset: inset 0 2px 4px rgba(0,0,0,0.04);
   --transition-fast: all 0.2s ease-out;
   --transition-medium: all 0.3s ease-out;
-  --spacing-xs: 5px; --spacing-sm: 10px; --spacing-md: 20px; --spacing-lg: 30px; --spacing-xl: 40px; --spacing-xxl: 80px;
-  --font-weight-regular: 400; --font-weight-medium: 500; --font-weight-bold: 700; --font-weight-black: 900;
+  --spacing-xs: 5px; --spacing-sm: 10px; --spacing-md: 20px; --spacing-lg: 30px; --spacing-xl: 40px; --spacing-xxl: 60px; --spacing-xxxl: 80px;
+  --font-weight-regular: 400; --font-weight-medium: 500; --font-weight-semibold: 600; --font-weight-bold: 700; --font-weight-extrabold: 800;
   --header-height: 70px; /* Default, updated by JS */
   --container-width: 1200px;
 }
 
+/* --- Base Body Styles --- */
 .personal-page body {
     font-family: 'Inter', sans-serif;
-    background-color: #ffffff;
+    background-color: var(--color-secondary);
     color: var(--color-text);
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* --- Header Overrides --- */
+/* --- Utility Classes --- */
+.bg-light { background-color: var(--color-light); }
+.bg-light-accent { background-color: var(--color-light-accent); }
+.section-padding { padding: var(--spacing-xxl) 0; }
+.section-padding--large { padding: var(--spacing-xxxl) 0; }
+.section-tight { padding: var(--spacing-xl) 0; }
+.container {
+    width: 90%;
+    max-width: var(--container-width);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+}
+.sr-only { /* Screen reader only */
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+.link-inline {
+    color: var(--color-primary-personal);
+    text-decoration: underline;
+    font-weight: var(--font-weight-medium);
+}
+.link-inline:hover { color: var(--color-primary-dark-personal); }
+
+/* --- Header Overrides (Maintain Consistency, Update CTAs) --- */
 .personal-page .site-header {
     background: rgba(255, 255, 255, 0.97);
-    border-bottom: 1px solid #d0e0e3;
+    border-bottom: 1px solid var(--color-border);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     box-shadow: 0 1px 4px rgba(0,0,0,0.04);
     padding: var(--spacing-sm) 0;
     position: fixed;
     width: 100%;
-    top: 0;
-    left: 0;
+    top: 0; left: 0;
     z-index: 1000;
     height: var(--header-height);
     display: flex;
     align-items: center;
     transition: background-color 0.3s ease, border-color 0.3s ease, height 0.3s ease;
+}
+.personal-page .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 .personal-page .site-header .logo img {
     content: url(../../assets/images/common/rofilid-logo-teal.svg);
@@ -62,527 +107,853 @@
     vertical-align: middle;
     filter: none;
 }
-/* Nav links styles */
-.personal-page .nav-link {
-    color: var(--color-primary-personal);
-    font-weight: 500;
-    text-decoration: none;
-    padding: var(--spacing-xs) var(--spacing-sm);
-    display: block;
-    transition: color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
-    white-space: nowrap;
-    border-bottom: 2px solid transparent;
-}
-.personal-page .nav-link:hover { color: var(--color-primary-dark-personal); opacity: 1; }
-.personal-page .nav-link:focus { outline: 1px solid var(--color-primary-personal); outline-offset: 2px; border-radius: var(--border-radius); }
-.personal-page .nav-list .nav-link.active-page {
-    color: var(--color-primary-personal);
-    border-bottom-color: var(--color-primary-personal);
-    font-weight: 600;
-    opacity: 1;
-}
-.personal-page .nav-list .nav-link.active-page:hover { border-bottom-color: var(--color-primary-dark-personal); }
-/* Mobile Menu Toggle */
-.personal-page .mobile-menu-toggle {
-    color: var(--color-primary-personal);
-    background: transparent;
-    border: none;
-    font-size: 1.8rem;
-    cursor: pointer;
-    display: none; /* Hide by default */
-    padding: var(--spacing-xs);
-    line-height: 1;
-    transition: color 0.3s ease;
-    margin-left: auto; /* Push to the right */
-    margin-right: 0;
-}
-/* Desktop Nav List */
 .personal-page .nav-list {
-    display: flex; /* Show by default on desktop */
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    gap: var(--spacing-lg);
+    display: flex; list-style: none; padding: 0; margin: 0 0 0 var(--spacing-xl); gap: var(--spacing-lg);
 }
-/* Mobile Nav Dropdown Active State */
-.personal-page #primary-navigation.active {
-    background-color: var(--color-secondary);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    display: flex; /* Ensure it shows when active */
-    flex-direction: column;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    padding: var(--spacing-sm) var(--spacing-md);
-    gap: var(--spacing-sm);
-    opacity: 1;
-    transition: opacity 0.3s ease-out, transform 0.3s ease-out, background-color 0.3s ease;
+.personal-page .nav-link {
+    color: var(--color-primary-personal); font-weight: var(--font-weight-medium); text-decoration: none;
+    padding: var(--spacing-xs) var(--spacing-sm); display: block; transition: var(--transition-fast);
+    white-space: nowrap; border-bottom: 2px solid transparent;
 }
-.personal-page #primary-navigation.active .nav-link { color: var(--color-primary-personal); }
-.personal-page #primary-navigation.active .nav-link:hover { color: var(--color-primary-dark-personal); }
-.personal-page #primary-navigation.active .nav-link.active-page { border-bottom-color: var(--color-primary-personal); }
-/* Connect Button */
-.personal-page .connect-button {
-    background-color: var(--color-primary-personal);
-    color: var(--color-secondary);
-    border: none;
-    padding: 8px 18px;
-    transition: var(--transition-medium);
-    border-radius: var(--border-radius);
-    display: inline-block; /* Show by default on desktop */
-    font-weight: var(--font-weight-medium);
-    cursor: pointer;
-    text-decoration: none;
-    text-align: center;
-    font-size: 1rem;
-    white-space: nowrap;
+.personal-page .nav-link:hover { color: var(--color-primary-dark-personal); }
+.personal-page .nav-link:focus-visible { outline: 2px solid var(--color-primary-personal); outline-offset: 2px; border-radius: var(--border-radius); }
+.personal-page .nav-list .nav-link.active-page {
+    color: var(--color-primary-personal); border-bottom-color: var(--color-primary-personal);
+    font-weight: var(--font-weight-semibold);
 }
-.personal-page .connect-button:hover { background-color: var(--color-primary-light-personal); transform: translateY(-2px); box-shadow: 0 3px 8px rgba(12, 52, 61, 0.2); }
-.personal-page .connect-button:focus-visible { outline: 2px solid var(--color-primary-light-personal); outline-offset: 2px; box-shadow: 0 0 0 3px rgba(12, 52, 61, 0.15); }
+.personal-page .mobile-menu-toggle {
+    color: var(--color-primary-personal); background: transparent; border: none;
+    font-size: 1.8rem; cursor: pointer; display: none; padding: var(--spacing-xs);
+    line-height: 1; transition: color 0.3s ease; margin-left: auto;
+}
+/* Header CTA Button */
+.personal-page .btn-cta-header {
+    background-color: var(--color-primary-personal); color: var(--color-secondary);
+    border: 1px solid var(--color-primary-personal); padding: 8px 18px;
+    transition: var(--transition-medium); border-radius: var(--border-radius);
+    display: inline-block; font-weight: var(--font-weight-medium); cursor: pointer;
+    text-decoration: none; text-align: center; font-size: 1rem; white-space: nowrap;
+}
+.personal-page .btn-cta-header:hover {
+    background-color: var(--color-primary-light-personal); border-color: var(--color-primary-light-personal);
+    transform: translateY(-2px); box-shadow: 0 3px 8px rgba(12, 52, 61, 0.2);
+}
+.personal-page .btn-cta-header:focus-visible { outline: 2px solid var(--color-primary-light-personal); outline-offset: 2px; }
 
-/* --- Page Intro Overrides --- */
-/* ... (Keep Page Intro styles from v1.5.1) ... */
-.personal-page .page-intro { padding-top: calc(var(--header-height, 70px) + var(--spacing-xl)); padding-bottom: var(--spacing-xl); background: linear-gradient(140deg, #f7fbfb 0%, #e6fafa 100%); color: var(--color-text); text-align: center; border-bottom: none; position: relative; overflow: hidden; }
-.personal-page .page-intro h1 { font-family: 'Inter', sans-serif; font-size: clamp(2.4rem, 6vw, 3.5rem); font-weight: 700; color: var(--color-primary-personal); line-height: 1.25; text-shadow: none; margin-bottom: var(--spacing-md); }
-.personal-page .page-intro .subheadline { font-size: clamp(1.15rem, 3vw, 1.45rem); color: var(--color-text-light); max-width: 800px; margin: 0 auto var(--spacing-lg) auto; }
-.personal-page .page-intro p:not(.subheadline) { color: var(--color-text-light); max-width: 850px; margin: 0 auto; line-height: 1.75; }
-.personal-page .link-back, .personal-page .link-inline { color: var(--color-primary-personal); text-decoration: underline; font-weight: 500; }
-.personal-page .link-back:hover, .personal-page .link-inline:hover { color: var(--color-primary-dark-personal); }
-.personal-page .link-back i { margin-right: 5px;}
+/* --- Main Content Base --- */
+.personal-page main {
+    padding-top: var(--header-height, 70px); /* Avoid content overlap */
+}
 
-/* --- Section Titles --- */
-/* ... (Keep Section Title styles from v1.5.1) ... */
-.personal-page .section-title { text-align: center; margin-bottom: var(--spacing-lg); font-size: clamp(2rem, 5vw, 2.5rem); color: var(--color-primary-personal); font-weight: 700; position: relative; padding-bottom: var(--spacing-sm); font-family: 'Inter', sans-serif; }
-.personal-page .section-title::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 65px; height: 3px; background-color: var(--color-primary-personal); border-radius: 2px; margin-top: 5px; transition: width 0.3s ease; }
-.personal-page .section-description { text-align: center; max-width: 800px; margin: 0 auto var(--spacing-xl) auto; color: var(--color-text-light); font-size: 1.1rem; line-height: 1.7; }
-
-/* --- Stats Grid Styling --- */
-/* ... (Keep Stats Grid styles from v1.5.1) ... */
-.personal-page .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--spacing-lg); margin-top: var(--spacing-xl); margin-bottom: 0; }
-.personal-page .stat-card { background: #ffffff; padding: var(--spacing-lg); border-radius: var(--border-radius-large); text-align: center; box-shadow: var(--box-shadow-light); border: 1px solid #e0f7fa; backdrop-filter: none; transition: var(--transition-medium); }
-.personal-page .stat-card:hover { transform: translateY(-6px) scale(1.02); box-shadow: var(--box-shadow); border-color: #b2ebf2; }
-.personal-page .stat-card i { font-size: 2.2rem; color: var(--color-primary-personal); margin-bottom: var(--spacing-md); display: block; transition: transform 0.3s ease; }
-.personal-page .stat-card:hover i { transform: scale(1.15); }
-.personal-page .stat-card h4 { font-size: 1.6rem; font-weight: 600; color: var(--color-primary-dark-personal); margin-bottom: var(--spacing-xs); line-height: 1.2; }
-.personal-page .stat-card p { font-size: 0.9rem; color: var(--color-text-light); line-height: 1.5; }
-
-/* --- Motivational Quote Styling --- */
-/* ... (Keep Motivational Quote styles from v1.5.1) ... */
-.personal-page .motivational-quote { padding: var(--spacing-xl) 0; margin: var(--spacing-xxl) 0; background-color: #e8f5e9; border-top: 1px solid #c8e6c9; border-bottom: 1px solid #c8e6c9; }
-.personal-page .motivational-quote .container { display: flex; align-items: center; gap: var(--spacing-lg); text-align: left; max-width: 900px; }
-.personal-page .motivational-quote .quote-icon { font-size: 2rem; color: var(--brand-green-personal); flex-shrink: 0; line-height: 1; opacity: 0.9; }
-.personal-page .motivational-quote p { font-size: clamp(1.1rem, 2.5vw, 1.35rem); color: #1b5e20; font-weight: 400; line-height: 1.6; font-style: normal; margin: 0; }
-.personal-page .motivational-quote p .highlight { font-weight: 600; color: var(--brand-green-personal); font-style: normal; }
-.personal-page .motivational-quote.alt-bg { background-color: var(--color-accent); border-top: 1px solid #b2ebf2; border-bottom: 1px solid #b2ebf2; }
-.personal-page .motivational-quote.alt-bg p { color: var(--color-primary-dark-personal); }
-.personal-page .motivational-quote.alt-bg p .highlight { color: #00796b; }
-.personal-page .motivational-quote.alt-bg .quote-icon { color: var(--color-primary-personal); }
-
-/* --- Personal Page Button Style (.btn base) --- */
-/* ... (Keep Button styles from v1.5.1) ... */
-.personal-page .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 20px; background-color: var(--color-primary-personal); color: var(--color-secondary); border-radius: var(--border-radius); text-decoration: none; font-weight: 500; transition: var(--transition-fast); border: 1px solid var(--color-primary-personal); cursor: pointer; text-align: center; font-size: 0.95rem; line-height: 1.4; }
-.personal-page .btn i { font-size: 1em; line-height: 1; }
-.personal-page .btn:hover { background-color: var(--color-primary-light-personal); border-color: var(--color-primary-light-personal); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(12, 52, 61, 0.15); }
-.personal-page .btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(12, 52, 61, 0.2); }
-.personal-page .btn-outline { background-color: transparent; color: var(--color-primary-personal); border: 1px solid var(--color-primary-personal); }
-.personal-page .btn-outline:hover { background-color: rgba(12, 52, 61, 0.05); color: var(--color-primary-dark-personal); border-color: var(--color-primary-dark-personal); box-shadow: none; transform: translateY(-2px); }
-.personal-page .btn-outline:focus-visible { outline: none; border-color: var(--color-primary-dark-personal); box-shadow: 0 0 0 3px rgba(12, 52, 61, 0.15); }
-.personal-page .btn:disabled, .personal-page .btn[aria-disabled="true"] { background-color: #e9ecef; border-color: #e9ecef; color: #adb5bd; cursor: not-allowed; opacity: 1; transform: none; box-shadow: none; pointer-events: none; }
-.personal-page .btn-outline:disabled, .personal-page .btn-outline[aria-disabled="true"] { background-color: transparent; border-color: #ced4da; color: #adb5bd; cursor: not-allowed; opacity: 1; transform: none; box-shadow: none; pointer-events: none; }
-
-/* --- Resources Section & Social Card --- */
-/* ... (Keep Resource/Social styles from v1.5.1) ... */
-.personal-page #personal-resources { background-color: var(--color-background); padding-bottom: var(--spacing-xxl); }
-.personal-page .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: var(--spacing-xl); margin-top: var(--spacing-xl); }
-.personal-page .resource-card { background: var(--color-secondary); border-radius: var(--border-radius-large); overflow: hidden; box-shadow: var(--box-shadow-light); transition: var(--transition-medium); display: flex; flex-direction: column; border: 1px solid #e0f7fa; }
-.personal-page .resource-card:hover { transform: translateY(-8px); box-shadow: var(--box-shadow); border-color: #b2ebf2; }
-.personal-page .resource-card .card-image { aspect-ratio: 16 / 9; overflow: hidden; background-color: var(--color-accent); line-height: 0; }
-.personal-page .resource-card .card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; display: block; }
-.personal-page .resource-card:hover .card-image img { transform: scale(1.05); }
-.personal-page .resource-card .card-content { padding: var(--spacing-lg); flex-grow: 1; display: flex; flex-direction: column; }
-.personal-page .resource-card h3 { font-size: 1.3rem; font-weight: 600; color: var(--color-primary-dark-personal); margin-bottom: var(--spacing-sm); margin-top: 0; }
-.personal-page .resource-card p { font-size: 0.95rem; color: var(--color-text-light); line-height: 1.7; margin-bottom: var(--spacing-lg); flex-grow: 1; }
-.personal-page .resource-card .card-cta { margin-top: auto; } .personal-page .resource-card .card-cta .btn { width: 100%; }
-.personal-page .social-integration { background: linear-gradient(135deg, #edf8fa, #f7fbfb); padding: var(--spacing-lg); border-radius: var(--border-radius-large); border: 1px solid #e0f7fa; }
-.personal-page .social-integration .card-header { display: flex; align-items: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-lg); color: var(--color-primary-dark-personal); }
-.personal-page .social-integration .card-header i { font-size: 1.8rem; color: var(--color-primary-personal); }
-.personal-page .social-integration .card-header h3 { margin-bottom: 0; font-size: 1.3rem; color: inherit; }
-.personal-page .social-feed-preview { display: flex; flex-direction: column; gap: var(--spacing-md); margin-bottom: var(--spacing-xl); }
-.personal-page .social-post-preview { background-color: #fff; padding: var(--spacing-md); border-radius: var(--border-radius); border: 1px solid #e8e8e8; font-size: 0.9rem; line-height: 1.6; box-shadow: none; position: relative; padding-left: 48px; transition: background-color 0.2s ease; }
-.personal-page .social-post-preview:hover { background-color: #f8f9fa; }
-.personal-page .social-post-preview i { position: absolute; left: 15px; top: 15px; font-size: 1.6rem; width: 25px; text-align: center; opacity: 0.8; }
-.personal-page .social-post-preview.instagram i { color: #c13584; } .personal-page .social-post-preview.twitter i { color: #1DA1F2; } .personal-page .social-post-preview.youtube i { color: #FF0000; }
-.personal-page .social-post-preview.instagram { padding: 0; padding-bottom: var(--spacing-md); padding-left: 0; line-height: 0; }
-.personal-page .social-post-preview.instagram img { width: 100%; height: 160px; object-fit: cover; border-top-left-radius: var(--border-radius); border-top-right-radius: var(--border-radius); margin-bottom: var(--spacing-sm); display: block; }
-.personal-page .social-post-preview.instagram p { padding: 0 var(--spacing-md); line-height: 1.6; }
-.personal-page .social-post-preview p { margin: 0; color: var(--color-text); }
-.personal-page .social-post-preview .social-handle { color: var(--color-primary-personal); font-weight: 500; text-decoration: none; }
-.personal-page .social-post-preview .social-handle:hover { text-decoration: underline; }
-.personal-page .social-follow-links { margin-top: auto; text-align: center; padding-top: var(--spacing-lg); border-top: 1px solid #d0e0e3; }
-.personal-page .social-follow-links p { font-size: 1rem; color: var(--color-text-light); margin-bottom: var(--spacing-md); font-weight: 500; }
-.personal-page .social-icons-inline { display: flex; justify-content: center; gap: var(--spacing-xl); }
-.personal-page .social-icons-inline a { color: var(--color-text-light); font-size: 1.7rem; transition: var(--transition-fast); }
-.personal-page .social-icons-inline a:hover { color: var(--color-primary-personal); transform: translateY(-3px); }
-
-/* --- Financial Fitness Challenge Intro & Categories --- */
-/* ... (Keep Challenge/Category styles from v1.5.1) ... */
-.personal-page #financial-fitness-challenge-intro { background-color: #fff; }
-.personal-page .challenge-theme { margin-bottom: 0; }
-.personal-page .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--spacing-lg); }
-.personal-page .category-card { background: var(--color-secondary); border-radius: var(--border-radius-large); box-shadow: var(--box-shadow-light); border: 1px solid var(--color-accent); text-align: center; padding: var(--spacing-lg); display: flex; flex-direction: column; align-items: center; transition: var(--transition-medium); }
-.personal-page .category-card:hover { transform: translateY(-8px) scale(1.03); box-shadow: var(--box-shadow); border-color: var(--color-primary-light-personal); }
-.personal-page .category-card .category-icon { font-size: 2.4rem; color: var(--color-primary-personal); margin-bottom: var(--spacing-md); transition: transform 0.3s ease; }
-.personal-page .category-card:hover .category-icon { transform: scale(1.15); }
-.personal-page .category-card h4 { font-size: 1.2rem; color: var(--color-primary-dark-personal); margin-bottom: var(--spacing-sm); font-weight: 600; }
-.personal-page .category-card p { font-size: 0.9rem; color: var(--color-text-light); line-height: 1.6; margin-bottom: var(--spacing-lg); flex-grow: 1; max-width: 95%; }
-.personal-page .category-card .start-quiz-btn { margin-top: auto; width: 80%; max-width: 200px; font-size: 0.9rem; padding: 8px 16px; }
-.personal-page .full-challenge-link .btn.large { padding: var(--spacing-md) var(--spacing-xl); font-size: 1.1rem; font-weight: 600; }
-.personal-page .full-challenge-link .btn i { transition: transform 0.3s ease; display: inline-block; }
-.personal-page .full-challenge-link .btn:hover i { transform: translateX(6px); }
-
-/* --- Marketplace/Tools Section (Templates) --- */
-/* ... (Keep Marketplace styles from v1.5.1) ... */
-.personal-page #personal-tools { background-color: var(--color-background); }
-.personal-page .template-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 310px), 1fr)); gap: var(--spacing-xl); margin-top: var(--spacing-xl); }
-.personal-page .template-card { background: var(--color-secondary); border-radius: var(--border-radius-large); overflow: hidden; box-shadow: var(--box-shadow-light); border: 1px solid #e0f7fa; transition: var(--transition-medium); display: flex; flex-direction: column; }
-.personal-page .template-card:hover { transform: translateY(-8px); box-shadow: var(--box-shadow); border-color: #b2ebf2; }
-.personal-page .template-preview { position: relative; line-height: 0; aspect-ratio: 16 / 10; overflow: hidden; background-color: var(--color-accent); border-bottom: 1px solid #e0f7fa; }
-.personal-page .template-preview img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 0.5s ease-in-out; display: block; }
-.personal-page .template-preview img:last-child { opacity: 0; }
-.personal-page .template-card:hover .template-preview img:first-child, .personal-page .template-card:focus-within .template-preview img:first-child { opacity: 0; }
-.personal-page .template-card:hover .template-preview img:last-child, .personal-page .template-card:focus-within .template-preview img:last-child { opacity: 1; }
-.personal-page .template-details { padding: var(--spacing-lg); flex-grow: 1; display: flex; flex-direction: column; }
-.personal-page .template-details h3 { font-size: 1.3rem; font-weight: 600; color: var(--color-primary-dark-personal); margin-bottom: var(--spacing-sm); line-height: 1.3; }
-.personal-page .template-details p { font-size: 0.95rem; color: var(--color-text-light); line-height: 1.7; flex-grow: 1; margin-bottom: var(--spacing-lg); }
-.personal-page .template-actions { margin-top: auto; display: flex; flex-direction: column; gap: var(--spacing-sm); }
-.personal-page .template-actions .btn, .personal-page .template-actions .btn-outline { width: 100%; }
-.personal-page .template-actions .btn span, .personal-page .template-actions .btn-outline span { flex-grow: 1; text-align: center; }
-.personal-page .template-price-note { font-size: 0.85rem; color: var(--color-text-light); text-align: center; margin-top: var(--spacing-md); line-height: 1.4; }
-
-/* --- Coaching Section Styling --- */
-/* ... (Keep Coaching styles from v1.5.1) ... */
-.personal-page #personal-coaching { background-color: #fff; }
-.personal-page .coaching-content { display: grid; gap: var(--spacing-xl); margin-top: var(--spacing-xl); grid-template-columns: 1fr; }
-.personal-page .coaching-item { background: var(--color-secondary); padding: var(--spacing-xl); border-radius: var(--border-radius-large); box-shadow: var(--box-shadow-light); border: 1px solid var(--color-accent); transition: var(--transition-medium); }
-.personal-page .coaching-item:hover { box-shadow: var(--box-shadow); border-color: #b2ebf2; }
-.personal-page .coaching-item h3 { font-size: 1.4rem; margin-bottom: var(--spacing-md); color: var(--color-primary-dark-personal); display: flex; align-items: center; }
-.personal-page .coaching-item h3::before { font-family: "Font Awesome 6 Free"; font-weight: 900; font-size: 1.1rem; color: var(--brand-green-personal); width: 25px; text-align: center; flex-shrink: 0; margin-right: var(--spacing-sm); }
-.personal-page .coaching-details .coaching-item:nth-child(1) h3::before { content: '\f05a'; } .personal-page .coaching-details .coaching-item:nth-child(2) h3::before { content: '\f5ad'; } .personal-page .coaching-item:last-child h3::before { content: '\f073'; }
-.personal-page .coaching-item .card-image { margin-bottom: var(--spacing-md); border-radius: var(--border-radius); overflow: hidden; line-height: 0; }
-.personal-page .coaching-item .card-image img { display: block; width: 100%; height: auto; }
-.personal-page .coaching-item p, .personal-page .coaching-item ul { font-size: 1rem; color: var(--color-text-light); line-height: 1.75; margin-bottom: var(--spacing-md); }
-.personal-page .coaching-item ul { list-style: none; padding-left: 0; }
-.personal-page .coaching-item ul li { position: relative; padding-left: var(--spacing-lg); margin-bottom: var(--spacing-sm); }
-.personal-page .coaching-item ul li::before { content: '\f00c'; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; left: 0; top: 6px; color: var(--brand-green-personal); font-size: 0.9em; }
-.personal-page .coaching-request-form label { display: block; margin-bottom: var(--spacing-xs); font-weight: 500; color: var(--color-primary-dark-personal); font-size: 0.9rem; }
-.personal-page .coaching-request-form input, .personal-page .coaching-request-form textarea { display: block; width: 100%; margin-bottom: var(--spacing-md); padding: 12px 15px; border: 1px solid #cbd5e1; border-radius: var(--border-radius); font-family: inherit; font-size: 1rem; line-height: 1.5; background-color: #fff; transition: var(--transition-fast); color: var(--color-text); box-shadow: var(--box-shadow-inset); }
-.personal-page .coaching-request-form input::placeholder, .personal-page .coaching-request-form textarea::placeholder { color: #94a3b8; }
-.personal-page .coaching-request-form input:focus, .personal-page .coaching-request-form textarea:focus { outline: none; border-color: var(--color-primary-personal); box-shadow: 0 0 0 3px rgba(12, 52, 61, 0.1), var(--box-shadow-inset); }
-.personal-page .coaching-request-form textarea { resize: vertical; min-height: 110px; }
-.personal-page .coaching-request-form button { display: block; width: 100%; margin-top: var(--spacing-sm); }
-.personal-page .form-response-note { font-size: 0.85rem; text-align: center; margin-top: var(--spacing-md); color: var(--color-text-light); }
-.personal-page .disclaimer { font-size: 0.9rem; color: var(--color-text-light); margin: var(--spacing-xl) auto 0; border-top: 1px solid var(--color-accent); padding-top: var(--spacing-lg); text-align: center; max-width: 800px; line-height: 1.7; }
-.personal-page .disclaimer strong { color: var(--color-text); }
-
-/* --- MMISBALIOR Promo Section --- */
-/* ... (Keep MMISBALIOR styles from v1.5.1) ... */
-.personal-page #mmisbalior-section { background-color: var(--color-background); }
-.personal-page .mmisbalior-promo { background: linear-gradient(135deg, var(--color-primary-personal), var(--color-primary-light-personal)); color: var(--color-secondary); padding: var(--spacing-xl) var(--spacing-lg); border-radius: var(--border-radius-large); text-align: center; box-shadow: 0 8px 25px -8px rgba(12, 52, 61, 0.3); display: flex; flex-direction: column; align-items: center; gap: var(--spacing-lg); overflow: hidden; }
-.personal-page .mmisbalior-promo .promo-content { max-width: 650px; }
-.personal-page .mmisbalior-promo h3 { color: var(--color-secondary); margin-bottom: var(--spacing-md); font-size: clamp(1.7rem, 4vw, 2.1rem); font-weight: 700; margin-top: 0; }
-.personal-page .mmisbalior-promo p { margin-bottom: var(--spacing-lg); max-width: 600px; margin: 0 auto var(--spacing-lg) auto; color: rgba(255, 255, 255, 0.95); line-height: 1.75; }
-.personal-page .mmisbalior-promo .promo-visual { line-height: 0; width: 100%; max-width: 450px; border-radius: var(--border-radius); overflow: hidden; background-color: var(--color-accent); }
-.personal-page .mmisbalior-promo .promo-visual img { width: 100%; height: auto; display: block; }
-.personal-page .mmisbalior-promo .btn { background-color: var(--color-secondary); color: var(--color-primary-dark-personal); font-weight: 600; padding: 12px 25px; margin-top: 0; border: 1px solid transparent; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-.personal-page .mmisbalior-promo .btn:hover { background-color: #f1f5f9; color: var(--color-primary-dark-personal); transform: translateY(-3px); box-shadow: 0 6px 15px rgba(0,0,0,0.15); }
-
-/* --- Quiz Modal Styles --- */
-/* ... (Keep Quiz Modal styles from v1.5.1 - includes prompt/next-quiz styles) ... */
-.personal-page .quiz-modal-prompt { padding: var(--spacing-md) var(--spacing-md) 0 var(--spacing-md); background-color: transparent; border-top: 1px solid var(--color-accent); margin-top: var(--spacing-md); text-align: center; }
-.personal-page .quiz-modal-prompt p { font-size: 0.9em; color: var(--color-text-light); margin-bottom: 0; line-height: 1.5; }
-.personal-page .quiz-modal-navigation { display: flex; justify-content: center; align-items: center; gap: var(--spacing-md); margin-top: var(--spacing-lg); flex-wrap: wrap; padding-top: var(--spacing-md); border-top: 1px solid var(--color-accent); }
-.personal-page .quiz-modal-navigation #quiz-modal-next-quiz { background-color: var(--color-primary-personal); color: var(--color-secondary); border-color: var(--color-primary-personal); font-size: 0.95rem; padding: var(--spacing-xs) var(--spacing-md); }
-.personal-page .quiz-modal-navigation #quiz-modal-next-quiz:hover { background-color: var(--color-primary-light-personal); border-color: var(--color-primary-light-personal); }
-.personal-page .quiz-modal-navigation #quiz-modal-restart, .personal-page .quiz-modal-navigation .quiz-close-btn { background-color: transparent; color: var(--color-primary-personal); border: 1px solid var(--color-primary-personal); font-size: 0.95rem; padding: var(--spacing-xs) var(--spacing-md); }
-.personal-page .quiz-modal-navigation #quiz-modal-restart:hover, .personal-page .quiz-modal-navigation .quiz-close-btn:hover { background-color: rgba(12, 52, 61, 0.05); border-color: var(--color-primary-dark-personal); color: var(--color-primary-dark-personal); transform: translateY(-2px); }
-.personal-page .quiz-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(38, 50, 56, 0.7); display: flex; align-items: center; justify-content: center; z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease-in-out; padding: var(--spacing-md); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
-.personal-page .quiz-modal-overlay[style*="display: flex"] { opacity: 1; pointer-events: auto; }
-.personal-page .quiz-modal-content { background-color: #ffffff; color: var(--color-text); padding: var(--spacing-lg) var(--spacing-xl); border-radius: var(--border-radius-large); max-width: 650px; width: 95%; max-height: 90vh; overflow-y: auto; box-shadow: 0 15px 30px rgba(0,0,0,0.2); position: relative; transform: scale(0.95); transition: transform 0.3s ease-in-out; display: flex; flex-direction: column; }
-.personal-page .quiz-modal-overlay[style*="display: flex"] .quiz-modal-content { transform: scale(1); }
-.personal-page .quiz-modal-close-btn { position: absolute; top: var(--spacing-sm); right: var(--spacing-md); background: transparent; border: none; font-size: 2rem; color: var(--color-text-light); cursor: pointer; line-height: 1; padding: 5px; }
-.personal-page .quiz-modal-close-btn:hover { color: var(--color-primary-dark-personal); }
-.personal-page .quiz-modal-content h3#quiz-modal-title { font-size: 1.5rem; color: var(--color-primary-personal); text-align: center; margin: 0 auto var(--spacing-md) auto; padding-bottom: var(--spacing-sm); border-bottom: 2px solid var(--color-accent); width: 100%; }
-.personal-page .quiz-modal-progress { text-align: center; font-size: 0.85rem; color: var(--color-text-light); margin-bottom: var(--spacing-md); background-color: var(--color-background); padding: var(--spacing-xs) 0; border-radius: 4px; }
-.personal-page .quiz-modal-question-area { font-weight: 500; margin-bottom: var(--spacing-lg); color: var(--color-text); font-size: 1.1rem; line-height: 1.6; padding: var(--spacing-sm) 0; text-align: left; }
-.personal-page .quiz-modal-options-area { display: flex; flex-direction: column; gap: var(--spacing-sm); margin-bottom: var(--spacing-md); }
-.personal-page .quiz-modal-options-area .option-button { display: block; width: 100%; text-align: left; background-color: var(--color-secondary); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--border-radius); border: 1px solid #cbd5e1; cursor: pointer; transition: var(--transition-fast); font-size: 1rem; color: var(--color-text); font-family: inherit; }
-.personal-page .quiz-modal-options-area .option-button:hover:not(:disabled) { background-color: #f8fafc; border-color: var(--color-primary-personal); transform: scale(1.01); }
-.personal-page .quiz-modal-options-area .option-button:disabled { cursor: default; }
-.personal-page .quiz-modal-options-area .option-button.correct { background-color: #e8f5e9 !important; border-color: var(--brand-green-personal) !important; color: #1b5e20 !important; font-weight: 600; }
-.personal-page .quiz-modal-options-area .option-button.incorrect { background-color: #fce4e4 !important; border-color: #f5c6cb !important; color: #721c24 !important; }
-.personal-page .quiz-modal-options-area .option-button.disabled:not(.correct):not(.incorrect) { opacity: 0.65; }
-.personal-page .quiz-modal-feedback { margin-top: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--border-radius); line-height: 1.6; border-left-width: 4px; border-left-style: solid; animation: fadeIn 0.3s ease; font-size: 0.95rem; }
-.personal-page .quiz-modal-feedback p { margin: 0; }
-.personal-page .quiz-modal-feedback strong { margin-right: 5px; display: block; margin-bottom: 3px; font-size: 1.05em; }
-.personal-page .quiz-modal-feedback.correct { background-color: #e8f5e9; color: #1b5e20; border-left-color: var(--brand-green-personal); }
-.personal-page .quiz-modal-feedback.incorrect { background-color: #fce4e4; color: #721c24; border-left-color: #f5c6cb; }
-.personal-page .quiz-modal-results { animation: fadeIn 0.5s ease; text-align: center; padding: var(--spacing-lg) var(--spacing-md); background-color: var(--color-background); border-radius: var(--border-radius-large); margin-top: var(--spacing-md); }
-.personal-page .quiz-modal-results h4 { margin-bottom: var(--spacing-sm); color: var(--color-primary-dark-personal); font-size: 1.3rem; font-weight: 600; }
-.personal-page .quiz-modal-results p { font-size: 1.1rem; color: var(--color-text); margin-bottom: 5px; }
-
-/* --- Floating Background Animation --- */
-/* ... (Keep Floating BG styles from v1.5.1) ... */
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes float { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(30px, -40px) scale(1.1); } 100% { transform: translate(0, 0) scale(1); } }
-.personal-page .deco-blur { position: fixed; width: 450px; height: 450px; background: radial-gradient(circle, var(--color-primary-light-personal, #1a4652) 0%, transparent 70%); border-radius: 50%; filter: blur(130px); opacity: 0.06; z-index: -1; animation: float 20s ease-in-out infinite alternate; will-change: transform; pointer-events: none; }
-.personal-page .deco-blur.blur-1 { top: 10%; left: 5%; animation-duration: 22s; }
-.personal-page .deco-blur.blur-2 { bottom: 15%; right: 10%; animation-delay: 6s; animation-duration: 19s; background: radial-gradient(circle, var(--brand-green-personal, #28a745) 0%, transparent 70%); opacity: 0.05; }
-.personal-page .deco-blur.blur-3 { top: 60%; left: 50%; transform: translateX(-50%); animation-delay: 11s; animation-duration: 24s;}
-
-/* --- Footer Style Improvements --- */
-/* ... (Keep Footer styles from v1.5.1) ... */
-.personal-page .site-footer { background-color: var(--color-primary-original); color: #b2dfdb; padding-top: var(--spacing-xl); padding-bottom: var(--spacing-lg); }
-.personal-page .page-footer-links { padding-bottom: var(--spacing-xl); border-bottom: 1px solid rgba(255, 255, 255, 0.15); margin-bottom: var(--spacing-xl); }
-.personal-page .page-footer-links ul { list-style: none; padding: 0; margin: 0; }
-.personal-page .page-footer-links ul li { margin-bottom: var(--spacing-sm); }
-.personal-page .page-footer-links ul li a { color: #e0f2f7; transition: color 0.2s ease, padding-left 0.2s ease; display: inline-block; padding: 2px 0; text-decoration: none; }
-.personal-page .page-footer-links ul li a:hover { color: #fff; text-decoration: none; padding-left: 5px; }
-.personal-page .page-footer-links h4 { color: #fff; margin-bottom: var(--spacing-md); font-weight: 600; font-size: 1.1rem; }
-.personal-page .footer-content { display: flex; justify-content: space-between; align-items: center; gap: var(--spacing-lg); margin-bottom: var(--spacing-xl); }
-.personal-page .footer-left { flex-shrink: 0; }
-.personal-page .footer-left .logo img { display: block; }
-.personal-page .footer-tagline { margin-top: var(--spacing-sm); font-size: 0.9rem; color: rgba(255, 255, 255, 0.75); }
-.personal-page .footer-right { text-align: right; }
-.personal-page .footer-connect-title { margin-bottom: var(--spacing-md); font-weight: 500; color: #fff; }
-.personal-page .social-media { display: flex; justify-content: flex-end; gap: var(--spacing-md); }
-.personal-page .social-link { color: #e0f2f7; font-size: 1.3rem; transition: var(--transition-fast); display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.1); }
-.personal-page .social-link i { line-height: 1; }
-.personal-page .social-link:hover { background-color: rgba(255, 255, 255, 0.2); border-color: rgba(255, 255, 255, 0.3); color: #fff; transform: translateY(-3px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-.personal-page .copyright { text-align: center; padding-top: var(--spacing-lg); border-top: 1px solid rgba(255, 255, 255, 0.15); margin-top: var(--spacing-lg); }
-.personal-page .copyright p { font-size: 0.9rem; color: #80cbc4; }
-
-/* --- Accordion Styles for Quizzes Page --- */
-/* ... (Keep Accordion styles from v1.5.1) ... */
-.personal-page #full-financial-challenge .quiz-accordion-container { max-width: 900px; margin-left: auto; margin-right: auto; }
-.personal-page .accordion-item { border: 1px solid #e0f7fa; border-radius: var(--border-radius-large); margin-bottom: var(--spacing-lg); background-color: #fff; box-shadow: var(--box-shadow-light); overflow: hidden; transition: box-shadow var(--transition-fast); }
-.personal-page .accordion-item:last-child { margin-bottom: 0; }
-.personal-page .accordion-item:hover { border-color: #b2ebf2; box-shadow: var(--box-shadow); }
-.personal-page .accordion-header { margin: 0; }
-.personal-page .theme-toggle-button { appearance: none; background: none; border: none; padding: 0; margin: 0; font: inherit; color: inherit; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; width: 100%; padding: var(--spacing-md) var(--spacing-lg); font-size: clamp(1.3rem, 4vw, 1.6rem); font-weight: 600; color: var(--color-primary-dark-personal); background-color: #f0fcfd; border-bottom: 1px solid transparent; transition: background-color var(--transition-fast), border-color var(--transition-fast); }
-.personal-page .theme-toggle-button:hover { background-color: #e6fafa; color: var(--color-primary-personal); }
-.personal-page .theme-toggle-button:focus-visible { outline: 2px solid var(--color-primary-personal); outline-offset: 2px; z-index: 1; }
-.personal-page .theme-toggle-button .theme-icon { font-size: 1rem; color: var(--color-primary-personal); margin-left: var(--spacing-md); transition: transform 0.3s ease-out; flex-shrink: 0; }
-.personal-page .theme-toggle-button[aria-expanded="true"] .theme-icon { transform: rotate(180deg); }
-.personal-page .theme-toggle-button[aria-expanded="true"] { border-bottom-color: #b2ebf2; }
-.personal-page .theme-content { max-height: 0; overflow: hidden; transition: max-height 0.45s ease-out, padding-top 0.45s ease-out, padding-bottom 0.45s ease-out; background-color: #fff; padding: 0 var(--spacing-lg); }
-.personal-page .theme-content.open { padding-top: var(--spacing-xl); padding-bottom: var(--spacing-xl); }
-.personal-page .theme-content .category-grid { margin-top: 0; }
-.personal-page .theme-content .category-card { box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
-.personal-page .theme-content .category-card:hover { transform: translateY(-5px); box-shadow: 0 6px 15px rgba(0,0,0,0.08); }
-
-
-/* Enhanced Hero Section Styling */
-.personal-page .page-intro {
-    padding-top: calc(var(--header-height, 70px) + var(--spacing-xl));
-    padding-bottom: var(--spacing-xxl);
-    background: linear-gradient(165deg, #f7fbfb 0%, #e0f7fa 100%);
+/* --- Hero Section (Redesigned) --- */
+.personal-page .hero-section {
+    background: linear-gradient(165deg, var(--color-background) 0%, var(--color-light-accent) 100%);
     color: var(--color-text);
     text-align: center;
-    border-bottom: none;
     position: relative;
     overflow: hidden;
 }
-
-.personal-page .hero-stat {
+.personal-page .hero-container {
+    /* Container already handles max-width and padding */
+}
+.personal-page .hero-content {
+    max-width: 800px;
+    margin: 0 auto var(--spacing-xxl) auto;
+}
+.personal-page .hero-badge {
     display: inline-block;
-    background-color: var(--color-primary-personal);
+    background-color: var(--color-primary-light-personal);
     color: white;
-    font-size: 1.1rem;
-    font-weight: 600;
-    padding: 0.6rem 1.2rem;
-    border-radius: 30px;
-    margin-bottom: var(--spacing-lg);
-    box-shadow: 0 4px 10px rgba(12, 52, 61, 0.2);
-    transform: translateY(0);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    font-size: 0.9rem;
+    font-weight: var(--font-weight-semibold);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    margin-bottom: var(--spacing-md);
+    letter-spacing: 0.5px;
 }
-
-.personal-page .hero-stat:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(12, 52, 61, 0.25);
-}
-
-.personal-page .page-intro h1 {
-    font-family: 'Inter', sans-serif;
-    font-size: clamp(2.4rem, 6vw, 3.8rem);
-    font-weight: 800;
+.personal-page .hero-section h1 {
+    font-size: clamp(2.5rem, 6vw, 3.8rem);
+    font-weight: var(--font-weight-extrabold);
     color: var(--color-primary-personal);
     line-height: 1.2;
     margin-bottom: var(--spacing-md);
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
 }
-
-.personal-page .page-intro .subheadline {
-    font-size: clamp(1.2rem, 3vw, 1.5rem);
+.personal-page .hero-section .subheadline {
+    font-size: clamp(1.15rem, 3vw, 1.4rem);
     color: var(--color-text-light);
     max-width: 650px;
     margin: 0 auto var(--spacing-xl) auto;
-    font-weight: 500;
+    font-weight: var(--font-weight-regular);
 }
-
 .personal-page .hero-actions {
     display: flex;
     gap: var(--spacing-md);
     justify-content: center;
-    margin-bottom: var(--spacing-xxl);
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
 }
-
 .personal-page .hero-actions .btn {
-    padding: 12px 24px;
+    min-width: 200px;
+}
+.personal-page .btn.btn-large {
+    padding: 14px 28px;
     font-size: 1.1rem;
-    font-weight: 600;
-    min-width: 180px;
+    font-weight: var(--font-weight-semibold);
 }
-
-.personal-page .hero-actions .btn-primary {
-    background-color: var(--brand-green-personal);
-    border-color: var(--brand-green-personal);
-    color: white;
+/* Hero Stats Grid */
+.personal-page .hero-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: 0; /* Reset top margin as it's part of hero now */
 }
-
-.personal-page .hero-actions .btn-primary:hover {
-    background-color: #218838;
-    border-color: #1e7e34;
-}
-
-.personal-page .stats-grid {
-    margin-top: 0;
-}
-
-.personal-page .stat-card {
-    border: none;
+.personal-page .hero-stats-grid .stat-card {
     background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-large);
+    text-align: center;
+    box-shadow: none; /* Remove individual shadow, rely on hero bg */
+    border: 1px solid rgba(208, 224, 227, 0.5); /* Subtle border */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: var(--transition-medium);
+}
+.personal-page .hero-stats-grid .stat-card:hover {
+    background: rgba(255, 255, 255, 0.85);
+    transform: translateY(-5px);
+    border-color: var(--color-border);
+}
+.personal-page .hero-stats-grid .stat-card i {
+    font-size: 2rem;
+    color: var(--color-primary-personal);
+    margin-bottom: var(--spacing-sm);
+    display: block;
+}
+.personal-page .hero-stats-grid .stat-card h4 {
+    font-size: 1.1rem; /* Slightly smaller */
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-primary-dark-personal);
+    margin-bottom: var(--spacing-xs);
+}
+.personal-page .hero-stats-grid .stat-card p {
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+    line-height: 1.5;
+    margin: 0;
 }
 
-@media (max-width: 767px) {
-    .personal-page .hero-actions {
-        flex-direction: column;
-        align-items: center;
-        gap: var(--spacing-sm);
-    }
-    
-    .personal-page .hero-actions .btn {
-        width: 80%;
-        max-width: 300px;
-    }
+/* --- General Button Styles --- */
+.personal-page .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 10px 20px; border-radius: var(--border-radius); text-decoration: none;
+    font-weight: var(--font-weight-medium); transition: var(--transition-medium);
+    border: 1px solid transparent; cursor: pointer; text-align: center;
+    font-size: 0.95rem; line-height: 1.4; white-space: nowrap;
+}
+.personal-page .btn i { font-size: 1em; line-height: 1; }
+.personal-page .btn:focus-visible { outline: 2px solid var(--color-primary-light-personal); outline-offset: 2px; }
+
+/* Primary Button */
+.personal-page .btn-primary {
+    background-color: var(--brand-green-personal); border-color: var(--brand-green-personal);
+    color: var(--color-secondary);
+}
+.personal-page .btn-primary:hover {
+    background-color: #218838; border-color: #1e7e34;
+    transform: translateY(-2px); box-shadow: var(--box-shadow-light);
 }
 
-
-
-/* --- Responsive Overrides --- */
-@media (max-width: 991px) {
-  /* Hamburger Menu Display Fix */
-  .personal-page .mobile-menu-toggle {
-    display: block; /* Show toggle on mobile */
-  }
-  .personal-page .nav-list:not(.active) { /* Hide desktop nav list if not active */
-     display: none;
-  }
-  .personal-page .connect-button {
-      display: none; /* Hide connect button on mobile */
-  }
+/* Outline Button */
+.personal-page .btn-outline {
+    background-color: transparent; color: var(--color-primary-personal);
+    border: 1px solid var(--color-primary-personal);
 }
-@media (min-width: 992px) {
-     /* Ensure toggle hidden, nav list shown on desktop */
-     .personal-page .mobile-menu-toggle {
-         display: none;
-     }
-     .personal-page .nav-list {
-         display: flex;
-         /* Reset any mobile-specific styles if needed */
-         position: static;
-         flex-direction: row;
-         width: auto;
-         background-color: transparent;
-         box-shadow: none;
-         padding: 0;
-         gap: var(--spacing-lg);
-     }
-     .personal-page #primary-navigation.active { /* Reset active state visually for desktop */
-        position: static;
-        box-shadow: none;
-        padding: 0;
-        gap: var(--spacing-lg);
-        background-color: transparent;
-        flex-direction: row;
-        width: auto;
-        top: auto; left: auto;
-        overflow-x: visible;
-     }
-    .personal-page .connect-button {
-        display: inline-block; /* Show connect button on desktop */
-    }
+.personal-page .btn-outline:hover {
+    background-color: rgba(12, 52, 61, 0.05); color: var(--color-primary-dark-personal);
+    border-color: var(--color-primary-dark-personal); transform: translateY(-2px);
 }
 
-@media (max-width: 767px) {
-    /* Mobile Footer Layout */
-    .personal-page .footer-content { flex-direction: column; align-items: center; text-align: center; }
-    .personal-page .footer-left, .personal-page .footer-right { width: 100%; display: flex; flex-direction: column; align-items: center; }
-    .personal-page .footer-right { text-align: center; }
-    .personal-page .social-media { justify-content: center; }
-    .personal-page .page-footer-links .footer-links-container { flex-direction: column; align-items: center; text-align: center; }
-    .personal-page .page-footer-links .footer-links-container > div { width: 100%; margin-bottom: var(--spacing-lg); }
-    .personal-page .page-footer-links ul { align-items: center; }
-    .personal-page .page-footer-links h4 { margin-bottom: var(--spacing-sm); }
-    /* Mobile Grid Layouts */
-    .personal-page .resource-grid, .personal-page .template-grid, .personal-page .category-grid, .personal-page .coaching-content { grid-template-columns: 1fr; }
-    .personal-page .mmisbalior-promo { flex-direction: column; }
-    .personal-page .motivational-quote .container { flex-direction: column; text-align: center; }
+/* Secondary Button (e.g., for less emphasis actions) */
+.personal-page .btn-secondary {
+    background-color: var(--color-primary-personal); border-color: var(--color-primary-personal);
+    color: var(--color-secondary);
 }
-@media (max-width: 500px) { /* Smaller mobile */
-     .personal-page .social-post-preview { padding-left: var(--spacing-md); padding-right: var(--spacing-md); }
-     .personal-page .social-post-preview i { display: none; }
-     .personal-page .template-actions { gap: var(--spacing-xs); }
-     .personal-page .btn { padding: 8px 15px; font-size: 0.9rem; }
-     .personal-page .theme-toggle-button { padding: var(--spacing-sm) var(--spacing-md); font-size: 1.2rem; }
+.personal-page .btn-secondary:hover {
+    background-color: var(--color-primary-light-personal); border-color: var(--color-primary-light-personal);
+    transform: translateY(-2px); box-shadow: var(--box-shadow-light);
 }
-@media (min-width: 576px) { /* Small tablets up */
-     .personal-page .category-grid { grid-template-columns: repeat(2, 1fr); }
-     .personal-page .template-grid { grid-template-columns: repeat(2, 1fr); }
-     .personal-page .resource-grid { grid-template-columns: repeat(2, 1fr); }
+
+/* Disabled State */
+.personal-page .btn:disabled, .personal-page .btn[aria-disabled="true"] {
+    background-color: #e9ecef; border-color: #e9ecef; color: #adb5bd;
+    cursor: not-allowed; opacity: 0.8; transform: none; box-shadow: none; pointer-events: none;
 }
-@media (min-width: 768px) { /* Desktop */
-    /* Desktop Footer Layout */
-    .personal-page .footer-content { flex-direction: row; justify-content: space-between; align-items: center; text-align: left; }
-    .personal-page .footer-left { align-items: flex-start; text-align: left; }
-    .personal-page .footer-right { align-items: flex-end; text-align: right; }
-    .personal-page .social-media { justify-content: flex-end; }
-     /* Desktop Footer Link Layout */
-     .personal-page .page-footer-links .footer-links-container { flex-direction: row; align-items: flex-start; text-align: left; flex-wrap: nowrap; gap: var(--spacing-lg);}
-     .personal-page .page-footer-links .footer-links-container > div { width: auto; min-width: 0; flex-basis: 0; flex-grow: 1; margin-bottom: 0; }
-     .personal-page .page-footer-links ul { align-items: flex-start; }
-     /* Desktop Grid Layouts */
-    .personal-page .stats-grid { grid-template-columns: repeat(3, 1fr); }
-    .personal-page .resource-grid { grid-template-columns: repeat(3, 1fr); }
-    .personal-page .category-grid { grid-template-columns: repeat(4, 1fr); } /* Wider category grid */
-    .personal-page .coaching-content { grid-template-columns: 2fr 1fr; }
-    .personal-page .mmisbalior-promo { flex-direction: row; text-align: left; }
+.personal-page .btn-outline:disabled, .personal-page .btn-outline[aria-disabled="true"] {
+    background-color: transparent; border-color: #ced4da; color: #adb5bd; opacity: 0.8;
+}
+
+/* --- Section Titles --- */
+.personal-page .section-title {
+    text-align: center; margin-bottom: var(--spacing-lg);
+    font-size: clamp(2rem, 5vw, 2.5rem); color: var(--color-primary-personal);
+    font-weight: var(--font-weight-bold); position: relative;
+    padding-bottom: var(--spacing-sm);
+}
+.personal-page .section-title::after {
+    content: ''; position: absolute; bottom: 0; left: 50%;
+    transform: translateX(-50%); width: 65px; height: 4px;
+    background-color: var(--brand-green-personal); /* Use green for emphasis */
+    border-radius: 2px;
+}
+.personal-page .section-description {
+    text-align: center; max-width: 750px; margin: 0 auto var(--spacing-xl) auto;
+    color: var(--color-text-light); font-size: 1.1rem; line-height: 1.7;
+}
+
+/* --- Credibility & Approach Section --- */
+#our-approach { border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); }
+.personal-page .approach-container { text-align: center; }
+.personal-page .approach-icon {
+    font-size: 3rem; color: var(--brand-green-personal);
+    margin-bottom: var(--spacing-md); line-height: 1;
+}
+.personal-page .approach-highlights {
+    margin-top: var(--spacing-lg); display: flex; justify-content: center;
+    gap: var(--spacing-lg); flex-wrap: wrap;
+}
+.personal-page .approach-highlights span {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-weight: var(--font-weight-medium); color: var(--color-primary-dark-personal);
+    font-size: 1rem;
+}
+.personal-page .approach-highlights i { color: var(--brand-green-personal); }
+
+/* --- Free Resources Section --- */
+.personal-page .resource-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+    gap: var(--spacing-xl); margin-top: var(--spacing-xl);
+}
+.personal-page .resource-card {
+    background: var(--color-secondary); border-radius: var(--border-radius-large);
+    overflow: hidden; box-shadow: var(--box-shadow-light);
+    transition: var(--transition-medium); display: flex; flex-direction: column;
+    border: 1px solid var(--color-border);
+}
+.personal-page .resource-card:hover {
+    transform: translateY(-8px); box-shadow: var(--box-shadow-strong);
+    border-color: #b2ebf2;
+}
+.personal-page .resource-card .card-image {
+    aspect-ratio: 16 / 9; overflow: hidden; background-color: var(--color-light-accent);
+    line-height: 0; border-bottom: 1px solid var(--color-border);
+}
+.personal-page .resource-card .card-image img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.4s ease; display: block;
+}
+.personal-page .resource-card:hover .card-image img { transform: scale(1.05); }
+.personal-page .resource-card .card-content {
+    padding: var(--spacing-lg); flex-grow: 1; display: flex; flex-direction: column;
+}
+.personal-page .resource-card h3 {
+    font-size: 1.25rem; font-weight: var(--font-weight-semibold);
+    color: var(--color-primary-dark-personal); margin-bottom: var(--spacing-sm);
+    margin-top: 0; display: inline-flex; align-items: center; gap: 8px;
+}
+.personal-page .resource-card h3 i { color: var(--color-primary-personal); font-size: 0.9em; }
+.personal-page .resource-card p {
+    font-size: 0.95rem; color: var(--color-text-light); line-height: 1.7;
+    margin-bottom: var(--spacing-lg); flex-grow: 1;
+}
+.personal-page .resource-card .card-cta { margin-top: auto; }
+.personal-page .resource-card .card-cta .btn { width: 100%; }
+
+/* Social Integration Card Specifics */
+.personal-page .social-integration {
+    background: linear-gradient(135deg, var(--color-light-accent), var(--color-background));
+    border-color: transparent;
+}
+.personal-page .social-integration .card-header {
+    display: flex; align-items: center; gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm); color: var(--color-primary-dark-personal);
+}
+.personal-page .social-integration .card-header i { font-size: 1.6rem; color: var(--color-primary-personal); }
+.personal-page .social-integration .card-header h3 { margin-bottom: 0; font-size: 1.25rem; }
+.personal-page .social-integration .social-intro { font-size: 0.9rem; color: var(--color-text-light); margin-bottom: var(--spacing-md); flex-grow: 0; }
+.personal-page .social-feed-preview {
+    display: flex; flex-direction: column; gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+.personal-page .social-post-preview {
+    background-color: var(--color-secondary); padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius); border: 1px solid var(--color-border);
+    font-size: 0.88rem; line-height: 1.6; box-shadow: none;
+    position: relative; padding-left: 45px; /* Space for icon */
+    transition: background-color 0.2s ease;
+}
+.personal-page .social-post-preview:hover { background-color: var(--color-light); }
+.personal-page .social-post-preview i {
+    position: absolute; left: 12px; top: 12px; font-size: 1.4rem; width: 25px;
+    text-align: center; opacity: 0.8; color: var(--color-text-light);
+}
+/* Platform specific icon colors */
+.personal-page .social-post-preview.tip i.fa-instagram { color: #c13584; }
+.personal-page .social-post-preview.explainer i.fa-twitter { color: #1DA1F2; }
+.personal-page .social-post-preview.video-prompt i.fa-youtube { color: #FF0000; }
+.personal-page .social-post-preview p { margin: 0; color: var(--color-text); }
+.personal-page .social-post-preview strong { color: var(--color-primary-dark-personal); display: block; margin-bottom: 3px; }
+.personal-page .social-post-preview .social-handle { color: var(--color-primary-personal); font-weight: 500; text-decoration: none; }
+.personal-page .social-post-preview .social-handle:hover { text-decoration: underline; }
+.personal-page .social-follow-links { margin-top: auto; text-align: center; padding-top: var(--spacing-md); border-top: 1px solid var(--color-border); }
+.personal-page .social-follow-links p { font-size: 0.95rem; color: var(--color-text-light); margin-bottom: var(--spacing-sm); font-weight: 500; }
+.personal-page .social-icons-inline { display: flex; justify-content: center; gap: var(--spacing-lg); }
+.personal-page .social-icons-inline a { color: var(--color-text-light); font-size: 1.5rem; transition: var(--transition-fast); }
+.personal-page .social-icons-inline a:hover { color: var(--color-primary-personal); transform: translateY(-3px); }
+
+/* --- Motivational Quote Styling --- */
+.personal-page .motivational-quote {
+    padding: var(--spacing-xl) 0; margin: var(--spacing-xxl) 0;
+    background-color: var(--color-success-light); /* Green light accent */
+    border-top: 1px solid #c8e6c9; border-bottom: 1px solid #c8e6c9;
+}
+.personal-page .motivational-quote .container {
+    display: flex; align-items: center; gap: var(--spacing-lg);
+    text-align: left; max-width: 900px;
+}
+.personal-page .motivational-quote .quote-icon {
+    font-size: 2rem; color: var(--brand-green-personal); flex-shrink: 0;
+    line-height: 1; opacity: 0.9;
+}
+.personal-page .motivational-quote p {
+    font-size: clamp(1.1rem, 2.5vw, 1.3rem); color: #1b5e20; /* Dark Green Text */
+    font-weight: 400; line-height: 1.6; font-style: normal; margin: 0;
+}
+.personal-page .motivational-quote p .highlight {
+    font-weight: var(--font-weight-semibold); color: var(--brand-green-personal);
+}
+/* Alternate quote style (Teal) */
+.personal-page .motivational-quote.alt-bg {
+    background-color: var(--color-light-accent);
+    border-top: 1px solid #b2ebf2; border-bottom: 1px solid #b2ebf2;
+}
+.personal-page .motivational-quote.alt-bg p { color: var(--color-primary-dark-personal); }
+.personal-page .motivational-quote.alt-bg p .highlight { color: #00796b; } /* Darker Teal */
+.personal-page .motivational-quote.alt-bg .quote-icon { color: var(--color-primary-personal); }
+
+/* --- Learning Hub / Financial Fitness Intro --- */
+#learning-hub { background-color: var(--color-light); }
+.personal-page .challenge-theme { margin-bottom: 0; }
+.personal-page .category-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--spacing-lg);
+}
+.personal-page .category-card {
+    background: var(--color-secondary); border-radius: var(--border-radius-large);
+    box-shadow: var(--box-shadow-light); border: 1px solid var(--color-border);
+    text-align: center; padding: var(--spacing-lg); display: flex; flex-direction: column;
+    align-items: center; transition: var(--transition-medium);
+}
+.personal-page .category-card:hover {
+    transform: translateY(-8px) scale(1.03); box-shadow: var(--box-shadow-strong);
+    border-color: var(--color-primary-light-personal);
+}
+.personal-page .category-card .category-icon {
+    font-size: 2.2rem; color: var(--color-primary-personal);
+    margin-bottom: var(--spacing-md); transition: transform 0.3s ease;
+}
+.personal-page .category-card:hover .category-icon { transform: scale(1.15) rotate(-5deg); }
+.personal-page .category-card h4 {
+    font-size: 1.15rem; color: var(--color-primary-dark-personal);
+    margin-bottom: var(--spacing-sm); font-weight: var(--font-weight-semibold);
+}
+.personal-page .category-card p {
+    font-size: 0.9rem; color: var(--color-text-light); line-height: 1.6;
+    margin-bottom: var(--spacing-lg); flex-grow: 1; max-width: 95%;
+}
+.personal-page .category-card .start-quiz-btn {
+    margin-top: auto; width: 80%; max-width: 180px;
+    font-size: 0.9rem; padding: 8px 16px;
+    /* Use secondary style for quiz buttons */
+    background-color: var(--color-primary-personal); border-color: var(--color-primary-personal); color: var(--color-secondary);
+}
+.personal-page .category-card .start-quiz-btn:hover {
+    background-color: var(--color-primary-light-personal); border-color: var(--color-primary-light-personal);
+    transform: translateY(-2px) scale(1.05); box-shadow: none;
+}
+.personal-page .full-challenge-link .btn.large {
+    padding: var(--spacing-md) var(--spacing-xl); font-size: 1.1rem;
+    font-weight: var(--font-weight-semibold);
+}
+.personal-page .full-challenge-link .btn i {
+    transition: transform 0.3s ease; display: inline-block;
+}
+.personal-page .full-challenge-link .btn:hover i { transform: translateX(6px); }
+
+/* --- Free Tools & Templates Section --- */
+#free-tools { background-color: var(--color-secondary); } /* White background */
+.personal-page .template-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 310px), 1fr));
+    gap: var(--spacing-xl); margin-top: var(--spacing-xl);
+}
+.personal-page .template-card {
+    background: var(--color-secondary); border-radius: var(--border-radius-large);
+    overflow: hidden; box-shadow: var(--box-shadow-light);
+    border: 1px solid var(--color-border); transition: var(--transition-medium);
+    display: flex; flex-direction: column;
+}
+.personal-page .template-card:hover {
+    transform: translateY(-8px); box-shadow: var(--box-shadow-strong);
+    border-color: #b2ebf2;
+}
+.personal-page .template-preview {
+    position: relative; line-height: 0; aspect-ratio: 16 / 10;
+    overflow: hidden; background-color: var(--color-light-accent);
+    border-bottom: 1px solid var(--color-border);
+}
+.personal-page .template-preview img {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    object-fit: cover; transition: opacity 0.5s ease-in-out, transform 0.5s ease;
+    display: block;
+}
+.personal-page .template-preview img:last-child { opacity: 0; }
+.personal-page .template-card:hover .template-preview img:first-child { opacity: 0; transform: scale(1.1); }
+.personal-page .template-card:hover .template-preview img:last-child { opacity: 1; transform: scale(1); }
+
+.personal-page .template-details {
+    padding: var(--spacing-lg); flex-grow: 1; display: flex; flex-direction: column;
+}
+.personal-page .template-details h3 {
+    font-size: 1.25rem; font-weight: var(--font-weight-semibold);
+    color: var(--color-primary-dark-personal); margin-bottom: var(--spacing-md); line-height: 1.3;
+}
+.personal-page .template-details p { /* Contains Problem/Solution */
+    font-size: 0.92rem; color: var(--color-text-light); line-height: 1.7;
+    flex-grow: 1; margin-bottom: var(--spacing-lg);
+}
+.personal-page .template-details p strong {
+    display: block;
+    color: var(--color-primary-dark-personal);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: 2px;
+}
+.personal-page .template-actions {
+    margin-top: auto; display: flex; flex-direction: column; gap: var(--spacing-sm);
+}
+/* Style PDF download as primary action */
+.personal-page .template-actions .download-pdf-btn {
+     background-color: var(--brand-green-personal);
+     border-color: var(--brand-green-personal);
+     color: var(--color-secondary);
+}
+.personal-page .template-actions .download-pdf-btn:hover {
+    background-color: #218838; border-color: #1e7e34;
+    transform: translateY(-2px); box-shadow: var(--box-shadow-light);
+}
+/* Style Spreadsheet button as secondary/outline */
+.personal-page .template-actions .get-spreadsheet-btn {
+     background-color: transparent;
+     color: var(--color-primary-personal);
+     border: 1px solid var(--color-primary-personal);
+}
+.personal-page .template-actions .get-spreadsheet-btn:hover {
+    background-color: rgba(12, 52, 61, 0.05);
+    color: var(--color-primary-dark-personal);
+    border-color: var(--color-primary-dark-personal);
+    transform: translateY(-2px);
+}
+.personal-page .template-actions .btn span,
+.personal-page .template-actions .btn-outline span { flex-grow: 1; text-align: center; }
+
+.personal-page .template-price-note {
+    font-size: 0.85rem; color: var(--color-text-lighter); text-align: center;
+    margin-top: var(--spacing-md); line-height: 1.4;
+}
+
+/* --- Coaching Section (Redesigned - Info & Interest) --- */
+#personal-coaching { background-color: var(--color-light-accent); }
+.personal-page .coaching-container { /* Uses default container */ }
+.personal-page .coaching-content-redesigned {
+    display: grid; gap: var(--spacing-xl); margin-top: var(--spacing-xl);
+    grid-template-columns: 1fr; /* Default mobile */
+}
+.personal-page .coaching-info, .personal-page .coaching-interest {
+    background: var(--color-secondary); padding: var(--spacing-xl);
+    border-radius: var(--border-radius-large); box-shadow: var(--box-shadow-light);
+    border: 1px solid var(--color-border);
+}
+.personal-page .coaching-info h3, .personal-page .coaching-interest h3 {
+    font-size: 1.3rem; margin-bottom: var(--spacing-md);
+    color: var(--color-primary-dark-personal); font-weight: var(--font-weight-semibold);
+}
+.personal-page .coaching-info p, .personal-page .coaching-info ul,
+.personal-page .coaching-interest p {
+    font-size: 1rem; color: var(--color-text-light); line-height: 1.75;
+    margin-bottom: var(--spacing-md);
+}
+.personal-page .coaching-info ul { list-style: none; padding-left: 0; }
+.personal-page .coaching-info ul li { position: relative; padding-left: var(--spacing-lg); margin-bottom: var(--spacing-sm); }
+.personal-page .coaching-info ul li i.fa-check {
+    position: absolute; left: 0; top: 6px; color: var(--brand-green-personal); font-size: 0.9em;
+}
+/* Coaching Interest Form */
+.personal-page .coaching-interest-form label {
+    display: block; margin-bottom: var(--spacing-xs); font-weight: var(--font-weight-medium);
+    color: var(--color-primary-dark-personal); font-size: 0.9rem;
+}
+.personal-page .coaching-interest-form input[type="email"] {
+    display: block; width: 100%; margin-bottom: var(--spacing-md);
+    padding: 12px 15px; border: 1px solid var(--color-border);
+    border-radius: var(--border-radius); font-family: inherit; font-size: 1rem;
+    line-height: 1.5; background-color: #fff; transition: var(--transition-fast);
+    color: var(--color-text); box-shadow: var(--box-shadow-inset);
+}
+.personal-page .coaching-interest-form input[type="email"]::placeholder { color: #94a3b8; }
+.personal-page .coaching-interest-form input[type="email"]:focus {
+    outline: none; border-color: var(--color-primary-personal);
+    box-shadow: 0 0 0 3px rgba(12, 52, 61, 0.1), var(--box-shadow-inset);
+}
+.personal-page .coaching-interest-form button { display: block; width: 100%; }
+.personal-page .form-response-note {
+    font-size: 0.9rem; text-align: center; margin-top: var(--spacing-md);
+    color: var(--color-text-light); padding: var(--spacing-sm); border-radius: var(--border-radius);
+}
+.personal-page .form-response-note.success { background-color: var(--color-success-light); color: #155724;}
+.personal-page .form-response-note.error { background-color: var(--color-danger-light); color: #721c24;}
+
+.personal-page .privacy-note { font-size: 0.85rem; color: var(--color-text-lighter); text-align: center; margin-top: var(--spacing-md); margin-bottom: 0;}
+
+.personal-page .disclaimer {
+    font-size: 0.9rem; color: var(--color-text-light); margin: var(--spacing-xl) auto 0;
+    border-top: 1px solid var(--color-border); padding-top: var(--spacing-lg);
+    text-align: center; max-width: 800px; line-height: 1.7;
+}
+.personal-page .disclaimer strong { color: var(--color-text); }
+
+/* --- MMISBALIOR Promo Section --- */
+#mmisbalior-section { background-color: var(--color-light); }
+.personal-page .mmisbalior-promo {
+    background: linear-gradient(135deg, var(--color-primary-personal), var(--color-primary-light-personal));
+    color: var(--color-secondary); padding: var(--spacing-xl) var(--spacing-lg);
+    border-radius: var(--border-radius-large); text-align: center;
+    box-shadow: 0 8px 25px -8px rgba(12, 52, 61, 0.3); display: flex;
+    flex-direction: column; align-items: center; gap: var(--spacing-lg); overflow: hidden;
+}
+.personal-page .mmisbalior-promo .promo-content { max-width: 650px; }
+.personal-page .mmisbalior-promo h3 {
+    color: var(--color-secondary); margin-bottom: var(--spacing-md);
+    font-size: clamp(1.6rem, 4vw, 2rem); font-weight: var(--font-weight-bold);
+    margin-top: 0; display: inline-flex; align-items: center; gap: 10px;
+}
+.personal-page .mmisbalior-promo h3 i { opacity: 0.8; }
+.personal-page .mmisbalior-promo p {
+    margin-bottom: var(--spacing-lg); max-width: 600px;
+    margin: 0 auto var(--spacing-lg) auto; color: rgba(255, 255, 255, 0.95);
+    line-height: 1.75;
+}
+.personal-page .mmisbalior-promo .promo-visual {
+    line-height: 0; width: 100%; max-width: 400px; /* Slightly smaller */
+    border-radius: var(--border-radius); overflow: hidden; background-color: var(--color-light-accent);
+}
+.personal-page .mmisbalior-promo .promo-visual img { width: 100%; height: auto; display: block; }
+.personal-page .mmisbalior-promo .btn { /* Use outline style */
+    background-color: transparent; color: var(--color-secondary);
+    border: 1px solid var(--color-secondary); font-weight: var(--font-weight-semibold);
+    padding: 12px 25px; margin-top: 0; box-shadow: none;
+}
+.personal-page .mmisbalior-promo .btn:hover {
+    background-color: rgba(255, 255, 255, 0.1); color: #fff;
+    transform: translateY(-3px); box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* --- Feedback Section --- */
+#feedback-section { background-color: var(--color-secondary); border-top: 1px solid var(--color-border); }
+.personal-page .feedback-container { text-align: center; }
+.personal-page .feedback-action { margin-top: var(--spacing-md); }
+/* Optional Micro-feedback Styles */
+.personal-page .micro-feedback { margin-top: var(--spacing-lg); font-size: 0.9rem; color: var(--color-text-light); }
+.personal-page .micro-feedback span { margin-right: var(--spacing-md); }
+.personal-page .micro-feedback button {
+    background: none; border: 1px solid var(--color-border); color: var(--color-text-light);
+    padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--border-radius); cursor: pointer; margin: 0 var(--spacing-xs);
+    transition: var(--transition-fast);
+}
+.personal-page .micro-feedback button:hover { background-color: var(--color-light); border-color: var(--color-text-light); }
+.personal-page .micro-feedback button i { margin-right: 5px; }
+.personal-page .micro-feedback button.btn-feedback-yes:hover { color: var(--color-success); border-color: var(--color-success); }
+.personal-page .micro-feedback button.btn-feedback-no:hover { color: var(--color-danger); border-color: var(--color-danger); }
+
+/* --- Quiz Modal Styles (Largely unchanged, minor tweaks) --- */
+.personal-page .quiz-modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(38, 50, 56, 0.75); /* Slightly darker overlay */
+    display: flex; align-items: center; justify-content: center; z-index: 2000;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease-in-out;
+    padding: var(--spacing-md); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+.personal-page .quiz-modal-overlay[style*="display: flex"] { opacity: 1; pointer-events: auto; }
+.personal-page .quiz-modal-content {
+    background-color: var(--color-secondary); color: var(--color-text);
+    padding: var(--spacing-lg) var(--spacing-xl); border-radius: var(--border-radius-large);
+    max-width: 650px; width: 95%; max-height: 90vh; overflow-y: auto;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.25); position: relative;
+    transform: scale(0.95); transition: transform 0.3s ease-in-out;
+    display: flex; flex-direction: column;
+}
+.personal-page .quiz-modal-overlay[style*="display: flex"] .quiz-modal-content { transform: scale(1); }
+.personal-page .quiz-modal-close-btn {
+    position: absolute; top: var(--spacing-sm); right: var(--spacing-md);
+    background: transparent; border: none; font-size: 2rem; color: var(--color-text-light);
+    cursor: pointer; line-height: 1; padding: 5px; transition: var(--transition-fast);
+}
+.personal-page .quiz-modal-close-btn:hover { color: var(--color-primary-dark-personal); transform: rotate(90deg); }
+.personal-page .quiz-modal-content h3#quiz-modal-title {
+    font-size: 1.4rem; color: var(--color-primary-personal); text-align: center;
+    margin: 0 auto var(--spacing-md) auto; padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--color-light-accent); width: 100%;
+    font-weight: var(--font-weight-semibold);
+}
+.personal-page .quiz-modal-progress {
+    text-align: center; font-size: 0.85rem; color: var(--color-text-light);
+    margin-bottom: var(--spacing-md); background-color: var(--color-background);
+    padding: var(--spacing-xs) 0; border-radius: 4px;
+}
+.personal-page .quiz-modal-question-area {
+    font-weight: var(--font-weight-medium); margin-bottom: var(--spacing-lg);
+    color: var(--color-text); font-size: 1.1rem; line-height: 1.6;
+    padding: var(--spacing-sm) 0; text-align: left;
+}
+.personal-page .quiz-modal-options-area {
+    display: flex; flex-direction: column; gap: var(--spacing-sm); margin-bottom: var(--spacing-md);
+}
+.personal-page .quiz-modal-options-area .option-button {
+    display: block; width: 100%; text-align: left;
+    background-color: var(--color-secondary); padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius); border: 1px solid var(--color-border);
+    cursor: pointer; transition: var(--transition-fast); font-size: 1rem;
+    color: var(--color-text); font-family: inherit; line-height: 1.5;
+}
+.personal-page .quiz-modal-options-area .option-button:hover:not(:disabled) {
+    background-color: var(--color-light); border-color: var(--color-primary-personal);
+    transform: translateX(4px);
+}
+.personal-page .quiz-modal-options-area .option-button:disabled { cursor: default; }
+.personal-page .quiz-modal-options-area .option-button.correct {
+    background-color: var(--color-success-light) !important; border-color: var(--color-success) !important;
+    color: #155724 !important; font-weight: var(--font-weight-semibold);
+}
+.personal-page .quiz-modal-options-area .option-button.incorrect {
+    background-color: var(--color-danger-light) !important; border-color: #f5c6cb !important; /* Lighter red border */
+    color: #721c24 !important;
+}
+.personal-page .quiz-modal-options-area .option-button.disabled:not(.correct):not(.incorrect) { opacity: 0.65; }
+.personal-page .quiz-modal-feedback {
+    margin-top: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius); line-height: 1.6;
+    border-left-width: 4px; border-left-style: solid; animation: fadeIn 0.3s ease;
+    font-size: 0.95rem;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.personal-page .quiz-modal-feedback p { margin: 0; }
+.personal-page .quiz-modal-feedback strong {
+    margin-right: 5px; display: block; margin-bottom: 3px; font-size: 1.05em;
+    font-weight: var(--font-weight-semibold);
+}
+.personal-page .quiz-modal-feedback.correct {
+    background-color: var(--color-success-light); color: #155724; border-left-color: var(--color-success);
+}
+.personal-page .quiz-modal-feedback.incorrect {
+    background-color: var(--color-danger-light); color: #721c24; border-left-color: #f1a2a9; /* Softer red */
+}
+.personal-page .quiz-modal-results {
+    animation: fadeIn 0.5s ease; text-align: center; padding: var(--spacing-lg) var(--spacing-md);
+    background-color: var(--color-background); border-radius: var(--border-radius-large);
+    margin-top: var(--spacing-md); border: 1px solid var(--color-border);
+}
+.personal-page .quiz-modal-results h4 {
+    margin-bottom: var(--spacing-sm); color: var(--color-primary-dark-personal);
+    font-size: 1.3rem; font-weight: var(--font-weight-semibold);
+}
+.personal-page .quiz-modal-results p { font-size: 1.1rem; color: var(--color-text); margin-bottom: 5px; }
+.personal-page .quiz-modal-prompt { /* Prompt for full challenge */
+    padding: var(--spacing-md) var(--spacing-md) 0 var(--spacing-md);
+    background-color: transparent; border-top: 1px solid var(--color-light-accent);
+    margin-top: var(--spacing-md); text-align: center;
+}
+.personal-page .quiz-modal-prompt p { font-size: 0.9em; color: var(--color-text-light); margin-bottom: 0; line-height: 1.5; }
+.personal-page .quiz-modal-navigation {
+    display: flex; justify-content: center; align-items: center;
+    gap: var(--spacing-sm); /* Reduced gap slightly */
+    margin-top: var(--spacing-lg); flex-wrap: wrap;
+    padding-top: var(--spacing-md); border-top: 1px solid var(--color-light-accent);
+}
+.personal-page .quiz-modal-navigation .btn.small { padding: 8px 15px; font-size: 0.9rem; }
+
+/* --- Floating Background Animation --- */
+@keyframes float {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(25px, -35px) scale(1.08); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+.personal-page .deco-blur {
+    position: fixed; width: 400px; height: 400px;
+    background: radial-gradient(circle, var(--color-primary-light-personal, #1a4652) 0%, transparent 70%);
+    border-radius: 50%; filter: blur(120px); opacity: 0.07; /* Slightly more visible */
+    z-index: -1; animation: float 20s ease-in-out infinite alternate;
+    will-change: transform; pointer-events: none;
+}
+.personal-page .deco-blur.blur-1 { top: 8%; left: 3%; animation-duration: 23s; }
+.personal-page .deco-blur.blur-2 {
+    bottom: 10%; right: 5%; animation-delay: 5s; animation-duration: 18s;
+    background: radial-gradient(circle, var(--brand-green-personal, #28a745) 0%, transparent 70%);
+    opacity: 0.06; filter: blur(130px);
+}
+.personal-page .deco-blur.blur-3 { top: 65%; left: 45%; animation-delay: 10s; animation-duration: 25s;}
+
+/* --- Footer Style Improvements --- */
+.personal-page .site-footer {
+    background-color: var(--color-primary-dark-personal); /* Darker footer */
+    color: #b0bec5; /* Lighter Grey Text */
+    padding-top: var(--spacing-xxl); padding-bottom: var(--spacing-lg);
+}
+.personal-page .page-footer-links {
+    padding-bottom: var(--spacing-xl);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: var(--spacing-xl);
+}
+.personal-page .footer-links-container {
+    display: grid; grid-template-columns: repeat(2, 1fr); /* 2 columns mobile */
+    gap: var(--spacing-lg);
+}
+.personal-page .page-footer-links ul { list-style: none; padding: 0; margin: 0; }
+.personal-page .page-footer-links ul li { margin-bottom: var(--spacing-sm); }
+.personal-page .page-footer-links ul li a {
+    color: #e0f2f7; /* Lighter Teal links */
+    transition: color 0.2s ease, padding-left 0.2s ease; display: inline-block;
+    padding: 2px 0; text-decoration: none; font-size: 0.95rem;
+}
+.personal-page .page-footer-links ul li a:hover { color: #fff; padding-left: 5px; }
+.personal-page .page-footer-links h4 {
+    color: #fff; margin-bottom: var(--spacing-md); font-weight: var(--font-weight-semibold);
+    font-size: 1.1rem;
+}
+.personal-page .footer-contact-info { margin-bottom: var(--spacing-md); }
+.personal-page .footer-contact-info li { display: flex; align-items: center; gap: 8px;}
+.personal-page .footer-contact-info li i { width: 15px; text-align: center; color: var(--color-light-accent); }
+.personal-page .footer-connect-title { margin-bottom: var(--spacing-sm); font-weight: var(--font-weight-medium); color: #fff; font-size: 1rem; }
+.personal-page .social-media { display: flex; flex-wrap: wrap; gap: var(--spacing-sm); }
+.personal-page .social-link {
+    color: #e0f2f7; font-size: 1.2rem; transition: var(--transition-fast);
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px; border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.1);
+    line-height: 1;
+}
+.personal-page .social-link:hover {
+    background-color: rgba(255, 255, 255, 0.2); border-color: rgba(255, 255, 255, 0.3);
+    color: #fff; transform: translateY(-3px) scale(1.1); box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.personal-page .footer-content {
+    display: flex; flex-direction: column; /* Stack logo/tagline */
+    align-items: center; /* Center on mobile */
+    gap: var(--spacing-lg); margin-bottom: var(--spacing-xl);
+}
+.personal-page .footer-left { text-align: center; }
+.personal-page .footer-left .logo img { display: block; margin: 0 auto; }
+.personal-page .footer-tagline { margin-top: var(--spacing-sm); font-size: 0.9rem; color: rgba(255, 255, 255, 0.7); }
+.personal-page .footer-right { /* Removed, content integrated into links */ }
+.personal-page .copyright {
+    text-align: center; padding-top: var(--spacing-lg);
+    border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: var(--spacing-xl);
+}
+.personal-page .copyright p { font-size: 0.85rem; color: #90a4ae; line-height: 1.5; margin-bottom: 5px;}
+
+/* --- Responsive Design --- */
+
+/* Mobile Styles First (Default) */
+
+/* Tablet & Small Desktop */
+@media (min-width: 768px) {
+    .personal-page .hero-actions { gap: var(--spacing-xl); }
+    .personal-page .resource-grid { grid-template-columns: repeat(2, 1fr); }
+    .personal-page .category-grid { grid-template-columns: repeat(2, 1fr); }
+    .personal-page .template-grid { grid-template-columns: repeat(2, 1fr); }
+    .personal-page .coaching-content-redesigned { grid-template-columns: 1fr 1fr; /* Side-by-side coaching info/interest */ }
+    .personal-page .mmisbalior-promo { flex-direction: row; text-align: left; align-items: center; }
+    .personal-page .mmisbalior-promo .promo-content { max-width: 55%; }
+    .personal-page .mmisbalior-promo .promo-visual { max-width: 35%; }
     .personal-page .motivational-quote .container { flex-direction: row; text-align: left; }
-}
-@media (min-width: 992px) { /* Larger Desktop */
-    .personal-page .template-grid { grid-template-columns: repeat(3, 1fr); }
-    .personal-page .category-grid { grid-template-columns: repeat(5, 1fr); } /* 5 categories wide */
-}
-@media (min-width: 1200px) { /* XL Desktop */
-  .personal-page .page-intro h1 { font-size: 3.5rem; }
-  .personal-page .template-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 310px), 1fr)); }
+    .personal-page .footer-links-container { grid-template-columns: repeat(4, 1fr); gap: var(--spacing-lg); } /* 4 columns footer */
+    .personal-page .footer-content { flex-direction: row; justify-content: space-between; align-items: center; }
+    .personal-page .footer-left { text-align: left; }
+    .personal-page .footer-left .logo img { margin: 0; }
 }
 
-/* --- Print Styles --- */
-/* ... (Keep Print styles from v1.3.0) ... */
-@media print { body { padding-top: 0; font-size: 10pt; color: #000; background-color: #fff; font-family: 'Times New Roman', Times, serif !important; } .personal-page { --color-primary-personal: #000; --color-secondary: #fff; --color-text: #000; --color-background: #fff; --brand-green-personal: #000; --border-radius: 0px; --box-shadow-light: none; --box-shadow: none; } .personal-page .site-header, .personal-page .page-footer-links, .personal-page .footer-right .social-media, .personal-page .mobile-menu-toggle, .personal-page .connect-button, .personal-page .btn, .personal-page .mmisbalior-promo, .personal-page .quiz-modal-overlay, .personal-page .template-actions, .personal-page .social-integration, .personal-page .stats-grid, .personal-page .deco-blur, .personal-page .motivational-quote, .personal-page .category-card .start-quiz-btn, .personal-page .quiz-modal-navigation button, .personal-page .coaching-request-form button, .personal-page .full-challenge-link { display: none !important; } .personal-page .container { max-width: 100%; padding: 0 1cm; } .personal-page a { color: inherit !important; text-decoration: none !important; } .personal-page h1, .personal-page h2, .personal-page h3, .personal-page h4 { color: #000 !important; text-shadow: none !important; font-family: 'Times New Roman', Times, serif !important; margin-bottom: 0.5em; page-break-after: avoid; } .personal-page p, .personal-page li { color: #000 !important; font-family: 'Times New Roman', Times, serif !important; line-height: 1.4; } .personal-page .page-intro { background: none !important; color: #000 !important; margin-top: 0 !important; padding: 1cm 0 !important; min-height: auto !important; text-align: left !important; display: block !important; border: none !important; } .personal-page .page-intro .container { padding: 0 !important; margin: 0 !important; max-width: 100% !important; text-align: left !important; } .personal-page section { padding: 1cm 0 !important; border-color: #ccc !important; page-break-inside: avoid; } .personal-page .section-title::after { display: none !important; } .personal-page .resource-card, .personal-page .template-card, .personal-page .coaching-item, .personal-page .category-card { box-shadow: none !important; border: 1px solid #ccc !important; padding: 0.5cm !important; page-break-inside: avoid; background: #fff !important; border-radius: 0 !important; } .personal-page .card-image, .personal-page .template-preview, .personal-page .promo-visual img, .personal-page .stat-card i, .personal-page .category-icon { display: none !important; } .personal-page .disclaimer { border: 1px solid #ccc; padding: 0.5cm; box-shadow: none; } .personal-page .quiz-modal-feedback { background-color: #f0f0f0 !important; color: #000 !important; border: 1px solid #ccc !important; border-left: none !important; } .personal-page .quiz-modal-options-area .option-button { border-color: #eee !important; background-color: #fff !important; color: #000 !important; } .personal-page .site-footer { background-color: #fff !important; color: #000 !important; border-top: 1px solid #ccc !important; padding: 1cm 0 !important; text-align: left !important; } .personal-page .footer-left { display: block !important; float: none !important; } .personal-page .footer-right { display: none !important; } .personal-page .footer-left .logo img { filter: invert(1) grayscale(1) !important; height: 30px; } .personal-page .footer-content { flex-direction: column; align-items: flex-start; } .personal-page .copyright { color: #555 !important; border-top-color: #ccc !important; padding-top: 0.5cm; margin-top: 1cm;} }
+/* Medium Desktop */
+@media (min-width: 992px) {
+    /* Header Responsive Nav */
+    .personal-page .mobile-menu-toggle { display: none; }
+    .personal-page .nav-list { display: flex; /* Ensure nav list shown */ position: static; flex-direction: row; width: auto; background-color: transparent; box-shadow: none; padding: 0; }
+    .personal-page #primary-navigation.active { /* Reset mobile active state visual */
+        position: static; box-shadow: none; padding: 0; background-color: transparent;
+        flex-direction: row; width: auto; top: auto; left: auto; opacity: 1; transform: none;
+        /* Keep gap from base .nav-list rule */
+    }
+    .personal-page .btn-cta-header { display: inline-block; } /* Show header button */
+    /* Grid Adjustments */
+    .personal-page .resource-grid { grid-template-columns: repeat(3, 1fr); }
+    .personal-page .category-grid { grid-template-columns: repeat(4, 1fr); }
+    .personal-page .template-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Large Desktop */
+@media (min-width: 1200px) {
+    .personal-page .hero-stats-grid { grid-template-columns: repeat(3, 1fr); } /* Ensure 3 stats on large screens */
+    .personal-page .footer-links-container { gap: var(--spacing-xl); }
+}
+
+/* Mobile Menu Active State (Should come after desktop reset) */
+@media (max-width: 991px) {
+    .personal-page .mobile-menu-toggle { display: block; } /* Show toggle */
+    .personal-page .nav-list { /* Default hidden state for mobile */
+        display: none; position: absolute; top: 100%; left: 0; width: 100%;
+        background-color: var(--color-secondary); box-shadow: var(--box-shadow);
+        padding: var(--spacing-sm) var(--spacing-md); flex-direction: column;
+        gap: var(--spacing-sm); border-top: 1px solid var(--color-border);
+    }
+     .personal-page #primary-navigation.active {
+        display: flex; /* Show when active */
+        opacity: 1;
+        /* Add smooth transition */
+        max-height: 500px; /* Or appropriate height */
+        overflow: hidden;
+        transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+     }
+    .personal-page .nav-list .nav-link { width: 100%; border-bottom: 0; padding: var(--spacing-sm); }
+    .personal-page .nav-list .nav-link.active-page { border-left: 3px solid var(--color-primary-personal); background-color: var(--color-light-accent); }
+    .personal-page .btn-cta-header { display: none; } /* Hide header button on mobile */
+}
+
+/* Print Styles (Keep basic print visibility) */
+@media print {
+    body { padding-top: 0; font-size: 10pt; color: #000; background-color: #fff !important; font-family: 'Times New Roman', Times, serif !important; }
+    .personal-page { --color-primary-personal: #000; --color-secondary: #fff; --color-text: #000; --color-background: #fff; --brand-green-personal: #000; --border-radius: 0px; --box-shadow-light: none; --box-shadow: none; }
+    .personal-page .site-header, .personal-page .page-footer-links, .personal-page .footer-right .social-media, .personal-page .mobile-menu-toggle, .personal-page .btn-cta-header, .personal-page .btn, .personal-page .mmisbalior-promo, .personal-page .quiz-modal-overlay, .personal-page .template-actions .get-spreadsheet-btn, .personal-page .social-integration, .personal-page .hero-stats-grid, .personal-page .deco-blur, .personal-page .motivational-quote, .personal-page .category-card .start-quiz-btn, .personal-page .quiz-modal-navigation button:not(.quiz-next-btn), .personal-page .coaching-interest-form button, .personal-page .full-challenge-link, .personal-page #feedback-section, .personal-page .template-preview img:last-child /* Hide interactive/non-essential elements */ { display: none !important; }
+    .personal-page .template-actions .download-pdf-btn { display: block !important; font-size: 9pt !important; padding: 2px !important; border: 1px solid #ccc !important; background: #eee !important; color: #000 !important; }
+    .personal-page .container { max-width: 100% !important; padding: 0 1cm !important; margin: 0 !important; width: auto !important;}
+    .personal-page main { padding-top: 0 !important; }
+    .personal-page section { padding: 1cm 0 !important; page-break-inside: avoid; }
+    .personal-page a { color: inherit !important; text-decoration: none !important; }
+    .personal-page h1, .personal-page h2, .personal-page h3, .personal-page h4 { color: #000 !important; text-shadow: none !important; font-family: 'Times New Roman', Times, serif !important; margin-bottom: 0.5em; page-break-after: avoid; }
+    .persoal-page p, .personal-page li { color: #000 !important; font-family: 'Times New Roman', Times, serif !important; line-height: 1.4; }
+    .personal-page .hero-section { background: none !important; padding: 1cm 0 !important; text-align: left !important; }
+    .personal-page .section-title::after { display: none !important; }
+    .personal-page .resource-card, .personal-page .template-card, .personal-page .coaching-info, .personal-page .category-card { box-shadow: none !important; border: 1px solid #ccc !important; padding: 0.5cm !important; page-break-inside: avoid; background: #fff !important; border-radius: 0 !important; }
+    .personal-page .card-image, .personal-page .template-preview, .personal-page .promo-visual img, .personal-page .stat-card i, .personal-page .category-icon, .personal-page .approach-icon { display: none !important; } /* Hide visual fluff */
+    .personal-page .disclaimer { border: 1px solid #ccc; padding: 0.5cm; box-shadow: none; }
+    .personal-page .site-footer { background-color: #fff !important; color: #000 !important; border-top: 1px solid #ccc !important; padding: 1cm 0 !important; text-align: left !important; }
+    .personal-page .footer-left { display: block !important; float: none !important; text-align: left !important; }
+    .personal-page .footer-left .logo img { filter: invert(1) grayscale(1) !important; height: 30px; margin: 0 !important;}
+    .personal-page .footer-content { flex-direction: column; align-items: flex-start; }
+    .personal-page .copyright { color: #555 !important; border-top-color: #ccc !important; padding-top: 0.5cm; margin-top: 1cm;}
+}
