@@ -327,6 +327,128 @@
 .personal-page .copyright { text-align: center; padding-top: var(--spacing-lg); border-top: 1px solid rgba(255, 255, 255, 0.15); margin-top: var(--spacing-lg); }
 .personal-page .copyright p { font-size: 0.9rem; color: #80cbc4; }
 
+.personal-page #full-financial-challenge .quiz-accordion-container {
+    max-width: 900px; /* Constrain width for better readability */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.personal-page .accordion-item {
+    border: 1px solid #e0f7fa; /* Subtle border */
+    border-radius: var(--border-radius-large);
+    margin-bottom: var(--spacing-lg);
+    background-color: #fff; /* White background for each item */
+    box-shadow: var(--box-shadow-light);
+    overflow: hidden; /* Needed for border-radius with children */
+     transition: box-shadow var(--transition-fast);
+}
+.personal-page .accordion-item:last-child {
+    margin-bottom: 0;
+}
+.personal-page .accordion-item:hover {
+    border-color: #b2ebf2;
+    box-shadow: var(--box-shadow);
+}
+
+.personal-page .accordion-header {
+    margin: 0; /* Reset h3 margin */
+}
+
+.personal-page .theme-toggle-button {
+    /* Reset Button Styles */
+    appearance: none;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+
+    /* Styling */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: var(--spacing-md) var(--spacing-lg);
+    font-size: clamp(1.3rem, 4vw, 1.6rem); /* Theme title size */
+    font-weight: 600; /* Bolder theme title */
+    color: var(--color-primary-dark-personal);
+    background-color: #f0fcfd; /* Very light teal background for header */
+    border-bottom: 1px solid transparent; /* Separator when open */
+    transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.personal-page .theme-toggle-button:hover {
+    background-color: #e6fafa; /* Slightly darker hover */
+    color: var(--color-primary-personal);
+}
+
+.personal-page .theme-toggle-button:focus-visible {
+    outline: 2px solid var(--color-primary-personal);
+    outline-offset: 2px;
+    z-index: 1; /* Ensure focus ring is visible */
+}
+
+.personal-page .theme-toggle-button .theme-icon {
+    font-size: 1rem; /* Adjust icon size */
+    color: var(--color-primary-personal);
+    margin-left: var(--spacing-md);
+    transition: transform 0.3s ease-out; /* Smooth rotation */
+    flex-shrink: 0;
+}
+
+/* Icon rotation when expanded */
+.personal-page .theme-toggle-button[aria-expanded="true"] .theme-icon {
+    transform: rotate(180deg);
+}
+
+/* Border separation when open */
+.personal-page .theme-toggle-button[aria-expanded="true"] {
+     border-bottom-color: #b2ebf2; /* Teal border when open */
+}
+
+
+.personal-page .theme-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.45s ease-out; /* Smooth transition */
+    background-color: #fff; /* Ensure content area is white */
+    padding: 0 var(--spacing-lg); /* Add padding only left/right initially */
+}
+
+/* Add top/bottom padding when content is visible */
+.personal-page .theme-content[style*="max-height"] { /* Target when JS sets max-height */
+     padding-top: var(--spacing-xl);
+     padding-bottom: var(--spacing-xl);
+}
+
+/* Style the grid inside the content */
+.personal-page .theme-content .category-grid {
+    /* Grid styles are already defined, ensure they apply */
+    /* Reset margin if needed */
+    margin-top: 0;
+}
+.personal-page .theme-content .category-card {
+     /* Slightly reduce shadow/lift for cards within accordion */
+     box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+.personal-page .theme-content .category-card:hover {
+    transform: translateY(-5px); /* Less lift */
+     box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+}
+
+
+/* --- Responsive Overrides --- */
+/* ... (Keep ALL existing Responsive styles from v1.4.0) ... */
+@media (max-width: 767px) { /* Mobile/Tablet */ .personal-page .footer-content { flex-direction: column; align-items: center; text-align: center; } .personal-page .footer-left, .personal-page .footer-right { width: 100%; display: flex; flex-direction: column; align-items: center; } .personal-page .footer-right { text-align: center; } .personal-page .social-media { justify-content: center; } .personal-page .page-footer-links .footer-links-container { flex-direction: column; align-items: center; text-align: center; } .personal-page .page-footer-links .footer-links-container > div { width: 100%; margin-bottom: var(--spacing-lg); } .personal-page .page-footer-links ul { align-items: center; } .personal-page .page-footer-links h4 { margin-bottom: var(--spacing-sm); } .personal-page .resource-grid, .personal-page .template-grid, .personal-page .category-grid, .personal-page .coaching-content { grid-template-columns: 1fr; } .personal-page .mmisbalior-promo { flex-direction: column; } .personal-page .motivational-quote .container { flex-direction: column; text-align: center; } }
+@media (max-width: 500px) { /* Smaller mobile */ .personal-page .social-post-preview { padding-left: var(--spacing-md); padding-right: var(--spacing-md); } .personal-page .social-post-preview i { display: none; } .personal-page .template-actions { gap: var(--spacing-xs); } .personal-page .btn { padding: 8px 15px; font-size: 0.9rem; } .personal-page .theme-toggle-button { padding: var(--spacing-sm) var(--spacing-md); font-size: 1.2rem; } } /* Adjust accordion button padding/size */
+@media (min-width: 576px) { /* Small tablets up */ .personal-page .category-grid { grid-template-columns: repeat(2, 1fr); } .personal-page .template-grid { grid-template-columns: repeat(2, 1fr); } .personal-page .resource-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 768px) { /* Desktop */ .personal-page .footer-content { flex-direction: row; text-align: left; } .personal-page .footer-left { align-items: flex-start; } .personal-page .footer-right { align-items: flex-end; text-align: right; } .personal-page .social-media { justify-content: flex-end; } .personal-page .page-footer-links .footer-links-container { flex-direction: row; align-items: flex-start; text-align: left; flex-wrap: nowrap; gap: var(--spacing-lg);} .personal-page .page-footer-links .footer-links-container > div { width: auto; flex-basis: 0; flex-grow: 1; margin-bottom: 0; } .personal-page .page-footer-links ul { align-items: flex-start; } .personal-page .stats-grid { grid-template-columns: repeat(3, 1fr); } .personal-page .resource-grid { grid-template-columns: repeat(3, 1fr); } .personal-page .category-grid { grid-template-columns: repeat(4, 1fr); } .personal-page .coaching-content { grid-template-columns: 2fr 1fr; } .personal-page .mmisbalior-promo { flex-direction: row; text-align: left; } .personal-page .motivational-quote .container { flex-direction: row; text-align: left; } }
+@media (min-width: 992px) { /* Larger Desktop */ .personal-page .template-grid { grid-template-columns: repeat(3, 1fr); } .personal-page .category-grid { grid-template-columns: repeat(5, 1fr); } /* Make category grid 5 wide on large screens */ }
+@media (min-width: 1200px) { /* XL Desktop */ .personal-page .page-intro h1 { font-size: 3.5rem; } .personal-page .template-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 310px), 1fr)); } }
+
 
 /* --- Responsive Overrides --- */
 /* ... (Keep Responsive styles from v1.3.0) ... */
