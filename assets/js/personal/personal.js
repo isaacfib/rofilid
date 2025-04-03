@@ -3,7 +3,7 @@
  * Description: Fully self-contained scripts for the ROFILID Personal Finance page (personal.html).
  *              Handles ALL JavaScript functionality for this page, including navigation,
  *              smooth scrolling, modals (quiz & feedback), forms, animations, and template interactions.
- * Version: 2.4.0
+ * Version: 2.5.0 (Includes debugging for quiz start)
  * Dependencies: Font Awesome (loaded via CSS/HTML)
  */
 
@@ -66,7 +66,7 @@
         LAST_INTRO_CATEGORY_ID: 4,      // Last category ID for the intro quizzes on this page
         // Mapping for PDF download paths (relative to the page HTML file)
         PDF_FILES: {
-            'line-budget': '../../assets/downloads/rofilid-line-item-budget.pdf', // Ensure filenames exist
+            'line-budget': '../../assets/downloads/rofilid-line-item-budget.pdf',
             'networth': '../../assets/downloads/rofilid-net-worth-statement.pdf',
             'cashflow': '../../assets/downloads/rofilid-personal-cashflow.pdf',
             '50-30-20': '../../assets/downloads/rofilid-50-30-20-budget.pdf',
@@ -121,130 +121,206 @@
 
     /** Trap focus within a specified element (e.g., modal) */
     function trapFocus(element) {
-        if (!element) return;
+        if (!element) {
+            console.warn('[trapFocus] Element is null.');
+            return null; // Return null if no element
+        }
         const focusableEls = element.querySelectorAll(
             'a[href]:not([disabled], [hidden], [aria-hidden="true"]), button:not([disabled], [hidden], [aria-hidden="true"]), textarea:not([disabled], [hidden], [aria-hidden="true"]), input:not([type="hidden"], [disabled], [hidden], [aria-hidden="true"]), select:not([disabled], [hidden], [aria-hidden="true"]), [tabindex]:not([tabindex="-1"], [disabled], [hidden], [aria-hidden="true"])'
         );
-        if (focusableEls.length === 0) return; // No focusable elements
+        if (focusableEls.length === 0) {
+             // console.log('[trapFocus] No focusable elements found inside:', element);
+             return null; // Return null if no focusable elements
+        }
 
         const firstFocusableEl = focusableEls[0];
         const lastFocusableEl = focusableEls[focusableEls.length - 1];
-        let currentFocus = document.activeElement; // Capture focus before timeout
-
-        element.addEventListener('keydown', handleFocusTrapKeydown);
 
         function handleFocusTrapKeydown(e) {
-             if (e.key !== 'Tab') return;
+             if (e.key !== 'Tab' || !element.contains(document.activeElement)) {
+                 // If not Tab, or if focus is somehow outside the modal, ignore
+                 return;
+             }
 
             // If shift + tab it focuses element before first focusable element, cycle to last
             if (e.shiftKey && document.activeElement === firstFocusableEl) {
                 e.preventDefault();
+                // console.log('[trapFocus] Shift+Tab on first element. Focusing last:', lastFocusableEl);
                 lastFocusableEl.focus();
             }
              // If tab it focuses element after last focusable element, cycle to first
              else if (!e.shiftKey && document.activeElement === lastFocusableEl) {
                 e.preventDefault();
+                // console.log('[trapFocus] Tab on last element. Focusing first:', firstFocusableEl);
                 firstFocusableEl.focus();
              }
         }
 
-         // Delay focus to ensure elements are ready and transition complete
+        // Add the keydown listener to the element itself
+        element.addEventListener('keydown', handleFocusTrapKeydown);
+
+        // Focus logic (run after delay)
          setTimeout(() => {
+             // Check if the modal is still the active one before focusing
+             if (activeModal !== element) {
+                 console.warn('[trapFocus] Modal changed before focus could be set.');
+                 return;
+             }
+
             const closeButton = element.querySelector('.modal-close-btn');
             const primaryAction = element.querySelector('.btn-primary:not([hidden]), .btn-secondary:not([hidden])');
-            const firstInput = element.querySelector('input:not([type="hidden"], [disabled], [hidden]), select:not([disabled], [hidden]), textarea:not([disabled], [hidden]), .option-button:not([disabled])'); // Added .option-button
+            const firstInput = element.querySelector('input:not([type="hidden"], [disabled], [hidden]), select:not([disabled], [hidden]), textarea:not([disabled], [hidden]), .option-button:not([disabled])');
 
-            let focusTarget = null;
-            if (closeButton && closeButton.offsetParent !== null) focusTarget = closeButton; // Is it visible?
-            else if (primaryAction && primaryAction.offsetParent !== null) focusTarget = primaryAction;
-            else if (firstInput && firstInput.offsetParent !== null) focusTarget = firstInput;
-            else if (firstFocusableEl && firstFocusableEl.offsetParent !== null) focusTarget = firstFocusableEl; // Fallback
+             let focusTarget = null;
+             // Prioritize focusing interactive elements first
+             if (primaryAction && primaryAction.offsetParent !== null) focusTarget = primaryAction;
+             else if (firstInput && firstInput.offsetParent !== null) focusTarget = firstInput;
+             else if (closeButton && closeButton.offsetParent !== null) focusTarget = closeButton;
+             else if (firstFocusableEl && firstFocusableEl.offsetParent !== null) focusTarget = firstFocusableEl; // Fallback
 
              if (focusTarget) {
-                 try { focusTarget.focus(); } catch(err) { console.warn("Focus failed:", err); }
-            }
+                 try {
+                     // console.log('[trapFocus] Attempting to focus:', focusTarget);
+                     focusTarget.focus();
+                 } catch(err) {
+                     console.error("[trapFocus] Focusing element failed:", err, focusTarget);
+                 }
+             } else {
+                 console.warn("[trapFocus] No visible focus target found within:", element);
+             }
          }, CONFIG.MODAL_FOCUS_DELAY);
 
-         // Return function to remove listener (though handled globally by modal logic usually)
+         // Return the handler function so it can be removed later
          return handleFocusTrapKeydown;
     }
 
 
     /** Open a modal dialog */
     function openModal(modalElement, openingTriggerElement) {
-        if (!modalElement || activeModal === modalElement) return;
-        if (activeModal) closeModal(false); // Close existing, don't return focus yet
+        console.log('[openModal] Attempting to open modal:', modalElement?.id);
+        if (!modalElement) {
+            console.error('[openModal] Failed: modalElement is null or undefined.');
+            return;
+        }
+        if (activeModal === modalElement) {
+             console.warn('[openModal] Modal already active:', modalElement.id);
+             return;
+        }
+        // If another modal is active, close it first without returning focus yet
+        if (activeModal) {
+            console.log('[openModal] Closing previously active modal:', activeModal.id);
+            closeModal(false);
+        }
 
         activeModal = modalElement;
-        triggerElement = openingTriggerElement;
+        triggerElement = openingTriggerElement; // Store the button/link that opened the modal
 
-        document.body.style.overflow = 'hidden';
-        modalElement.hidden = false;
+        document.body.style.overflow = 'hidden'; // Prevent background scroll
+        modalElement.hidden = false; // Make it visible
 
+        // Use rAF to ensure 'hidden' removal is processed before adding 'visible' class for transition
         requestAnimationFrame(() => {
             modalElement.classList.add('visible');
+            console.log('[openModal] Added .visible class to:', modalElement.id);
         });
 
+        // Setup focus trapping
         const focusTrapHandler = trapFocus(modalElement);
-        // Store handler reference on element to remove later if needed, though handleModalKeydown manages it too
-        modalElement._focusTrapHandler = focusTrapHandler;
+        if (focusTrapHandler) {
+            // Store handler reference on the element itself to remove it upon closing
+            modalElement._focusTrapHandler = focusTrapHandler;
+        } else {
+             console.warn('[openModal] trapFocus returned null, focus trapping might not work for:', modalElement.id);
+        }
 
+        // Add ESC key listener for this specific modal instance
         document.addEventListener('keydown', handleModalKeydown);
+        console.log('[openModal] Modal opened successfully:', modalElement.id);
     }
 
     /** Close the currently active modal */
     function closeModal(returnFocus = true) {
-        if (!activeModal) return;
+        if (!activeModal) {
+             // console.log('[closeModal] No active modal to close.');
+             return;
+        }
 
         const modalToClose = activeModal;
-        const triggerToFocus = triggerElement;
-        const focusTrapHandler = modalToClose._focusTrapHandler;
+        const triggerToFocus = triggerElement; // Get the trigger element stored when opened
+        const focusTrapHandler = modalToClose._focusTrapHandler; // Get stored handler
 
-        activeModal = null;
-        triggerElement = null;
+        console.log('[closeModal] Closing modal:', modalToClose.id);
 
-        modalToClose.classList.remove('visible');
-        document.removeEventListener('keydown', handleModalKeydown); // Remove listener specific to this modal
-        if(focusTrapHandler) modalToClose.removeEventListener('keydown', focusTrapHandler); // Clean up specific focus listener
+        activeModal = null; // Clear active modal reference
+        triggerElement = null; // Clear trigger element reference
 
+        modalToClose.classList.remove('visible'); // Start transition out
+        document.removeEventListener('keydown', handleModalKeydown); // Remove general ESC listener
+
+        // Remove the specific focus trap listener attached to this modal
+        if(focusTrapHandler) {
+            modalToClose.removeEventListener('keydown', focusTrapHandler);
+            modalToClose._focusTrapHandler = null; // Clear stored reference
+            // console.log('[closeModal] Removed focus trap listener for:', modalToClose.id);
+        }
+
+        // Use transitionend to hide and clean up after transition finishes
         modalToClose.addEventListener('transitionend', () => {
              modalToClose.hidden = true;
-            if (!activeModal) { // Only restore if no *other* modal took over
+             console.log('[closeModal] Modal hidden after transition:', modalToClose.id);
+
+             // Only restore body scroll if no *other* modal has become active in the meantime
+             if (!activeModal) {
                 document.body.style.overflow = '';
+                // console.log('[closeModal] Restored body scroll.');
+             } else {
+                 console.log('[closeModal] Body scroll not restored, another modal is active:', activeModal.id);
              }
-            // Reset specific modal forms/states
+
+            // Reset specific modal forms/states if needed
             if (modalToClose === feedbackModal) resetFeedbackForm();
             if (modalToClose === quizModal) resetQuizModalUI();
 
-         }, { once: true });
+            // Return focus after modal is fully hidden
+            if (returnFocus && triggerToFocus && typeof triggerToFocus.focus === 'function') {
+                console.log('[closeModal] Returning focus to:', triggerToFocus);
+                try {
+                    triggerToFocus.focus({ preventScroll: true }); // preventScroll helps avoid page jump
+                 } catch (e) {
+                    console.error("[closeModal] Failed to return focus:", e);
+                 }
+             } else if (returnFocus) {
+                 console.warn('[closeModal] Could not return focus. Trigger element invalid or not focusable.');
+             }
 
-        // Return focus *after* transition completes for smoothness
-        if (returnFocus && triggerToFocus && typeof triggerToFocus.focus === 'function') {
-            setTimeout(() => {
-                try { triggerToFocus.focus({ preventScroll: true }); } catch (e) { console.warn("Failed to return focus:", e); }
-             }, 10); // Shorter delay just to ensure focus happens post-render
-         }
+         }, { once: true }); // Ensure the listener runs only once
     }
 
     /** Handle Escape key press for closing modals */
     function handleModalKeydown(event) {
         if (event.key === 'Escape' && activeModal) {
-            closeModal();
+            console.log('[handleModalKeydown] Escape key pressed. Closing modal:', activeModal.id);
+            closeModal(); // Close the currently active modal
         }
     }
 
-    /** Minimal reset for Quiz Modal UI (if needed beyond setup) */
+    /** Minimal reset for Quiz Modal UI (called on close) */
     function resetQuizModalUI() {
-         // Potentially clear dynamic classes or states added during interaction
-         // console.log("Quiz modal reset invoked.");
+        // Reset dynamic classes or states added during interaction if any
+        // Clear feedback, results, options etc. This is mostly handled by setupIntroQuizUI on next open.
+        if(qModalFeedbackEl) qModalFeedbackEl.hidden = true;
+        if(qModalResultsEl) qModalResultsEl.hidden = true;
+        if(qModalOptionsEl) qModalOptionsEl.innerHTML = '';
+        if(qModalQuestionEl) qModalQuestionEl.innerHTML = '';
+        console.log("[resetQuizModalUI] Quiz modal UI elements potentially reset.");
     }
 
     // --- Form Handling Helper Functions ---
     function showFormResponseMessage(formElement, message, type) {
         const responseEl = formElement?.querySelector('.form-response-note');
-        if (!responseEl) { console.warn("Form response element not found", formElement); return; }
+        if (!responseEl) { console.warn("Form response element not found for:", formElement); return; }
         responseEl.textContent = message;
-        responseEl.className = `form-response-note ${type}`;
+        responseEl.className = `form-response-note ${type}`; // Ensure class includes 'form-response-note'
         responseEl.hidden = false;
         responseEl.setAttribute('aria-live', type === 'error' ? 'assertive' : 'polite');
     }
@@ -254,6 +330,7 @@
         if (responseEl) {
             responseEl.hidden = true;
             responseEl.textContent = '';
+            responseEl.className = 'form-response-note'; // Reset class
             responseEl.removeAttribute('aria-live');
         }
     }
@@ -264,71 +341,89 @@
         formElement.querySelectorAll('.is-invalid').forEach(input => {
             input.classList.remove('is-invalid');
             input.removeAttribute('aria-invalid');
-            input.removeAttribute('aria-describedby'); // Assuming errors are primary description
+            // Remove aria-describedby only if it points to the error message
+            const errorMsgId = input.getAttribute('aria-describedby');
+            const errorMsgEl = errorMsgId ? formElement.querySelector('#' + errorMsgId) : null;
+            if (errorMsgEl && errorMsgEl.classList.contains('form-error-msg')) {
+                input.removeAttribute('aria-describedby');
+            }
         });
     }
 
     function showInputError(inputElement, message) {
         if (!inputElement) return;
         const formGroup = inputElement.closest('.form-group');
-        const errorMsgElement = formGroup?.querySelector('.form-error-msg');
-        const errorMsgId = errorMsgElement?.id; // Get ID from the message element itself
+        if (!formGroup) return;
+        const errorMsgElement = formGroup.querySelector('.form-error-msg');
 
         inputElement.classList.add('is-invalid');
         inputElement.setAttribute('aria-invalid', 'true');
+
         if (errorMsgElement) {
             errorMsgElement.textContent = message;
-            if (errorMsgId) { // Link input to the error message ID
-                inputElement.setAttribute('aria-describedby', errorMsgId);
-             }
+            // Ensure the error message element has an ID
+            if (!errorMsgElement.id) {
+                errorMsgElement.id = inputElement.id + '-error'; // Generate a predictable ID
+            }
+            // Link the input to the error message using aria-describedby
+            inputElement.setAttribute('aria-describedby', errorMsgElement.id);
         }
     }
 
     /** Basic email validation */
     function isValidEmail(email) {
         if (!email) return false;
-        // Simple regex: something@something.something
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(String(email).toLowerCase());
     }
 
     // --- Main Initialization Function ---
     function initializePersonalPage() {
-        console.info("Rofilid Personal Page Scripts Initializing (v2.4.0)");
+        console.info("Rofilid Personal Page Scripts Initializing (v2.5.0)");
 
         // --- Cache Primary DOM Elements ---
         siteHeader = document.querySelector('.site-header');
         mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
         primaryNavigation = document.getElementById('primary-navigation');
-        quizModal = document.getElementById('quiz-modal');
+        quizModal = document.getElementById('quiz-modal'); // <<< CHECK: Is this element found?
         feedbackModal = document.getElementById('feedback-modal');
         openFeedbackBtn = document.getElementById('open-feedback-modal-btn');
         coachingInterestForm = document.getElementById('coachingInterestForm');
         feedbackForm = document.getElementById('feedback-testimonial-form');
         currentYearSpan = document.getElementById('current-year');
         heroStatsGrid = document.querySelector('.hero-stats-grid');
-        allFadeInSections = document.querySelectorAll('#main-content > section:not(#hero), #main-content > aside.motivational-quote');
+        allFadeInSections = document.querySelectorAll('#main-content > section:not(#hero)[data-animate-fade-in], #main-content > aside.motivational-quote[data-animate-fade-in]'); // Select only elements marked for animation
 
-        // Cache Quiz Modal Elements (with null checks)
-        qModalTitle = quizModal?.querySelector('#quiz-modal-title');
-        qModalCloseBtn = quizModal?.querySelector('#quiz-modal-close');
-        qModalQuestionEl = quizModal?.querySelector('#quiz-modal-question');
-        qModalOptionsEl = quizModal?.querySelector('#quiz-modal-options');
-        qModalFeedbackEl = quizModal?.querySelector('#quiz-modal-feedback');
-        qModalNextBtn = quizModal?.querySelector('#quiz-modal-next');
-        qModalResultsEl = quizModal?.querySelector('#quiz-modal-results');
-        qModalProgressCurrent = quizModal?.querySelector('#quiz-modal-q-current');
-        qModalProgressTotal = quizModal?.querySelector('#quiz-modal-q-total');
-        qModalNextQuizBtn = quizModal?.querySelector('#quiz-modal-next-quiz');
-        qModalRestartBtn = quizModal?.querySelector('#quiz-modal-restart');
-        qModalCloseResultsBtn = quizModal?.querySelector('#quiz-modal-close-results');
-        qModalFullChallengePrompt = quizModal?.querySelector('#quiz-modal-full-challenge-prompt');
+        // Cache Quiz Modal Elements (with null checks and logging)
+        if (!quizModal) {
+            console.error("FATAL: Quiz Modal element (#quiz-modal) not found in the DOM during initialization!");
+        } else {
+            console.log("Quiz Modal element (#quiz-modal) found.");
+            qModalTitle = quizModal.querySelector('#quiz-modal-title');
+            qModalCloseBtn = quizModal.querySelector('#quiz-modal-close');
+            qModalQuestionEl = quizModal.querySelector('#quiz-modal-question');
+            qModalOptionsEl = quizModal.querySelector('#quiz-modal-options');
+            qModalFeedbackEl = quizModal.querySelector('#quiz-modal-feedback');
+            qModalNextBtn = quizModal.querySelector('#quiz-modal-next');
+            qModalResultsEl = quizModal.querySelector('#quiz-modal-results');
+            qModalProgressCurrent = quizModal.querySelector('#quiz-modal-q-current');
+            qModalProgressTotal = quizModal.querySelector('#quiz-modal-q-total');
+            qModalNextQuizBtn = quizModal.querySelector('#quiz-modal-next-quiz');
+            qModalRestartBtn = quizModal.querySelector('#quiz-modal-restart');
+            qModalCloseResultsBtn = quizModal.querySelector('#quiz-modal-close-results');
+            qModalFullChallengePrompt = quizModal.querySelector('#quiz-modal-full-challenge-prompt');
+
+            // Log if any sub-elements are missing
+            if (!qModalTitle) console.warn("Quiz modal sub-element #quiz-modal-title not found.");
+            if (!qModalQuestionEl) console.warn("Quiz modal sub-element #quiz-modal-question not found.");
+            // ... add similar checks for other crucial quiz modal elements if needed
+        }
 
 
         // --- Run Initial Setup ---
-        if (!document.body.classList.contains('personal-page')) {
+        if (!document.body.classList.contains('personal-page') && !document.documentElement.classList.contains('personal-page')) {
             console.warn("'.personal-page' class not found on body or html. Exiting script.");
-            return; // Exit if not the correct page context (using body class for flexibility)
+            return; // Exit if not the correct page context
         }
 
         setupEventListeners();
@@ -343,6 +438,8 @@
         // Mobile Navigation
         if (mobileMenuToggle && primaryNavigation) {
             mobileMenuToggle.addEventListener('click', handleMobileNavToggle);
+        } else {
+            console.warn("Mobile nav toggle or primary navigation element not found.");
         }
 
         // Smooth Scrolling for all internal hash links
@@ -353,18 +450,40 @@
         // Window Resize (Debounced)
         window.addEventListener('resize', debounce(handleResize, CONFIG.RESIZE_DEBOUNCE_DELAY));
 
-        // Modal Closing (Overlay Click) - listener added dynamically by openModal is sufficient
+        // Modal Closing via Overlay Click (added to overlay itself)
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (event) => {
+                // Close only if the click is directly on the overlay, not on its children (the modal content)
+                if (event.target === overlay && activeModal === overlay) { // Ensure it's the active modal's overlay
+                    console.log('[Overlay Click] Closing modal:', overlay.id);
+                    closeModal();
+                }
+            });
+        });
+
 
         // Open Feedback Modal Button
         if (openFeedbackBtn && feedbackModal) {
             openFeedbackBtn.addEventListener('click', (e) => openModal(feedbackModal, e.currentTarget));
+        } else {
+            if (!openFeedbackBtn) console.warn("Open Feedback button (#open-feedback-modal-btn) not found.");
+            if (!feedbackModal) console.warn("Feedback Modal element (#feedback-modal) not found.");
         }
 
         // Generic Modal Close Buttons (Inside modals)
         document.querySelectorAll('.modal-close-btn').forEach(btn => {
-             btn.addEventListener('click', () => closeModal()); // Simple close action
+             const modal = btn.closest('.modal-overlay');
+             if (modal) {
+                 btn.addEventListener('click', () => {
+                     console.log(`[Close Button Click] Closing modal: ${modal.id}`);
+                     closeModal();
+                 });
+             }
         });
-        if(qModalCloseResultsBtn) qModalCloseResultsBtn.addEventListener('click', () => closeModal()); // Specific result close
+        // Specific close button for quiz results
+        if(qModalCloseResultsBtn) {
+            qModalCloseResultsBtn.addEventListener('click', () => closeModal());
+        }
 
 
         // Template Interaction Buttons
@@ -378,6 +497,8 @@
         // Coaching Interest Form
         if (coachingInterestForm) {
             coachingInterestForm.addEventListener('submit', handleCoachingInterestSubmit);
+        } else {
+            // console.log("Coaching interest form not found."); // Optional log
         }
 
         // Feedback / Testimonial Form
@@ -387,16 +508,27 @@
             if (feedbackTypeSelect) {
                 feedbackTypeSelect.addEventListener('change', handleFeedbackTypeChange);
             }
+        } else {
+             // console.log("Feedback form not found."); // Optional log
         }
 
-        // INTRO Quiz Start Buttons
-        document.querySelectorAll('#learning-hub .start-quiz-btn').forEach(button => {
-             button.addEventListener('click', handleIntroQuizStart);
-        });
+        // INTRO Quiz Start Buttons (Check if any buttons are found)
+        const quizStartBtns = document.querySelectorAll('#learning-hub .start-quiz-btn');
+        if (quizStartBtns.length > 0) {
+            console.log(`Found ${quizStartBtns.length} quiz start buttons. Attaching listeners.`);
+            quizStartBtns.forEach(button => {
+                 button.addEventListener('click', handleIntroQuizStart);
+            });
+        } else {
+            console.warn("No quiz start buttons found in #learning-hub. Quizzes cannot be started.");
+        }
+
          // Intro Quiz Modal Navigation Buttons
          if (qModalNextBtn) qModalNextBtn.addEventListener('click', nextIntroModalQuestion);
          if (qModalRestartBtn) qModalRestartBtn.addEventListener('click', restartIntroModalQuiz);
          if (qModalNextQuizBtn) qModalNextQuizBtn.addEventListener('click', handleIntroNextQuizClick);
+
+         console.log("Event listeners setup complete.");
     }
 
     // --- Event Handler Functions ---
@@ -405,11 +537,17 @@
         if (!primaryNavigation || !mobileMenuToggle) return;
         const isExpanded = primaryNavigation.classList.toggle('active');
         mobileMenuToggle.setAttribute('aria-expanded', String(isExpanded));
+
+        // Toggle body scroll based on menu state
         document.body.style.overflow = isExpanded ? 'hidden' : '';
-        if (isExpanded && primaryNavigation.querySelector('a')) {
-             primaryNavigation.querySelector('a').focus(); // Focus first link in open menu
-        } else if (!isExpanded && document.activeElement !== mobileMenuToggle) {
-            mobileMenuToggle.focus(); // Return focus to toggle on close
+
+        // Focus management
+        if (isExpanded) {
+             const firstLink = primaryNavigation.querySelector('a[href], button');
+             firstLink?.focus();
+        } else if (document.activeElement && primaryNavigation.contains(document.activeElement)) {
+             // If focus was inside the closing menu, return it to the toggle button
+             mobileMenuToggle.focus();
         }
     }
 
@@ -417,93 +555,105 @@
         const anchor = event.currentTarget;
         const href = anchor.getAttribute('href');
 
-        if (!href || !href.startsWith('#') || href.length === 1) return; // Ignore non-fragment or empty links
+        if (!href || !href.startsWith('#') || href.length === 1) return;
+
+        // Special case: If mobile nav is open and link is clicked, close nav first
+        if (primaryNavigation?.classList.contains('active') && anchor.closest('#primary-navigation')) {
+            handleMobileNavToggle(); // Close the mobile menu
+        }
 
         try {
             const targetElement = document.querySelector(href);
             if (targetElement) {
-                event.preventDefault();
+                event.preventDefault(); // Prevent default jump
                 const headerOffset = calculateHeaderHeight() + CONFIG.SCROLL_OFFSET_MARGIN;
                 const elementPosition = targetElement.getBoundingClientRect().top;
                 const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
                 window.scrollTo({ top: offsetPosition, behavior: "smooth" });
 
-                if (primaryNavigation?.classList.contains('active')) {
-                    handleMobileNavToggle();
-                    // Focus the link AFTER scroll animation might finish slightly
-                    setTimeout(() => anchor.focus({ preventScroll: true }), 400);
-                } else {
-                     // Optionally focus the target section's heading after scroll
-                     const targetHeading = targetElement.querySelector('h1, h2, h3, h4, h5, h6') || targetElement;
-                     if (targetHeading) {
-                         // Make it focusable if it isn't
-                          if (!targetHeading.hasAttribute('tabindex')) targetHeading.setAttribute('tabindex', '-1');
-                         setTimeout(() => targetHeading.focus({ preventScroll: true }), 400);
+                // Update focus after scrolling - make target focusable if needed
+                // Use timeout to allow scroll to finish
+                setTimeout(() => {
+                    if (!targetElement.hasAttribute('tabindex')) {
+                        targetElement.setAttribute('tabindex', '-1'); // Make non-interactive elements focusable
                     }
-                }
+                    targetElement.focus({ preventScroll: true }); // preventScroll is important here!
+                }, 500); // Adjust delay if needed
+
             } else { console.warn(`Smooth scroll target "${href}" not found.`); }
         } catch (error) { console.error(`Smooth scroll error for "${href}":`, error); }
     }
 
     function handleResize() {
-        // Currently only needed to recalculate header height if it were dynamic.
-        // console.log("Window resized.");
-        // Potentially update CSS variable if layout depends on it dynamically
-        // const newHeight = calculateHeaderHeight();
-        // document.documentElement.style.setProperty('--pp-header-height', `${newHeight}px`);
+        // Close mobile nav on resize to larger screens if it was open
+        if (window.innerWidth > 991 && primaryNavigation?.classList.contains('active')) {
+            handleMobileNavToggle();
+        }
+        // Recalculate header height for scroll offset if header height might change with resize
+        // Currently not needed as header height seems fixed, but good place for it if needed.
     }
 
-    // Removed handleOverlayClick as modal open function now handles its own logic
 
     function handleGetSpreadsheetClick(event) {
         event.preventDefault();
         const button = event.currentTarget;
         const templateName = button.dataset.templateName || 'Spreadsheet';
-        const price = Number(button.dataset.price || '0'); // Ensure number
+        const price = Number(button.dataset.price || '0');
         const formattedPrice = price.toLocaleString('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 0 });
 
-        alert(`Interactive "${templateName}" (${formattedPrice})\n\nFeature coming soon!\nGmail needed for spreadsheet delivery.\nThank you for your interest.`);
-        console.info(`Spreadsheet interest: ${templateName} (₦${price})`);
+        // Replace alert with a more informative log or a less intrusive UI element in the future
+        alert(`Interactive "${templateName}" (${formattedPrice})\n\nThis feature is coming soon!\nA Gmail account will be needed for spreadsheet delivery.\nThank you for your interest.`);
+        console.info(`Spreadsheet interest registered: ${templateName} (Price: ₦${price})`);
     }
 
     function handleDownloadPdfClick(event) {
         event.preventDefault();
         const button = event.currentTarget;
-        const originalButtonHtml = button.innerHTML;
         const card = button.closest('.template-card');
-        const templateKey = button.dataset.templateKey; // Get key from correct attribute
+        const templateKey = button.dataset.templateKey;
 
-        if (!card || !templateKey) { console.error("Could not find template card or key."); return; }
+        if (!card || !templateKey) {
+            console.error("Could not find template card or data-template-key attribute on button:", button);
+            alert("Sorry, there was an error initiating the download.");
+            return;
+        }
 
         const pdfUrl = CONFIG.PDF_FILES[templateKey];
         const templateName = card.querySelector('h3')?.textContent || 'Template';
 
-        if (pdfUrl && pdfUrl !== '#') { // Ensure URL is valid
-            console.info(`Initiating PDF download: ${templateName} from ${pdfUrl}`);
+        if (pdfUrl && pdfUrl !== '#') {
+            console.info(`Initiating PDF download for: ${templateName} (${templateKey}) from ${pdfUrl}`);
+            const originalButtonHtml = button.innerHTML; // Store original content
+
             try {
                 const link = document.createElement('a');
                 link.href = pdfUrl;
-                const fileName = templateName.toLowerCase().replace(/[\s/&]+/g, '-') + '-template-rofilid.pdf';
-                link.download = fileName;
+                // Generate a cleaner filename
+                const safeName = templateName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+                link.download = `rofilid-${safeName}-template.pdf`;
+
                 document.body.appendChild(link);
                 link.click();
-                document.body.removeChild(link); // Cleanup
+                document.body.removeChild(link); // Clean up the temporary link
 
-                // User Feedback
-                button.disabled = true; // Prevent double clicks
+                // User Feedback on the button
+                button.disabled = true;
                 button.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i> <span>Downloading...</span>';
                 setTimeout(() => {
                     button.innerHTML = originalButtonHtml; // Restore original content
                     button.disabled = false;
                 }, CONFIG.PDF_DOWNLOAD_FEEDBACK_DELAY);
+
             } catch (error) {
                 console.error("PDF Download failed:", error);
-                alert(`Sorry, the download for "${templateName}" encountered an error. Please try again later.`);
+                alert(`Sorry, the download for "${templateName}" encountered an error. Please check the console or try again later.`);
+                button.innerHTML = originalButtonHtml; // Restore button immediately on error
+                button.disabled = false;
             }
         } else {
-            alert(`Download unavailable for "${templateName}". The file path might be missing or incorrect.`);
-            console.warn(`PDF path invalid or missing for template key: "${templateKey}". URL: ${pdfUrl}`);
+            alert(`Download is currently unavailable for "${templateName}". Please check back later.`);
+            console.warn(`PDF path invalid or missing for template key: "${templateKey}". Configured URL: ${pdfUrl}`);
         }
     }
 
@@ -512,8 +662,8 @@
         const form = event.currentTarget;
         const emailInput = form.querySelector('#interest-email');
         const submitButton = form.querySelector('button[type="submit"]');
-        if (!emailInput || !submitButton) return; // Guard
-        const originalButtonText = submitButton.innerHTML;
+        if (!form || !emailInput || !submitButton) return;
+        const originalButtonHtml = submitButton.innerHTML;
 
         clearFormErrors(form);
         hideFormResponseMessage(form);
@@ -524,31 +674,38 @@
         if (!email) { showInputError(emailInput, 'Email address is required.'); isValid = false; }
         else if (!isValidEmail(email)) { showInputError(emailInput, 'Please enter a valid email address.'); isValid = false; }
 
-        if (!isValid) { form.querySelector('.is-invalid')?.focus(); return; }
+        if (!isValid) {
+            form.querySelector('.is-invalid')?.focus();
+            return;
+        }
 
         submitButton.disabled = true;
         submitButton.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Submitting...';
 
         // --- API Simulation ---
-        console.info("Submitting coaching interest for:", email);
+        console.info("Simulating coaching interest submission for:", email);
         try {
             await new Promise(resolve => setTimeout(resolve, CONFIG.API_SIMULATION_DELAY));
             const success = Math.random() > 0.1; // ~90% success rate
 
             if (success) {
-                 showFormResponseMessage(form, 'Thank you! We\'ll notify you when coaching is available.', 'success');
+                 console.log("Simulated coaching interest submission SUCCESS");
+                 showFormResponseMessage(form, 'Thank you! We\'ll notify you when coaching becomes available.', 'success');
                  form.reset();
-                 // No need to manually restore button text, handled in finally
+                 // Optionally, focus an element outside the form after reset, like the form's heading
+                 form.closest('.coaching-interest')?.querySelector('h3')?.focus();
             } else {
                  throw new Error("Simulated server failure.");
             }
         } catch (error) {
-            console.error("Coaching interest submission failed:", error);
-            showFormResponseMessage(form, 'Submission failed. Please check connection and try again.', 'error');
+            console.error("Simulated coaching interest submission FAILED:", error);
+            showFormResponseMessage(form, 'Submission failed. Please check your connection and try again later.', 'error');
+            // Focus the input with the error, or the first input if none specific
+            form.querySelector('.is-invalid')?.focus() || emailInput.focus();
         } finally {
             // Always re-enable button and restore text after attempt
              submitButton.disabled = false;
-             submitButton.innerHTML = originalButtonText;
+             submitButton.innerHTML = originalButtonHtml;
         }
         // --- End Simulation ---
     }
@@ -560,13 +717,16 @@
 
         const isTestimonial = event.target.value === 'testimonial';
         permissionGroup.hidden = !isTestimonial;
-        if (!isTestimonial && permissionCheckbox) { permissionCheckbox.checked = false; }
+        // Ensure checkbox state is reset if type changes away from testimonial
+        if (!isTestimonial && permissionCheckbox) {
+             permissionCheckbox.checked = false;
+        }
     }
 
     async function handleFeedbackSubmit(event) {
         event.preventDefault();
         const form = event.currentTarget;
-        if (!form) return; // Guard
+        if (!form) return;
 
         const nameInput = form.querySelector('#feedback-name');
         const emailInput = form.querySelector('#feedback-email');
@@ -574,33 +734,57 @@
         const messageInput = form.querySelector('#feedback-message');
         const permissionInput = form.querySelector('#feedback-permission');
         const submitButton = form.querySelector('button[type="submit"]');
-        if (!typeInput || !messageInput || !submitButton) return; // Essential elements guard
-        const originalButtonText = submitButton.innerHTML;
+        if (!typeInput || !messageInput || !submitButton) return;
+        const originalButtonHtml = submitButton.innerHTML;
 
         clearFormErrors(form);
         hideFormResponseMessage(form);
         let isValid = true;
+        let firstInvalidElement = null; // Keep track of the first error
 
         // Validation
         const feedbackType = typeInput.value;
         const feedbackMessage = messageInput.value.trim();
         const feedbackEmail = emailInput.value.trim();
 
-        if (!feedbackType) { showInputError(typeInput, 'Please select feedback type.'); isValid = false; }
-        if (!feedbackMessage) { showInputError(messageInput, 'Feedback message is required.'); isValid = false; }
-        else if (feedbackMessage.length < 10) { showInputError(messageInput, 'Message must be at least 10 characters.'); isValid = false; }
-        else if (feedbackMessage.length > 2000) { showInputError(messageInput, 'Message cannot exceed 2000 characters.'); isValid = false; }
-        if (feedbackEmail && !isValidEmail(feedbackEmail)) { showInputError(emailInput, 'Enter a valid email or leave blank.'); isValid = false; }
+        if (!feedbackType) {
+            showInputError(typeInput, 'Please select feedback type.');
+            isValid = false;
+            if (!firstInvalidElement) firstInvalidElement = typeInput;
+        }
+        if (!feedbackMessage) {
+            showInputError(messageInput, 'Feedback message is required.');
+            isValid = false;
+             if (!firstInvalidElement) firstInvalidElement = messageInput;
+        }
+        else if (feedbackMessage.length < 10) {
+            showInputError(messageInput, 'Message must be at least 10 characters long.');
+            isValid = false;
+             if (!firstInvalidElement) firstInvalidElement = messageInput;
+        }
+        else if (feedbackMessage.length > 2000) {
+            showInputError(messageInput, 'Message cannot exceed 2000 characters.');
+             isValid = false;
+             if (!firstInvalidElement) firstInvalidElement = messageInput;
+        }
+        if (feedbackEmail && !isValidEmail(feedbackEmail)) {
+            showInputError(emailInput, 'Please enter a valid email address or leave it blank.');
+             isValid = false;
+             if (!firstInvalidElement) firstInvalidElement = emailInput;
+        }
 
-        if (!isValid) { form.querySelector('.is-invalid')?.focus(); return; }
+        if (!isValid) {
+            firstInvalidElement?.focus(); // Focus the first element with an error
+            return;
+        }
 
         // Prepare Data
         const formData = {
-            name: nameInput.value.trim() || 'Anonymous', // Default name if blank
+            name: nameInput.value.trim() || 'Anonymous',
             email: feedbackEmail,
             type: feedbackType,
             message: feedbackMessage,
-            permissionGranted: (feedbackType === 'testimonial' && permissionInput) ? permissionInput.checked : null
+            permissionGranted: (feedbackType === 'testimonial' && permissionInput?.checked) || null // Handle null permissionInput
         };
 
         // Submit
@@ -608,33 +792,33 @@
         submitButton.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Submitting...';
 
         // --- API Simulation ---
-        console.info("Submitting feedback:", formData);
+        console.info("Simulating feedback submission:", formData);
+        let submissionSuccess = false; // Track success for final block
         try {
             await new Promise(resolve => setTimeout(resolve, CONFIG.API_SIMULATION_DELAY));
             const success = Math.random() > 0.1;
 
             if (success) {
+                 console.log("Simulated feedback submission SUCCESS");
                  showFormResponseMessage(form, 'Feedback submitted successfully. Thank you!', 'success');
+                 submissionSuccess = true; // Mark as success
                  setTimeout(() => {
-                    // Reset and close modal after short delay
-                     form.reset(); // Includes clearing checkbox, selects etc.
-                     handleFeedbackTypeChange({ target: typeInput }); // Reset permission visibility
-                     closeModal();
-                 }, 2000); // Show success msg before closing
+                     closeModal(); // Close modal after delay
+                     // Resetting form is now handled by closeModal -> resetFeedbackForm
+                 }, 2000);
              } else {
                  throw new Error("Simulated feedback submission failure.");
             }
         } catch (error) {
-            console.error("Feedback submission failed:", error);
-             showFormResponseMessage(form, 'Submission failed. Please check connection and try again.', 'error');
-             // Enable button immediately on error
-            submitButton.disabled = false;
-             submitButton.innerHTML = originalButtonText;
+            console.error("Simulated feedback submission FAILED:", error);
+             showFormResponseMessage(form, 'Submission failed. Please check your connection and try again.', 'error');
+             // Focus the first field (e.g., type) on generic error
+             typeInput?.focus();
          } finally {
-             // If modal didn't close on success (logic error), ensure button is reset
-             if(!submitButton.disabled) { // check if already handled by success path
+             // Only restore button if submission failed or didn't trigger the delayed close
+             if (!submissionSuccess) {
                 submitButton.disabled = false;
-                submitButton.innerHTML = originalButtonText;
+                submitButton.innerHTML = originalButtonHtml;
              }
         }
         // --- End Simulation ---
@@ -642,70 +826,86 @@
 
     function resetFeedbackForm() {
          if (!feedbackForm) return;
-         feedbackForm.reset(); // Native reset handles most fields
+         feedbackForm.reset(); // Native reset is usually sufficient
          clearFormErrors(feedbackForm);
          hideFormResponseMessage(feedbackForm);
-         const permissionGroup = feedbackForm.querySelector('.permission-group');
-         if (permissionGroup) permissionGroup.hidden = true; // Ensure hidden
+         // Ensure permission group visibility is reset based on the (now reset) select value
+         handleFeedbackTypeChange({ target: feedbackForm.querySelector('#feedback-type') });
+         // Restore button state (in case it was stuck in loading)
          const submitButton = feedbackForm.querySelector('button[type="submit"]');
          if (submitButton) {
              submitButton.disabled = false;
-             submitButton.innerHTML = '<i class="fas fa-paper-plane" aria-hidden="true"></i> Submit Feedback'; // Restore text
+             submitButton.innerHTML = '<i class="fas fa-paper-plane" aria-hidden="true"></i> Submit Feedback';
          }
+         console.log("[resetFeedbackForm] Feedback form reset.");
      }
 
     // --- Animation Setup ---
     function setupAnimations() {
-        const observerOptions = {
-            threshold: 0.15,
-            rootMargin: "0px 0px -50px 0px"
-        };
+        // Check if IntersectionObserver is supported
+        if (!("IntersectionObserver" in window)) {
+            console.warn("IntersectionObserver not supported. Skipping scroll animations.");
+            // Make all elements visible immediately as a fallback
+            document.querySelectorAll('[data-animate-fade-in]').forEach(el => {
+                el.classList.add('is-visible');
+            });
+            return; // Exit animation setup
+        }
 
-        // Intersection Observer for Fade-In Sections
-        if (CONFIG.ENABLE_SECTION_FADE_IN && "IntersectionObserver" in window && allFadeInSections.length > 0) {
+        // --- Intersection Observer for General Fade-In Sections ---
+        if (CONFIG.ENABLE_SECTION_FADE_IN) {
+            const fadeObserverOptions = {
+                threshold: 0.15, // Trigger when 15% visible
+                rootMargin: "0px 0px -50px 0px" // Trigger slightly before fully in view
+            };
             const fadeObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target);
+                        observer.unobserve(entry.target); // Stop observing once visible
                     }
                 });
-            }, observerOptions);
+            }, fadeObserverOptions);
+
             allFadeInSections.forEach(section => {
-                section.setAttribute('data-animate-fade-in', ''); // Ensure attribute for CSS targeting
+                // data-animate-fade-in attribute should be on the element in HTML
                 fadeObserver.observe(section);
             });
         } else {
-            // Fallback or if disabled: Make sections visible immediately
+            // If disabled, make elements visible immediately
             allFadeInSections.forEach(section => section.classList.add('is-visible'));
-            if (CONFIG.ENABLE_SECTION_FADE_IN && !("IntersectionObserver" in window)) {
-                 console.warn("IntersectionObserver not supported, skipping fade animations.");
-            }
         }
 
-        // Hero Stats Cards Animation (Staggered fade-in)
-        if (CONFIG.ENABLE_HERO_STATS_ANIMATION && "IntersectionObserver" in window && heroStatsGrid) {
-            const statCards = heroStatsGrid.querySelectorAll('.stat-card');
-             const statsObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                         const card = entry.target;
-                         const delay = (parseInt(card.dataset.index || 0)) * 100; // ms stagger delay
-                        card.style.transitionDelay = `${delay}ms`;
-                        card.classList.add('is-visible');
-                        observer.unobserve(card);
-                    }
-                });
-            }, { threshold: 0.4 }); // Trigger when 40% visible
+        // --- Hero Stats Cards Animation (Staggered) ---
+        if (CONFIG.ENABLE_HERO_STATS_ANIMATION && heroStatsGrid) {
+             const statCards = heroStatsGrid.querySelectorAll('.stat-card[data-animate-fade-in]'); // Select only cards marked for animation
+             if (statCards.length > 0) {
+                 const statsObserverOptions = {
+                    threshold: 0.3, // Trigger when 30% visible
+                    // rootMargin: "0px 0px -20px 0px" // Optional adjustment
+                 };
+                 const statsObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                             const card = entry.target;
+                             // Calculate delay based on index (assuming index is set or implied)
+                             // Let's use array index for simplicity if data-index isn't reliable
+                             const cardIndex = Array.from(statCards).indexOf(card);
+                             const delay = cardIndex * 100; // 100ms stagger delay
+                            card.style.transitionDelay = `${delay}ms`;
+                            card.classList.add('is-visible');
+                            observer.unobserve(card);
+                        }
+                    });
+                }, statsObserverOptions);
 
-            statCards.forEach((card, index) => {
-                 card.dataset.index = index; // Store index for delay calculation
-                 card.setAttribute('data-animate-fade-in', ''); // Mark for animation
-                statsObserver.observe(card);
-             });
+                 statCards.forEach(card => {
+                    statsObserver.observe(card);
+                 });
+             }
          } else if (heroStatsGrid) {
              // Fallback if observer or setting disabled
-             heroStatsGrid.querySelectorAll('.stat-card').forEach(card => card.classList.add('is-visible'));
+             heroStatsGrid.querySelectorAll('.stat-card[data-animate-fade-in]').forEach(card => card.classList.add('is-visible'));
          }
     }
 
@@ -719,7 +919,7 @@
     // --- INTRO Quiz Logic (Specific to personal.html Learning Hub) ---
     // Hardcoded quiz data for the intro section
     const introQuizQuestions = [
-        // Copy-pasted the 20 questions here (omitted for brevity in this thought process)
+         // Questions 1-20 (as provided previously)
          { id: 1, categoryId: 1, category: "Income & Vitals Check", question: "What is the first essential step when starting to create a budget?", options: ["Calculate total monthly income", "List all fixed expenses", "Set long-term financial goals", "Track spending habits for a month"], correctAnswerIndex: 0, explanation: "Knowing your total income is fundamental; it's the basis upon which all budget allocations are planned." },
          { id: 2, categoryId: 1, category: "Income & Vitals Check", question: "You earn ₦150,000 per month after tax and manage to save ₦22,500. What is your savings rate?", options: ["10%", "15%", "20%", "22.5%"], correctAnswerIndex: 1, explanation: "Savings Rate = (Amount Saved / Total Income) × 100. So, (₦22,500 / ₦150,000) × 100 = 15%." },
          { id: 3, categoryId: 1, category: "Income & Vitals Check", question: "What does 'Pay Yourself First' mean?", options: ["Spend on wants before needs", "Allocate income to savings/investments *before* other spending", "Pay off all debts before saving", "Treat yourself each payday"], correctAnswerIndex: 1, explanation: "'Pay Yourself First' prioritizes saving by treating it like a mandatory bill, ensuring progress towards goals." },
@@ -742,77 +942,117 @@
          { id: 20, categoryId: 4, category: "Spending Awareness", question: "Item costs ₦25,000, but has a 20% discount. What's the final price?", options: ["₦5,000", "₦20,000", "₦24,000", "₦30,000"], correctAnswerIndex: 1, explanation: "Discount = ₦25k * 0.20 = ₦5k. Final Price = ₦25k - ₦5k = ₦20,000." }
     ];
 
+    // --- DEBUG: Check if questions array is populated ---
+    if (!introQuizQuestions || introQuizQuestions.length === 0) {
+        console.error("FATAL: introQuizQuestions array is empty or undefined! Quizzes cannot load.");
+    } else {
+        console.log(`introQuizQuestions array loaded with ${introQuizQuestions.length} questions.`);
+    }
+    // --- END DEBUG ---
+
+
     function handleIntroQuizStart(event) {
+         console.log('[handleIntroQuizStart] called by:', event.currentTarget); // Log which button was clicked
          const button = event.currentTarget;
          const card = button.closest('.category-card');
-         const categoryId = card ? parseInt(card.dataset.categoryId, 10) : null;
+         if (!card) {
+             console.error('[handleIntroQuizStart] Could not find parent .category-card for button:', button);
+             alert("An error occurred trying to start the quiz.");
+             return;
+         }
 
-         if (!categoryId || categoryId < 1) {
-            console.error("Invalid category ID:", card?.dataset.categoryId);
-            alert("Cannot start quiz due to configuration issue.");
+         const categoryId = parseInt(card.dataset.categoryId, 10);
+         console.log(`[handleIntroQuizStart] Category ID found: ${categoryId}`);
+
+         if (isNaN(categoryId) || categoryId < 1) {
+            console.error(`[handleIntroQuizStart] Invalid category ID: ${card.dataset.categoryId}`);
+            alert("Cannot start quiz due to an invalid category configuration.");
              return;
          }
         if (categoryId > CONFIG.LAST_INTRO_CATEGORY_ID) {
-            console.warn(`Attempted to start intro quiz with ID ${categoryId} > ${CONFIG.LAST_INTRO_CATEGORY_ID}. Redirecting or informing user might be better.`);
-             alert("This quiz might be part of the full challenge. Please visit the 'All Quizzes' page."); // Example message
-             // Alternatively: window.location.href = 'quizzes.html#theme-X'; // If structure known
+            console.warn(`[handleIntroQuizStart] Attempted to start intro quiz with ID ${categoryId} > ${CONFIG.LAST_INTRO_CATEGORY_ID}. This might be a full challenge quiz.`);
+             alert("This quiz might be part of the full challenge. Please visit the 'All Quizzes' page for more topics.");
+             // Optionally redirect: window.location.href = 'quizzes.html';
              return;
         }
 
+         console.log(`[handleIntroQuizStart] Filtering questions for category ID: ${categoryId}`);
         const categoryQuestions = introQuizQuestions.filter(q => q.categoryId === categoryId);
+
         if (categoryQuestions.length === 0) {
-             console.error(`No questions found for intro category ID: ${categoryId}`);
-            alert("Sorry, questions for this check could not be loaded.");
+             console.error(`[handleIntroQuizStart] No questions found for intro category ID: ${categoryId}. Check introQuizQuestions array.`);
+            alert("Sorry, questions for this check could not be loaded at this time.");
              return;
         }
 
-         // All checks passed, start the quiz
-         startIntroQuiz(categoryId, categoryQuestions, button);
+         console.log(`[handleIntroQuizStart] Found ${categoryQuestions.length} questions. Calling startIntroQuiz...`);
+         startIntroQuiz(categoryId, categoryQuestions, button); // Pass the button as the opening trigger
     }
 
      function startIntroQuiz(catId, questions, openingTrigger) {
-        console.info(`Starting Intro Quiz - Category: ${catId}`);
-         if (!quizModal || questions.length === 0) { // Ensure modal exists
-             console.error("Quiz modal or questions array is missing."); return;
-        }
+        console.info(`[startIntroQuiz] Starting Intro Quiz - Category: ${catId}`);
+         // --- DEBUG: Check if quizModal element exists AT THE TIME OF CALLING ---
+         if (!quizModal) {
+             console.error("[startIntroQuiz] FAILED: quizModal element is null or undefined. Cannot start quiz.");
+             alert("Error: Quiz interface could not be loaded.");
+             return;
+         }
+         if (!questions || questions.length === 0) {
+             console.error("[startIntroQuiz] FAILED: No questions provided for category:", catId);
+             alert("Error: No questions available for this quiz check.");
+             return;
+         }
+         // --- END DEBUG ---
+
          currentIntroQuizData = { questions, currentQuestionIndex: 0, score: 0, categoryId: catId };
-         setupIntroQuizUI();
-         displayIntroModalQuestion();
-         openModal(quizModal, openingTrigger);
+         console.log("[startIntroQuiz] Current quiz data set:", currentIntroQuizData);
+
+         setupIntroQuizUI(); // Reset and prepare UI elements
+         displayIntroModalQuestion(); // Display the first question
+
+         console.log("[startIntroQuiz] Calling openModal...");
+         openModal(quizModal, openingTrigger); // Open the modal, pass the trigger
      }
 
      function setupIntroQuizUI() {
-         // Ensure all required elements exist before manipulation
+         console.log("[setupIntroQuizUI] Setting up quiz UI...");
+         // Check essential elements again before manipulating
          if (!qModalTitle || !qModalResultsEl || !qModalFeedbackEl || !qModalQuestionEl || !qModalOptionsEl || !qModalProgressTotal || !qModalProgressCurrent || !qModalNextBtn || !qModalNextQuizBtn || !qModalRestartBtn || !qModalCloseResultsBtn || !qModalFullChallengePrompt) {
-            console.error("One or more intro quiz modal UI elements are missing. Cannot setup UI.");
-             return;
-        }
+            console.error("[setupIntroQuizUI] One or more essential quiz modal UI elements are missing! Cannot setup UI properly.");
+            // Attempt to proceed, but log loudly
+         }
 
          const firstQuestion = currentIntroQuizData.questions[0];
-         qModalTitle.textContent = firstQuestion ? firstQuestion.category : 'Financial Concept Check'; // Set title
-         qModalProgressTotal.textContent = currentIntroQuizData.questions.length; // Set total number of questions
+         if(qModalTitle) qModalTitle.textContent = firstQuestion ? firstQuestion.category : 'Financial Concept Check';
+         if(qModalProgressTotal) qModalProgressTotal.textContent = currentIntroQuizData.questions.length;
 
          // Reset visibility/content of dynamic areas
-         qModalResultsEl.hidden = true; qModalResultsEl.innerHTML = '';
-         qModalFeedbackEl.hidden = true; qModalFeedbackEl.innerHTML = '';
-         qModalQuestionEl.hidden = false; qModalQuestionEl.innerHTML = 'Loading question...';
-         qModalOptionsEl.hidden = false; qModalOptionsEl.innerHTML = '';
-         qModalProgressCurrent?.closest('.quiz-modal-progress')?.removeAttribute('hidden'); // Ensure progress bar wrapper visible
+         if(qModalResultsEl) { qModalResultsEl.hidden = true; qModalResultsEl.innerHTML = ''; }
+         if(qModalFeedbackEl) { qModalFeedbackEl.hidden = true; qModalFeedbackEl.innerHTML = ''; }
+         if(qModalQuestionEl) { qModalQuestionEl.hidden = false; qModalQuestionEl.innerHTML = 'Loading question...'; }
+         if(qModalOptionsEl) { qModalOptionsEl.hidden = false; qModalOptionsEl.innerHTML = ''; }
 
-         // Hide all navigation buttons initially
-         qModalNextBtn.hidden = true;
-         qModalNextQuizBtn.hidden = true;
-         qModalRestartBtn.hidden = true;
-         qModalCloseResultsBtn.hidden = true;
-         qModalFullChallengePrompt.hidden = true;
+         const progressWrapper = qModalProgressCurrent?.closest('.quiz-modal-progress');
+         if (progressWrapper) progressWrapper.removeAttribute('hidden');
+
+         // Ensure all navigation buttons are hidden initially
+         [qModalNextBtn, qModalNextQuizBtn, qModalRestartBtn, qModalCloseResultsBtn].forEach(btn => { if (btn) btn.hidden = true; });
+         if(qModalFullChallengePrompt) qModalFullChallengePrompt.hidden = true;
+         console.log("[setupIntroQuizUI] UI setup complete.");
      }
 
      function displayIntroModalQuestion() {
-         if (!qModalQuestionEl || !qModalOptionsEl || !qModalProgressCurrent) return; // Already checked in setup, but safety first
+         console.log(`[displayIntroModalQuestion] Displaying question index: ${currentIntroQuizData.currentQuestionIndex}`);
+         if (!qModalQuestionEl || !qModalOptionsEl || !qModalProgressCurrent) {
+             console.error("[displayIntroModalQuestion] Missing critical UI elements (question, options, or progress). Cannot display question.");
+             return;
+         }
 
         const quiz = currentIntroQuizData;
         if (quiz.currentQuestionIndex >= quiz.questions.length) {
-            showIntroModalResults(); return;
+            console.log("[displayIntroModalQuestion] Reached end of questions. Showing results.");
+            showIntroModalResults();
+            return;
          }
 
         const q = quiz.questions[quiz.currentQuestionIndex];
@@ -822,11 +1062,15 @@
 
          q.options.forEach((option, index) => {
             const button = document.createElement('button');
+            // Use textContent for security against XSS if options were dynamic
             button.textContent = option;
-            button.className = 'option-button btn'; // Apply base btn class? Maybe not needed if only using option-button styling
-             button.type = 'button';
+            button.className = 'option-button'; // Use only specific class, rely on CSS for button-like appearance
+            button.type = 'button';
             button.dataset.index = index;
-            button.onclick = () => handleIntroModalOptionSelection(index); // Use arrow fn
+            // Set role=radio for accessibility within the role=radiogroup container
+            button.setAttribute('role', 'radio');
+            button.setAttribute('aria-checked', 'false'); // Initially not checked
+            button.onclick = () => handleIntroModalOptionSelection(index);
             qModalOptionsEl.appendChild(button);
         });
 
@@ -834,34 +1078,54 @@
         if(qModalFeedbackEl) qModalFeedbackEl.hidden = true;
         if(qModalNextBtn) qModalNextBtn.hidden = true;
 
-         // Focus first option
+        // Focus the first option button after rendering
         qModalOptionsEl.querySelector('.option-button')?.focus();
+         console.log("[displayIntroModalQuestion] Question displayed.");
     }
 
     function handleIntroModalOptionSelection(selectedIndex) {
+         console.log(`[handleIntroModalOptionSelection] Option selected: index ${selectedIndex}`);
          const quiz = currentIntroQuizData;
          const q = quiz.questions[quiz.currentQuestionIndex];
-         if (!q || !qModalOptionsEl) return;
+         if (!q || !qModalOptionsEl) {
+             console.error("[handleIntroModalOptionSelection] Missing question data or options element.");
+             return;
+         }
 
-         const buttons = qModalOptionsEl.querySelectorAll('button');
-         buttons.forEach(button => button.disabled = true);
+         const buttons = qModalOptionsEl.querySelectorAll('.option-button');
+         buttons.forEach((button, index) => {
+             button.disabled = true; // Disable all buttons
+             // Update aria-checked based on selection
+             button.setAttribute('aria-checked', index === selectedIndex ? 'true' : 'false');
+         });
 
          const isCorrect = selectedIndex === q.correctAnswerIndex;
-         if (isCorrect) quiz.score++;
+         if (isCorrect) {
+             quiz.score++;
+             console.log(`[handleIntroModalOptionSelection] Correct! Score: ${quiz.score}`);
+         } else {
+             console.log(`[handleIntroModalOptionSelection] Incorrect. Correct answer index: ${q.correctAnswerIndex}`);
+         }
 
          showIntroModalFeedback(selectedIndex, q.correctAnswerIndex, q.explanation);
      }
 
     function showIntroModalFeedback(selectedIndex, correctIndex, explanation) {
-         const buttons = qModalOptionsEl?.querySelectorAll('button');
-         if (!buttons || !qModalFeedbackEl) return;
+         console.log("[showIntroModalFeedback] Displaying feedback.");
+         const buttons = qModalOptionsEl?.querySelectorAll('.option-button');
+         if (!buttons || !qModalFeedbackEl) {
+             console.error("[showIntroModalFeedback] Missing options buttons or feedback element.");
+             return;
+         }
 
          // Style selected/correct/other buttons
          buttons.forEach((button, index) => {
              button.classList.remove('correct', 'incorrect'); // Clean up first
-            if (index === correctIndex) button.classList.add('correct');
-            else if (index === selectedIndex) button.classList.add('incorrect');
-             // button.disabled is already true
+            if (index === correctIndex) {
+                button.classList.add('correct');
+            } else if (index === selectedIndex) { // Only mark incorrect if selected and not correct
+                button.classList.add('incorrect');
+            }
          });
 
          // Show feedback text
@@ -872,41 +1136,52 @@
          // Reveal 'Next' button or trigger results display
          const quiz = currentIntroQuizData;
          if (quiz.currentQuestionIndex < quiz.questions.length - 1) {
-            if(qModalNextBtn) qModalNextBtn.hidden = false;
-             qModalNextBtn?.focus();
+            if(qModalNextBtn) {
+                qModalNextBtn.hidden = false;
+                qModalNextBtn.focus(); // Focus the next button
+                console.log("[showIntroModalFeedback] Next question available.");
+            } else { console.warn("[showIntroModalFeedback] Next button not found."); }
          } else {
-             if(qModalNextBtn) qModalNextBtn.hidden = true;
-             setTimeout(showIntroModalResults, 1200); // Delay showing results
+             if(qModalNextBtn) qModalNextBtn.hidden = true; // Hide next if it's the last question
+             console.log("[showIntroModalFeedback] Last question answered. Will show results soon.");
+             setTimeout(showIntroModalResults, 1200); // Delay showing results for user to read feedback
          }
      }
 
     function nextIntroModalQuestion() {
+         console.log("[nextIntroModalQuestion] Advancing to next question.");
          if (!currentIntroQuizData) return;
-         if (qModalFeedbackEl) qModalFeedbackEl.hidden = true;
-         if (qModalNextBtn) qModalNextBtn.hidden = true;
+         if (qModalFeedbackEl) qModalFeedbackEl.hidden = true; // Hide previous feedback
+         if (qModalNextBtn) qModalNextBtn.hidden = true; // Hide next button
 
          currentIntroQuizData.currentQuestionIndex++;
          displayIntroModalQuestion();
      }
 
     function showIntroModalResults() {
-        // Hide quiz elements
+        console.log("[showIntroModalResults] Displaying quiz results.");
+        // Hide active quiz elements
         if (qModalQuestionEl) qModalQuestionEl.hidden = true;
         if (qModalOptionsEl) qModalOptionsEl.hidden = true;
         if (qModalFeedbackEl) qModalFeedbackEl.hidden = true;
         if (qModalNextBtn) qModalNextBtn.hidden = true;
-        qModalProgressCurrent?.closest('.quiz-modal-progress')?.setAttribute('hidden', ''); // Hide progress wrapper
+        const progressWrapper = qModalProgressCurrent?.closest('.quiz-modal-progress');
+        if (progressWrapper) progressWrapper.setAttribute('hidden', '');
 
          const quiz = currentIntroQuizData;
-         if (!qModalResultsEl || !quiz) { console.error("Missing results element or quiz data."); return; }
+         if (!qModalResultsEl || !quiz) {
+             console.error("[showIntroModalResults] Missing results element or quiz data. Cannot display results.");
+             closeModal(); // Close modal if results can't be shown
+             return;
+         }
 
         const score = quiz.score;
         const total = quiz.questions.length;
         const percentage = total > 0 ? Math.round((score / total) * 100) : 0;
-         let feedbackMsg = 'Keep learning!';
-         if (percentage === 100) feedbackMsg = 'Excellent work!';
-         else if (percentage >= 80) feedbackMsg = 'Great job!';
-         else if (percentage >= 50) feedbackMsg = 'Good grasp!';
+         let feedbackMsg = 'Keep learning and exploring!';
+         if (percentage === 100) feedbackMsg = 'Excellent work! You have a solid grasp.';
+         else if (percentage >= 80) feedbackMsg = 'Great job! You\'re well on your way.';
+         else if (percentage >= 50) feedbackMsg = 'Good start! Review the explanations to strengthen your understanding.';
 
         qModalResultsEl.innerHTML = `
             <h4>Check Complete!</h4>
@@ -915,58 +1190,74 @@
             <p class="quiz-result-message">${feedbackMsg}</p>`;
         qModalResultsEl.hidden = false;
 
-        // Control navigation button visibility
-         if (qModalRestartBtn) qModalRestartBtn.hidden = false; // Always show restart
-         if (qModalCloseResultsBtn) qModalCloseResultsBtn.hidden = false; // Always show close
-        let focusTarget = qModalCloseResultsBtn;
+        // Control navigation button visibility at results screen
+        let focusTarget = null; // Determine which button to focus
+
+         if (qModalRestartBtn) { qModalRestartBtn.hidden = false; focusTarget = qModalRestartBtn; } // Default focus to restart
+         if (qModalCloseResultsBtn) { qModalCloseResultsBtn.hidden = false; focusTarget = qModalCloseResultsBtn; } // Override focus to close if preferred
 
         // Show 'Next Check' or 'Full Challenge' prompt based on category ID
         if (quiz.categoryId && quiz.categoryId < CONFIG.LAST_INTRO_CATEGORY_ID) {
             if (qModalNextQuizBtn) {
-                 qModalNextQuizBtn.dataset.nextCategoryId = quiz.categoryId + 1;
+                 qModalNextQuizBtn.dataset.nextCategoryId = quiz.categoryId + 1; // Set ID for next quiz
                  qModalNextQuizBtn.hidden = false;
-                 focusTarget = qModalNextQuizBtn; // Primary action is next quiz
-            }
+                 focusTarget = qModalNextQuizBtn; // Make 'Next Check' the primary focus
+                 console.log("[showIntroModalResults] Showing 'Next Check' button.");
+            } else { console.warn("[showIntroModalResults] Next Quiz button not found."); }
         } else if (quiz.categoryId === CONFIG.LAST_INTRO_CATEGORY_ID) {
-            if (qModalFullChallengePrompt) qModalFullChallengePrompt.hidden = false;
-             // Focus might stay on close/restart here
+            if (qModalFullChallengePrompt) {
+                qModalFullChallengePrompt.hidden = false;
+                console.log("[showIntroModalResults] Showing 'Full Challenge' prompt.");
+            } else { console.warn("[showIntroModalResults] Full Challenge prompt element not found."); }
+             // Focus remains on close/restart as it's the end of intro checks
         }
 
-        focusTarget?.focus();
+         console.log("[showIntroModalResults] Focusing results action button:", focusTarget);
+        focusTarget?.focus(); // Focus the determined target button
     }
 
     function restartIntroModalQuiz() {
+        console.log("[restartIntroModalQuiz] Restarting current quiz check.");
         const catId = currentIntroQuizData.categoryId;
         if (catId) {
             const questions = introQuizQuestions.filter(q => q.categoryId === catId);
-             const originalTrigger = triggerElement; // Preserve who opened the *initial* quiz if possible
-             // Reset UI elements (redundant with setup, but safe)
-             if (qModalResultsEl) qModalResultsEl.hidden = true;
-             [qModalNextQuizBtn, qModalRestartBtn, qModalCloseResultsBtn, qModalFullChallengePrompt].forEach(btn => { if (btn) btn.hidden = true; });
-             startIntroQuiz(catId, questions, originalTrigger); // Use original trigger if available
+            // Attempt to find the original trigger button again based on categoryId
+            const originalTrigger = document.querySelector(`.category-card[data-category-id="${catId}"] .start-quiz-btn`) || triggerElement;
+
+             if (questions.length > 0) {
+                 startIntroQuiz(catId, questions, originalTrigger); // Restart with same category
+             } else {
+                 console.error(`[restartIntroModalQuiz] Failed to find questions for category ${catId} on restart.`);
+                 closeModal();
+             }
         } else {
-            console.error("Cannot restart, category ID missing.");
-             closeModal();
+            console.error("[restartIntroModalQuiz] Cannot restart, category ID missing from current quiz data.");
+             closeModal(); // Close if we can't identify which quiz to restart
         }
     }
 
     function handleIntroNextQuizClick(event) {
-         const nextCatId = parseInt(event.currentTarget.dataset.nextCategoryId, 10);
+        console.log("[handleIntroNextQuizClick] 'Next Check' button clicked.");
+         const button = event.currentTarget;
+         const nextCatId = parseInt(button.dataset.nextCategoryId, 10);
+
          if (!isNaN(nextCatId) && nextCatId <= CONFIG.LAST_INTRO_CATEGORY_ID) {
+             console.log(`[handleIntroNextQuizClick] Attempting to start next quiz with Category ID: ${nextCatId}`);
              const questions = introQuizQuestions.filter(q => q.categoryId === nextCatId);
+             // Find the button that *would* trigger this next quiz
              const nextTriggerButton = document.querySelector(`.category-card[data-category-id="${nextCatId}"] .start-quiz-btn`);
 
              if (questions.length > 0) {
-                // Reset UI elements (redundant with setup, but safe)
-                 if (qModalResultsEl) qModalResultsEl.hidden = true;
-                 [qModalNextQuizBtn, qModalRestartBtn, qModalCloseResultsBtn, qModalFullChallengePrompt].forEach(btn => { if (btn) btn.hidden = true; });
-                 startIntroQuiz(nextCatId, questions, nextTriggerButton || triggerElement); // Use new trigger if found
+                 // Start the next quiz, using its corresponding trigger button if found
+                 startIntroQuiz(nextCatId, questions, nextTriggerButton || button); // Fallback to current button if next trigger not found
              } else {
-                 console.error(`Questions missing for next category: ${nextCatId}`);
+                 console.error(`[handleIntroNextQuizClick] Questions missing for next category: ${nextCatId}`);
+                 alert("Error loading the next check. Please close and try starting it manually.");
                 closeModal();
             }
         } else {
-             console.error("Invalid next category ID:", event.currentTarget.dataset.nextCategoryId);
+             console.error("[handleIntroNextQuizClick] Invalid or missing next category ID on button:", button.dataset.nextCategoryId);
+             alert("Error determining the next check. Please close and select manually.");
             closeModal();
          }
     }
