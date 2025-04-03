@@ -1,9 +1,9 @@
 /* ==========================================================================
-   ROFILID Personal Page Styles - v2.6.0 (Tablet Responsiveness Enhanced)
+   ROFILID Personal Page Styles - v2.7.0 (Template Image Hover Effect)
    Location: /pages/personal/personal.css
    Description: Contains ALL styles required for personal.html, including
                 base resets, layout, header/footer, specific components,
-                and fixes for responsiveness and spacing. Enhanced tablet layouts.
+                responsiveness, and template image hover effect.
    ========================================================================== */
 
 /* === Base Resets & Defaults === */
@@ -1091,27 +1091,48 @@ main {
     box-shadow: var(--pp-box-shadow-lg);
 }
 
+/* --- Template Image Hover Styles START --- */
 .template-preview {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    position: relative; /* Context for absolute positioning */
     overflow: hidden;
-    background-color: var(--pp-color-light); /* Add subtle bg */
-}
-.template-preview img {
-    width: 100%;
-    height: auto; /* Let aspect-ratio control height */
-    aspect-ratio: 1 / 1; /* Make previews square-ish */
-    object-fit: cover;
-    object-position: top center;
-    transition: transform 0.4s ease-out, filter 0.4s ease-out;
+    background-color: var(--pp-color-light); /* Keep subtle bg */
+    aspect-ratio: 4 / 3; /* Set desired aspect ratio - Adjust if needed */
     border-bottom: 1px solid var(--pp-color-border-light);
-    filter: brightness(1);
 }
-.template-card:hover .template-preview img,
-.template-card:focus-within .template-preview img {
-    transform: scale(1.05); /* Slightly reduced zoom */
-    filter: brightness(1.03); /* Subtle brightness */
+
+.template-image { /* Common styles for both images */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cover the area */
+    object-position: center; /* Center the image */
+    transition: opacity var(--pp-transition-medium) ease-in-out;
+    backface-visibility: hidden; /* Helps with smoother transitions */
 }
+
+.template-image-default {
+    opacity: 1; /* Default image is visible */
+    z-index: 1; /* Ensure default is below hover */
+}
+
+.template-image-hover {
+    opacity: 0; /* Hover image is hidden by default */
+    z-index: 2; /* Ensure hover is above default */
+}
+
+.template-card:hover .template-image-default,
+.template-card:focus-within .template-image-default {
+    opacity: 0; /* Hide default image on hover/focus */
+}
+
+.template-card:hover .template-image-hover,
+.template-card:focus-within .template-image-hover {
+    opacity: 1; /* Show hover image on hover/focus */
+}
+/* --- Template Image Hover Styles END --- */
+
 
 .template-details {
     padding: var(--pp-space-lg);
@@ -1880,9 +1901,9 @@ main {
   .template-card:hover, .template-card:focus-within {
       transform: none; /* Disable card transforms */
   }
-   .template-card:hover .template-preview img,
+   .template-card:hover .template-preview img, /* Keep this or remove if image transform is unwanted */
    .template-card:focus-within .template-preview img {
-       transform: none; /* Disable image zoom */
+       /* transform: none; /* Disable image zoom if hover effect is sufficient */
    }
 }
 
@@ -1913,7 +1934,7 @@ main {
     .motivational-quote, .hero-actions, /* Keep hero stats? Maybe not */ .hero-stats-grid,
     .approach-icon, .approach-highlights, .social-integration,
     #learning-hub .start-quiz-btn, .full-challenge-link,
-    .template-preview, .get-spreadsheet-btn, .template-price-note,
+    .template-preview, .get-spreadsheet-btn, .template-price-note, /* Hide preview container */
     #financial-tools-promo .promo-icon, #financial-tools-promo .calculator-promo-cta .btn, /* Hide calculator button */
     #personal-coaching .coaching-interest, .disclaimer,
     #mmisbalior-section .promo-visual, #mmisbalior-section .btn,
