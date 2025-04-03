@@ -1,0 +1,833 @@
+/* ==========================================================================
+   ROFILID Interest Calculator Styles - v1.1.0
+   Location: /pages/personal/calculator.css
+   Description: Styles specific to the Interest Calculator tool (calculator.html),
+                handling layout, mode toggles, forms, results display, chart,
+                and responsive adjustments. Inherits base styles from personal.css.
+   ========================================================================== */
+
+/* === Variables (Consider defining these in personal.css or a base file) === */
+:root {
+    /* Fallbacks if not defined in personal.css */
+    --pp-color-light: #f1f5f9;
+    --pp-color-secondary: #ffffff;
+    --pp-color-text: #334155;
+    --pp-color-text-light: #64748b;
+    --pp-color-text-lighter: #94a3b8;
+    --pp-color-primary: #0d9488; /* Teal */
+    --pp-color-primary-light: #2dd4bf;
+    --pp-color-primary-dark: #0f766e;
+    --pp-color-border: #e2e8f0;
+    --pp-color-border-light: #f1f5f9;
+    --pp-color-danger: #dc3545;
+    --pp-color-danger-light: #f8d7da;
+    --pp-color-danger-dark: #b02a37;
+    --pp-color-light-accent: #f0fdfa; /* Very light teal */
+    --pp-font-regular: 400;
+    --pp-font-medium: 500;
+    --pp-font-semibold: 600;
+    --pp-font-bold: 700;
+    --pp-space-xs: 0.25rem;  /* 4px */
+    --pp-space-sm: 0.5rem;   /* 8px */
+    --pp-space-md: 1rem;     /* 16px */
+    --pp-space-lg: 1.5rem;   /* 24px */
+    --pp-space-xl: 2rem;     /* 32px */
+    --pp-space-xxl: 3rem;    /* 48px */
+    --pp-border-radius: 0.25rem;
+    --pp-border-radius-large: 0.5rem;
+    --pp-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    --pp-box-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --pp-transition-fast: all 0.2s ease-in-out;
+}
+
+/* === General Page Adjustments === */
+body.tool-page {
+    background-color: var(--pp-color-light);
+}
+
+.calculator-section .container {
+    max-width: 1000px; /* Wider container */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.calculator-header {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping */
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--pp-space-md);
+    margin-bottom: var(--pp-space-lg);
+    border-bottom: 1px solid var(--pp-color-border);
+    padding-bottom: var(--pp-space-lg);
+}
+.calculator-header h1 {
+     margin-bottom: 0;
+     text-align: left;
+     flex-grow: 1; /* Allow title to take space */
+}
+/* Hide default section title underline if personal.css adds one */
+.calculator-header h1::after {
+    display: none;
+}
+.calculator-header .brand-mark {
+    height: 40px;
+    width: auto;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.calculator-section .section-description {
+    max-width: 100%;
+    text-align: left;
+    margin-bottom: var(--pp-space-xl);
+    color: var(--pp-color-text-light);
+}
+
+
+/* === Mode Toggle Switch === */
+.mode-toggle {
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--pp-space-xl);
+    border: 1px solid var(--pp-color-border);
+    border-radius: var(--pp-border-radius-large);
+    overflow: hidden;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: var(--pp-color-light);
+}
+
+.mode-button {
+    flex: 1 1 50%;
+    padding: var(--pp-space-md) var(--pp-space-lg);
+    border: none;
+    background-color: transparent;
+    color: var(--pp-color-text-light);
+    font-size: 1rem;
+    font-weight: var(--pp-font-medium);
+    cursor: pointer;
+    transition: var(--pp-transition-fast);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--pp-space-sm);
+    border-right: 1px solid var(--pp-color-border); /* Separator */
+    text-align: center;
+    line-height: 1.2;
+}
+.mode-button:last-child { border-right: none; }
+.mode-button i { font-size: 1.1em; }
+
+.mode-button:hover,
+.mode-button:focus-visible { /* Style focus like hover */
+    color: var(--pp-color-primary-dark);
+    background-color: #fff; /* Subtle highlight */
+    outline: none;
+}
+
+.mode-button.active,
+.mode-button[aria-checked="true"] {
+    background-color: var(--pp-color-primary);
+    color: var(--pp-color-secondary);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-color: transparent;
+}
+.mode-button.active:hover,
+.mode-button[aria-checked="true"]:hover {
+    background-color: var(--pp-color-primary-light);
+}
+
+
+/* === Calculator Form Styles === */
+.calculator-form {
+    background-color: var(--pp-color-secondary);
+    padding: var(--pp-space-xl);
+    border-radius: var(--pp-border-radius-large);
+    border: 1px solid var(--pp-color-border-light);
+    box-shadow: var(--pp-box-shadow);
+}
+
+/* Form Grid Layout */
+.input-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--pp-space-lg) var(--pp-space-xl);
+}
+
+.input-grid .span-full {
+    grid-column: 1 / -1; /* Span all columns */
+}
+
+/* Shared Form Group Styles */
+.form-group {
+    margin-bottom: 0; /* Grid gap handles spacing */
+}
+
+.form-group label,
+.form-group .group-legend {
+    display: flex;
+    align-items: center;
+    gap: var(--pp-space-xs);
+    font-size: 0.9rem;
+    font-weight: var(--pp-font-medium);
+    color: var(--pp-color-text);
+    margin-bottom: var(--pp-space-sm); /* Space between label and input */
+}
+
+.form-group .group-legend {
+    font-weight: var(--pp-font-semibold); /* Slightly bolder for legend */
+    width: 100%;
+}
+
+/* Form inputs/selects (assuming base styles in personal.css, add if missing) */
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: var(--pp-space-sm) var(--pp-space-md);
+    border: 1px solid var(--pp-color-border);
+    border-radius: var(--pp-border-radius);
+    font-size: 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background-color: var(--pp-color-secondary); /* Ensure background */
+}
+input:focus, select:focus,
+input:focus-visible, select:focus-visible {
+    border-color: var(--pp-color-primary);
+    box-shadow: 0 0 0 3px rgba(var(--pp-color-primary-rgb, 13, 148, 136), 0.2); /* Needs --pp-color-primary-rgb */
+    outline: none;
+}
+
+/* Info Button Styles */
+.info-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: var(--pp-color-text-lighter);
+    font-size: 0.9em;
+    padding: 2px;
+    cursor: help;
+    transition: color 0.2s ease;
+    border-radius: 50%;
+    line-height: 1; /* Prevent extra space */
+}
+.info-btn:hover,
+.info-btn:focus-visible {
+    color: var(--pp-color-primary);
+    background-color: var(--pp-color-light);
+    outline: none;
+}
+
+/* Basic Tooltip CSS */
+[data-tooltip] { position: relative; }
+[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 6px); /* Position above the button + gap */
+    left: 50%;
+    transform: translateX(-50%) scale(0.8);
+    background-color: var(--pp-color-primary-dark);
+    color: var(--pp-color-secondary);
+    padding: var(--pp-space-sm) var(--pp-space-md);
+    border-radius: var(--pp-border-radius);
+    font-size: 0.85rem;
+    font-weight: var(--pp-font-regular); /* Reset font weight */
+    line-height: 1.4;
+    white-space: nowrap;
+    box-shadow: var(--pp-box-shadow);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+    z-index: 10;
+    pointer-events: none;
+}
+.info-btn:hover::after,
+.info-btn:focus-visible::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) scale(1);
+}
+
+/* Input with Currency/Percent Symbol */
+.input-with-symbol {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.input-with-symbol .currency-symbol,
+.input-with-symbol .symbol {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--pp-color-text-lighter);
+    font-size: 1rem;
+    font-weight: var(--pp-font-medium);
+    pointer-events: none;
+}
+.input-with-symbol .currency-symbol { left: var(--pp-space-md); } /* Match input padding */
+.input-with-symbol .symbol { right: var(--pp-space-md); } /* Match input padding */
+.input-with-symbol input { padding-left: calc(var(--pp-space-md) + 1.5em); } /* Adjust padding based on symbol width */
+.input-with-symbol.right input { padding-left: var(--pp-space-md); padding-right: calc(var(--pp-space-md) + 1.5em); }
+
+
+/* Error Message Styling */
+.error-message {
+    color: var(--pp-color-danger);
+    font-size: 0.8rem;
+    margin-top: var(--pp-space-xs);
+    min-height: 1em; /* Prevent layout shift when message appears */
+    display: block; /* Ensure it takes block space */
+}
+input.is-invalid, select.is-invalid {
+    border-color: var(--pp-color-danger);
+}
+input.is-invalid:focus, select.is-invalid:focus,
+input.is-invalid:focus-visible, select.is-invalid:focus-visible {
+    box-shadow: 0 0 0 3px rgba(var(--pp-color-danger-rgb, 220, 53, 69), 0.25); /* Needs --pp-color-danger-rgb */
+}
+
+/* Compounding Frequency (Visibility controlled by JS adding/removing 'hidden') */
+.form-group.compounding-group[hidden] {
+    display: none;
+}
+/* Optional: Add transition if desired (requires more complex handling than just [hidden]) */
+/*
+.form-group.compounding-group {
+    transition: opacity 0.3s ease, max-height 0.3s ease;
+    overflow: hidden;
+    opacity: 1;
+    max-height: 100px; // Estimate max height
+}
+.form-group.compounding-group[hidden] {
+    opacity: 0;
+    max-height: 0;
+    margin-bottom: 0; // Collapse margin when hidden
+    padding-top: 0;
+    padding-bottom: 0;
+}
+*/
+
+/* Time Period Input Styles */
+.time-input-method fieldset { border: none; padding: 0; margin: 0; }
+.time-input-method .radio-group {
+    display: flex;
+    gap: var(--pp-space-sm); /* Gap between buttons */
+    border: 1px solid var(--pp-color-border);
+    padding: var(--pp-space-xs); /* Padding around buttons */
+    border-radius: var(--pp-border-radius);
+    background-color: var(--pp-color-light);
+    margin-top: var(--pp-space-sm);
+}
+.time-input-method .radio-group label {
+    flex: 1;
+    display: block;
+    padding: var(--pp-space-sm) var(--pp-space-md);
+    text-align: center;
+    border-radius: var(--pp-border-radius);
+    cursor: pointer;
+    transition: var(--pp-transition-fast);
+    font-weight: var(--pp-font-regular);
+    font-size: 0.9rem;
+    color: var(--pp-color-text-light);
+    margin: 0; /* Override potential default label margin */
+    background-color: transparent; /* Ensure default is transparent */
+    border: 1px solid transparent; /* Prevent jumping on selection */
+}
+.time-input-method .radio-group input[type="radio"] {
+    /* Visually hide radio button, still accessible */
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+.time-input-method .radio-group input[type="radio"]:checked + label {
+    background-color: var(--pp-color-secondary);
+    color: var(--pp-color-primary);
+    font-weight: var(--pp-font-medium);
+    box-shadow: var(--pp-box-shadow-sm);
+    border-color: var(--pp-color-border);
+}
+.time-input-method .radio-group label:hover {
+     background-color: rgba(255,255,255, 0.7);
+}
+.time-input-method .radio-group input[type="radio"]:focus-visible + label {
+    outline: 2px solid var(--pp-color-primary);
+    outline-offset: 2px;
+}
+
+.time-inputs-wrapper {
+    margin-top: var(--pp-space-md); /* Increased space */
+}
+.time-input-container[hidden] { display: none; }
+
+.date-inputs, .duration-inputs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--pp-space-lg);
+    padding: var(--pp-space-md) 0;
+}
+
+
+/* === Advanced Mode Specific Styles === */
+.advanced-entries-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--pp-space-xl);
+    margin-bottom: var(--pp-space-xl);
+}
+
+.entry {
+    border: 1px dashed var(--pp-color-border);
+    padding: var(--pp-space-lg);
+    border-radius: var(--pp-border-radius);
+    position: relative;
+    background-color: var(--pp-color-light);
+    transition: background-color 0.3s ease;
+}
+/* First entry styling can be done via JS or more specific selectors if needed */
+/* Example: .entry[data-entry-id="1"] { border-style: solid; } */
+
+.entry-legend {
+    font-size: 1rem;
+    font-weight: var(--pp-font-semibold);
+    padding: 0 var(--pp-space-sm);
+    color: var(--pp-color-primary);
+    background-color: var(--pp-color-light);
+    margin-left: var(--pp-space-sm); /* Adjust positioning */
+    line-height: 1; /* Ensure it doesn't take too much vertical space */
+}
+
+.remove-entry-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: var(--pp-color-danger-light);
+    color: var(--pp-color-danger);
+    border: 1px solid var(--pp-color-danger-light);
+    padding: var(--pp-space-xs) var(--pp-space-sm);
+    font-size: 0.8rem;
+    line-height: 1;
+    border-radius: 0 var(--pp-border-radius) 0 var(--pp-border-radius);
+    cursor: pointer;
+    transition: var(--pp-transition-fast);
+    opacity: 0.8;
+    display: inline-flex; /* Use flex for icon alignment */
+    align-items: center;
+    gap: var(--pp-space-xs);
+}
+.remove-entry-btn[hidden] {
+    display: none; /* Ensure hidden takes effect */
+}
+.remove-entry-btn:hover, .remove-entry-btn:focus-visible {
+    background-color: var(--pp-color-danger);
+    color: var(--pp-color-secondary);
+    opacity: 1;
+    border-color: var(--pp-color-danger);
+    outline: 1px solid var(--pp-color-danger-dark);
+    outline-offset: 1px;
+}
+/* First entry remove button hidden by JS adding/removing the 'hidden' attribute */
+
+.advanced-actions {
+    text-align: center;
+    margin-top: var(--pp-space-md);
+    border-top: 1px solid var(--pp-color-border-light);
+    padding-top: var(--pp-space-xl);
+}
+
+/* === Form Actions (Calculate/Clear Buttons) === */
+.form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--pp-space-lg);
+    margin-top: var(--pp-space-xl);
+    padding-top: var(--pp-space-xl);
+    border-top: 1px solid var(--pp-color-border);
+}
+
+
+/* === Results Area Styles === */
+.results-area {
+    margin-top: var(--pp-space-xxl);
+    background-color: var(--pp-color-light-accent);
+    border: 1px solid var(--pp-color-border);
+    border-radius: var(--pp-border-radius-large);
+    padding: var(--pp-space-xl);
+}
+.results-area[hidden] {
+    display: none;
+}
+
+.results-title {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: var(--pp-space-xl);
+    color: var(--pp-color-primary-dark);
+}
+.results-title::after { display: none; }
+
+.results-section { margin-bottom: var(--pp-space-xl); }
+.results-section[hidden] { display: none; }
+.results-section:last-child { margin-bottom: 0; }
+
+/* Simple Results & Aggregated Results Structure */
+.simple-results-display > .result-item,
+#advanced-aggregated-display > .result-item {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+    justify-content: space-between;
+    align-items: baseline;
+    padding: var(--pp-space-sm) 0;
+    border-bottom: 1px solid var(--pp-color-border-light);
+    font-size: 1.1rem;
+    gap: var(--pp-space-sm); /* Gap between label and value */
+}
+.simple-results-display > .result-item:last-child,
+#advanced-aggregated-display > .result-item:last-child {
+     border-bottom: none;
+}
+.result-item .label { color: var(--pp-color-text-light); flex-shrink: 0; } /* Prevent label shrinking */
+.result-item .value { font-weight: var(--pp-font-semibold); color: var(--pp-color-primary); text-align: right; flex-grow: 1; }
+
+.result-item.total { /* Highlight total rows */
+    font-weight: var(--pp-font-bold);
+    border-top: 2px solid var(--pp-color-border);
+    margin-top: var(--pp-space-sm);
+    padding-top: var(--pp-space-md);
+}
+.result-item.total .label,
+.result-item.total .value { color: var(--pp-color-primary-dark); font-size: 1.2em; }
+.result-item.ear { font-size: 0.9em; } /* Make EAR slightly smaller */
+.result-item.ear .label,
+.result-item.ear .value { color: var(--pp-color-text); } /* Standard text color for EAR */
+
+/* Advanced Individual Results */
+.results-subsection {
+    margin-bottom: var(--pp-space-xl);
+    padding: var(--pp-space-lg);
+    background-color: var(--pp-color-secondary);
+    border-radius: var(--pp-border-radius);
+    box-shadow: var(--pp-box-shadow-sm);
+}
+.subsection-title {
+    font-size: 1.3rem;
+    margin-bottom: var(--pp-space-lg);
+    border-bottom: 1px solid var(--pp-color-border);
+    padding-bottom: var(--pp-space-sm);
+    color: var(--pp-color-primary-light);
+}
+
+.individual-results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--pp-space-lg);
+}
+.entry-result {
+    border: 1px solid var(--pp-color-border-light);
+    padding: var(--pp-space-md);
+    border-radius: var(--pp-border-radius);
+    font-size: 0.9rem;
+}
+.entry-result h4 {
+    font-size: 1rem;
+    margin-bottom: var(--pp-space-sm);
+    color: var(--pp-color-primary);
+    border-bottom: 1px dashed var(--pp-color-border-light);
+    padding-bottom: var(--pp-space-xs);
+    font-weight: var(--pp-font-semibold);
+}
+.entry-result .result-item {
+    font-size: inherit;
+    padding: var(--pp-space-xs) 0;
+    border-bottom: none;
+}
+.entry-result .result-item .label { color: var(--pp-color-text-light); }
+.entry-result .result-item .value { font-weight: var(--pp-font-medium); color: var(--pp-color-text); }
+.entry-result .result-item.total {
+     margin-top: var(--pp-space-xs);
+     padding-top: var(--pp-space-xs);
+     border-top: 1px solid var(--pp-color-border-light);
+     font-weight: var(--pp-font-semibold);
+     font-size: 1.05em;
+}
+
+/* Aggregated Results Controls */
+.aggregated-results .aggregation-controls {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrap */
+    align-items: center;
+    gap: var(--pp-space-sm) var(--pp-space-md); /* Row and column gap */
+    margin-bottom: var(--pp-space-lg);
+    font-size: 0.9rem;
+}
+.aggregated-results .aggregation-controls label {
+    font-weight: var(--pp-font-medium);
+    margin-bottom: 0; /* Override default label margin */
+    white-space: nowrap; /* Prevent label wrapping */
+}
+.aggregated-results .aggregation-controls select {
+    padding: var(--pp-space-xs) var(--pp-space-sm);
+    font-size: 0.9rem;
+    min-width: 100px;
+    flex-grow: 1; /* Allow select to grow */
+    max-width: 150px; /* Optional max width */
+}
+.aggregated-results .aggregation-controls .error-message {
+    width: 100%; /* Take full width if it wraps */
+    margin-top: 0;
+    font-size: 0.8rem;
+}
+
+
+/* === Chart Area === */
+.chart-area { margin-top: var(--pp-space-xl); }
+.chart-area[hidden] { display: none; }
+.chart-title { text-align: center; }
+.chart-container {
+    position: relative; /* Needed for chart responsiveness */
+    max-width: 700px; /* Wider chart */
+    height: 350px; /* Fixed height or aspect ratio */
+    margin: var(--pp-space-md) auto 0 auto;
+    background-color: #fff;
+    padding: var(--pp-space-md);
+    border-radius: var(--pp-border-radius);
+    box-shadow: var(--pp-box-shadow-sm);
+}
+
+/* === Results Actions === */
+.results-actions {
+    margin-top: var(--pp-space-xl);
+    padding-top: var(--pp-space-lg);
+    border-top: 1px solid var(--pp-color-border);
+    text-align: center;
+}
+.results-actions button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* === Accessibility === */
+.sr-only { /* From common frameworks like Bootstrap/Tailwind */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+
+/* === Responsive Adjustments === */
+@media (max-width: 767px) {
+    .input-grid {
+        grid-template-columns: 1fr; /* Stack */
+        gap: var(--pp-space-lg);
+    }
+    .input-grid .span-full {
+         grid-column: auto;
+    }
+     .date-inputs, .duration-inputs {
+         grid-template-columns: 1fr;
+         gap: var(--pp-space-lg);
+    }
+     .advanced-actions, .form-actions, .results-actions {
+        flex-direction: column;
+        align-items: center; /* Center buttons */
+        gap: var(--pp-space-md);
+     }
+     .form-actions button,
+     .advanced-actions button,
+     .results-actions button {
+         width: 100%; /* Make buttons full width */
+         max-width: 300px; /* Optional max width */
+     }
+
+     .mode-toggle { max-width: 100%; font-size: 0.9rem; }
+     .mode-button { padding: var(--pp-space-sm) var(--pp-space-md); }
+
+     .individual-results-grid {
+         grid-template-columns: 1fr;
+    }
+    .calculator-header { flex-direction: column; align-items: flex-start; gap: var(--pp-space-sm); }
+    .calculator-header h1 { font-size: 1.8rem; }
+
+    .simple-results-display > .result-item,
+    #advanced-aggregated-display > .result-item {
+        font-size: 1rem; /* Slightly smaller results text */
+    }
+    .result-item.total .label,
+    .result-item.total .value { font-size: 1.15em; }
+}
+
+@media (max-width: 480px) {
+    .mode-button { font-size: 0.85rem; padding: var(--pp-space-sm); gap: var(--pp-space-xs); }
+    .calculator-form { padding: var(--pp-space-lg); }
+    .results-area { padding: var(--pp-space-lg); }
+    .chart-container { height: 300px; } /* Adjust chart height */
+}
+
+/* ==========================================================================
+   ROFILID Interest Calculator Print Styles - v1.0.0
+   Location: /pages/personal/calculator-print.css
+   Description: Hides non-essential elements and styles the results
+                area for printing.
+   ========================================================================== */
+
+@media print {
+    body {
+        font-size: 10pt; /* Adjust base font size for print */
+        color: #000;
+        background-color: #fff;
+    }
+
+    /* Hide non-essential elements */
+    .site-header,
+    .site-footer,
+    .mode-toggle,
+    .calculator-form, /* Hide the form itself */
+    .results-actions button#print-results-btn /* Hide the print button */
+    {
+        display: none !important; /* Use important to override */
+    }
+
+    /* Ensure main content and results are visible */
+    main,
+    #interest-calculator,
+    #results-area {
+        display: block !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        background-color: transparent !important;
+    }
+
+    .container {
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* Style results area for print */
+    #results-area {
+        margin-top: 1cm !important; /* Add some top margin */
+    }
+
+    .calculator-header {
+        border-bottom: 1px solid #ccc !important;
+        padding-bottom: 0.5cm !important;
+        margin-bottom: 0.5cm !important;
+        justify-content: flex-start; /* Align left */
+    }
+    .calculator-header h1 {
+        font-size: 16pt;
+        color: #000;
+    }
+    .calculator-header .brand-mark {
+        height: 30px; /* Smaller logo */
+    }
+
+    .section-description {
+        font-size: 10pt;
+        margin-bottom: 0.5cm !important;
+        color: #333;
+    }
+
+    .results-title {
+        font-size: 14pt;
+        text-align: left;
+        margin-bottom: 0.5cm !important;
+        color: #000;
+    }
+
+    .results-subsection {
+        border: 1px solid #eee !important;
+        padding: 0.5cm !important;
+        margin-bottom: 0.5cm !important;
+        background-color: transparent !important;
+        box-shadow: none !important;
+        break-inside: avoid; /* Try to prevent breaking inside subsections */
+    }
+
+    .subsection-title {
+        font-size: 12pt;
+        color: #333;
+        border-bottom: 1px solid #ccc !important;
+        padding-bottom: 0.2cm !important;
+        margin-bottom: 0.3cm !important;
+    }
+
+    .result-item {
+        font-size: 10pt !important;
+        border-bottom: 1px dotted #eee !important;
+        padding: 0.15cm 0 !important;
+    }
+    .result-item.total {
+        border-top: 1px solid #aaa !important;
+        font-weight: bold !important;
+    }
+    .result-item .label { color: #333 !important; }
+    .result-item .value { color: #000 !important; font-weight: bold; }
+    .result-item.ear { font-size: 9pt !important; }
+
+    .individual-results-grid {
+        grid-template-columns: 1fr !important; /* Stack individual results */
+        gap: 0.4cm !important;
+    }
+
+    .entry-result {
+        border: 1px solid #eee !important;
+        padding: 0.3cm !important;
+        break-inside: avoid;
+    }
+    .entry-result h4 {
+        font-size: 11pt;
+        color: #333;
+    }
+
+    .aggregation-controls {
+        display: none !important; /* Hide aggregation controls in print */
+    }
+
+    /* Chart - Often difficult to print well, consider hiding or providing image */
+    .chart-area {
+        display: block !important; /* Try to display */
+        page-break-before: always; /* Put chart on new page */
+        margin-top: 1cm !important;
+        max-width: 100% !important;
+        overflow: hidden; /* Prevent overflow */
+    }
+    .chart-container {
+        border: 1px solid #ccc !important;
+        padding: 0.5cm !important;
+        box-shadow: none !important;
+        background-color: #fff !important;
+        height: auto !important; /* Allow height to adjust */
+        max-width: 18cm; /* Limit width on page */
+        margin: 0 auto;
+    }
+    /* Canvas itself might need specific print handling if it doesn't render well */
+    #interest-chart {
+        max-width: 100%;
+        height: auto !important;
+    }
+
+    /* Prevent links from showing URL */
+    a[href]::after {
+        content: none !important;
+    }
+}
