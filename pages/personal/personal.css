@@ -1,9 +1,9 @@
 /* ==========================================================================
-   ROFILID Personal Page Styles - v2.5.0 (Responsive & Spacing Refinements)
+   ROFILID Personal Page Styles - v2.6.0 (Tablet Responsiveness Enhanced)
    Location: /pages/personal/personal.css
    Description: Contains ALL styles required for personal.html, including
                 base resets, layout, header/footer, specific components,
-                and fixes for responsiveness and spacing.
+                and fixes for responsiveness and spacing. Enhanced tablet layouts.
    ========================================================================== */
 
 /* === Base Resets & Defaults === */
@@ -162,6 +162,7 @@ p:last-child, li:last-child > p { /* Reduce margin on last paragraph in a contai
     display: none !important;
 }
 
+
 /* === Personal Page Specific Scope & Variables === */
 :root { /* Define vars globally for potential reuse by other pages */
   /* Theme Colors */
@@ -226,6 +227,7 @@ body.calculator-page { /* Apply to calculator page too if needed */
   background-color: var(--pp-color-secondary);
   color: var(--pp-color-text);
 }
+
 
 /* --- Header Styles --- */
 .site-header {
@@ -355,6 +357,7 @@ nav[aria-label="Main navigation"] {
     box-shadow: var(--pp-box-shadow);
 }
 
+
 /* --- Mobile Navigation Styles (Breakpoint: 991px) --- */
 @media (max-width: 991px) {
     .header-container {
@@ -430,6 +433,7 @@ nav[aria-label="Main navigation"] {
         padding-left: calc(var(--pp-space-xl) - 4px);
     }
 }
+
 
 /* --- Main Content & Section Spacing --- */
 main {
@@ -622,15 +626,27 @@ main {
     position: relative;
     z-index: 1;
 }
+/* === Tablet Layout === */
+@media (min-width: 768px) {
+    .hero-container {
+        grid-template-columns: 1fr 0.8fr; /* Start 2-column earlier */
+        gap: var(--pp-space-xl);
+        text-align: left;
+    }
+    .hero-content { text-align: left; }
+    .subheadline { margin-left: 0; }
+    .hero-actions { justify-content: flex-start; }
+}
+/* === Desktop Layout === */
 @media (min-width: 992px) {
     .hero-container {
-        grid-template-columns: minmax(0, 1.8fr) minmax(0, 1.2fr); /* Adjust ratio slightly if needed */
+        grid-template-columns: minmax(0, 1.8fr) minmax(0, 1.2fr); /* Refined ratio for desktop */
         gap: var(--pp-space-xxxl); /* Larger gap on desktop */
     }
 }
 
-.hero-content { text-align: center; }
-@media (min-width: 992px) { .hero-content { text-align: left; } }
+.hero-content { text-align: center; } /* Default */
+/* @media (min-width: 768px) { .hero-content { text-align: left; } } /* Moved to 768px rule */
 
 .hero-badge {
     display: inline-block;
@@ -659,7 +675,7 @@ main {
     margin-right: auto;
     margin-bottom: var(--pp-space-xl); /* Increased margin */
 }
-@media (min-width: 992px) { .subheadline { margin-left: 0; } }
+/* @media (min-width: 768px) { .subheadline { margin-left: 0; } } /* Moved to 768px rule */
 
 .hero-actions {
     display: flex;
@@ -667,7 +683,7 @@ main {
     gap: var(--pp-space-lg); /* Increased gap */
     justify-content: center;
 }
-@media (min-width: 992px) { .hero-actions { justify-content: flex-start; } }
+/* @media (min-width: 768px) { .hero-actions { justify-content: flex-start; } } /* Moved to 768px rule */
 
 /* Hero Stats Grid - Responsiveness adjustments */
 .hero-stats-grid {
@@ -683,11 +699,18 @@ main {
         gap: var(--pp-space-xl); /* Larger gap */
     }
 }
-/* Go to 3 columns only on larger screens (aligns with hero content split) */
+/* === Tablet Layout (Keep 2 columns, adjust gap if needed) === */
+@media (min-width: 768px) {
+    .hero-stats-grid {
+        /* Keep 2 columns */
+        gap: var(--pp-space-lg); /* Potentially adjust gap */
+    }
+}
+/* Go to 3 columns only on larger screens */
 @media (min-width: 992px) {
     .hero-stats-grid {
         grid-template-columns: repeat(3, 1fr);
-        gap: var(--pp-space-lg); /* Reduce gap slightly for 3 columns */
+        /* gap: var(--pp-space-lg); */ /* Can keep gap from 768px */
     }
 }
 
@@ -749,10 +772,23 @@ main {
 /* --- Resource Grid & Cards --- */
 .resource-grid {
     display: grid;
-    /* Adjusted minmax for better responsiveness */
+    /* Use auto-fit for small screens */
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
     gap: var(--pp-space-xl); /* Increased gap */
 }
+/* === Tablet Layout: Explicit 2 Columns === */
+@media (min-width: 768px) {
+    .resource-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+/* === Desktop Layout: Explicit 3 Columns (Optional, auto-fit might handle this) === */
+@media (min-width: 1200px) { /* Use a wider breakpoint for 3 cols */
+    .resource-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
 
 .resource-card {
     background-color: var(--pp-color-secondary);
@@ -951,9 +987,21 @@ main {
 /* --- Learning Hub / Quiz Intro --- */
 .category-grid {
     display: grid;
-     /* Adjusted minmax for better responsiveness */
+     /* Use auto-fit for small screens */
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
     gap: var(--pp-space-xl); /* Increased gap */
+}
+/* === Tablet Layout: Explicit 2 Columns === */
+@media (min-width: 768px) {
+    .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+/* === Desktop Layout: Explicit 3 Columns (Optional, auto-fit might handle this) === */
+@media (min-width: 1100px) { /* Slightly adjusted breakpoint for 3 cols */
+    .category-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
 .category-card {
@@ -1007,12 +1055,25 @@ main {
     margin-bottom: var(--pp-space-md) !important; /* Override default section-description margin */
 }
 
+
 /* --- Free Tools & Templates --- */
 .template-grid {
     display: grid;
-    /* Adjusted minmax for better responsiveness */
+    /* Use auto-fit for small screens */
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
     gap: var(--pp-space-xl); /* Increased gap */
+}
+/* === Tablet Layout: Explicit 2 Columns === */
+@media (min-width: 768px) {
+    .template-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+/* === Desktop Layout: Explicit 3 Columns (Optional, auto-fit might handle this) === */
+@media (min-width: 1200px) { /* Use a wider breakpoint for 3 cols */
+    .template-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
 .template-card {
@@ -1103,14 +1164,15 @@ main {
     /* align-items: center; */
 }
 /* Example media query if visual is added */
-/* @media (min-width: 768px) {
-    .calculator-promo-container {
-        grid-template-columns: 2fr 1fr;
-        text-align: left;
-    }
-    .calculator-promo-visual { order: 2; }
-    .calculator-promo-content { order: 1; }
-} */
+/* === Tablet Layout (Still centered, could change if visual added) === */
+@media (min-width: 768px) {
+    /* .calculator-promo-container { */
+        /* grid-template-columns: 2fr 1fr; */
+        /* text-align: left; */
+    /* } */
+    /* .calculator-promo-visual { order: 2; } */
+    /* .calculator-promo-content { order: 1; } */
+}
 
 .calculator-promo-content .promo-icon {
     font-size: 3rem;
@@ -1177,7 +1239,20 @@ main {
     grid-template-columns: 1fr;
     gap: var(--pp-space-xxl);
 }
-@media (min-width: 992px) { .coaching-content-redesigned { grid-template-columns: 1fr 1fr; } }
+/* === Tablet Layout: Introduce 2 Columns === */
+@media (min-width: 768px) {
+    .coaching-content-redesigned {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--pp-space-xl); /* Adjust gap for tablet */
+    }
+}
+/* === Desktop Layout (Keep 2 columns, refine gap if needed) === */
+@media (min-width: 992px) {
+    .coaching-content-redesigned {
+        /* grid-template-columns: 1fr 1fr; */ /* Keep from 768px */
+        gap: var(--pp-space-xxl); /* Restore larger gap */
+    }
+}
 
 .coaching-info h3,
 .coaching-interest h3 {
@@ -1631,12 +1706,14 @@ main {
     grid-template-columns: 1fr;
     gap: var(--pp-space-xl);
 }
+/* === Tablet: Keep 2 columns from 500px === */
 @media (min-width: 500px) {
     .footer-links-container {
         grid-template-columns: repeat(2, 1fr);
         gap: var(--pp-space-xl) var(--pp-space-lg);
     }
 }
+/* === Desktop: 4 columns === */
 @media (min-width: 992px) {
     .footer-links-container {
         grid-template-columns: repeat(4, 1fr);
@@ -1808,6 +1885,7 @@ main {
        transform: none; /* Disable image zoom */
    }
 }
+
 
 /* --- Fade-In Animation Styling (Controlled by JS) --- */
 [data-animate-fade-in] {
