@@ -5,18 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Empower your financial future with Rofilid's free resources, practical tools, and educational insights for Nigerians. Start building confidence today.">
     <title>ROFILiD | Personal Financial Solutions</title>
+
+    <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto:wght@700&display=swap" rel="stylesheet">
 
-    <!-- NO Link to global styles.css -->
-    <!-- Link to the specific, NOW FULLY SELF-CONTAINED personal page styles -->
-    <link rel="stylesheet" href="personal.css">
-
     <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <!-- Favicon -->
     <link rel="icon" href="../../assets/images/common/rofilid-favicon.png" type="image/png">
+
+    <!-- Personal Page Specific Styles (Self-Contained) -->
+    <link rel="stylesheet" href="personal.css">
+
 </head>
 <body>
     <!-- Decorative Background Elements -->
@@ -29,132 +32,131 @@
         <div class="container header-container">
             <div class="logo">
                 <a href="../../index.html" aria-label="Rofilid Home">
-                    <img src="../../assets/images/common/rofilid-logo-teal.svg" alt="Rofilid Logo" width="120" height="40" loading="eager">
+                    <img src="../../assets/images/common/rofilid-logo-teal.svg" alt="Rofilid Logo" width="120" height="40">
                 </a>
             </div>
             <nav aria-label="Main navigation">
-                <button class="mobile-menu-toggle" aria-expanded="false" aria-controls="primary-navigation">
+                <button class="mobile-menu-toggle" aria-expanded="false" aria-controls="primary-navigation" aria-label="Toggle Navigation Menu">
                     <span class="sr-only">Menu</span>
                     <i class="fas fa-bars open-icon" aria-hidden="true"></i>
                     <i class="fas fa-times close-icon" aria-hidden="true"></i>
                 </button>
                 <ul id="primary-navigation" class="nav-list">
                     <li class="nav-item"><a href="../../index.html" class="nav-link">Home</a></li>
-                    <li class="nav-item"><a href="personal.html" class="nav-link active-page">Personal Finance</a></li>
+                    <li class="nav-item"><a href="personal.html" class="nav-link active-page" aria-current="page">Personal Finance</a></li>
                     <li class="nav-item"><a href="#free-resources" class="nav-link">Resources</a></li>
                     <li class="nav-item"><a href="#learning-hub" class="nav-link">Learning Hub</a></li>
                     <li class="nav-item"><a href="#free-tools" class="nav-link">Tools</a></li>
                     <li class="nav-item"><a href="../corporate/corporate.html" class="nav-link">For Businesses</a></li>
                 </ul>
             </nav>
-            <a href="#free-resources" class="connect-button btn-cta-header" aria-label="Explore Free Resources">Explore Resources</a>
+            <a href="#free-resources" class="connect-button btn btn-cta-header">Explore Resources</a>
         </div>
     </header>
 
     <main id="main-content">
-        <!-- All sections remain exactly the same as in v2.2.0 -->
-        {/* ... Hero Section ... */}
-        <section id="hero" class="hero-section section-padding--large">
+
+        <!-- Hero Section -->
+        <section id="hero" class="hero-section section-padding--large" aria-labelledby="hero-heading">
             <div class="container hero-container">
                 <div class="hero-content">
                     <span class="hero-badge">Your Journey to Financial Clarity Starts Here</span>
-                    <h1>Navigate Your Finances with Confidence</h1>
+                    <h1 id="hero-heading">Navigate Your Finances with Confidence</h1>
                     <p class="subheadline">Gain practical knowledge, access free tools, and build sustainable money habits tailored for your life in Nigeria.</p>
                     <div class="hero-actions">
-                        <a href="#free-resources" class="btn btn-primary btn-large btn-icon"><i class="fas fa-gift"></i> Explore Free Resources</a>
-                        <a href="#learning-hub" class="btn btn-outline btn-large btn-icon"><i class="fas fa-lightbulb"></i> Test Your Knowledge</a>
+                        <a href="#free-resources" class="btn btn-primary btn-large btn-icon"><i class="fas fa-gift" aria-hidden="true"></i> Explore Free Resources</a>
+                        <a href="#learning-hub" class="btn btn-outline btn-large btn-icon"><i class="fas fa-lightbulb" aria-hidden="true"></i> Test Your Knowledge</a>
                     </div>
                 </div>
                 <div class="hero-stats-grid">
                     <div class="stat-card">
-                        <i class="fas fa-book-open-reader"></i>
+                        <i class="fas fa-book-open-reader" aria-hidden="true"></i>
                         <h4>Actionable Knowledge</h4>
                         <p>Clear guides on budgeting, saving & more.</p>
-                        <span class="stat-target" style="display: none;">25</span>
                     </div>
                     <div class="stat-card">
-                        <i class="fas fa-tools"></i>
+                        <i class="fas fa-tools" aria-hidden="true"></i>
                         <h4>Practical Free Tools</h4>
                         <p>Downloadable templates to manage money.</p>
-                         <span class="stat-target" style="display: none;">5</span>
                     </div>
                     <div class="stat-card">
-                        <i class="fas fa-seedling"></i>
+                        <i class="fas fa-seedling" aria-hidden="true"></i>
                         <h4>Build Confidence</h4>
                         <p>Step-by-step guidance for lasting change.</p>
-                        <span class="stat-target" style="display: none;">100</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        {/* ... Approach Section ... */}
-         <section id="our-approach" class="section-padding bg-light-accent">
+        <!-- Our Approach Section -->
+        <section id="our-approach" class="section-padding bg-light-accent" aria-labelledby="approach-heading">
             <div class="container approach-container">
-                 <div class="approach-icon"><i class="fas fa-compass-drafting"></i></div>
-                <h2 class="section-title">Our Educational Philosophy</h2>
+                 <div class="approach-icon" aria-hidden="true"><i class="fas fa-compass-drafting"></i></div>
+                <h2 id="approach-heading" class="section-title">Our Educational Philosophy</h2>
                 <p class="section-description">We believe financial empowerment comes from understanding, not just numbers. Our approach focuses on providing clear, practical, and context-relevant education specifically for Nigerians. We break down complex topics into actionable steps, offering free resources to help you start immediately.</p>
                  <div class="approach-highlights">
-                     <span><i class="fas fa-check-circle"></i> Practical & Actionable</span>
-                     <span><i class="fas fa-check-circle"></i> Nigerian Context Focused</span>
-                     <span><i class="fas fa-check-circle"></i> Value-First Education</span>
+                     <span><i class="fas fa-check-circle" aria-hidden="true"></i> Practical & Actionable</span>
+                     <span><i class="fas fa-check-circle" aria-hidden="true"></i> Nigerian Context Focused</span>
+                     <span><i class="fas fa-check-circle" aria-hidden="true"></i> Value-First Education</span>
                  </div>
             </div>
         </section>
 
-        {/* ... Free Resources Section ... */}
-         <section id="free-resources" class="section-padding">
+        <!-- Free Resources Section -->
+         <section id="free-resources" class="section-padding" aria-labelledby="resources-heading">
              <div class="container">
-                 <h2 class="section-title">Learn & Grow with Free Resources</h2>
+                 <h2 id="resources-heading" class="section-title">Learn & Grow with Free Resources</h2>
                  <p class="section-description">Start building your financial foundation today with our collection of guides, articles, and social insights.</p>
                  <div class="resource-grid">
-                     <article class="resource-card">
+                     <article class="resource-card" aria-labelledby="resource-blog-title">
                           <div class="card-image"> <img src="../../assets/images/personal/blog.jpg" alt="Person reading financial articles on a tablet" loading="lazy"> </div>
                          <div class="card-content">
-                             <h3><i class="fas fa-newspaper"></i> Rofilid Insights Blog</h3>
+                             <h3 id="resource-blog-title"><i class="fas fa-newspaper" aria-hidden="true"></i> Rofilid Insights Blog</h3>
                              <p>Explore practical articles on budgeting methods for Nigerians, understanding savings options, demystifying debt, and planning for your goals.</p>
                              <div class="card-cta">
-                                 <a href="blog.html" class="btn btn-outline btn-icon"><i class="fas fa-arrow-right"></i> Read Latest Posts</a>
+                                 <a href="blog.html" class="btn btn-outline btn-icon"><i class="fas fa-arrow-right" aria-hidden="true"></i> Read Latest Posts</a>
                              </div>
                          </div>
                     </article>
-                    <article class="resource-card social-integration">
+                    <article class="resource-card social-integration" aria-labelledby="resource-social-title">
                         <div class="card-header">
-                            <i class="fab fa-instagram"></i>
-                            <h3>Daily Bites from BasicPFC</h3>
+                            <i class="fab fa-instagram" aria-hidden="true"></i>
+                            <h3 id="resource-social-title">Daily Bites from BasicPFC</h3>
                         </div>
-                        <p class="social-intro">Get quick tips, insights, and answers to common financial questions on our social channels.</p>
-                        <div class="social-feed-preview">
-                             <div class="social-post-preview tip">
-                                <i class="fab fa-instagram"></i>
-                                <p><strong>Quick Tip:</strong> Automate ₦5,000 savings transfer on payday. Small steps, big impact! <span class="social-handle">#SavingsCulture #BasicPFC</span></p>
+                        <div class="card-content">
+                            <p class="social-intro">Get quick tips, insights, and answers to common financial questions on our social channels.</p>
+                            <div class="social-feed-preview">
+                                <div class="social-post-preview tip">
+                                    <i class="fab fa-instagram" aria-hidden="true"></i>
+                                    <p><strong>Quick Tip:</strong> Automate ₦5,000 savings transfer on payday. Small steps, big impact! <span class="social-handle">#SavingsCulture #BasicPFC</span></p>
+                                </div>
+                                <div class="social-post-preview explainer">
+                                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                                    <p><strong>Explainer:</strong> What's the difference between simple & compound interest in Nigeria? 📈 <span class="social-handle">#FinanceNaija #LearnMoney #BasicPFC</span></p>
+                                </div>
+                                <div class="social-post-preview video-prompt">
+                                    <i class="fab fa-youtube" aria-hidden="true"></i>
+                                    <p><strong>New Video:</strong> "Budgeting Basics: Your First 3 Steps". Watch on <span class="social-handle">YouTube @basicpfc</span>!</p>
+                                </div>
                             </div>
-                            <div class="social-post-preview explainer">
-                                <i class="fab fa-twitter"></i>
-                                <p><strong>Explainer:</strong> What's the difference between simple & compound interest in Nigeria? 📈 <span class="social-handle">#FinanceNaija #LearnMoney #BasicPFC</span></p>
-                            </div>
-                             <div class="social-post-preview video-prompt">
-                                <i class="fab fa-youtube"></i>
-                                <p><strong>New Video:</strong> "Budgeting Basics: Your First 3 Steps". Watch on <span class="social-handle">YouTube @basicpfc</span>!</p>
-                            </div>
-                        </div>
-                        <div class="card-cta social-follow-links">
-                            <p>Follow BasicPFC for more:</p>
-                            <div class="social-icons-inline">
-                                <a href="https://instagram.com/basicpfc" target="_blank" rel="noopener noreferrer" aria-label="BasicPFC on Instagram"><i class="fab fa-instagram"></i></a>
-                                <a href="https://x.com/basicpfc" target="_blank" rel="noopener noreferrer" aria-label="BasicPFC on X (Twitter)"><i class="fab fa-twitter"></i></a>
-                                <a href="https://facebook.com/basicpfc" target="_blank" rel="noopener noreferrer" aria-label="BasicPFC on Facebook"><i class="fab fa-facebook"></i></a>
-                                <a href="https://www.youtube.com/@basicpfc" target="_blank" rel="noopener noreferrer" aria-label="BasicPFC on YouTube"><i class="fab fa-youtube"></i></a>
+                            <div class="card-cta social-follow-links">
+                                <p>Follow BasicPFC for more:</p>
+                                <div class="social-icons-inline">
+                                    <a href="https://instagram.com/basicpfc" target="_blank" rel="noopener noreferrer" aria-label="BasicPFC on Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                                    <a href="https://x.com/basicpfc" target="_blank" rel="noopener noreferrer" aria-label="BasicPFC on X (Twitter)"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                                    <a href="https://facebook.com/basicpfc" target="_blank" rel="noopener noreferrer" aria-label="BasicPFC on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+                                    <a href="https://www.youtube.com/@basicpfc" target="_blank" rel="noopener noreferrer" aria-label="BasicPFC on YouTube"><i class="fab fa-youtube" aria-hidden="true"></i></a>
+                                </div>
                             </div>
                         </div>
                     </article>
-                     <article class="resource-card">
+                     <article class="resource-card" aria-labelledby="resource-understanding-title">
                          <div class="card-image"> <img src="../../assets/images/personal/resource-literacy-placeholder.jpg" alt="Steps representing financial growth" loading="lazy"> </div>
                           <div class="card-content">
-                              <h3><i class="fas fa-chart-pie"></i> Why Financial Understanding Matters</h3>
+                              <h3 id="resource-understanding-title"><i class="fas fa-chart-pie" aria-hidden="true"></i> Why Financial Understanding Matters</h3>
                               <p>Knowing your finances empowers you to make informed decisions, reduce stress, plan for emergencies, and confidently work towards your goals.</p>
                               <div class="card-cta">
-                                  <a href="#our-approach" class="btn btn-outline btn-icon"><i class="fas fa-info-circle"></i> Our Educational Approach</a>
+                                  <a href="#our-approach" class="btn btn-outline btn-icon"><i class="fas fa-info-circle" aria-hidden="true"></i> Our Educational Approach</a>
                               </div>
                           </div>
                      </article>
@@ -162,140 +164,141 @@
             </div>
         </section>
 
-        {/* ... Motivational Quote 1 ... */}
-         <aside class="motivational-quote">
+        <!-- Motivational Quote 1 -->
+         <aside class="motivational-quote" role="complementary">
             <div class="container">
-                <i class="fas fa-magnifying-glass-chart quote-icon"></i>
+                <i class="fas fa-magnifying-glass-chart quote-icon" aria-hidden="true"></i>
                  <p>Knowledge is the first step. <span class="highlight">Ready to see where you stand?</span></p>
             </div>
         </aside>
 
-        {/* ... Learning Hub Section ... */}
-        <section id="learning-hub" class="section-padding bg-light">
+        <!-- Learning Hub Section -->
+        <section id="learning-hub" class="section-padding bg-light" aria-labelledby="learning-heading">
              <div class="container">
-                 <h2 class="section-title">Learning Hub: Test Your Understanding</h2>
+                 <h2 id="learning-heading" class="section-title">Learning Hub: Test Your Understanding</h2>
                  <p class="section-description">Check your grasp on key financial concepts with these quick, 5-question quizzes. Get instant feedback to guide your learning journey – no scores saved, just insights!</p>
                  <div class="category-grid">
-                     <article class="category-card" data-category-id="1">
-                         <i class="fas fa-piggy-bank category-icon"></i>
-                         <h4>Income & Vitals Check</h4>
+                     <article class="category-card" data-category-id="1" aria-labelledby="category-1-title">
+                         <i class="fas fa-piggy-bank category-icon" aria-hidden="true"></i>
+                         <h4 id="category-1-title">Income & Vitals Check</h4>
                          <p>How well do you know your financial starting point?</p>
-                         <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Check</button>
+                         <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" aria-label="Start Income & Vitals Check Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Check</button>
                      </article>
-                     <article class="category-card" data-category-id="2">
-                         <i class="fas fa-sack-dollar category-icon"></i>
-                         <h4>Savings Smarts</h4>
+                     <article class="category-card" data-category-id="2" aria-labelledby="category-2-title">
+                         <i class="fas fa-sack-dollar category-icon" aria-hidden="true"></i>
+                         <h4 id="category-2-title">Savings Smarts</h4>
                          <p>Explore the fundamentals of building savings.</p>
-                         <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Check</button>
+                         <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" aria-label="Start Savings Smarts Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Check</button>
                      </article>
-                     <article class="category-card" data-category-id="3">
-                         <i class="fas fa-calculator category-icon"></i>
-                         <h4>Budgeting Building Blocks</h4>
+                     <article class="category-card" data-category-id="3" aria-labelledby="category-3-title">
+                         <i class="fas fa-calculator category-icon" aria-hidden="true"></i>
+                         <h4 id="category-3-title">Budgeting Building Blocks</h4>
                          <p>Understand the basics of planning your money.</p>
-                         <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Check</button>
+                         <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" aria-label="Start Budgeting Building Blocks Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Check</button>
                      </article>
-                     <article class="category-card" data-category-id="4">
-                         <i class="fas fa-receipt category-icon"></i>
-                         <h4>Spending Awareness</h4>
+                     <article class="category-card" data-category-id="4" aria-labelledby="category-4-title">
+                         <i class="fas fa-receipt category-icon" aria-hidden="true"></i>
+                         <h4 id="category-4-title">Spending Awareness</h4>
                          <p>Gauge your understanding of tracking expenses.</p>
-                         <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Check</button>
+                         <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" aria-label="Start Spending Awareness Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Check</button>
                      </article>
                  </div>
                  <div class="full-challenge-link">
                      <p class="section-description" style="margin-bottom: var(--pp-space-md);">Want a deeper dive?</p>
                      <a href="quizzes.html" class="btn btn-outline btn-large btn-icon">
-                         Explore the Full Financial Fitness Challenge <i class="fas fa-arrow-right"></i>
+                         Explore the Full Financial Fitness Challenge <i class="fas fa-arrow-right" aria-hidden="true"></i>
                      </a>
                  </div>
              </div>
          </section>
 
-        {/* ... Motivational Quote 2 ... */}
-         <aside class="motivational-quote alt-bg">
+        <!-- Motivational Quote 2 -->
+         <aside class="motivational-quote alt-bg" role="complementary">
             <div class="container">
-                <i class="fas fa-tools quote-icon"></i>
+                <i class="fas fa-tools quote-icon" aria-hidden="true"></i>
                  <p>Understanding is key. <span class="highlight">Now, grab some tools to take action.</span></p>
             </div>
          </aside>
 
-        {/* ... Free Tools Section ... */}
-         <section id="free-tools" class="section-padding">
+        <!-- Free Tools Section -->
+         <section id="free-tools" class="section-padding" aria-labelledby="tools-heading">
             <div class="container">
-                <h2 class="section-title">Free Tools & Templates</h2>
+                <h2 id="tools-heading" class="section-title">Free Tools & Templates</h2>
                  <p class="section-description">Download practical, printable PDF templates to start managing your finances effectively today. Interactive spreadsheets available for enhanced features.</p>
                 <div class="template-grid">
-                     <article class="template-card" data-template="line-budget">
+                     <article class="template-card" data-template="line-budget" aria-labelledby="template-line-budget-title">
                          <div class="template-preview">
-                             <img src="../../assets/images/personal/LineBudget.JPG" alt="Line-Item Budget template preview 1" loading="lazy">
-                             <img src="../../assets/images/personal/LineBudget2.jpg" alt="Line-Item Budget template preview 2" loading="lazy">
+                             <img src="../../assets/images/personal/LineBudget.JPG" alt="Preview of Line-Item Budget template showing income and expense sections" loading="lazy">
+                             <img src="../../assets/images/personal/LineBudget2.jpg" alt="Second preview of Line-Item Budget template focusing on categories" loading="lazy">
                          </div>
                          <div class="template-details">
-                             <h3>Line-Item Budget</h3>
+                             <h3 id="template-line-budget-title">Line-Item Budget</h3>
                              <p><strong>Problem Solved:</strong> Lack of detail in spending.<br><strong>How it Helps:</strong> Track every income source and expense category meticulously. Gain full control.</p>
                              <div class="template-actions">
-                                 <a href="#" class="btn btn-primary btn-icon download-pdf-btn"><i class="fas fa-file-pdf"></i> <span>Download PDF (Free)</span></a>
-                                 <a href="#" class="btn btn-outline btn-icon get-spreadsheet-btn" data-price="10000" data-template-name="Line-Item Budget"><i class="fas fa-file-spreadsheet"></i> <span>Get Interactive Spreadsheet (Paid)</span></a>
+                                 <!-- Updated button type and added data-template-key -->
+                                 <button type="button" class="btn btn-primary btn-icon download-pdf-btn" data-template-key="line-budget" aria-label="Download Line-Item Budget PDF (Free)"><i class="fas fa-file-pdf" aria-hidden="true"></i> <span>Download PDF (Free)</span></button>
+                                 <button type="button" class="btn btn-outline btn-icon get-spreadsheet-btn" data-price="10000" data-template-name="Line-Item Budget" aria-label="Get Line-Item Budget Interactive Spreadsheet (Paid)"><i class="fas fa-file-spreadsheet" aria-hidden="true"></i> <span>Get Interactive Spreadsheet (Paid)</span></button>
                              </div>
                              <p class="template-price-note">Spreadsheet requires a Gmail account. PDF is instantly downloadable.</p>
                          </div>
                     </article>
-                    <article class="template-card" data-template="networth">
+                    <article class="template-card" data-template="networth" aria-labelledby="template-networth-title">
                         <div class="template-preview">
-                            <img src="../../assets/images/personal/NetWorth.JPG" alt="Net Worth Statement template preview 1" loading="lazy">
-                            <img src="../../assets/images/personal/NetWorth2.jpg" alt="Net Worth Statement template preview 2" loading="lazy">
+                            <img src="../../assets/images/personal/NetWorth.JPG" alt="Preview of Net Worth Statement showing assets and liabilities columns" loading="lazy">
+                            <img src="../../assets/images/personal/NetWorth2.jpg" alt="Second preview of Net Worth Statement focusing on totals" loading="lazy">
                         </div>
                          <div class="template-details">
-                             <h3>Net Worth Statement</h3>
+                             <h3 id="template-networth-title">Net Worth Statement</h3>
                               <p><strong>Problem Solved:</strong> Unsure of overall financial health.<br><strong>How it Helps:</strong> Understand your financial position by tracking assets and liabilities over time.</p>
                               <div class="template-actions">
-                                 <a href="#" class="btn btn-primary btn-icon download-pdf-btn"><i class="fas fa-file-pdf"></i> <span>Download PDF (Free)</span></a>
-                                 <a href="#" class="btn btn-outline btn-icon get-spreadsheet-btn" data-price="10000" data-template-name="Net Worth Statement"><i class="fas fa-file-spreadsheet"></i> <span>Get Interactive Spreadsheet (Paid)</span></a>
-                             </div>
+                                 <button type="button" class="btn btn-primary btn-icon download-pdf-btn" data-template-key="networth" aria-label="Download Net Worth Statement PDF (Free)"><i class="fas fa-file-pdf" aria-hidden="true"></i> <span>Download PDF (Free)</span></button>
+                                 <button type="button" class="btn btn-outline btn-icon get-spreadsheet-btn" data-price="10000" data-template-name="Net Worth Statement" aria-label="Get Net Worth Statement Interactive Spreadsheet (Paid)"><i class="fas fa-file-spreadsheet" aria-hidden="true"></i> <span>Get Interactive Spreadsheet (Paid)</span></button>
+                              </div>
                              <p class="template-price-note">Spreadsheet requires a Gmail account. PDF is instantly downloadable.</p>
                          </div>
                      </article>
-                     <article class="template-card" data-template="cashflow">
+                     <article class="template-card" data-template="cashflow" aria-labelledby="template-cashflow-title">
                          <div class="template-preview">
-                             <img src="../../assets/images/personal/Cashflow1.jpg" alt="Personal Cashflow Statement template preview 1" loading="lazy">
-                             <img src="../../assets/images/personal/Cashflow2.jpg" alt="Personal Cashflow Statement template preview 2" loading="lazy">
+                             <img src="../../assets/images/personal/Cashflow1.jpg" alt="Preview of Personal Cashflow Statement template showing inflows section" loading="lazy">
+                             <img src="../../assets/images/personal/Cashflow2.jpg" alt="Second preview of Personal Cashflow Statement template showing outflows section" loading="lazy">
                          </div>
                          <div class="template-details">
-                             <h3>Personal Cashflow Statement</h3>
+                             <h3 id="template-cashflow-title">Personal Cashflow Statement</h3>
                              <p><strong>Problem Solved:</strong> Not knowing where money goes month-to-month.<br><strong>How it Helps:</strong> Track the flow of money in and out over a specific period. Identify surplus or deficit.</p>
                               <div class="template-actions">
-                                 <a href="#" class="btn btn-primary btn-icon download-pdf-btn"><i class="fas fa-file-pdf"></i> <span>Download PDF (Free)</span></a>
-                                 <a href="#" class="btn btn-outline btn-icon get-spreadsheet-btn" data-price="10000" data-template-name="Personal Cashflow Statement"><i class="fas fa-file-spreadsheet"></i> <span>Get Interactive Spreadsheet (Paid)</span></a>
-                             </div>
+                                 <button type="button" class="btn btn-primary btn-icon download-pdf-btn" data-template-key="cashflow" aria-label="Download Personal Cashflow Statement PDF (Free)"><i class="fas fa-file-pdf" aria-hidden="true"></i> <span>Download PDF (Free)</span></button>
+                                 <button type="button" class="btn btn-outline btn-icon get-spreadsheet-btn" data-price="10000" data-template-name="Personal Cashflow Statement" aria-label="Get Personal Cashflow Statement Interactive Spreadsheet (Paid)"><i class="fas fa-file-spreadsheet" aria-hidden="true"></i> <span>Get Interactive Spreadsheet (Paid)</span></button>
+                              </div>
                              <p class="template-price-note">Spreadsheet requires a Gmail account. PDF is instantly downloadable.</p>
                          </div>
                     </article>
-                    <article class="template-card" data-template="50-30-20">
+                    <article class="template-card" data-template="50-30-20" aria-labelledby="template-503020-title">
                         <div class="template-preview">
-                            <img src="../../assets/images/personal/Budget503020_1.jpg" alt="50/30/20 Budget template preview 1" loading="lazy">
-                            <img src="../../assets/images/personal/Budget503020_2.jpg" alt="50/30/20 Budget template preview 2" loading="lazy">
+                            <img src="../../assets/images/personal/Budget503020_1.jpg" alt="Preview of 50/30/20 Budget Guide showing category definitions" loading="lazy">
+                            <img src="../../assets/images/personal/Budget503020_2.jpg" alt="Second preview of 50/30/20 Budget Guide showing allocation examples" loading="lazy">
                         </div>
                          <div class="template-details">
-                             <h3>50/30/20 Budget Guide</h3>
+                             <h3 id="template-503020-title">50/30/20 Budget Guide</h3>
                              <p><strong>Problem Solved:</strong> Difficulty allocating income simply.<br><strong>How it Helps:</strong> A straightforward guide to allocate income: 50% Needs, 30% Wants, 20% Savings & Debt.</p>
                               <div class="template-actions">
-                                 <a href="#" class="btn btn-primary btn-icon download-pdf-btn"><i class="fas fa-file-pdf"></i> <span>Download PDF (Free)</span></a>
-                                 <a href="#" class="btn btn-outline btn-icon get-spreadsheet-btn" data-price="10000" data-template-name="50/30/20 Budget"><i class="fas fa-file-spreadsheet"></i> <span>Get Interactive Spreadsheet (Paid)</span></a>
-                             </div>
+                                 <button type="button" class="btn btn-primary btn-icon download-pdf-btn" data-template-key="50-30-20" aria-label="Download 50/30/20 Budget Guide PDF (Free)"><i class="fas fa-file-pdf" aria-hidden="true"></i> <span>Download PDF (Free)</span></button>
+                                 <button type="button" class="btn btn-outline btn-icon get-spreadsheet-btn" data-price="10000" data-template-name="50/30/20 Budget" aria-label="Get 50/30/20 Budget Interactive Spreadsheet (Paid)"><i class="fas fa-file-spreadsheet" aria-hidden="true"></i> <span>Get Interactive Spreadsheet (Paid)</span></button>
+                              </div>
                              <p class="template-price-note">Spreadsheet requires a Gmail account. PDF is instantly downloadable.</p>
                          </div>
                      </article>
-                     <article class="template-card" data-template="expense-tracker">
+                     <article class="template-card" data-template="expense-tracker" aria-labelledby="template-expense-title">
                          <div class="template-preview">
-                             <img src="../../assets/images/personal/ExpenseTracker1.jpg" alt="Expense Tracker template preview 1" loading="lazy">
-                             <img src="../../assets/images/personal/ExpenseTracker2.jpg" alt="Expense Tracker template preview 2" loading="lazy">
+                             <img src="../../assets/images/personal/ExpenseTracker1.jpg" alt="Preview of Simple Expense Tracker showing daily entry rows" loading="lazy">
+                             <img src="../../assets/images/personal/ExpenseTracker2.jpg" alt="Second preview of Simple Expense Tracker showing summary area" loading="lazy">
                          </div>
                          <div class="template-details">
-                             <h3>Simple Expense Tracker</h3>
+                             <h3 id="template-expense-title">Simple Expense Tracker</h3>
                               <p><strong>Problem Solved:</strong> Forgetting where small cash amounts go.<br><strong>How it Helps:</strong> Easily log daily expenses to feed into your main budget (like the Line-Item Budget).</p>
                               <div class="template-actions">
-                                 <a href="#" class="btn btn-primary btn-icon download-pdf-btn"><i class="fas fa-file-pdf"></i> <span>Download PDF (Free)</span></a>
-                                 <a href="#" class="btn btn-outline btn-icon get-spreadsheet-btn" data-price="10000" data-template-name="Line-Item Expense Tracker"><i class="fas fa-file-spreadsheet"></i> <span>Get Interactive Spreadsheet (Paid)</span></a>
-                             </div>
+                                 <button type="button" class="btn btn-primary btn-icon download-pdf-btn" data-template-key="expense-tracker" aria-label="Download Simple Expense Tracker PDF (Free)"><i class="fas fa-file-pdf" aria-hidden="true"></i> <span>Download PDF (Free)</span></button>
+                                 <button type="button" class="btn btn-outline btn-icon get-spreadsheet-btn" data-price="10000" data-template-name="Simple Expense Tracker" aria-label="Get Simple Expense Tracker Interactive Spreadsheet (Paid)"><i class="fas fa-file-spreadsheet" aria-hidden="true"></i> <span>Get Interactive Spreadsheet (Paid)</span></button>
+                              </div>
                              <p class="template-price-note">Spreadsheet requires a Gmail account. PDF is instantly downloadable.</p>
                          </div>
                     </article>
@@ -303,18 +306,18 @@
             </div>
         </section>
 
-        {/* ... Motivational Quote 3 ... */}
-         <aside class="motivational-quote">
+        <!-- Motivational Quote 3 -->
+         <aside class="motivational-quote" role="complementary">
             <div class="container">
-                <i class="fas fa-user-check quote-icon"></i>
+                <i class="fas fa-user-check quote-icon" aria-hidden="true"></i>
                 <p>Tools are powerful. <span class="highlight">Sometimes, personalized guidance makes the difference.</span></p>
              </div>
         </aside>
 
-        {/* ... Coaching Section ... */}
-         <section id="personal-coaching" class="section-padding bg-light-accent">
+        <!-- Coaching Section -->
+         <section id="personal-coaching" class="section-padding bg-light-accent" aria-labelledby="coaching-heading">
             <div class="container coaching-container">
-                <h2 class="section-title">Personalized Financial Coaching (Coming Soon)</h2>
+                <h2 id="coaching-heading" class="section-title">Personalized Financial Coaching (Coming Soon)</h2>
                 <p class="section-description">Ready for dedicated support? We're developing a one-on-one coaching program to help you create a tailored financial roadmap and build lasting positive habits.</p>
                  <div class="coaching-content-redesigned">
                       <div class="coaching-info">
@@ -322,11 +325,11 @@
                           <p>Financial coaching is an educational partnership focused on empowering you with knowledge, tools, and accountability. It's about building your skills and confidence to manage your money effectively for the long term, addressing your specific situation and goals within the Nigerian context.</p>
                           <h3>How Coaching Can Help (Future Offering):</h3>
                           <ul>
-                              <li><i class="fas fa-check"></i> Developing realistic debt management strategies.</li>
-                              <li><i class="fas fa-check"></i> Creating personalized budgets and savings plans.</li>
-                              <li><i class="fas fa-check"></i> Navigating specific Nigerian financial challenges.</li>
-                              <li><i class="fas fa-check"></i> Improving financial habits for sustainable success.</li>
-                              <li><i class="fas fa-check"></i> Gaining clarity and reducing money-related stress.</li>
+                              <li><i class="fas fa-check" aria-hidden="true"></i> Developing realistic debt management strategies.</li>
+                              <li><i class="fas fa-check" aria-hidden="true"></i> Creating personalized budgets and savings plans.</li>
+                              <li><i class="fas fa-check" aria-hidden="true"></i> Navigating specific Nigerian financial challenges.</li>
+                              <li><i class="fas fa-check" aria-hidden="true"></i> Improving financial habits for sustainable success.</li>
+                              <li><i class="fas fa-check" aria-hidden="true"></i> Gaining clarity and reducing money-related stress.</li>
                           </ul>
                     </div>
                      <div class="coaching-interest">
@@ -335,45 +338,45 @@
                         <form class="coaching-interest-form" id="coachingInterestForm" novalidate>
                             <div class="form-group">
                                 <label for="interest-email">Your Email:</label>
-                                <input type="email" id="interest-email" name="email" required placeholder="your.email@example.com">
-                                <span class="form-error-msg" aria-live="polite"></span>
+                                <input type="email" id="interest-email" name="email" required placeholder="your.email@example.com" aria-describedby="interest-email-error" autocomplete="email">
+                                <span class="form-error-msg" id="interest-email-error" aria-live="polite"></span>
                             </div>
-                            <button type="submit" class="btn btn-secondary btn-icon"><i class="fas fa-paper-plane"></i> Notify Me When Available</button>
-                            <p id="interest-form-response" class="form-response-note" style="display: none;" aria-live="polite"></p>
+                            <button type="submit" class="btn btn-secondary btn-icon"><i class="fas fa-paper-plane" aria-hidden="true"></i> Notify Me When Available</button>
+                            <p id="interest-form-response" class="form-response-note" hidden aria-live="polite"></p>
                         </form>
                         <p class="privacy-note">We respect your privacy. Your email will only be used for coaching program updates.</p>
                      </div>
                 </div>
                 <div class="disclaimer">
-                     <p><strong>Disclaimer:</strong> ROFILID provides financial education and resources. While our products and services aims to empower, we do not provide specific investment advice or sell regulated financial products.</p>
+                     <p><strong>Disclaimer:</strong> ROFILID provides financial education and resources. While our products and services aim to empower, we do not provide specific investment advice or sell regulated financial products.</p>
                 </div>
              </div>
         </section>
 
-        {/* ... MMISBALIOR Section ... */}
-         <section id="mmisbalior-section" class="section-padding section-tight bg-light">
+        <!-- MMISBALIOR Section -->
+         <section id="mmisbalior-section" class="section-padding section-tight bg-light" aria-labelledby="mmisbalior-heading">
               <div class="container">
                   <div class="mmisbalior-promo">
                      <div class="promo-content">
-                         <h3><i class="fas fa-graduation-cap"></i> MMISBALIOR: Empowering Teens with Money Skills</h3>
+                         <h3 id="mmisbalior-heading"><i class="fas fa-graduation-cap" aria-hidden="true"></i> MMISBALIOR: Empowering Teens with Money Skills</h3>
                          <p>We're passionate about equipping the next generation! MMISBALIOR is our vision for a dedicated program teaching essential financial concepts to teenagers in Nigeria. Help us shape the future of youth financial literacy.</p>
-                          <a href="#footer-contact" class="btn btn-outline btn-icon"><i class="fas fa-lightbulb"></i> Learn More & Connect</a>
+                          <a href="#footer-contact" class="btn btn-outline btn-icon"><i class="fas fa-lightbulb" aria-hidden="true"></i> Learn More & Connect</a>
                      </div>
                      <div class="promo-visual">
-                          <img src="../../assets/images/personal/mmisbalior1.jpg" alt="Teens discussing finance concepts" loading="lazy">
+                          <img src="../../assets/images/personal/mmisbalior1.jpg" alt="Diverse group of teenagers engaging in a discussion about financial concepts" loading="lazy">
                      </div>
                 </div>
             </div>
         </section>
 
-        {/* ... Feedback Section ... */}
-        <section id="feedback-section" class="section-padding">
+        <!-- Feedback Section -->
+        <section id="feedback-section" class="section-padding" aria-labelledby="feedback-heading">
             <div class="container feedback-container">
-                <h2 class="section-title">Help Us Improve / Share Your Story</h2>
+                <h2 id="feedback-heading" class="section-title">Help Us Improve / Share Your Story</h2>
                 <p class="section-description">Your feedback is valuable! Did you find our resources helpful? Got suggestions? Have a success story using our tools? Click below to share!</p>
                 <div class="feedback-action">
-                     <button id="open-feedback-modal-btn" class="btn btn-secondary btn-icon" aria-haspopup="dialog" aria-controls="feedback-modal">
-                         <i class="fas fa-comments"></i> Give Feedback / Testimonial
+                     <button type="button" id="open-feedback-modal-btn" class="btn btn-secondary btn-icon" aria-haspopup="dialog" aria-controls="feedback-modal">
+                         <i class="fas fa-comments" aria-hidden="true"></i> Give Feedback / Testimonial
                      </button>
                 </div>
             </div>
@@ -381,75 +384,77 @@
 
     </main>
 
-    <!-- Modals (Quiz & Feedback) -->
-    {/* ... Quiz Modal Structure ... */}
-     <div id="quiz-modal" class="modal-overlay" aria-modal="true" role="dialog" aria-labelledby="quiz-modal-title" style="display: none;">
+    <!-- Modals -->
+
+    <!-- Quiz Modal Structure -->
+     <div id="quiz-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="quiz-modal-title" hidden>
          <div class="modal-content quiz-modal-content">
-            <button id="quiz-modal-close" class="modal-close-btn" aria-label="Close Quiz"><i class="fas fa-times"></i></button>
-            <h3 id="quiz-modal-title">Financial Concept Check</h3>
-            <div class="quiz-modal-progress">
+            <button type="button" id="quiz-modal-close" class="modal-close-btn" aria-label="Close Quiz"><i class="fas fa-times" aria-hidden="true"></i></button>
+            <h3 id="quiz-modal-title" class="modal-title">Financial Concept Check</h3>
+            <div class="quiz-modal-progress" aria-live="polite"> <!-- Added aria-live -->
                  <span id="quiz-modal-q-current">1</span> / <span id="quiz-modal-q-total">5</span>
             </div>
-             <div id="quiz-modal-question" class="quiz-modal-question-area" aria-live="polite">Question text appears here...</div>
-             <div id="quiz-modal-options" class="quiz-modal-options-area">Options appear here...</div>
-            <div id="quiz-modal-feedback" class="quiz-feedback" style="display: none;" aria-live="polite">Feedback appears here...</div>
-            <div id="quiz-modal-results" class="quiz-results" style="display: none;" aria-live="polite">Final results appear here...</div>
-             <div id="quiz-modal-full-challenge-prompt" class="quiz-modal-prompt" style="display: none;">
-                 <p>You've completed the introductory checks! Ready for more? Explore all 100+ questions in the full <a href="quizzes.html" class="link-inline">ROFILID Financial Fitness Challenge</a>.</p>
+             <div id="quiz-modal-question" class="quiz-modal-question-area" aria-live="polite"></div>
+             <div id="quiz-modal-options" class="quiz-modal-options-area" role="group" aria-labelledby="quiz-modal-question"></div> <!-- Added role -->
+            <div id="quiz-modal-feedback" class="quiz-feedback" hidden aria-live="polite"></div>
+            <div id="quiz-modal-results" class="quiz-results" hidden aria-live="polite"></div>
+             <div id="quiz-modal-full-challenge-prompt" class="quiz-modal-prompt" hidden>
+                 <p>You've completed the introductory checks! Ready for more? Explore all 100 questions in the full <a href="quizzes.html" class="link-inline">ROFILID Financial Fitness Challenge</a>.</p>
              </div>
             <div class="quiz-modal-navigation">
-                 <button id="quiz-modal-next" class="btn btn-secondary small quiz-next-btn" style="display: none;">Next Question</button>
-                <button id="quiz-modal-next-quiz" class="btn btn-primary small" style="display: none;"><i class="fas fa-angle-double-right"></i> Next Check</button>
-                <button id="quiz-modal-restart" class="btn btn-outline small quiz-restart-btn" style="display: none;"><i class="fas fa-redo"></i> Restart Check</button>
-                <button id="quiz-modal-close-results" class="btn btn-outline small quiz-close-btn" style="display: none;"><i class="fas fa-times"></i> Close</button>
+                 <button type="button" id="quiz-modal-next" class="btn btn-secondary small quiz-next-btn" hidden>Next Question</button>
+                <button type="button" id="quiz-modal-next-quiz" class="btn btn-primary small" hidden><i class="fas fa-angle-double-right" aria-hidden="true"></i> Next Check</button>
+                <button type="button" id="quiz-modal-restart" class="btn btn-outline small quiz-restart-btn" hidden><i class="fas fa-redo" aria-hidden="true"></i> Restart Check</button>
+                <button type="button" id="quiz-modal-close-results" class="btn btn-outline small quiz-close-btn" hidden><i class="fas fa-times" aria-hidden="true"></i> Close</button>
              </div>
         </div>
      </div>
 
-    {/* ... Feedback Modal Structure ... */}
-     <div id="feedback-modal" class="modal-overlay" aria-modal="true" role="dialog" aria-labelledby="feedback-modal-title" style="display: none;">
+    <!-- Feedback Modal Structure -->
+     <div id="feedback-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="feedback-modal-title" hidden>
         <div class="modal-content feedback-modal-content">
-            <button id="feedback-modal-close" class="modal-close-btn" aria-label="Close Feedback Form"><i class="fas fa-times"></i></button>
-            <h3 id="feedback-modal-title">Share Your Feedback or Testimonial</h3>
+            <button type="button" id="feedback-modal-close" class="modal-close-btn" aria-label="Close Feedback Form"><i class="fas fa-times" aria-hidden="true"></i></button>
+            <h3 id="feedback-modal-title" class="modal-title">Share Your Feedback or Testimonial</h3>
             <form id="feedback-testimonial-form" class="feedback-form" novalidate>
                 <p class="feedback-intro">We appreciate you taking the time to help us improve or share your success!</p>
                 <div class="form-group">
                     <label for="feedback-name">Your Name (Optional):</label>
-                    <input type="text" id="feedback-name" name="name" placeholder="E.g., Ada B.">
+                    <input type="text" id="feedback-name" name="name" placeholder="E.g., Ada B." autocomplete="name">
                 </div>
                 <div class="form-group">
                     <label for="feedback-email">Your Email (Optional, for follow-up):</label>
-                    <input type="email" id="feedback-email" name="email" placeholder="your.email@example.com">
-                    <span class="form-error-msg" aria-live="polite"></span>
+                    <input type="email" id="feedback-email" name="email" placeholder="your.email@example.com" aria-describedby="feedback-email-error" autocomplete="email">
+                    <span class="form-error-msg" id="feedback-email-error" aria-live="polite"></span>
                 </div>
                 <div class="form-group">
                     <label for="feedback-type">Type:</label>
-                    <select id="feedback-type" name="type" required>
+                    <select id="feedback-type" name="type" required aria-describedby="feedback-type-error">
                         <option value="" disabled selected>-- Select Type --</option>
                         <option value="feedback">General Feedback / Suggestion</option>
                         <option value="testimonial">Testimonial / Success Story</option>
                         <option value="bug">Report an Issue / Bug</option>
                     </select>
-                     <span class="form-error-msg" aria-live="polite"></span>
+                     <span class="form-error-msg" id="feedback-type-error" aria-live="polite"></span>
                 </div>
                 <div class="form-group">
                     <label for="feedback-message">Your Message:</label>
-                    <textarea id="feedback-message" name="message" rows="5" required placeholder="Tell us what you think..."></textarea>
-                     <span class="form-error-msg" aria-live="polite"></span>
+                    <textarea id="feedback-message" name="message" rows="5" required placeholder="Tell us what you think..." aria-describedby="feedback-message-error" maxlength="2000"></textarea>
+                     <span class="form-error-msg" id="feedback-message-error" aria-live="polite"></span>
                 </div>
-                <div class="form-group permission-group" style="display: none;">
-                    <input type="checkbox" id="feedback-permission" name="permission" value="yes">
-                    <label for="feedback-permission">I grant permission for ROFILID to potentially use my testimonial (anonymously or with first name/initial) on their website or marketing materials.</label>
+                <div class="form-group permission-group" hidden>
+                    <label for="feedback-permission" class="checkbox-label">
+                       <input type="checkbox" id="feedback-permission" name="permission" value="yes">
+                       <span>I grant permission for ROFILID to potentially use my testimonial (anonymously or with first name/initial) on their website or marketing materials.</span>
+                   </label>
                 </div>
-                <button type="submit" class="btn btn-primary btn-icon"><i class="fas fa-paper-plane"></i> Submit Feedback</button>
-                <p id="feedback-form-response" class="form-response-note" style="display: none;" aria-live="polite"></p>
+                <button type="submit" class="btn btn-primary btn-icon"><i class="fas fa-paper-plane" aria-hidden="true"></i> Submit Feedback</button>
+                <p id="feedback-form-response" class="form-response-note" hidden aria-live="polite"></p>
             </form>
         </div>
     </div>
 
     <!-- Footer Section -->
-    <footer class="site-footer" id="footer-contact">
-         {/* Footer content remains identical */}
+    <footer class="site-footer" id="footer-contact" role="contentinfo">
          <div class="container">
             <div class="page-footer-links">
                 <div class="footer-links-container">
@@ -472,7 +477,7 @@
                              <li><a href="../corporate/corporate.html">For Businesses</a></li>
                              <li><a href="#our-approach">Our Approach</a></li>
                              <li><a href="#feedback-section">Send Feedback</a></li>
-                             <li><a href="../../index.html#contact">Contact Us</a></li>
+                             <li><a href="#footer-contact">Contact Us</a></li>
                          </ul>
                      </div>
                     <div>
@@ -487,17 +492,17 @@
                     <div>
                         <h4>Connect</h4>
                         <ul class="footer-contact-info">
-                             <li><i class="fas fa-envelope"></i> <a href="mailto:info@rofilid.com">info@rofilid.com</a></li>
-                             <li><i class="fas fa-phone"></i> <a href="tel:+2348058900000">+234 805 890 0000</a></li>
-                             <li><i class="fab fa-whatsapp"></i> <a href="https://wa.me/2348058900000" target="_blank" rel="noopener noreferrer">WhatsApp Us</a></li>
+                             <li><i class="fas fa-envelope" aria-hidden="true"></i> <a href="mailto:info@rofilid.com">info@rofilid.com</a></li>
+                             <li><i class="fas fa-phone" aria-hidden="true"></i> <a href="tel:+2348058900000">+234 805 890 0000</a></li>
+                             <li><i class="fab fa-whatsapp" aria-hidden="true"></i> <a href="https://wa.me/2348058900000" target="_blank" rel="noopener noreferrer">WhatsApp Us</a></li>
                         </ul>
                          <p class="footer-connect-title">Follow BasicPFC for tips:</p>
                         <div class="social-media">
-                             <a href="https://facebook.com/basicpfc" aria-label="BasicPFC on Facebook" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
-                            <a href="https://instagram.com/basicpfc" aria-label="BasicPFC on Instagram" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
-                            <a href="https://x.com/basicpfc" aria-label="BasicPFC on X (Formerly Twitter)" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
-                             <a href="https://www.youtube.com/@basicpfc" aria-label="BasicPFC on YouTube" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube"></i></a>
-                             <a href="https://linkedin.com/company/rofilid" aria-label="Rofilid on LinkedIn" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a>
+                             <a href="https://facebook.com/basicpfc" aria-label="BasicPFC on Facebook" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                            <a href="https://instagram.com/basicpfc" aria-label="BasicPFC on Instagram" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                            <a href="https://x.com/basicpfc" aria-label="BasicPFC on X (Formerly Twitter)" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                             <a href="https://www.youtube.com/@basicpfc" aria-label="BasicPFC on YouTube" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube" aria-hidden="true"></i></a>
+                             <a href="https://linkedin.com/company/rofilid" aria-label="Rofilid on LinkedIn" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
                          </div>
                      </div>
                  </div>
@@ -506,22 +511,22 @@
                  <div class="footer-left">
                     <div class="logo">
                         <a href="../../index.html" aria-label="Rofilid Home">
-                            <img src="../../assets/images/common/rofilid-logo-white.svg" alt="Rofilid Logo" width="120" height="40" loading="lazy">
+                            <img src="../../assets/images/common/rofilid-logo-white.svg" alt="Rofilid Logo White" width="120" height="40" loading="lazy">
                         </a>
                     </div>
                      <p class="footer-tagline">Empowering Your Financial Future.</p>
                  </div>
-                 <div class="footer-right"></div>
+                 <div class="footer-right">
+                 </div>
              </div>
             <div class="copyright">
-                 <p>© <span id="current-year">2024</span> ROFILID Services Limited. All rights reserved.</p>
+                 <p>© <span id="current-year"></span> ROFILID Services Limited. All rights reserved.</p>
              </div>
         </div>
     </footer>
 
-     <!-- Scripts -->
-    <!-- NO Link to global main.js -->
-    <!-- Specific, NOW FULLY SELF-CONTAINED script for personal page interactions -->
+     <!-- Corrected path based on user feedback -->
     <script src="../../assets/js/personal/personal.js" defer></script>
+
 </body>
-    </html>
+                                                                                                                                          </html>
