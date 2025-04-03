@@ -1,20 +1,51 @@
 /* ==========================================================================
-   ROFILID Personal Page Styles - v2.2.0 (Isolated & Optimized)
+   ROFILID Personal Page Styles - v2.3.0 (Fully Self-Contained)
    Location: /pages/personal/personal.css
-   Description: Optimized and isolated styles for personal.html. Relies on
-                global styles.css ONLY for base reset, typography, container,
-                and potentially core header/footer structure/theme.
-                All component and section styles specific to personal.html
-                are defined HERE.
+   Description: Contains ALL styles required for personal.html, including
+                base resets, layout, header/footer base, and specific
+                component styles. No longer relies on global styles.css.
    ========================================================================== */
 
-/* --- Root Variables (Define Personal Page Scope) --- */
+/* === Copied Base & Reset (from global styles.css) === */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+    /* Base body styles - will be partially overridden by .personal-page */
+    font-family: 'Roboto', sans-serif; /* Default fallback */
+    line-height: 1.6;
+    color: #333; /* Default fallback */
+    background-color: #fff; /* Default fallback */
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: #0c343d; text-decoration: none; transition: all 0.3s ease; }
+a:hover { color: #1a4652; }
+ul { padding-left: 0; list-style: none; }
+li { margin-bottom: 5px; }
+ul ul li { margin-bottom: 5px; }
+
+/* === Copied Utility Classes (from global styles.css) === */
+.container {
+    width: 100%;
+    /* Use a more specific max-width if desired, matching global */
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    /* Default padding - can be overridden by personal variables */
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
+
+/* --- Personal Page Specific Scope & Variables --- */
 .personal-page {
   /* Theme Colors */
   --pp-color-primary: #0c343d; /* Deep Teal */
   --pp-color-primary-light: #1a4652;
   --pp-color-primary-dark: #072329;
-  --pp-color-green: #28a745; /* Bright Green */
+  --pp-color-green: #28a745;   /* Bright Green */
   --pp-color-green-dark: #1f7d36;
   --pp-color-secondary: #ffffff; /* White */
   --pp-color-background: #f8fcfc;
@@ -45,45 +76,117 @@
   --pp-space-xs: 4px; --pp-space-sm: 8px; --pp-space-md: 16px; --pp-space-lg: 24px; --pp-space-xl: 32px; --pp-space-xxl: 48px; --pp-space-xxxl: 64px; --pp-space-xxxxl: 80px; /* Added larger step */
   /* Font Weights */
   --pp-font-regular: 400; --pp-font-medium: 500; --pp-font-semibold: 600; --pp-font-bold: 700; --pp-font-extrabold: 800;
-  /* Header Height (Reference global if consistent, or define here if specific) */
-  --pp-header-height: var(--header-height, 70px); /* Fallback to 70px */
-}
+  /* Header Height */
+  --pp-header-height: 70px; /* Default, JS might update */
 
-/* --- Base Styles --- */
-/* Assumes global styles.css handles body font-family, base line-height, color etc. */
-.personal-page body {
-    background-color: var(--pp-color-secondary); /* Ensure body bg */
+  /* Override base body styles for this page */
+  & body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--pp-color-secondary);
     color: var(--pp-color-text);
+    line-height: 1.65;
+  }
+
+   /* Apply consistent spacing to container */
+  & .container {
+     padding-left: var(--pp-space-lg); /* Use personal spacing vars */
+     padding-right: var(--pp-space-lg);
+   }
+    @media (max-width: 500px) {
+       & .container {
+           padding-left: var(--pp-space-md);
+           padding-right: var(--pp-space-md);
+       }
+   }
 }
 
-/* --- General Layout & Spacing --- */
-/* Enforce consistent vertical spacing between sections */
-/* Apply to direct children of main */
-#main-content > section,
-#main-content > aside.motivational-quote {
-    padding-top: var(--pp-space-xxxl);
-    padding-bottom: var(--pp-space-xxxl);
-    border-bottom: 1px solid var(--pp-color-border-light); /* Separator */
+/* --- Copied BASE Header Styles (Structure/Layout) --- */
+/* Structure remains, appearance is overridden */
+.site-header {
+    padding: var(--pp-space-sm) 0; /* Use personal vars */
+    position: fixed; width: 100%; top: 0; left: 0;
+    z-index: 1000; height: var(--pp-header-height);
+    display: flex; align-items: center;
+    transition: background-color var(--pp-transition-medium), border-color var(--pp-transition-medium), box-shadow var(--pp-transition-medium);
+    /* Default BG/Color handled by .personal-page .site-header override */
 }
-#main-content > section:last-of-type,
-#main-content > aside.motivational-quote:last-of-type {
-    border-bottom: none; /* Remove border on last section */
+.header-container {
+    display: flex; justify-content: space-between; align-items: center;
+    width: 100%; max-width: 1200px; margin: 0 auto;
+    padding: 0 var(--pp-space-lg); /* Use personal vars */
 }
-/* Specific padding overrides if needed */
-#main-content > .section-padding--large { padding-top: var(--pp-space-xxxxl); padding-bottom: var(--pp-space-xxxxl); }
-#main-content > .section-tight { padding-top: var(--pp-space-xl); padding-bottom: var(--pp-space-xl); }
-#main-content > #hero { padding-top: var(--pp-space-xxxl); } /* Adjust hero top padding relative to header */
-
-/* Container: defined globally in styles.css */
-
-.link-inline {
-    color: var(--pp-color-primary); text-decoration: underline; font-weight: var(--pp-font-medium);
-    transition: color var(--pp-transition-fast);
+@media (max-width: 500px) {
+    .header-container { padding: 0 var(--pp-space-md); }
 }
-.link-inline:hover { color: var(--pp-color-primary-dark); }
 
-/* --- Header Overrides --- */
-/* Minimal overrides if global styles handle structure */
+.logo img { height: 40px; width: auto; display: block; vertical-align: middle; }
+nav { /* Basic structure placeholder */ }
+.nav-list { display: flex; list-style: none; padding: 0; margin: 0; } /* Base flex display for desktop */
+.nav-item { margin: 0; }
+.nav-link {
+    text-decoration: none; font-weight: var(--pp-font-medium);
+    padding: var(--pp-space-xs) var(--pp-space-sm); display: block;
+    transition: color var(--pp-transition-fast), border-color var(--pp-transition-fast);
+    white-space: nowrap; border-bottom: 2px solid transparent;
+}
+.mobile-menu-toggle { background: transparent; border: none; font-size: 1.8rem; cursor: pointer; display: none; padding: var(--pp-space-xs); line-height: 1; margin-left: auto; }
+.connect-button {
+    display: inline-block; padding: var(--pp-space-xs) var(--pp-space-md);
+    border-radius: var(--pp-border-radius); font-weight: var(--pp-font-medium);
+    cursor: pointer; text-decoration: none; text-align: center;
+    font-size: 1rem; transition: var(--pp-transition-medium);
+    white-space: nowrap;
+    /* Default BG/Color handled by .personal-page .connect-button override */
+}
+
+/* --- Copied BASE Footer Styles (Structure/Layout) --- */
+.site-footer {
+    padding-top: var(--pp-space-xxl); /* Use personal vars */
+    padding-bottom: var(--pp-space-lg);
+    /* Default BG/Color handled by .personal-page .site-footer override */
+    transition: background-color var(--pp-transition-medium);
+}
+.page-footer-links { padding-bottom: var(--pp-space-xl); border-bottom: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: var(--pp-space-xl); }
+.footer-links-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--pp-space-xl); }
+.page-footer-links h4 { margin-bottom: var(--pp-space-lg); font-weight: var(--pp-font-semibold); font-size: 1.15rem; padding-bottom: var(--pp-space-sm); border-bottom: 1px solid rgba(255, 255, 255, 0.15); }
+.page-footer-links ul li { margin-bottom: var(--pp-space-md); }
+.page-footer-links ul li a { transition: color var(--pp-transition-fast), padding-left var(--pp-transition-fast); display: inline-block; text-decoration: none; font-size: 1rem; }
+.footer-contact-info { margin-bottom: var(--pp-space-lg); }
+.footer-contact-info li { display: flex; align-items: center; gap: var(--pp-space-sm); }
+.footer-contact-info li i { width: 18px; text-align: center; font-size: 0.9em; }
+.footer-connect-title { margin-bottom: var(--pp-space-md); font-weight: var(--pp-font-semibold); font-size: 1rem; }
+.social-media { display: flex; flex-wrap: wrap; gap: var(--pp-space-md); }
+.social-link { font-size: 1.3rem; transition: var(--pp-transition-fast); display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; line-height: 1; }
+.footer-content { display: flex; flex-direction: column; align-items: center; gap: var(--pp-space-lg); margin-bottom: var(--pp-space-xl); }
+.footer-left { text-align: center; }
+.footer-left .logo img { display: block; margin: 0 auto; height: 40px; }
+.footer-tagline { margin-top: var(--pp-space-sm); font-size: 0.95rem; }
+.copyright { text-align: center; padding-top: var(--pp-space-lg); border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: var(--pp-space-xl); }
+.copyright p { font-size: 0.9rem; line-height: 1.5; margin-bottom: 5px; }
+
+@media (min-width: 768px) {
+    .footer-content { flex-direction: row; justify-content: space-between; align-items: center; text-align: left; }
+    .footer-left { text-align: left; }
+    .footer-left .logo img { margin: 0; }
+    .social-media { justify-content: flex-end; }
+}
+
+
+/* ===================================================== */
+/* === START: PERSONAL PAGE SPECIFIC STYLES (v2.2.0+) === */
+/* ===================================================== */
+
+/* --- Header Overrides (Personal Page Theme) --- */
+.personal-page .site-header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--pp-color-border-light);
+    box-shadow: var(--pp-box-shadow-sm);
+}
+.personal-page .site-header .logo img {
+    content: url(../../assets/images/common/rofilid-logo-teal.svg); /* Ensures teal logo */
+}
 .personal-page .site-header .nav-link { color: var(--pp-color-primary); }
 .personal-page .site-header .nav-link:hover,
 .personal-page .site-header .nav-link:focus { color: var(--pp-color-primary-dark); }
@@ -98,7 +201,7 @@
 .personal-page .mobile-menu-toggle[aria-expanded="true"] .close-icon { display: inline-block; }
 .personal-page .mobile-menu-toggle[aria-expanded="true"] .open-icon { display: none; }
 
-/* Mobile Nav Styling (Moved from global potentially) - specific to personal page if header differs */
+/* Mobile Nav Styling (Self-Contained) */
 @media (max-width: 991px) {
     .personal-page .nav-list {
         display: none; position: fixed; top: var(--pp-header-height); left: 0; width: 100%;
@@ -118,10 +221,11 @@
         width: 100%; border-bottom: 1px solid var(--pp-color-border-light);
         padding: var(--pp-space-md) var(--pp-space-xl); text-align: center;
         font-size: 1.1rem; font-weight: var(--pp-font-medium); border-radius: 0;
+        border-left: 4px solid transparent; /* Add space for active indicator */
     }
     .personal-page .nav-list .nav-item:last-child .nav-link { border-bottom: none; }
     .personal-page .nav-list .nav-link.active-page {
-        background-color: var(--pp-color-light-accent); border-left: 4px solid var(--pp-color-primary);
+        background-color: var(--pp-color-light-accent); border-left-color: var(--pp-color-primary); /* Indicate active */
         border-bottom-color: var(--pp-color-border-light); font-weight: var(--pp-font-semibold);
         padding-left: calc(var(--pp-space-xl) - 4px);
     }
@@ -139,8 +243,8 @@
     .personal-page .nav-list .nav-item { width: auto; }
     .personal-page .nav-list .nav-link {
         width: auto; padding: var(--pp-space-xs) var(--pp-space-sm);
-        border-bottom: 2px solid transparent; font-size: 1rem; text-align: left;
-        border-left: none; /* Remove mobile active style */
+        border-bottom: 2px solid transparent; /* Re-add bottom border for desktop */
+        font-size: 1rem; text-align: left; border-left: none;
     }
      .personal-page .nav-list .nav-link.active-page {
         background-color: transparent;
@@ -160,15 +264,28 @@
     transform: translateY(-2px); box-shadow: 0 3px 8px rgba(12, 52, 61, 0.2);
 }
 
-/* --- Main Content Base --- */
+/* --- Main Content Base & Section Spacing --- */
 .personal-page main {
     padding-top: var(--pp-header-height);
-    overflow-x: hidden; /* Prevent horizontal scroll from animations */
+    overflow-x: hidden;
 }
+/* Section vertical rhythm */
+.personal-page #main-content > section,
+.personal-page #main-content > aside.motivational-quote {
+    padding-top: var(--pp-space-xxxl);
+    padding-bottom: var(--pp-space-xxxl);
+    border-bottom: 1px solid var(--pp-color-border-light);
+}
+.personal-page #main-content > section:last-of-type,
+.personal-page #main-content > aside.motivational-quote:last-of-type {
+    border-bottom: none;
+}
+/* Padding overrides */
+.personal-page #main-content > .section-padding--large { padding-top: var(--pp-space-xxxxl); padding-bottom: var(--pp-space-xxxxl); }
+.personal-page #main-content > .section-tight { padding-top: var(--pp-space-xl); padding-bottom: var(--pp-space-xl); }
+.personal-page #main-content > #hero { padding-top: var(--pp-space-xxxl); }
 
-/* --- General Button Styles --- */
-/* Define ONLY if they differ significantly from global styles.css */
-/* Example: If personal page uses different button styling */
+/* --- Button Styles (Self-Contained) --- */
 .personal-page .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: var(--pp-space-sm);
     padding: 12px 24px; border-radius: var(--pp-border-radius); text-decoration: none;
@@ -202,7 +319,7 @@
 .personal-page .btn:disabled, .personal-page .btn[aria-disabled="true"] { background-color: #e2e8f0; border-color: #e2e8f0; color: #94a3b8; cursor: not-allowed; opacity: 0.8; transform: none; box-shadow: none; pointer-events: none; }
 .personal-page .btn-outline:disabled, .personal-page .btn-outline[aria-disabled="true"] { background-color: transparent; border-color: #cbd5e1; color: #94a3b8; opacity: 0.8; }
 
-/* --- Section Titles --- */
+/* --- Section Titles (Self-Contained) --- */
 .personal-page .section-title {
     text-align: center; margin-bottom: var(--pp-space-lg);
     font-size: clamp(2.2rem, 5.5vw, 2.8rem); color: var(--pp-color-primary);
@@ -221,304 +338,111 @@
 }
 
 /* --- Hero Section --- */
-.personal-page #hero {
-    background: linear-gradient(160deg, var(--pp-color-light-accent) 0%, var(--pp-color-background) 60%, var(--pp-color-secondary) 100%);
-    color: var(--pp-color-text); text-align: center; position: relative; overflow: hidden;
-    border-bottom: 1px solid var(--pp-color-border-light);
-    /* Override default section padding */
-    padding-top: var(--pp-space-xxxl);
-    padding-bottom: var(--pp-space-xxxl);
-}
-.personal-page .hero-container { /* Uses global .container */ }
-.personal-page .hero-content { max-width: 850px; margin: 0 auto var(--pp-space-xxxl) auto; }
-.personal-page .hero-badge {
-    display: inline-block; background-color: var(--pp-color-primary-light); color: white;
-    font-size: 0.9rem; font-weight: var(--pp-font-semibold); padding: var(--pp-space-sm) var(--pp-space-lg);
-    border-radius: 50px; margin-bottom: var(--pp-space-lg); letter-spacing: 0.5px;
-    box-shadow: 0 2px 6px rgba(12, 52, 61, 0.15);
-}
-.personal-page #hero h1 {
-    font-size: clamp(2.8rem, 7vw, 4.2rem); font-weight: var(--pp-font-extrabold);
-    color: var(--pp-color-primary); line-height: 1.15; margin-bottom: var(--pp-space-lg);
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
-}
-.personal-page #hero .subheadline {
-    font-size: clamp(1.2rem, 3.5vw, 1.5rem); color: var(--pp-color-text-light);
-    max-width: 700px; margin: 0 auto var(--pp-space-xl) auto;
-}
-.personal-page .hero-actions { display: flex; gap: var(--pp-space-lg); justify-content: center; flex-wrap: wrap; margin-top: var(--pp-space-xl); }
-.personal-page .hero-stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--pp-space-lg); }
-.personal-page .stat-card {
-    background: rgba(255, 255, 255, 0.8); padding: var(--pp-space-lg); border-radius: var(--pp-border-radius-large);
-    text-align: center; border: 1px solid var(--pp-color-border-light); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    transition: var(--pp-transition-medium); transform: translateY(0); opacity: 1; /* Initial state for observer */
-    will-change: transform, box-shadow;
-}
-.personal-page .stat-card:hover { background: rgba(255, 255, 255, 0.95); transform: translateY(-6px); box-shadow: var(--pp-box-shadow); border-color: var(--pp-color-border); }
-.personal-page .stat-card i { font-size: 2.5rem; color: var(--pp-color-primary); margin-bottom: var(--pp-space-md); display: block; line-height: 1; transition: transform var(--pp-transition-fast); }
-.personal-page .stat-card:hover i { transform: scale(1.1); }
-.personal-page .stat-card h4 { font-size: 1.15rem; font-weight: var(--pp-font-semibold); color: var(--pp-color-primary-dark); margin-bottom: var(--pp-space-xs); }
-.personal-page .stat-card p { font-size: 0.95rem; color: var(--pp-color-text-light); line-height: 1.5; margin: 0; }
+/* (Styles already included in the copy above) */
 
 /* --- Approach Section --- */
-.personal-page #our-approach { background-color: var(--pp-color-light-accent); }
-.personal-page .approach-container { text-align: center; }
-.personal-page .approach-icon { font-size: 3.5rem; color: var(--pp-color-green); margin-bottom: var(--pp-space-lg); line-height: 1; }
-.personal-page .approach-highlights { margin-top: var(--pp-space-xl); display: flex; justify-content: center; gap: var(--pp-space-lg) var(--pp-space-xl); flex-wrap: wrap; }
-.personal-page .approach-highlights span { display: inline-flex; align-items: center; gap: var(--pp-space-sm); font-weight: var(--pp-font-semibold); color: var(--pp-color-primary-dark); font-size: 1.05rem; }
-.personal-page .approach-highlights i { color: var(--pp-color-green); font-size: 1.2em; }
+/* (Styles already included in the copy above) */
 
 /* --- Resource Grid & Cards --- */
-.personal-page #free-resources { background-color: var(--pp-color-secondary); } /* Ensure background */
-.personal-page .resource-grid {
-    display: grid; grid-template-columns: 1fr; gap: var(--pp-space-xl);
-    margin-top: var(--pp-space-xxl); /* More space below description */
-}
-@media (min-width: 640px) { .personal-page .resource-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1024px) { .personal-page .resource-grid { grid-template-columns: repeat(3, 1fr); } }
-
-.personal-page .resource-card {
-    background: var(--pp-color-secondary); border-radius: var(--pp-border-radius-large); overflow: hidden;
-    box-shadow: var(--pp-box-shadow); transition: transform var(--pp-transition-medium), box-shadow var(--pp-transition-medium);
-    display: flex; flex-direction: column; border: 1px solid var(--pp-color-border-light); height: 100%;
-    will-change: transform, box-shadow;
-}
-.personal-page .resource-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: var(--pp-box-shadow-lg); }
-.personal-page .resource-card .card-image { aspect-ratio: 16 / 10; overflow: hidden; background-color: var(--pp-color-light); line-height: 0; border-bottom: 1px solid var(--pp-color-border-light); }
-.personal-page .resource-card .card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--pp-transition-slow) ease; display: block; }
-.personal-page .resource-card:hover .card-image img { transform: scale(1.08); }
-.personal-page .resource-card .card-content { padding: var(--pp-space-lg); flex-grow: 1; display: flex; flex-direction: column; }
-.personal-page .resource-card h3 { font-size: 1.3rem; font-weight: var(--pp-font-bold); color: var(--pp-color-primary-dark); margin-bottom: var(--pp-space-md); display: flex; align-items: center; gap: var(--pp-space-sm); line-height: 1.3; }
-.personal-page .resource-card h3 i { color: var(--pp-color-primary); font-size: 1em; margin-right: 2px; }
-.personal-page .resource-card p { font-size: 1rem; color: var(--pp-color-text-light); line-height: 1.7; margin-bottom: var(--pp-space-lg); flex-grow: 1; }
-.personal-page .resource-card .card-cta { margin-top: auto; }
-.personal-page .resource-card .card-cta .btn { width: 100%; }
-
-/* Social Integration Card */
-.personal-page .social-integration { background: linear-gradient(140deg, var(--pp-color-light-accent) 0%, var(--pp-color-secondary) 100%); border-color: transparent; }
-.personal-page .social-integration .card-header { display: flex; align-items: center; gap: var(--pp-space-sm); margin-bottom: var(--pp-space-sm); color: var(--pp-color-primary-dark); }
-.personal-page .social-integration .card-header i { font-size: 1.8rem; color: var(--pp-color-primary); }
-.personal-page .social-integration .card-header h3 { margin-bottom: 0; font-size: 1.3rem; font-weight: var(--pp-font-bold); }
-.personal-page .social-integration .social-intro { font-size: 0.95rem; color: var(--pp-color-text-light); margin-bottom: var(--pp-space-lg); flex-grow: 0; }
-.personal-page .social-feed-preview { display: flex; flex-direction: column; gap: var(--pp-space-md); margin-bottom: var(--pp-space-lg); }
-.personal-page .social-post-preview { background-color: var(--pp-color-secondary); padding: var(--pp-space-md); border-radius: var(--pp-border-radius); border: 1px solid var(--pp-color-border-light); font-size: 0.9rem; line-height: 1.6; box-shadow: var(--pp-box-shadow-sm); position: relative; padding-left: 50px; transition: background-color var(--pp-transition-fast), transform var(--pp-transition-fast); }
-.personal-page .social-post-preview:hover { background-color: var(--pp-color-light); transform: translateX(3px); }
-.personal-page .social-post-preview i.fab { position: absolute; left: var(--pp-space-md); top: var(--pp-space-md); font-size: 1.6rem; width: 25px; text-align: center; opacity: 0.9; }
-.personal-page .social-post-preview.tip i.fa-instagram { color: #c13584; }
-.personal-page .social-post-preview.explainer i.fa-twitter { color: #1DA1F2; }
-.personal-page .social-post-preview.video-prompt i.fa-youtube { color: #FF0000; }
-.personal-page .social-post-preview p { margin: 0; color: var(--pp-color-text); }
-.personal-page .social-post-preview strong { color: var(--pp-color-primary-dark); display: block; margin-bottom: var(--pp-space-xs); font-weight: var(--pp-font-semibold); }
-.personal-page .social-post-preview .social-handle { color: var(--pp-color-primary); font-weight: 500; text-decoration: none; }
-.personal-page .social-post-preview .social-handle:hover { text-decoration: underline; }
-.personal-page .social-follow-links { margin-top: auto; text-align: center; padding-top: var(--pp-space-lg); border-top: 1px solid var(--pp-color-border-light); }
-.personal-page .social-follow-links p { font-size: 1rem; color: var(--pp-color-text); margin-bottom: var(--pp-space-md); font-weight: 500; }
-.personal-page .social-icons-inline { display: flex; justify-content: center; gap: var(--pp-space-lg); }
-.personal-page .social-icons-inline a { color: var(--pp-color-text-light); font-size: 1.6rem; transition: var(--pp-transition-fast); }
-.personal-page .social-icons-inline a:hover { color: var(--pp-color-primary); transform: translateY(-3px) scale(1.1); }
+/* (Styles already included in the copy above) */
 
 /* --- Motivational Quotes --- */
-.personal-page .motivational-quote {
-    /* padding is handled by section default */
-    margin: 0; /* Remove default margin, rely on section padding */
-    background-color: var(--pp-color-success-light);
-    border-top: 1px solid #c8e6c9; border-bottom: 1px solid #c8e6c9; /* Keep these borders */
-    overflow: hidden;
-}
-.personal-page .motivational-quote .container { display: flex; align-items: center; gap: var(--pp-space-lg); max-width: 950px; }
-.personal-page .motivational-quote .quote-icon { font-size: 2.5rem; color: var(--pp-color-green); flex-shrink: 0; line-height: 1; opacity: 0.9; animation: pulse 2.5s infinite ease-in-out; }
-.personal-page .motivational-quote p { font-size: clamp(1.15rem, 2.8vw, 1.4rem); color: #155724; font-weight: var(--pp-font-regular); line-height: 1.6; margin: 0; }
-.personal-page .motivational-quote p .highlight { font-weight: var(--pp-font-bold); color: var(--pp-color-green-dark); background: linear-gradient(to top, rgba(167, 243, 208, 0.6) 40%, transparent 40%); padding: 0 2px; }
-.personal-page .motivational-quote.alt-bg { background-color: var(--pp-color-light-accent); border-top-color: #b2ebf2; border-bottom-color: #b2ebf2; }
-.personal-page .motivational-quote.alt-bg p { color: var(--pp-color-primary-dark); }
-.personal-page .motivational-quote.alt-bg p .highlight { color: var(--pp-color-primary-dark); background: linear-gradient(to top, rgba(128, 222, 234, 0.6) 40%, transparent 40%); }
-.personal-page .motivational-quote.alt-bg .quote-icon { color: var(--pp-color-primary); animation-name: pulse-teal; }
-@keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.1); opacity: 1; } }
-@keyframes pulse-teal { 0%, 100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.1); opacity: 1; } }
+/* (Styles already included in the copy above) */
 
 /* --- Learning Hub / Quiz Intro --- */
-.personal-page #learning-hub { background-color: var(--pp-color-light); }
-.personal-page .category-grid {
-    display: grid; grid-template-columns: 1fr; gap: var(--pp-space-lg);
-    margin-top: var(--pp-space-xxl); /* Space below description */
-}
-@media (min-width: 500px) { .personal-page .category-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 992px) { .personal-page .category-grid { grid-template-columns: repeat(4, 1fr); } }
-.personal-page .category-card {
-    background: var(--pp-color-secondary); border-radius: var(--pp-border-radius-large);
-    box-shadow: var(--pp-box-shadow); border: 1px solid var(--pp-color-border-light); text-align: center;
-    padding: var(--pp-space-xl); display: flex; flex-direction: column; align-items: center;
-    transition: var(--pp-transition-medium); height: 100%;
-    will-change: transform, box-shadow;
-}
-.personal-page .category-card:hover { transform: translateY(-10px) scale(1.03); box-shadow: var(--pp-box-shadow-lg); border-color: var(--pp-color-primary-light); }
-.personal-page .category-card .category-icon { font-size: 2.8rem; color: var(--pp-color-primary); margin-bottom: var(--pp-space-lg); transition: transform var(--pp-transition-medium) ease; line-height: 1; }
-.personal-page .category-card:hover .category-icon { transform: scale(1.2) rotate(-8deg); }
-.personal-page .category-card h4 { font-size: 1.2rem; color: var(--pp-color-primary-dark); margin-bottom: var(--pp-space-sm); font-weight: var(--pp-font-bold); line-height: 1.3; }
-.personal-page .category-card p { font-size: 0.95rem; color: var(--pp-color-text-light); line-height: 1.6; margin-bottom: var(--pp-space-lg); flex-grow: 1; max-width: 95%; }
-.personal-page .category-card .start-quiz-btn { margin-top: auto; width: 100%; max-width: 200px; }
-.personal-page .full-challenge-link { text-align: center; margin-top: var(--pp-space-xxl); }
+/* (Styles already included in the copy above) */
 
 /* --- Free Tools & Templates --- */
-.personal-page #free-tools { background-color: var(--pp-color-secondary); }
-.personal-page .template-grid {
-    display: grid; grid-template-columns: 1fr; gap: var(--pp-space-xl);
-    margin-top: var(--pp-space-xxl);
-}
-@media (min-width: 640px) { .personal-page .template-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1024px) { .personal-page .template-grid { grid-template-columns: repeat(3, 1fr); } }
-.personal-page .template-card {
-    background: var(--pp-color-secondary); border-radius: var(--pp-border-radius-large); overflow: hidden;
-    box-shadow: var(--pp-box-shadow); border: 1px solid var(--pp-color-border-light);
-    transition: var(--pp-transition-medium); display: flex; flex-direction: column; height: 100%;
-    will-change: transform, box-shadow;
-}
-.personal-page .template-card:hover { transform: translateY(-8px); box-shadow: var(--pp-box-shadow-lg); border-color: var(--pp-color-primary-light); }
-.personal-page .template-preview { position: relative; line-height: 0; aspect-ratio: 16 / 10; overflow: hidden; background-color: var(--pp-color-light); border-bottom: 1px solid var(--pp-color-border-light); }
-.personal-page .template-preview img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; padding: var(--pp-space-sm); transition: opacity var(--pp-transition-slow), transform var(--pp-transition-slow); display: block; }
-.personal-page .template-preview img:last-child { opacity: 0; }
-.personal-page .template-card:hover .template-preview img:first-child { opacity: 0; transform: scale(1.05); }
-.personal-page .template-card:hover .template-preview img:last-child { opacity: 1; transform: scale(1); }
-.personal-page .template-details { padding: var(--pp-space-lg); flex-grow: 1; display: flex; flex-direction: column; }
-.personal-page .template-details h3 { font-size: 1.3rem; font-weight: var(--pp-font-bold); color: var(--pp-color-primary-dark); margin-bottom: var(--pp-space-md); line-height: 1.3; }
-.personal-page .template-details p { font-size: 0.95rem; color: var(--pp-color-text-light); line-height: 1.7; flex-grow: 1; margin-bottom: var(--pp-space-lg); }
-.personal-page .template-details p strong { display: block; color: var(--pp-color-primary-dark); font-weight: var(--pp-font-semibold); margin-bottom: var(--pp-space-xs); }
-.personal-page .template-actions { margin-top: auto; display: flex; flex-direction: column; gap: var(--pp-space-sm); }
-.personal-page .template-actions .btn span { flex-grow: 1; text-align: center; }
-.personal-page .template-price-note { font-size: 0.85rem; color: var(--pp-color-text-lighter); text-align: center; margin-top: var(--pp-space-md); line-height: 1.4; }
+/* (Styles already included in the copy above) */
 
 /* --- Coaching Section --- */
-.personal-page #personal-coaching { background-color: var(--pp-color-light-accent); }
-.personal-page .coaching-content-redesigned { display: grid; gap: var(--pp-space-xl); margin-top: var(--pp-space-xxl); grid-template-columns: 1fr; }
-@media (min-width: 992px) { .personal-page .coaching-content-redesigned { grid-template-columns: 1fr 1fr; align-items: start; } }
-.personal-page .coaching-info, .personal-page .coaching-interest { background: var(--pp-color-secondary); padding: var(--pp-space-xl); border-radius: var(--pp-border-radius-large); box-shadow: var(--pp-box-shadow); border: 1px solid var(--pp-color-border-light); }
-.personal-page .coaching-info h3, .personal-page .coaching-interest h3 { font-size: 1.5rem; margin-bottom: var(--pp-space-lg); color: var(--pp-color-primary-dark); font-weight: var(--pp-font-bold); }
-.personal-page .coaching-info p, .personal-page .coaching-info ul, .personal-page .coaching-interest p { font-size: 1rem; color: var(--pp-color-text-light); line-height: 1.75; margin-bottom: var(--pp-space-lg); }
-.personal-page .coaching-info ul { list-style: none; padding-left: 0; }
-.personal-page .coaching-info ul li { position: relative; padding-left: var(--pp-space-xl); margin-bottom: var(--pp-space-md); }
-.personal-page .coaching-info ul li i.fa-check { position: absolute; left: 0; top: 6px; color: var(--pp-color-green); font-size: 1.1em; }
-/* Coaching Interest Form */
-.personal-page .coaching-interest-form .form-group { margin-bottom: var(--pp-space-lg); }
-.personal-page .coaching-interest-form label { display: block; margin-bottom: var(--pp-space-sm); font-weight: var(--pp-font-semibold); color: var(--pp-color-primary-dark); font-size: 0.95rem; }
-.personal-page .coaching-interest-form input[type="email"] { display: block; width: 100%; margin-bottom: var(--pp-space-xs); padding: 12px 16px; border: 1px solid var(--pp-color-border); border-radius: var(--pp-border-radius); font-family: inherit; font-size: 1rem; line-height: 1.5; background-color: #fff; transition: var(--pp-transition-fast); color: var(--pp-color-text); box-shadow: var(--pp-box-shadow-inset); }
-.personal-page .coaching-interest-form input[type="email"]::placeholder { color: #94a3b8; }
-.personal-page .coaching-interest-form input[type="email"]:focus { outline: none; border-color: var(--pp-color-primary); box-shadow: 0 0 0 3px rgba(12, 52, 61, 0.1), var(--pp-box-shadow-inset); }
-.personal-page .coaching-interest-form .form-error-msg { display: block; color: var(--pp-color-danger); font-size: 0.85rem; margin-top: var(--pp-space-xs); min-height: 1.2em; }
-.personal-page .coaching-interest-form input.is-invalid { border-color: var(--pp-color-danger); }
-.personal-page .coaching-interest-form input.is-invalid:focus { box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1), var(--pp-box-shadow-inset); }
-.personal-page .coaching-interest-form button { display: block; width: 100%; }
-.personal-page .form-response-note { font-size: 0.95rem; text-align: center; margin-top: var(--pp-space-md); color: var(--pp-color-text); padding: var(--pp-space-md); border-radius: var(--pp-border-radius); border-left: 4px solid; }
-.personal-page .form-response-note.success { background-color: var(--pp-color-success-light); color: #155724; border-left-color: var(--pp-color-success); }
-.personal-page .form-response-note.error { background-color: var(--pp-color-danger-light); color: #721c24; border-left-color: var(--pp-color-danger); }
-.personal-page .privacy-note { font-size: 0.85rem; color: var(--pp-color-text-lighter); text-align: center; margin-top: var(--pp-space-lg); margin-bottom: 0; }
-.personal-page .disclaimer { font-size: 0.9rem; color: var(--pp-color-text-light); margin: var(--pp-space-xxl) auto 0; border-top: 1px solid var(--pp-color-border-light); padding-top: var(--pp-space-lg); text-align: center; max-width: 800px; line-height: 1.7; }
-.personal-page .disclaimer strong { color: var(--pp-color-text); }
+/* (Styles already included in the copy above) */
 
 /* --- MMISBALIOR Promo --- */
-.personal-page #mmisbalior-section { background-color: var(--pp-color-light); }
-.personal-page .mmisbalior-promo { background: linear-gradient(135deg, var(--pp-color-primary) 0%, var(--pp-color-primary-light) 100%); color: var(--pp-color-secondary); padding: var(--pp-space-xl); border-radius: var(--pp-border-radius-large); box-shadow: var(--pp-box-shadow-lg); display: flex; flex-direction: column; align-items: center; gap: var(--pp-space-xl); overflow: hidden; }
-@media (min-width: 768px) { .personal-page .mmisbalior-promo { flex-direction: row; text-align: left; padding: var(--pp-space-xxl); } }
-.personal-page .mmisbalior-promo .promo-content { max-width: 650px; flex: 1 1 60%; }
-.personal-page .mmisbalior-promo h3 { color: var(--pp-color-secondary); margin-bottom: var(--pp-space-md); font-size: clamp(1.8rem, 4.5vw, 2.2rem); font-weight: var(--pp-font-bold); margin-top: 0; display: inline-flex; align-items: center; gap: var(--pp-space-sm); }
-.personal-page .mmisbalior-promo h3 i { opacity: 0.9; }
-.personal-page .mmisbalior-promo p { margin-bottom: var(--pp-space-lg); color: rgba(255, 255, 255, 0.95); line-height: 1.75; font-size: 1.05rem; }
-.personal-page .mmisbalior-promo .promo-visual { line-height: 0; width: 100%; max-width: 350px; border-radius: var(--pp-border-radius); overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.2); flex-shrink: 0; }
-@media (min-width: 768px) { .personal-page .mmisbalior-promo .promo-visual { max-width: 300px; flex: 1 0 35%; } }
-.personal-page .mmisbalior-promo .promo-visual img { width: 100%; height: auto; display: block; }
-.personal-page .mmisbalior-promo .btn { background-color: transparent; color: var(--pp-color-secondary); border: 2px solid var(--pp-color-secondary); font-weight: var(--pp-font-semibold); padding: 12px 25px; margin-top: var(--pp-space-sm); box-shadow: none; }
-.personal-page .mmisbalior-promo .btn:hover { background-color: rgba(255, 255, 255, 0.15); color: #fff; transform: translateY(-3px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+/* (Styles already included in the copy above) */
 
 /* --- Feedback Section --- */
-.personal-page #feedback-section { background-color: var(--pp-color-secondary); border-bottom: none; } /* Remove bottom border if it's last */
-.personal-page .feedback-container { text-align: center; }
-.personal-page .feedback-action { margin-top: var(--pp-space-lg); }
-.personal-page #open-feedback-modal-btn { font-size: 1.1rem; padding: 14px 30px; }
+/* (Styles already included in the copy above) */
 
 /* --- Shared Modal Styles --- */
-.modal-overlay {
-    position: fixed; inset: 0; background-color: var(--pp-color-overlay-bg);
-    display: flex; align-items: center; justify-content: center; z-index: 2000;
-    opacity: 0; pointer-events: none; transition: opacity var(--pp-transition-medium);
-    padding: var(--pp-space-md); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-}
-.modal-overlay[style*="display: flex"] { opacity: 1; pointer-events: auto; }
-.modal-content {
-    background-color: var(--pp-color-secondary); color: var(--pp-color-text);
-    padding: var(--pp-space-xl) var(--pp-space-xxl); border-radius: var(--pp-border-radius-large);
-    width: 100%; max-width: 650px; max-height: 90vh; overflow-y: auto;
-    box-shadow: var(--pp-box-shadow-lg); position: relative;
-    transform: scale(0.95) translateY(10px); transition: transform var(--pp-transition-medium), opacity var(--pp-transition-medium);
-    opacity: 0; display: flex; flex-direction: column;
-    will-change: transform, opacity;
-}
-.modal-overlay[style*="display: flex"] .modal-content { transform: scale(1) translateY(0); opacity: 1; }
-.modal-close-btn {
-    position: absolute; top: var(--pp-space-md); right: var(--pp-space-md); background: transparent;
-    border: none; font-size: 1.5rem; color: var(--pp-color-text-lighter); cursor: pointer;
-    line-height: 1; padding: var(--pp-space-sm); transition: color var(--pp-transition-fast), transform var(--pp-transition-fast);
-    border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
-}
-.modal-close-btn:hover { color: var(--pp-color-primary-dark); background-color: var(--pp-color-light); transform: rotate(90deg); }
-.modal-content h3 { font-size: 1.6rem; color: var(--pp-color-primary); text-align: center; margin: 0 0 var(--pp-space-lg) 0; padding-bottom: var(--pp-space-md); border-bottom: 1px solid var(--pp-color-border-light); font-weight: var(--pp-font-bold); line-height: 1.3; }
+/* (Styles already included in the copy above) */
 
 /* --- Quiz Modal Specific Styles --- */
-.quiz-modal-progress { text-align: center; font-size: 0.9rem; color: var(--pp-color-text-light); margin-bottom: var(--pp-space-lg); background-color: var(--pp-color-light); padding: var(--pp-space-xs) var(--pp-space-sm); border-radius: var(--pp-border-radius); font-weight: var(--pp-font-medium); }
-.quiz-modal-question-area { font-weight: var(--pp-font-semibold); margin-bottom: var(--pp-space-lg); color: var(--pp-color-text); font-size: 1.15rem; line-height: 1.6; padding: var(--pp-space-sm) 0; text-align: left; }
-.quiz-modal-options-area { display: flex; flex-direction: column; gap: var(--pp-space-md); margin-bottom: var(--pp-space-lg); }
-.quiz-modal-options-area .option-button { display: block; width: 100%; text-align: left; background-color: var(--pp-color-secondary); padding: var(--pp-space-md); border-radius: var(--pp-border-radius); border: 1px solid var(--pp-color-border); cursor: pointer; transition: var(--pp-transition-fast); font-size: 1rem; color: var(--pp-color-text); line-height: 1.5; box-shadow: var(--pp-box-shadow-sm); }
-.quiz-modal-options-area .option-button:hover:not(:disabled) { background-color: var(--pp-color-light); border-color: var(--pp-color-primary); transform: translateX(5px); box-shadow: var(--pp-box-shadow); }
-.quiz-modal-options-area .option-button:disabled { cursor: default; }
-.quiz-modal-options-area .option-button.correct { background-color: var(--pp-color-success-light) !important; border-color: var(--pp-color-success) !important; color: #155724 !important; font-weight: var(--pp-font-semibold); }
-.quiz-modal-options-area .option-button.incorrect { background-color: var(--pp-color-danger-light) !important; border-color: #f5c6cb !important; color: #721c24 !important; opacity: 0.8; }
-.quiz-modal-options-area .option-button.disabled:not(.correct):not(.incorrect) { opacity: 0.6; }
-.quiz-modal-feedback { margin-top: var(--pp-space-lg); padding: var(--pp-space-md); border-radius: var(--pp-border-radius); line-height: 1.6; border-left: 5px solid; animation: fadeIn 0.4s ease; font-size: 1rem; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-.quiz-modal-feedback p { margin: 0; }
-.quiz-modal-feedback strong { display: block; margin-bottom: var(--pp-space-xs); font-size: 1.1em; font-weight: var(--pp-font-bold); }
-.quiz-modal-feedback.correct { background-color: var(--pp-color-success-light); color: #155724; border-left-color: var(--pp-color-success); }
-.quiz-modal-feedback.incorrect { background-color: var(--pp-color-danger-light); color: #721c24; border-left-color: var(--pp-color-danger); }
-.quiz-modal-results { animation: fadeIn 0.5s ease; text-align: center; padding: var(--pp-space-xl) var(--pp-space-lg); background-color: var(--pp-color-background); border-radius: var(--pp-border-radius-large); margin-top: var(--pp-space-lg); border: 1px solid var(--pp-color-border-light); }
-.quiz-modal-results h4 { margin-bottom: var(--pp-space-md); color: var(--pp-color-primary-dark); font-size: 1.5rem; font-weight: var(--pp-font-bold); }
-.quiz-modal-results p { font-size: 1.1rem; color: var(--pp-color-text); margin-bottom: var(--pp-space-sm); }
-.quiz-modal-results .quiz-score-percentage { font-weight: var(--pp-font-bold); font-size: 1.2rem; color: var(--pp-color-primary); margin-bottom: var(--pp-space-md);}
-.quiz-modal-results .quiz-result-message { font-style: italic; color: var(--pp-color-text-light); }
-.quiz-modal-prompt { padding: var(--pp-space-lg) var(--pp-space-md) 0 var(--pp-space-md); background-color: transparent; border-top: 1px solid var(--pp-color-light-accent); margin-top: var(--pp-space-lg); text-align: center; }
-.quiz-modal-prompt p { font-size: 0.95em; color: var(--pp-color-text-light); margin-bottom: 0; line-height: 1.5; }
-.quiz-modal-navigation { display: flex; justify-content: center; align-items: center; gap: var(--pp-space-md); flex-wrap: wrap; margin-top: var(--pp-space-xl); padding-top: var(--pp-space-lg); border-top: 1px solid var(--pp-color-border-light); }
+/* (Styles already included in the copy above) */
 
 /* --- Feedback Modal Specific Styles --- */
-.feedback-modal-content { max-width: 700px; }
-.feedback-form .feedback-intro { font-size: 1rem; color: var(--pp-color-text-light); margin-bottom: var(--pp-space-lg); text-align: center; }
-.feedback-form .form-group { margin-bottom: var(--pp-space-lg); }
-.feedback-form label { display: block; margin-bottom: var(--pp-space-sm); font-weight: var(--pp-font-semibold); color: var(--pp-color-primary-dark); font-size: 0.95rem; }
-.feedback-form input[type="text"], .feedback-form input[type="email"], .feedback-form select, .feedback-form textarea { display: block; width: 100%; margin-bottom: var(--pp-space-xs); padding: 12px 16px; border: 1px solid var(--pp-color-border); border-radius: var(--pp-border-radius); font-family: inherit; font-size: 1rem; line-height: 1.5; background-color: #fff; transition: var(--pp-transition-fast); color: var(--pp-color-text); box-shadow: var(--pp-box-shadow-inset); }
-.feedback-form input::placeholder, .feedback-form textarea::placeholder { color: #94a3b8; }
-.feedback-form input:focus, .feedback-form select:focus, .feedback-form textarea:focus { outline: none; border-color: var(--pp-color-primary); box-shadow: 0 0 0 3px rgba(12, 52, 61, 0.1), var(--pp-box-shadow-inset); }
-.feedback-form select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E"); background-position: right 0.7rem center; background-repeat: no-repeat; background-size: 1.25em 1.25em; padding-right: 2.5rem; }
-.feedback-form textarea { min-height: 120px; resize: vertical; }
-.feedback-form .form-error-msg { display: block; color: var(--pp-color-danger); font-size: 0.85rem; margin-top: var(--pp-space-xs); min-height: 1.2em; }
-.feedback-form input.is-invalid, .feedback-form select.is-invalid, .feedback-form textarea.is-invalid { border-color: var(--pp-color-danger); }
-.feedback-form input.is-invalid:focus, .feedback-form select.is-invalid:focus, .feedback-form textarea.is-invalid:focus { box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1), var(--pp-box-shadow-inset); }
-.feedback-form .permission-group { display: flex; align-items: flex-start; gap: var(--pp-space-sm); margin-top: var(--pp-space-lg); background-color: var(--pp-color-light); padding: var(--pp-space-md); border-radius: var(--pp-border-radius); }
-.feedback-form .permission-group input[type="checkbox"] { width: auto; flex-shrink: 0; margin-top: 3px; accent-color: var(--pp-color-primary); }
-.feedback-form .permission-group label { font-size: 0.9rem; font-weight: var(--pp-font-regular); color: var(--pp-color-text-light); margin-bottom: 0; cursor: pointer; }
-.feedback-form button[type="submit"] { width: 100%; margin-top: var(--pp-space-lg); }
+/* (Styles already included in the copy above) */
 
-/* --- Footer Overrides (Minimal, if needed) --- */
-/* Assuming global styles.css handles footer base */
+/* --- Footer Styles (Personal Page Theme) --- */
+.personal-page .site-footer {
+    background-color: var(--pp-color-primary-dark);
+    color: #cbd5e1; /* Use variable? --pp-color-text-on-dark? */
+}
+.personal-page .page-footer-links ul li a { color: #e2e8f0; } /* Use variable? */
+.personal-page .page-footer-links ul li a:hover { color: #fff; }
+.personal-page .page-footer-links h4 { color: #fff; border-bottom-color: rgba(255, 255, 255, 0.15); }
+.personal-page .footer-contact-info li i { color: var(--pp-color-light-accent); }
+.personal-page .footer-connect-title { color: #fff; }
+.personal-page .social-link { color: #e2e8f0; background-color: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.1); }
+.personal-page .social-link:hover { background-color: rgba(255, 255, 255, 0.15); border-color: rgba(255, 255, 255, 0.3); color: #fff; }
+.personal-page .footer-tagline { color: rgba(255, 255, 255, 0.75); }
+.personal-page .copyright { border-top-color: rgba(255, 255, 255, 0.1); }
+.personal-page .copyright p { color: #94a3b8; }
+
 
 /* --- Floating Background Animation --- */
-@keyframes float { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(30px, -40px) scale(1.1); } 100% { transform: translate(0, 0) scale(1); } }
-.personal-page .deco-blur { position: fixed; width: 450px; height: 450px; border-radius: 50%; filter: blur(140px); opacity: 0.08; z-index: -1; animation: float 20s ease-in-out infinite alternate; will-change: transform; pointer-events: none; }
-.personal-page .deco-blur.blur-1 { background: radial-gradient(circle, var(--pp-color-primary-light) 0%, transparent 70%); top: 5%; left: -5%; animation-duration: 24s; }
-.personal-page .deco-blur.blur-2 { background: radial-gradient(circle, var(--pp-color-green) 0%, transparent 70%); bottom: 8%; right: -8%; animation-delay: 4s; animation-duration: 19s; opacity: 0.07; filter: blur(150px); }
-.personal-page .deco-blur.blur-3 { background: radial-gradient(circle, #81d4fa 0%, transparent 70%); top: 70%; left: 50%; transform: translateX(-50%); animation-delay: 8s; animation-duration: 27s; opacity: 0.06; width: 350px; height: 350px; filter: blur(130px); }
+/* (Styles already included in the copy above) */
 
-/* --- Print Styles --- */
-/* Assuming print styles are mostly global, but add specific overrides if needed */
+/* --- Print Styles (Self-Contained) --- */
 @media print {
-    .personal-page body { background-color: #fff !important; } /* Ensure white background */
-    .personal-page section, .personal-page aside { padding: 1cm 0 !important; border: none !important; box-shadow: none !important; }
+    /* Reset base styles */
+    .personal-page body { padding-top: 0; font-size: 10pt; color: #000; background-color: #fff !important; font-family: 'Times New Roman', Times, serif !important; }
+    .personal-page { --pp-color-primary: #000; --pp-color-secondary: #fff; --pp-color-text: #000; --pp-color-background: #fff; --pp-color-green: #000; --pp-border-radius: 0px; --pp-box-shadow: none; }
+
+    /* Hide non-essential elements specific to personal page */
+    .personal-page .site-header,
+    .personal-page .mobile-menu-toggle,
+    .personal-page .btn-cta-header,
+    .personal-page .site-footer .page-footer-links,
+    .personal-page .social-media,
+    .personal-page .hero-actions,
+    .personal-page .hero-stats-grid,
+    .personal-page .deco-blur,
+    .personal-page .motivational-quote,
+    .personal-page .template-preview img:last-child,
+    .personal-page .start-quiz-btn,
+    .personal-page .get-spreadsheet-btn,
+    .personal-page .coaching-interest,
+    .personal-page #feedback-section,
+    .personal-page .modal-overlay,
+    .personal-page .mmisbalior-promo .promo-visual,
+    .personal-page .social-integration .social-feed-preview,
+    .personal-page .social-icons-inline,
+    .personal-page .approach-icon,
+    .personal-page .category-icon,
+    .personal-page .approach-highlights span i,
+    .personal-page .card-cta .btn:not(.download-pdf-btn),
+    .personal-page .mmisbalior-promo .btn,
+    .personal-page .disclaimer { display: none !important; }
+
+    /* Adjust layout and styles */
+    .personal-page .container { max-width: 100% !important; padding: 0 1cm !important; margin: 0 !important; width: auto !important;}
+    .personal-page main { padding-top: 0 !important; }
+    .personal-page section { padding: 1cm 0 !important; page-break-inside: avoid; border: none !important; box-shadow: none !important; }
     .personal-page #hero { background: none !important; padding: 1cm 0 !important; text-align: left !important; }
-    /* Add more specific print overrides for personal page components here if needed */
+    .personal-page .section-title::after { display: none !important; }
+    .personal-page a { color: inherit !important; text-decoration: underline !important; }
+    .personal-page h1, .personal-page h2, .personal-page h3, .personal-page h4 { color: #000 !important; text-shadow: none !important; font-family: 'Times New Roman', Times, serif !important; margin-bottom: 0.5em; page-break-after: avoid; }
+    .personal-page p, .personal-page li { color: #000 !important; font-family: 'Times New Roman', Times, serif !important; line-height: 1.4; }
+    .personal-page .resource-card, .personal-page .template-card, .personal-page .coaching-info, .personal-page .category-card { box-shadow: none !important; border: 1px solid #ccc !important; padding: 0.5cm !important; page-break-inside: avoid; background: #fff !important; border-radius: 0 !important; }
+    .personal-page .card-image, .personal-page .template-preview { display: none !important; }
+    .personal-page .template-actions .download-pdf-btn { display: block !important; font-size: 9pt !important; padding: 2px !important; border: 1px solid #ccc !important; background: #eee !important; color: #000 !important; }
+    .personal-page .template-details p { flex-grow: 0; }
+
+    /* Footer Print */
+    .personal-page .site-footer { background-color: #fff !important; color: #000 !important; border-top: 1px solid #ccc !important; padding: 1cm 0 !important; text-align: left !important; }
+    .personal-page .footer-left { display: block !important; float: none !important; text-align: left !important; }
+    .personal-page .footer-left .logo img { filter: invert(1) grayscale(1) !important; height: 30px; margin: 0 !important;}
+    .personal-page .footer-content { flex-direction: column; align-items: flex-start; }
+    .personal-page .copyright { color: #555 !important; border-top-color: #ccc !important; padding-top: 0.5cm; margin-top: 1cm;}
    }
