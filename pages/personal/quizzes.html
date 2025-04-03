@@ -1,219 +1,35 @@
 <!DOCTYPE html>
-<html lang="en" class="personal-page"> <!-- Apply shared styles -->
+<html lang="en" class="personal-page quiz-page"> <!-- Ensure correct classes for CSS context -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Test your financial knowledge with the ROFILID Financial Fitness Challenge. Quizzes on budgeting, saving, investing, and more for Nigerians.">
+    <meta name="description" content="Test your financial knowledge with the ROFILID Financial Fitness Challenge. Complete 100 questions or explore quizzes by theme for Nigerians.">
     <title>ROFILiD Financial Fitness Challenge - All Quizzes</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../styles.css">
-    <link rel="stylesheet" href="personal.css"> <!-- Reuses styles from personal page (v1.4.0) -->
-    <link rel="stylesheet" href="quizzes.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
-    <!-- Decorative Background Elements -->
-    <div class="deco-blur blur-1"></div>
-    <div class="deco-blur blur-2"></div>
-    <div class="deco-blur blur-3"></div>
 
-    <!-- Header Section -->
-    <header class="site-header">
-        <div class="container header-container">
-            <div class="logo">
-                <a href="../../index.html" aria-label="Rofilid Home">
-                    <img src="../../assets/images/common/rofilid-logo-teal.svg" alt="Rofilid Logo" width="120" height="40" loading="eager">
-                </a>
-            </div>
-            <nav aria-label="Main navigation">
-                <button class="mobile-menu-toggle" aria-expanded="false" aria-controls="primary-navigation">
-                    <span class="sr-only">Menu</span>
-                    <i class="fas fa-bars" aria-hidden="true"></i>
-                </button>
-                <ul id="primary-navigation" class="nav-list">
-                    <li class="nav-item"><a href="../../index.html" class="nav-link">Home</a></li>
-                    <li class="nav-item"><a href="../corporate/corporate.html" class="nav-link">Corporate</a></li>
-                    <li class="nav-item"><a href="personal.html" class="nav-link active-page">Personal</a></li>
-                    <li class="nav-item"><a href="../../index.html#services" class="nav-link">Services</a></li>
-                </ul>
-            </nav>
-            <a href="../../index.html#services" class="connect-button" aria-label="Our Services">Our Services</a>
-        </div>
-    </header>
-
-    <main>
-        <!-- I. Quiz Page Introduction -->
-        <section class="page-intro quiz-page-intro">
-             <div class="container">
-                 <h1>Financial Fitness Challenge</h1>
-                 <p class="subheadline">Assess your knowledge across key personal finance areas.</p>
-                 <p>Click on a theme below to reveal its quizzes. Test your understanding with these short (5 questions each) assessments and get instant feedback!</p> <!-- Updated text -->
-                 <p style="margin-top: var(--spacing-md);">
-                     <a href="personal.html#financial-fitness-challenge-intro" class="link-back">
-                         <i class="fas fa-arrow-left"></i> Back to Personal Overview
-                     </a>
-                 </p>
-            </div>
-        </section>
-
-        <!-- II. Full Financial Challenge Accordion -->
-        <section id="full-financial-challenge" class="section-padding">
-            <div class="container quiz-accordion-container"> <!-- Added container class -->
-                <h2 class="section-title">Explore All Quizzes by Theme</h2> <!-- Updated Title -->
-                <!-- Removed overall section description -->
-
-                <!-- Accordion Item 1 -->
-                <div class="challenge-theme accordion-item">
-                     <h3 class="accordion-header">
-                         <button class="theme-toggle-button"
-                                 type="button"
-                                 aria-expanded="false"
-                                 aria-controls="theme-content-1"
-                                 id="theme-button-1">
-                             Theme 1: Your Financial Groundwork
-                             <i class="fas fa-chevron-down theme-icon"></i>
-                         </button>
-                     </h3>
-                     <div id="theme-content-1"
-                          class="theme-content"
-                          role="region"
-                          aria-labelledby="theme-button-1">
-                        <div class="category-grid">
-                            <article class="category-card" data-category-id="1"> <i class="fas fa-piggy-bank category-icon"></i> <h4>Income & Financial Vitals</h4> <p>Understanding income & your overall standing.</p> <button class="btn start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                            <article class="category-card" data-category-id="2"> <i class="fas fa-sack-dollar category-icon"></i> <h4>Savings Essentials</h4> <p>The why and how of building savings.</p> <button class="btn start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                            <article class="category-card" data-category-id="3"> <i class="fas fa-calculator category-icon"></i> <h4>Budgeting Basics</h4> <p>Creating and sticking to a plan.</p> <button class="btn start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                            <article class="category-card" data-category-id="4"> <i class="fas fa-receipt category-icon"></i> <h4>Tracking & Managing Spending</h4> <p>Knowing where your money goes.</p> <button class="btn start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                            <article class="category-card" data-category-id="5"> <i class="fas fa-credit-card category-icon"></i> <h4>Understanding Credit & Debt</h4> <p>Managing borrowing and credit health.</p> <button class="btn start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                        </div>
-                     </div>
-                </div>
-
-                <!-- Accordion Item 2 -->
-                <div class="challenge-theme accordion-item">
-                     <h3 class="accordion-header">
-                         <button class="theme-toggle-button"
-                                 type="button"
-                                 aria-expanded="false"
-                                 aria-controls="theme-content-2"
-                                 id="theme-button-2">
-                             Theme 2: Building Your Financial Future
-                             <i class="fas fa-chevron-down theme-icon"></i>
-                         </button>
-                     </h3>
-                     <div id="theme-content-2"
-                          class="theme-content"
-                          role="region"
-                          aria-labelledby="theme-button-2">
-                        <div class="category-grid">
-                             <article class="category-card" data-category-id="6"> <i class="fas fa-bullseye category-icon"></i> <h4>Goal Setting & Planning</h4> <p>Defining and planning for financial goals.</p> <button class="btn start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                             <article class="category-card" data-category-id="7"> <i class="fas fa-university category-icon"></i> <h4>Banking & Financial Institutions</h4> <p>Navigating financial services.</p> <button class="btn start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                             <article class="category-card" data-category-id="8"> <i class="fas fa-shield-alt category-icon"></i> <h4>Financial Risk Management</h4> <p>Understanding and mitigating risks.</p> <button class="btn start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                             <article class="category-card" data-category-id="9"> <i class="fas fa-search-dollar category-icon"></i> <h4>Understanding Financial Advice</h4> <p>Seeking and evaluating guidance.</p> <button class="btn start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                             <article class="category-card" data-category-id="10"> <i class="fas fa-file-invoice-dollar category-icon"></i> <h4>Tax Basics</h4> <p>Fundamentals of personal taxation.</p> <button class="btn start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                        </div>
-                     </div>
-                </div>
-
-                 <!-- Accordion Item 3 -->
-                <div class="challenge-theme accordion-item">
-                     <h3 class="accordion-header">
-                         <button class="theme-toggle-button"
-                                 type="button"
-                                 aria-expanded="false"
-                                 aria-controls="theme-content-3"
-                                 id="theme-button-3">
-                             Theme 3: Investing & Growth
-                              <i class="fas fa-chevron-down theme-icon"></i>
-                         </button>
-                     </h3>
-                     <div id="theme-content-3"
-                          class="theme-content"
-                          role="region"
-                          aria-labelledby="theme-button-3">
-                        <div class="category-grid">
-                             <article class="category-card" data-category-id="11"> <i class="fas fa-seedling category-icon"></i> <h4>Introduction to Investing</h4> <p>Core concepts of investment.</p> <button class="btn start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                             <article class="category-card" data-category-id="12"> <i class="fas fa-chart-pie category-icon"></i> <h4>Investment Types (Basic)</h4> <p>Stocks, bonds, mutual funds overview.</p> <button class="btn start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                             <article class="category-card" data-category-id="13"> <i class="fas fa-balance-scale-right category-icon"></i> <h4>Risk vs. Return</h4> <p>Understanding the investment trade-off.</p> <button class="btn start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                             <article class="category-card" data-category-id="14"> <i class="fas fa-hourglass-half category-icon"></i> <h4>Time Value of Money</h4> <p>Impact of time on financial decisions.</p> <button class="btn start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                             <article class="category-card" data-category-id="15"> <i class="fas fa-brain category-icon"></i> <h4>Behavioral Finance Intro</h4> <p>Psychology of financial decisions.</p> <button class="btn start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                        </div>
-                     </div>
-                </div>
-
-                 <!-- Accordion Item 4 -->
-                <div class="challenge-theme accordion-item">
-                     <h3 class="accordion-header">
-                         <button class="theme-toggle-button"
-                                 type="button"
-                                 aria-expanded="false"
-                                 aria-controls="theme-content-4"
-                                 id="theme-button-4">
-                            Theme 4: Protection & Long-Term Security
-                             <i class="fas fa-chevron-down theme-icon"></i>
-                         </button>
-                     </h3>
-                     <div id="theme-content-4"
-                          class="theme-content"
-                          role="region"
-                          aria-labelledby="theme-button-4">
-                        <div class="category-grid">
-                             <article class="category-card" data-category-id="16"> <i class="fas fa-umbrella category-icon"></i> <h4>Insurance Basics</h4> <p>Understanding key insurance types.</p> <button class="btn start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                             <article class="category-card" data-category-id="17"> <i class="fas fa-user-shield category-icon"></i> <h4>Identity Theft & Fraud</h4> <p>Protecting your financial identity.</p> <button class="btn start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                             <article class="category-card" data-category-id="18"> <i class="fas fa-landmark category-icon"></i> <h4>Retirement Planning Intro</h4> <p>Basics of saving for retirement.</p> <button class="btn start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                             <article class="category-card" data-category-id="19"> <i class="fas fa-home category-icon"></i> <h4>Major Purchase Planning</h4> <p>Considerations for large buys (car, house).</p> <button class="btn start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                             <article class="category-card" data-category-id="20"> <i class="fas fa-file-signature category-icon"></i> <h4>Estate Planning Basics</h4> <p>Introduction to wills and inheritance.</p> <button class="btn start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                        </div>
-                     </div>
-                </div>
-
-            </div> <!-- End .quiz-accordion-container -->
-        </section>
-
-    </main>
-
-     <!-- QUIZ MODAL STRUCTURE (Remains the same) -->
-    <div id="quiz-modal" class="quiz-modal-overlay" style="display: none;">
-         <div class="quiz-modal-content">
-            <button id="quiz-modal-close" class="quiz-modal-close-btn" aria-label="Close Quiz">×</button>
-            <h3 id="quiz-modal-title">Quiz Title</h3>
-            <div class="quiz-modal-progress">
-                 <span id="quiz-modal-q-current">1</span> / <span id="quiz-modal-q-total">5</span>
-            </div>
-             <div id="quiz-modal-question" class="quiz-modal-question-area">Question text appears here...</div>
-             <div id="quiz-modal-options" class="quiz-modal-options-area">Options appear here...</div>
-            <div id="quiz-modal-feedback" class="quiz-feedback" style="display: none;">Feedback appears here...</div>
-            <div id="quiz-modal-results" class="quiz-results" style="display: none;">Final results appear here...</div>
-             <div id="quiz-modal-full-challenge-prompt" class="quiz-modal-prompt" style="display: none;">
-<!DOCTYPE html>
-<html lang="en" class="personal-page quiz-page"> <!-- Apply shared styles & specific quiz page class -->
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Test your financial knowledge with the ROFILID Financial Fitness Challenge. Quizzes on budgeting, saving, investing, and more for Nigerians.">
-    <title>ROFILiD Financial Fitness Challenge - All Quizzes</title>
+    <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto:wght@700&display=swap" rel="stylesheet">
-    <!-- Global Styles -->
-    <link rel="stylesheet" href="../../styles.css">
-    <!-- Reuses styles from personal page (v2.1.0+) -->
-    <link rel="stylesheet" href="personal.css">
-    <!-- Quiz Page Specific Styles (can be minimal if personal.css covers most) -->
-    <link rel="stylesheet" href="quizzes.css"> <!-- Added dedicated CSS -->
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <!-- Favicon -->
     <link rel="icon" href="../../assets/images/common/rofilid-favicon.png" type="image/png">
+
+    <!-- Inherited Base Personal Page Styles (Self-Contained) -->
+    <link rel="stylesheet" href="personal.css">
+    <!-- Quiz Page Specific Styles (Overrides & Additions) -->
+    <link rel="stylesheet" href="quizzes.css">
+
 </head>
-<body>
+<body class="personal-page quiz-page"> <!-- Added classes to body -->
     <!-- Decorative Background Elements -->
     <div class="deco-blur blur-1" aria-hidden="true"></div>
     <div class="deco-blur blur-2" aria-hidden="true"></div>
     <div class="deco-blur blur-3" aria-hidden="true"></div>
 
-    <!-- Header Section -->
+    <!-- Header Section (Consistent with personal.html) -->
     <header class="site-header">
         <div class="container header-container">
             <div class="logo">
@@ -222,73 +38,72 @@
                 </a>
             </div>
             <nav aria-label="Main navigation">
-                <button class="mobile-menu-toggle" aria-expanded="false" aria-controls="primary-navigation">
+                <button class="mobile-menu-toggle" aria-expanded="false" aria-controls="primary-navigation" aria-label="Toggle Navigation Menu">
                     <span class="sr-only">Menu</span>
                     <i class="fas fa-bars open-icon" aria-hidden="true"></i>
                     <i class="fas fa-times close-icon" aria-hidden="true"></i>
                 </button>
                 <ul id="primary-navigation" class="nav-list">
                     <li class="nav-item"><a href="../../index.html" class="nav-link">Home</a></li>
-                    <!-- Mark Personal section as active parent -->
-                    <li class="nav-item"><a href="personal.html" class="nav-link active-page">Personal Finance</a></li>
+                    <li class="nav-item"><a href="personal.html" class="nav-link active-page" aria-current="page">Personal Finance</a></li>
                     <li class="nav-item"><a href="personal.html#free-resources" class="nav-link">Resources</a></li>
-                    <li class="nav-item"><a href="#full-financial-challenge" class="nav-link">All Quizzes</a></li> <!-- Link to quiz section -->
+                    <li class="nav-item"><a href="quizzes.html" class="nav-link active-subpage" aria-current="location">All Quizzes</a></li>
                     <li class="nav-item"><a href="personal.html#free-tools" class="nav-link">Tools</a></li>
                     <li class="nav-item"><a href="../corporate/corporate.html" class="nav-link">For Businesses</a></li>
                 </ul>
             </nav>
-            <a href="personal.html#free-resources" class="connect-button btn-cta-header" aria-label="Explore Personal Resources">Personal Resources</a>
+            <a href="personal.html#free-resources" class="connect-button btn btn-cta-header">Personal Resources</a>
         </div>
     </header>
 
     <main id="main-content">
-        <!-- I. Quiz Page Introduction (Aligned with personal.css style) -->
-        <section class="hero-section quiz-page-intro section-padding--large"> <!-- Reusing hero styling for consistency -->
-             <div class="container hero-content"> <!-- Use hero-content for centering -->
+        <!-- I. Quiz Page Introduction (Uses Hero styling from personal.css) -->
+        <section class="hero-section quiz-page-intro section-padding--large" aria-labelledby="quiz-intro-heading">
+             <div class="container hero-content">
                  <span class="hero-badge">Test Your Knowledge</span>
-                 <h1>Financial Fitness Challenge</h1>
-                 <p class="subheadline">Assess your understanding across key personal finance areas relevant to Nigeria. Select a theme below to explore the quizzes.</p>
+                 <h1 id="quiz-intro-heading">Financial Fitness Challenge</h1>
+                 <p class="subheadline">Assess your understanding across key personal finance areas relevant to Nigeria. Take the full 100-question challenge or explore quizzes by theme below.</p>
                  <div class="intro-actions">
-                    <a href="personal.html" class="btn btn-outline btn-icon">
-                         <i class="fas fa-arrow-left"></i> Back to Personal Finance Overview
+                     <button type="button" id="start-full-challenge-btn" class="btn btn-primary btn-large btn-icon">
+                        <i class="fas fa-rocket" aria-hidden="true"></i> Take Full 100-Question Challenge
+                     </button>
+                     <a href="personal.html" class="btn btn-outline btn-icon">
+                         <i class="fas fa-arrow-left" aria-hidden="true"></i> Back to Personal Finance Overview
                      </a>
                  </div>
             </div>
         </section>
 
-        <!-- II. Full Financial Challenge Accordion -->
-        <section id="full-financial-challenge" class="section-padding">
+        <!-- II. Financial Challenge Accordion Section -->
+        <section id="full-financial-challenge" class="section-padding" aria-labelledby="challenge-heading">
             <div class="container quiz-accordion-container">
-                <h2 class="section-title">Explore All Quizzes by Theme</h2>
-                <p class="section-description">Click on a theme to reveal its quizzes. Each quiz contains 5 questions with instant feedback to help guide your learning.</p>
+                <h2 id="challenge-heading" class="section-title">Or Explore Quizzes by Theme</h2>
+                <p class="section-description">Click on a theme to reveal its 5-question quizzes. Get instant feedback to guide your learning journey.</p>
 
-                <!-- Accordion Structure - JS will handle toggling -->
-                <div class="accordion">
+                <div class="accordion" id="quizAccordion">
 
                     <!-- Theme 1 -->
                     <div class="accordion-item" data-theme-id="1">
-                         <h3 class="accordion-header">
-                             <button class="accordion-button theme-toggle-button"
+                         <h3 class="accordion-header" id="theme-header-1">
+                             <button class="accordion-button theme-toggle-button collapsed"
                                      type="button"
                                      aria-expanded="false"
-                                     aria-controls="theme-content-1"
-                                     id="theme-button-1">
-                                 <span class="theme-title">Theme 1: Your Financial Groundwork</span>
-                                 <i class="fas fa-chevron-down theme-icon"></i>
+                                     aria-controls="theme-content-1">
+                                 <span class="theme-title" id="theme-title-1">Theme 1: Your Financial Groundwork</span>
+                                 <i class="fas fa-chevron-down theme-icon" aria-hidden="true"></i>
                              </button>
                          </h3>
                          <div id="theme-content-1"
                               class="accordion-collapse"
                               role="region"
-                              aria-labelledby="theme-button-1">
+                              aria-labelledby="theme-header-1">
                             <div class="accordion-body">
                                 <div class="category-grid">
-                                    <!-- Category cards - using same structure as personal.html -->
-                                    <article class="category-card" data-category-id="1"> <i class="fas fa-piggy-bank category-icon"></i> <h4>Income & Financial Vitals</h4> <p>Understanding income & your overall standing.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                    <article class="category-card" data-category-id="2"> <i class="fas fa-sack-dollar category-icon"></i> <h4>Savings Essentials</h4> <p>The why and how of building savings.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                    <article class="category-card" data-category-id="3"> <i class="fas fa-calculator category-icon"></i> <h4>Budgeting Basics</h4> <p>Creating and sticking to a plan.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                    <article class="category-card" data-category-id="4"> <i class="fas fa-receipt category-icon"></i> <h4>Tracking & Managing Spending</h4> <p>Knowing where your money goes.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                    <article class="category-card" data-category-id="5"> <i class="fas fa-credit-card category-icon"></i> <h4>Understanding Credit & Debt</h4> <p>Managing borrowing and credit health.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
+                                    <article class="category-card" data-category-id="1" aria-labelledby="category-title-1"> <i class="fas fa-piggy-bank category-icon" aria-hidden="true"></i> <h4 id="category-title-1">Income & Financial Vitals</h4> <p>Understanding income & your overall standing.</p> <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" aria-label="Start Income & Financial Vitals Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Quiz</button> </article>
+                                    <article class="category-card" data-category-id="2" aria-labelledby="category-title-2"> <i class="fas fa-sack-dollar category-icon" aria-hidden="true"></i> <h4 id="category-title-2">Savings Essentials</h4> <p>The why and how of building savings.</p> <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" aria-label="Start Savings Essentials Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Quiz</button> </article>
+                                    <article class="category-card" data-category-id="3" aria-labelledby="category-title-3"> <i class="fas fa-calculator category-icon" aria-hidden="true"></i> <h4 id="category-title-3">Budgeting Basics</h4> <p>Creating and sticking to a plan.</p> <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" aria-label="Start Budgeting Basics Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Quiz</button> </article>
+                                    <article class="category-card" data-category-id="4" aria-labelledby="category-title-4"> <i class="fas fa-receipt category-icon" aria-hidden="true"></i> <h4 id="category-title-4">Tracking & Managing Spending</h4> <p>Knowing where your money goes.</p> <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" aria-label="Start Tracking & Managing Spending Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Quiz</button> </article>
+                                    <article class="category-card" data-category-id="5" aria-labelledby="category-title-5"> <i class="fas fa-credit-card category-icon" aria-hidden="true"></i> <h4 id="category-title-5">Understanding Credit & Debt</h4> <p>Managing borrowing and credit health.</p> <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" aria-label="Start Understanding Credit & Debt Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Quiz</button> </article>
                                 </div>
                             </div>
                          </div>
@@ -296,27 +111,26 @@
 
                     <!-- Theme 2 -->
                     <div class="accordion-item" data-theme-id="2">
-                         <h3 class="accordion-header">
-                             <button class="accordion-button theme-toggle-button"
+                         <h3 class="accordion-header" id="theme-header-2">
+                             <button class="accordion-button theme-toggle-button collapsed"
                                      type="button"
                                      aria-expanded="false"
-                                     aria-controls="theme-content-2"
-                                     id="theme-button-2">
-                                 <span class="theme-title">Theme 2: Building Your Financial Future</span>
-                                 <i class="fas fa-chevron-down theme-icon"></i>
+                                     aria-controls="theme-content-2">
+                                 <span class="theme-title" id="theme-title-2">Theme 2: Building Your Financial Future</span>
+                                 <i class="fas fa-chevron-down theme-icon" aria-hidden="true"></i>
                              </button>
                          </h3>
                          <div id="theme-content-2"
                               class="accordion-collapse"
                               role="region"
-                              aria-labelledby="theme-button-2">
+                              aria-labelledby="theme-header-2">
                             <div class="accordion-body">
                                 <div class="category-grid">
-                                     <article class="category-card" data-category-id="6"> <i class="fas fa-bullseye category-icon"></i> <h4>Goal Setting & Planning</h4> <p>Defining and planning for financial goals.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                     <article class="category-card" data-category-id="7"> <i class="fas fa-university category-icon"></i> <h4>Banking & Financial Institutions</h4> <p>Navigating financial services.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                     <article class="category-card" data-category-id="8"> <i class="fas fa-shield-alt category-icon"></i> <h4>Financial Risk Management</h4> <p>Understanding and mitigating risks.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                     <article class="category-card" data-category-id="9"> <i class="fas fa-search-dollar category-icon"></i> <h4>Understanding Financial Advice</h4> <p>Seeking and evaluating guidance.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                     <article class="category-card" data-category-id="10"> <i class="fas fa-file-invoice-dollar category-icon"></i> <h4>Tax Basics</h4> <p>Fundamentals of personal taxation.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
+                                     <article class="category-card" data-category-id="6" aria-labelledby="category-title-6"> <i class="fas fa-bullseye category-icon" aria-hidden="true"></i> <h4 id="category-title-6">Goal Setting & Planning</h4> <p>Defining and planning for financial goals.</p> <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" aria-label="Start Goal Setting & Planning Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Quiz</button> </article>
+                                     <article class="category-card" data-category-id="7" aria-labelledby="category-title-7"> <i class="fas fa-university category-icon" aria-hidden="true"></i> <h4 id="category-title-7">Banking & Financial Institutions</h4> <p>Navigating financial services.</p> <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" aria-label="Start Banking & Financial Institutions Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Quiz</button> </article>
+                                     <article class="category-card" data-category-id="8" aria-labelledby="category-title-8"> <i class="fas fa-shield-alt category-icon" aria-hidden="true"></i> <h4 id="category-title-8">Financial Risk Management</h4> <p>Understanding and mitigating risks.</p> <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" aria-label="Start Financial Risk Management Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Quiz</button> </article>
+                                     <article class="category-card" data-category-id="9" aria-labelledby="category-title-9"> <i class="fas fa-search-dollar category-icon" aria-hidden="true"></i> <h4 id="category-title-9">Understanding Financial Advice</h4> <p>Seeking and evaluating guidance.</p> <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" aria-label="Start Understanding Financial Advice Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Quiz</button> </article>
+                                     <article class="category-card" data-category-id="10" aria-labelledby="category-title-10"> <i class="fas fa-file-invoice-dollar category-icon" aria-hidden="true"></i> <h4 id="category-title-10">Tax Basics</h4> <p>Fundamentals of personal taxation.</p> <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" aria-label="Start Tax Basics Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Quiz</button> </article>
                                 </div>
                             </div>
                          </div>
@@ -324,27 +138,26 @@
 
                      <!-- Theme 3 -->
                     <div class="accordion-item" data-theme-id="3">
-                         <h3 class="accordion-header">
-                             <button class="accordion-button theme-toggle-button"
+                         <h3 class="accordion-header" id="theme-header-3">
+                             <button class="accordion-button theme-toggle-button collapsed"
                                      type="button"
                                      aria-expanded="false"
-                                     aria-controls="theme-content-3"
-                                     id="theme-button-3">
-                                 <span class="theme-title">Theme 3: Investing & Growth</span>
-                                 <i class="fas fa-chevron-down theme-icon"></i>
+                                     aria-controls="theme-content-3">
+                                 <span class="theme-title" id="theme-title-3">Theme 3: Investing & Growth</span>
+                                 <i class="fas fa-chevron-down theme-icon" aria-hidden="true"></i>
                              </button>
                          </h3>
                          <div id="theme-content-3"
                               class="accordion-collapse"
                               role="region"
-                              aria-labelledby="theme-button-3">
+                              aria-labelledby="theme-header-3">
                             <div class="accordion-body">
                                 <div class="category-grid">
-                                     <article class="category-card" data-category-id="11"> <i class="fas fa-seedling category-icon"></i> <h4>Introduction to Investing</h4> <p>Core concepts of investment.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                     <article class="category-card" data-category-id="12"> <i class="fas fa-chart-pie category-icon"></i> <h4>Investment Types (Basic)</h4> <p>Stocks, bonds, mutual funds overview.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                     <article class="category-card" data-category-id="13"> <i class="fas fa-balance-scale-right category-icon"></i> <h4>Risk vs. Return</h4> <p>Understanding the investment trade-off.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                     <article class="category-card" data-category-id="14"> <i class="fas fa-hourglass-half category-icon"></i> <h4>Time Value of Money</h4> <p>Impact of time on financial decisions.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                     <article class="category-card" data-category-id="15"> <i class="fas fa-brain category-icon"></i> <h4>Behavioral Finance Intro</h4> <p>Psychology of financial decisions.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
+                                     <article class="category-card" data-category-id="11" aria-labelledby="category-title-11"> <i class="fas fa-seedling category-icon" aria-hidden="true"></i> <h4 id="category-title-11">Introduction to Investing</h4> <p>Core concepts of investment.</p> <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" aria-label="Start Introduction to Investing Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Quiz</button> </article>
+                                     <article class="category-card" data-category-id="12" aria-labelledby="category-title-12"> <i class="fas fa-chart-pie category-icon" aria-hidden="true"></i> <h4 id="category-title-12">Investment Types (Basic)</h4> <p>Stocks, bonds, mutual funds overview.</p> <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" aria-label="Start Investment Types Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Quiz</button> </article>
+                                     <article class="category-card" data-category-id="13" aria-labelledby="category-title-13"> <i class="fas fa-balance-scale-right category-icon" aria-hidden="true"></i> <h4 id="category-title-13">Risk vs. Return</h4> <p>Understanding the investment trade-off.</p> <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" aria-label="Start Risk vs. Return Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Quiz</button> </article>
+                                     <article class="category-card" data-category-id="14" aria-labelledby="category-title-14"> <i class="fas fa-hourglass-half category-icon" aria-hidden="true"></i> <h4 id="category-title-14">Time Value of Money</h4> <p>Impact of time on financial decisions.</p> <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" aria-label="Start Time Value of Money Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Quiz</button> </article>
+                                     <article class="category-card" data-category-id="15" aria-labelledby="category-title-15"> <i class="fas fa-brain category-icon" aria-hidden="true"></i> <h4 id="category-title-15">Behavioral Finance Intro</h4> <p>Psychology of financial decisions.</p> <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" aria-label="Start Behavioral Finance Intro Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Quiz</button> </article>
                                 </div>
                             </div>
                          </div>
@@ -352,27 +165,26 @@
 
                      <!-- Theme 4 -->
                     <div class="accordion-item" data-theme-id="4">
-                         <h3 class="accordion-header">
-                             <button class="accordion-button theme-toggle-button"
+                         <h3 class="accordion-header" id="theme-header-4">
+                             <button class="accordion-button theme-toggle-button collapsed"
                                      type="button"
                                      aria-expanded="false"
-                                     aria-controls="theme-content-4"
-                                     id="theme-button-4">
-                                <span class="theme-title">Theme 4: Protection & Long-Term Security</span>
-                                 <i class="fas fa-chevron-down theme-icon"></i>
+                                     aria-controls="theme-content-4">
+                                <span class="theme-title" id="theme-title-4">Theme 4: Protection & Long-Term Security</span>
+                                 <i class="fas fa-chevron-down theme-icon" aria-hidden="true"></i>
                              </button>
                          </h3>
                          <div id="theme-content-4"
                               class="accordion-collapse"
                               role="region"
-                              aria-labelledby="theme-button-4">
+                              aria-labelledby="theme-header-4">
                             <div class="accordion-body">
                                 <div class="category-grid">
-                                     <article class="category-card" data-category-id="16"> <i class="fas fa-umbrella category-icon"></i> <h4>Insurance Basics</h4> <p>Understanding key insurance types.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                     <article class="category-card" data-category-id="17"> <i class="fas fa-user-shield category-icon"></i> <h4>Identity Theft & Fraud</h4> <p>Protecting your financial identity.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                     <article class="category-card" data-category-id="18"> <i class="fas fa-landmark category-icon"></i> <h4>Retirement Planning Intro</h4> <p>Basics of saving for retirement.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                     <article class="category-card" data-category-id="19"> <i class="fas fa-home category-icon"></i> <h4>Major Purchase Planning</h4> <p>Considerations for large buys (car, house).</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                     <article class="category-card" data-category-id="20"> <i class="fas fa-file-signature category-icon"></i> <h4>Estate Planning Basics</h4> <p>Introduction to wills and inheritance.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
+                                     <article class="category-card" data-category-id="16" aria-labelledby="category-title-16"> <i class="fas fa-umbrella category-icon" aria-hidden="true"></i> <h4 id="category-title-16">Insurance Basics</h4> <p>Understanding key insurance types.</p> <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" aria-label="Start Insurance Basics Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Quiz</button> </article>
+                                     <article class="category-card" data-category-id="17" aria-labelledby="category-title-17"> <i class="fas fa-user-shield category-icon" aria-hidden="true"></i> <h4 id="category-title-17">Identity Theft & Fraud</h4> <p>Protecting your financial identity.</p> <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" aria-label="Start Identity Theft & Fraud Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Quiz</button> </article>
+                                     <article class="category-card" data-category-id="18" aria-labelledby="category-title-18"> <i class="fas fa-landmark category-icon" aria-hidden="true"></i> <h4 id="category-title-18">Retirement Planning Intro</h4> <p>Basics of saving for retirement.</p> <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" aria-label="Start Retirement Planning Intro Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Quiz</button> </article>
+                                     <article class="category-card" data-category-id="19" aria-labelledby="category-title-19"> <i class="fas fa-home category-icon" aria-hidden="true"></i> <h4 id="category-title-19">Major Purchase Planning</h4> <p>Considerations for large buys (car, house).</p> <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" aria-label="Start Major Purchase Planning Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Quiz</button> </article>
+                                     <article class="category-card" data-category-id="20" aria-labelledby="category-title-20"> <i class="fas fa-file-signature category-icon" aria-hidden="true"></i> <h4 id="category-title-20">Estate Planning Basics</h4> <p>Introduction to wills and inheritance.</p> <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" aria-label="Start Estate Planning Basics Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Quiz</button> </article>
                                 </div>
                             </div>
                          </div>
@@ -384,34 +196,28 @@
 
     </main>
 
-     <!-- QUIZ MODAL STRUCTURE (Consistent with personal.html) -->
-    <div id="quiz-modal" class="modal-overlay" aria-modal="true" role="dialog" aria-labelledby="quiz-modal-title" style="display: none;">
+    <!-- QUIZ MODAL STRUCTURE -->
+    <div id="quiz-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="quiz-modal-title" hidden>
          <div class="modal-content quiz-modal-content">
-            <button id="quiz-modal-close" class="modal-close-btn" aria-label="Close Quiz"><i class="fas fa-times"></i></button>
-            <h3 id="quiz-modal-title">Financial Fitness Quiz</h3> <!-- Generic Title -->
-            <div class="quiz-modal-progress">
+            <button type="button" id="quiz-modal-close" class="modal-close-btn" aria-label="Close Quiz"><i class="fas fa-times" aria-hidden="true"></i></button>
+            <h3 id="quiz-modal-title" class="modal-title">Financial Fitness Quiz</h3>
+            <div class="quiz-modal-progress" aria-live="polite">
                  <span id="quiz-modal-q-current">1</span> / <span id="quiz-modal-q-total">5</span>
             </div>
-             <div id="quiz-modal-question" class="quiz-modal-question-area" aria-live="polite">Question text appears here...</div>
-             <div id="quiz-modal-options" class="quiz-modal-options-area">Options appear here...</div>
-            <div id="quiz-modal-feedback" class="quiz-feedback" style="display: none;" aria-live="polite">Feedback appears here...</div>
-            <div id="quiz-modal-results" class="quiz-results" style="display: none;" aria-live="polite">Final results appear here...</div>
-             <!-- Prompt not typically needed on this page, but keep structure for consistency -->
-             <div id="quiz-modal-full-challenge-prompt" class="quiz-modal-prompt" style="display: none;">
-                 <p>Explore more quizzes in the challenge!</p>
-             </div>
+             <div id="quiz-modal-question" class="quiz-modal-question-area" aria-live="polite"></div>
+             <div id="quiz-modal-options" class="quiz-modal-options-area" role="group" aria-labelledby="quiz-modal-question"></div>
+            <div id="quiz-modal-feedback" class="quiz-feedback" hidden aria-live="polite"></div>
+            <div id="quiz-modal-results" class="quiz-results" hidden aria-live="polite"></div>
             <div class="quiz-modal-navigation">
-                 <button id="quiz-modal-next" class="btn btn-secondary small quiz-next-btn" style="display: none;">Next Question</button>
-                <!-- Next Quiz button removed - not applicable when launching from full list -->
-                <!-- <button id="quiz-modal-next-quiz" class="btn btn-primary small" style="display: none;"><i class="fas fa-angle-double-right"></i> Next Quiz</button> -->
-                <button id="quiz-modal-restart" class="btn btn-outline small quiz-restart-btn" style="display: none;"><i class="fas fa-redo"></i> Restart Quiz</button>
-                <button id="quiz-modal-close-results" class="btn btn-outline small quiz-close-btn" style="display: none;"><i class="fas fa-times"></i> Close</button>
+                 <button type="button" id="quiz-modal-next" class="btn btn-secondary small quiz-next-btn" hidden>Next Question</button>
+                <button type="button" id="quiz-modal-restart" class="btn btn-outline small quiz-restart-btn" hidden><i class="fas fa-redo" aria-hidden="true"></i> Restart Quiz</button>
+                <button type="button" id="quiz-modal-close-results" class="btn btn-outline small quiz-close-btn" hidden><i class="fas fa-times" aria-hidden="true"></i> Close</button>
              </div>
         </div>
      </div>
 
-     <!-- Footer Section (Consistent with personal.html) -->
-      <footer class="site-footer" id="footer-contact">
+     <!-- Footer Section -->
+      <footer class="site-footer" id="footer-contact" role="contentinfo">
          <div class="container">
             <div class="page-footer-links">
                 <div class="footer-links-container">
@@ -434,7 +240,7 @@
                              <li><a href="../corporate/corporate.html">For Businesses</a></li>
                              <li><a href="#full-financial-challenge">Quiz Themes</a></li>
                              <li><a href="personal.html#feedback-section">Send Feedback</a></li>
-                             <li><a href="../../index.html#contact">Contact Us</a></li>
+                             <li><a href="#footer-contact">Contact Us</a></li>
                          </ul>
                      </div>
                     <div>
@@ -449,267 +255,17 @@
                     <div>
                         <h4>Connect</h4>
                         <ul class="footer-contact-info">
-                             <li><i class="fas fa-envelope"></i> <a href="mailto:info@rofilid.com">info@rofilid.com</a></li>
-                             <li><i class="fas fa-phone"></i> <a href="tel:+2348058900000">+234 805 890 0000</a></li>
-                             <li><i class="fab fa-whatsapp"></i> <a href="https://wa.me/2348058900000" target="_blank" rel="noopener noreferrer">WhatsApp Us</a></li>
+                             <li><i class="fas fa-envelope" aria-hidden="true"></i> <a href="mailto:info@rofilid.com">info@rofilid.com</a></li>
+                             <li><i class="fas fa-phone" aria-hidden="true"></i> <a href="tel:+2348058900000">+234 805 890 0000</a></li>
+                             <li><i class="fab fa-whatsapp" aria-hidden="true"></i> <a href="https://wa.me/2348058900000" target="_blank" rel="noopener noreferrer">WhatsApp Us</a></li>
                         </ul>
                          <p class="footer-connect-title">Follow BasicPFC for tips:</p>
                         <div class="social-media">
-                             <a href="https://facebook.com/basicpfc" aria-label="BasicPFC on Facebook" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
-                            <a href="https://instagram.com/basicpfc" aria-label="BasicPFC on Instagram" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
-                            <a href="https://x.com/basicpfc" aria-label="BasicPFC on X (Formerly Twitter)" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
-                             <a href="https://www.youtube.com/@basicpfc" aria-label="BasicPFC on YouTube" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube"></i></a>
-                             <a href="https://linkedin.com/company/rofilid" aria-label="Rofilid on LinkedIn" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a>
-                         </div>
-                     </div>
-                 </div>
-            </div>
-            <div class="footer-content">
-<!DOCTYPE html>
-<html lang="en" class="personal-page quiz-page"> <!-- Apply shared styles & specific quiz page class -->
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Test your financial knowledge with the ROFILID Financial Fitness Challenge. Quizzes on budgeting, saving, investing, and more for Nigerians.">
-    <title>ROFILiD Financial Fitness Challenge - All Quizzes</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto:wght@700&display=swap" rel="stylesheet">
-    <!-- Global Styles -->
-    <link rel="stylesheet" href="../../styles.css">
-    <!-- Reuses styles from personal page (v2.1.0+) -->
-    <link rel="stylesheet" href="personal.css">
-    <!-- Quiz Page Specific Styles -->
-    <link rel="stylesheet" href="quizzes.css">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Favicon -->
-    <link rel="icon" href="../../assets/images/common/rofilid-favicon.png" type="image/png">
-</head>
-<body>
-    <!-- Decorative Background Elements -->
-    <div class="deco-blur blur-1" aria-hidden="true"></div>
-    <div class="deco-blur blur-2" aria-hidden="true"></div>
-    <div class="deco-blur blur-3" aria-hidden="true"></div>
-
-    <!-- Header Section (Remains the same) -->
-    <header class="site-header">
-        <div class="container header-container">
-            <div class="logo">
-                <a href="../../index.html" aria-label="Rofilid Home">
-                    <img src="../../assets/images/common/rofilid-logo-teal.svg" alt="Rofilid Logo" width="120" height="40" loading="eager">
-                </a>
-            </div>
-            <nav aria-label="Main navigation">
-                <button class="mobile-menu-toggle" aria-expanded="false" aria-controls="primary-navigation">
-                    <span class="sr-only">Menu</span>
-                    <i class="fas fa-bars open-icon" aria-hidden="true"></i>
-                    <i class="fas fa-times close-icon" aria-hidden="true"></i>
-                </button>
-                <ul id="primary-navigation" class="nav-list">
-                    <li class="nav-item"><a href="../../index.html" class="nav-link">Home</a></li>
-                    <li class="nav-item"><a href="personal.html" class="nav-link active-page">Personal Finance</a></li>
-                    <li class="nav-item"><a href="personal.html#free-resources" class="nav-link">Resources</a></li>
-                    <li class="nav-item"><a href="#full-financial-challenge" class="nav-link">All Quizzes</a></li>
-                    <li class="nav-item"><a href="personal.html#free-tools" class="nav-link">Tools</a></li>
-                    <li class="nav-item"><a href="../corporate/corporate.html" class="nav-link">For Businesses</a></li>
-                </ul>
-            </nav>
-            <a href="personal.html#free-resources" class="connect-button btn-cta-header" aria-label="Explore Personal Resources">Personal Resources</a>
-        </div>
-    </header>
-
-    <main id="main-content">
-        <!-- I. Quiz Page Introduction -->
-        <section class="hero-section quiz-page-intro section-padding--large">
-             <div class="container hero-content">
-                 <span class="hero-badge">Test Your Knowledge</span>
-                 <h1>Financial Fitness Challenge</h1>
-                 <p class="subheadline">Assess your understanding across key personal finance areas relevant to Nigeria. Select a theme below to explore the quizzes, or take the full challenge!</p>
-                 <div class="intro-actions">
-                     <!-- ADDED FULL CHALLENGE BUTTON -->
-                     <button id="start-full-challenge-btn" class="btn btn-primary btn-large btn-icon">
-                        <i class="fas fa-rocket"></i> Take Full 100-Question Challenge
-                     </button>
-                     <a href="personal.html" class="btn btn-outline btn-icon">
-                         <i class="fas fa-arrow-left"></i> Back to Personal Finance Overview
-                     </a>
-                 </div>
-            </div>
-        </section>
-
-        <!-- II. Full Financial Challenge Accordion -->
-        <section id="full-financial-challenge" class="section-padding">
-            <div class="container quiz-accordion-container">
-                <h2 class="section-title">Or Explore Quizzes by Theme</h2> <!-- Modified title slightly -->
-                <p class="section-description">Click on a theme to reveal its quizzes. Each quiz contains 5 questions with instant feedback.</p>
-
-                <!-- Accordion Structure (Remains the same) -->
-                <div class="accordion">
-                    {/* Accordion Items 1-4 remain exactly the same as before */}
-                    {/* Theme 1 */}
-                    <div class="accordion-item" data-theme-id="1">
-                         <h3 class="accordion-header">
-                             <button class="accordion-button theme-toggle-button" type="button" aria-expanded="false" aria-controls="theme-content-1" id="theme-button-1">
-                                 <span class="theme-title">Theme 1: Your Financial Groundwork</span>
-                                 <i class="fas fa-chevron-down theme-icon"></i>
-                             </button>
-                         </h3>
-                         <div id="theme-content-1" class="accordion-collapse" role="region" aria-labelledby="theme-button-1">
-                            <div class="accordion-body">
-                                <div class="category-grid">
-                                    <article class="category-card" data-category-id="1"> <i class="fas fa-piggy-bank category-icon"></i> <h4>Income & Financial Vitals</h4> <p>Understanding income & your overall standing.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                    <article class="category-card" data-category-id="2"> <i class="fas fa-sack-dollar category-icon"></i> <h4>Savings Essentials</h4> <p>The why and how of building savings.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                    <article class="category-card" data-category-id="3"> <i class="fas fa-calculator category-icon"></i> <h4>Budgeting Basics</h4> <p>Creating and sticking to a plan.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                    <article class="category-card" data-category-id="4"> <i class="fas fa-receipt category-icon"></i> <h4>Tracking & Managing Spending</h4> <p>Knowing where your money goes.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                    <article class="category-card" data-category-id="5"> <i class="fas fa-credit-card category-icon"></i> <h4>Understanding Credit & Debt</h4> <p>Managing borrowing and credit health.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                </div>
-                            </div>
-                         </div>
-                    </div>
-                    {/* Theme 2 */}
-                    <div class="accordion-item" data-theme-id="2">
-                         <h3 class="accordion-header">
-                             <button class="accordion-button theme-toggle-button" type="button" aria-expanded="false" aria-controls="theme-content-2" id="theme-button-2">
-                                 <span class="theme-title">Theme 2: Building Your Financial Future</span>
-                                 <i class="fas fa-chevron-down theme-icon"></i>
-                             </button>
-                         </h3>
-                         <div id="theme-content-2" class="accordion-collapse" role="region" aria-labelledby="theme-button-2">
-                            <div class="accordion-body">
-                                <div class="category-grid">
-                                     <article class="category-card" data-category-id="6"> <i class="fas fa-bullseye category-icon"></i> <h4>Goal Setting & Planning</h4> <p>Defining and planning for financial goals.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                     <article class="category-card" data-category-id="7"> <i class="fas fa-university category-icon"></i> <h4>Banking & Financial Institutions</h4> <p>Navigating financial services.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                     <article class="category-card" data-category-id="8"> <i class="fas fa-shield-alt category-icon"></i> <h4>Financial Risk Management</h4> <p>Understanding and mitigating risks.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                     <article class="category-card" data-category-id="9"> <i class="fas fa-search-dollar category-icon"></i> <h4>Understanding Financial Advice</h4> <p>Seeking and evaluating guidance.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                     <article class="category-card" data-category-id="10"> <i class="fas fa-file-invoice-dollar category-icon"></i> <h4>Tax Basics</h4> <p>Fundamentals of personal taxation.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                </div>
-                            </div>
-                         </div>
-                    </div>
-                    {/* Theme 3 */}
-                     <div class="accordion-item" data-theme-id="3">
-                         <h3 class="accordion-header">
-                             <button class="accordion-button theme-toggle-button" type="button" aria-expanded="false" aria-controls="theme-content-3" id="theme-button-3">
-                                 <span class="theme-title">Theme 3: Investing & Growth</span>
-                                 <i class="fas fa-chevron-down theme-icon"></i>
-                             </button>
-                         </h3>
-                         <div id="theme-content-3" class="accordion-collapse" role="region" aria-labelledby="theme-button-3">
-                            <div class="accordion-body">
-                                <div class="category-grid">
-                                     <article class="category-card" data-category-id="11"> <i class="fas fa-seedling category-icon"></i> <h4>Introduction to Investing</h4> <p>Core concepts of investment.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                     <article class="category-card" data-category-id="12"> <i class="fas fa-chart-pie category-icon"></i> <h4>Investment Types (Basic)</h4> <p>Stocks, bonds, mutual funds overview.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                     <article class="category-card" data-category-id="13"> <i class="fas fa-balance-scale-right category-icon"></i> <h4>Risk vs. Return</h4> <p>Understanding the investment trade-off.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                     <article class="category-card" data-category-id="14"> <i class="fas fa-hourglass-half category-icon"></i> <h4>Time Value of Money</h4> <p>Impact of time on financial decisions.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                     <article class="category-card" data-category-id="15"> <i class="fas fa-brain category-icon"></i> <h4>Behavioral Finance Intro</h4> <p>Psychology of financial decisions.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                </div>
-                            </div>
-                         </div>
-                    </div>
-                    {/* Theme 4 */}
-                     <div class="accordion-item" data-theme-id="4">
-                         <h3 class="accordion-header">
-                             <button class="accordion-button theme-toggle-button" type="button" aria-expanded="false" aria-controls="theme-content-4" id="theme-button-4">
-                                <span class="theme-title">Theme 4: Protection & Long-Term Security</span>
-                                 <i class="fas fa-chevron-down theme-icon"></i>
-                             </button>
-                         </h3>
-                         <div id="theme-content-4" class="accordion-collapse" role="region" aria-labelledby="theme-button-4">
-                            <div class="accordion-body">
-                                <div class="category-grid">
-                                     <article class="category-card" data-category-id="16"> <i class="fas fa-umbrella category-icon"></i> <h4>Insurance Basics</h4> <p>Understanding key insurance types.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                     <article class="category-card" data-category-id="17"> <i class="fas fa-user-shield category-icon"></i> <h4>Identity Theft & Fraud</h4> <p>Protecting your financial identity.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                     <article class="category-card" data-category-id="18"> <i class="fas fa-landmark category-icon"></i> <h4>Retirement Planning Intro</h4> <p>Basics of saving for retirement.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                     <article class="category-card" data-category-id="19"> <i class="fas fa-home category-icon"></i> <h4>Major Purchase Planning</h4> <p>Considerations for large buys (car, house).</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                     <article class="category-card" data-category-id="20"> <i class="fas fa-file-signature category-icon"></i> <h4>Estate Planning Basics</h4> <p>Introduction to wills and inheritance.</p> <button class="btn btn-secondary btn-icon start-quiz-btn"><i class="fas fa-play"></i> Start Quiz</button> </article>
-                                </div>
-                            </div>
-                         </div>
-                    </div>
-
-                </div> <!-- End .accordion -->
-            </div> <!-- End .quiz-accordion-container -->
-        </section>
-
-    </main>
-
-    <!-- QUIZ MODAL STRUCTURE (Remains the same) -->
-    <div id="quiz-modal" class="modal-overlay" aria-modal="true" role="dialog" aria-labelledby="quiz-modal-title" style="display: none;">
-         <div class="modal-content quiz-modal-content">
-            <button id="quiz-modal-close" class="modal-close-btn" aria-label="Close Quiz"><i class="fas fa-times"></i></button>
-            <h3 id="quiz-modal-title">Financial Fitness Quiz</h3>
-            <div class="quiz-modal-progress">
-                 <span id="quiz-modal-q-current">1</span> / <span id="quiz-modal-q-total">100</span> <!-- Total updated -->
-            </div>
-             <div id="quiz-modal-question" class="quiz-modal-question-area" aria-live="polite">Question text appears here...</div>
-             <div id="quiz-modal-options" class="quiz-modal-options-area">Options appear here...</div>
-            <div id="quiz-modal-feedback" class="quiz-feedback" style="display: none;" aria-live="polite">Feedback appears here...</div>
-            <div id="quiz-modal-results" class="quiz-results" style="display: none;" aria-live="polite">Final results appear here...</div>
-             <div id="quiz-modal-full-challenge-prompt" class="quiz-modal-prompt" style="display: none;">
-                 <p>...</p>
-             </div>
-            <div class="quiz-modal-navigation">
-                 <button id="quiz-modal-next" class="btn btn-secondary small quiz-next-btn" style="display: none;">Next Question</button>
-                <button id="quiz-modal-restart" class="btn btn-outline small quiz-restart-btn" style="display: none;"><i class="fas fa-redo"></i> Restart Quiz</button>
-                 <!-- Modified Restart text for Full Challenge -->
-                 <button id="quiz-modal-restart-full" class="btn btn-outline small quiz-restart-full-btn" style="display: none;"><i class="fas fa-redo"></i> Restart Full Challenge</button>
-                <button id="quiz-modal-close-results" class="btn btn-outline small quiz-close-btn" style="display: none;"><i class="fas fa-times"></i> Close</button>
-             </div>
-        </div>
-     </div>
-
-     <!-- Footer Section (Remains the same) -->
-      <footer class="site-footer" id="footer-contact">
-          {/* Footer content remains the same as before */}
-         <div class="container">
-            <div class="page-footer-links">
-                <div class="footer-links-container">
-                     <div>
-                         <h4>Personal Finance Hub</h4>
-                         <ul>
-                             <li><a href="personal.html#free-resources">Free Resources</a></li>
-                             <li><a href="personal.html#learning-hub">Learning Hub Intro</a></li>
-                             <li><a href="quizzes.html">All Quizzes</a></li>
-                             <li><a href="personal.html#free-tools">Free Tools & Templates</a></li>
-                             <li><a href="blog.html">Rofilid Insights Blog</a></li>
-                             <li><a href="personal.html#personal-coaching">Personal Coaching Info</a></li>
-                             <li><a href="personal.html#mmisbalior-section">MMISBALIOR (Teens) Info</a></li>
-                         </ul>
-                     </div>
-                     <div>
-                         <h4>Quick Links</h4>
-                         <ul>
-                             <li><a href="../../index.html">Home</a></li>
-                             <li><a href="../corporate/corporate.html">For Businesses</a></li>
-                             <li><a href="#full-financial-challenge">Quiz Themes</a></li>
-                             <li><a href="personal.html#feedback-section">Send Feedback</a></li>
-                             <li><a href="../../index.html#contact">Contact Us</a></li>
-                         </ul>
-                     </div>
-                    <div>
-                         <h4>Company</h4>
-                         <ul>
-                             <li><a href="#">About Rofilid</a></li>
-                             <li><a href="#">Careers</a></li>
-                             <li><a href="#">Privacy Policy</a></li>
-                             <li><a href="#">Terms of Service</a></li>
-                         </ul>
-                     </div>
-                    <div>
-                        <h4>Connect</h4>
-                        <ul class="footer-contact-info">
-                             <li><i class="fas fa-envelope"></i> <a href="mailto:info@rofilid.com">info@rofilid.com</a></li>
-                             <li><i class="fas fa-phone"></i> <a href="tel:+2348058900000">+234 805 890 0000</a></li>
-                             <li><i class="fab fa-whatsapp"></i> <a href="https://wa.me/2348058900000" target="_blank" rel="noopener noreferrer">WhatsApp Us</a></li>
-                        </ul>
-                         <p class="footer-connect-title">Follow BasicPFC for tips:</p>
-                        <div class="social-media">
-                             <a href="https://facebook.com/basicpfc" aria-label="BasicPFC on Facebook" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
-                            <a href="https://instagram.com/basicpfc" aria-label="BasicPFC on Instagram" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
-                            <a href="https://x.com/basicpfc" aria-label="BasicPFC on X (Formerly Twitter)" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
-                             <a href="https://www.youtube.com/@basicpfc" aria-label="BasicPFC on YouTube" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube"></i></a>
-                             <a href="https://linkedin.com/company/rofilid" aria-label="Rofilid on LinkedIn" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a>
+                             <a href="https://facebook.com/basicpfc" aria-label="BasicPFC on Facebook" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                            <a href="https://instagram.com/basicpfc" aria-label="BasicPFC on Instagram" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                            <a href="https://x.com/basicpfc" aria-label="BasicPFC on X (Formerly Twitter)" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                             <a href="https://www.youtube.com/@basicpfc" aria-label="BasicPFC on YouTube" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube" aria-hidden="true"></i></a>
+                             <a href="https://linkedin.com/company/rofilid" aria-label="Rofilid on LinkedIn" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
                          </div>
                      </div>
                  </div>
@@ -718,7 +274,7 @@
                  <div class="footer-left">
                     <div class="logo">
                         <a href="../../index.html" aria-label="Rofilid Home">
-                            <img src="../../assets/images/common/rofilid-logo-white.svg" alt="Rofilid Logo" width="120" height="40" loading="lazy">
+                            <img src="../../assets/images/common/rofilid-logo-white.svg" alt="Rofilid Logo White" width="120" height="40" loading="lazy">
                         </a>
                     </div>
                      <p class="footer-tagline">Empowering Your Financial Future.</p>
@@ -726,13 +282,13 @@
                  <div class="footer-right"></div>
              </div>
             <div class="copyright">
-                 <p>© <span id="current-year">2024</span> ROFILID Services Limited. All rights reserved.</p>
+                 <p>© <span id="current-year"></span> ROFILID Services Limited. All rights reserved.</p>
              </div>
         </div>
     </footer>
 
-     <!-- Scripts -->
-    <script src="../../main.js" defer></script> <!-- Global Nav -->
-    <script src="../../assets/js/personal/quizzes.js" defer></script> <!-- Specific quiz page script -->
+    <!-- Corrected JS path based on location structure -->
+    <script src="../../assets/js/personal/quizzes.js" defer></script>
+
 </body>
-</html>
+    </html>
