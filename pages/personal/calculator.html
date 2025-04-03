@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ROFILID Interest Calculator - Calculate simple and compound interest for loans, savings, or investments using dates or durations.">
+    <title>ROFILiD | Interest Calculator Tool</title>
+
+    <!-- Preconnect for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+    <!-- Fonts, Icons, Favicon -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" href="../../assets/images/common/rofilid-favicon.png" type="image/png">
+
+    <!-- Stylesheets -->
+    <!-- Link to Shared Personal Styles (Assuming this contains base styles) -->
+    <link rel="stylesheet" href="personal.css"> <!-- Path OK: Same folder -->
+    <!-- Calculator Specific Styles -->
+    <link rel="stylesheet" href="calculator.css"> <!-- Path OK: Same folder -->
+    <!-- Print Specific Styles -->
+    <link rel="stylesheet" href="calculator-print.css" media="print"> <!-- Added print styles -->
+
+</head>
+<body class="personal-page tool-page"> <!-- Keep classes on body -->
+
+    <!-- Header -->
+    <header class="site-header">
+         <div class="container header-container">
+            <div class="logo">
+                <a href="../../index.html" aria-label="Rofilid Home">
+                    <!-- Eager loading is fine for LCP logo -->
+                    <img src="../../assets/images/common/rofilid-logo-teal.svg" alt="Rofilid Logo" width="120" height="40">
+                </a>
+            </div>
+             <nav aria-label="Main navigation">
+                 <button class="mobile-menu-toggle" aria-expanded="false" aria-controls="primary-navigation" aria-label="Toggle Navigation Menu">
+                     <span class="sr-only">Menu</span>
+                     <i class="fas fa-bars open-icon" aria-hidden="true"></i>
+                     <i class="fas fa-times close-icon" aria-hidden="true"></i>
+                 </button>
+                 <ul id="primary-navigation" class="nav-list">
+                    <li class="nav-item"><a href="../../index.html" class="nav-link">Home</a></li>
+                    <!-- Keep Personal Finance marked as active section -->
+                    <li class="nav-item"><a href="personal.html" class="nav-link active-page" aria-current="page">Personal Finance</a></li>
+                    <li class="nav-item"><a href="personal.html#free-resources" class="nav-link">Resources</a></li>
+                    <!-- Mark 'Tools' (calculator page) as active sub-page -->
+                    <li class="nav-item"><a href="calculator.html" class="nav-link active-subpage" aria-current="location">Calculator</a></li>
+                    <li class="nav-item"><a href="personal.html#free-tools" class="nav-link">Templates</a></li>
+                    <li class="nav-item"><a href="../corporate/corporate.html" class="nav-link">For Businesses</a></li>
+                 </ul>
+             </nav>
+             <a href="#footer-contact" class="connect-button btn btn-cta-header">Get In Touch</a>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <section id="interest-calculator" class="section-padding calculator-section" aria-labelledby="calculator-heading">
+            <div class="container">
+                <header class="calculator-header">
+                    <h1 id="calculator-heading">Interest Calculator</h1>
+                    <!-- Alt text slightly more descriptive, but aria-hidden makes it decorative -->
+                    <img src="../../assets/images/common/rofilid-icon-teal.svg" alt="Rofilid brand mark" class="brand-mark" width="40" height="40" aria-hidden="true"/>
+                </header>
+                <p class="section-description">Estimate simple or compound interest. Input specific dates or a time duration.</p>
+
+                <!-- Mode Toggle -->
+                <div class="mode-toggle" role="radiogroup" aria-labelledby="mode-label">
+                     <span id="mode-label" class="sr-only">Calculator Mode</span>
+                     <button type="button" id="toggle-simple" role="radio" aria-checked="true" class="mode-button active" data-mode="simple"><i class="fas fa-calculator" aria-hidden="true"></i> Single Calculation</button>
+                     <button type="button" id="toggle-advanced" role="radio" aria-checked="false" class="mode-button" data-mode="advanced"><i class="fas fa-layer-group" aria-hidden="true"></i> Multiple Calculations</button>
+                </div>
+
+                <form id="calculator-form" class="calculator-form" novalidate>
+
+                    <!-- ==================== SIMPLE MODE ==================== -->
+                    <div id="simple-mode" class="calculator-mode active" role="tabpanel" aria-labelledby="toggle-simple">
+                        <fieldset>
+                            <legend class="sr-only">Single Calculation Input</legend>
+                            <div class="input-grid">
+                                <!-- Core Inputs -->
+                                <div class="form-group currency-group">
+                                    <label for="currency-simple">Currency <button type="button" class="info-btn" aria-label="Currency Info" data-tooltip="Select calculation currency"><i class="fas fa-info-circle" aria-hidden="true"></i></button></label>
+                                    <!-- Added more currency options for example -->
+                                    <select id="currency-simple" name="currency-simple">
+                                        <option value="NGN" selected>NGN (₦)</option>
+                                        <option value="USD">USD ($)</option>
+                                        <option value="EUR">EUR (€)</option>
+                                        <option value="GBP">GBP (£)</option>
+                                        <option value="JPY">JPY (¥)</option>
+                                        <option value="CNY">CNY (¥)</option>
+                                        <option value="CAD">CAD ($)</option>
+                                        <option value="AUD">AUD ($)</option>
+                                    </select>
+                                    <span id="currency-simple-error" class="error-message" aria-live="polite"></span>
+                                </div>
+                                <div class="form-group principal-group">
+                                    <label for="principal-simple">Principal <button type="button" class="info-btn" aria-label="Principal Info" data-tooltip="Initial amount"><i class="fas fa-info-circle" aria-hidden="true"></i></button></label>
+                                    <div class="input-with-symbol">
+                                        <span class="currency-symbol" aria-hidden="true">₦</span>
+                                        <input type="number" id="principal-simple" name="principal-simple" value="10000" min="0" step="any" required inputmode="decimal" aria-describedby="principal-simple-error">
+                                    </div>
+                                    <span id="principal-simple-error" class="error-message" aria-live="polite"></span>
+                                </div>
+                                <div class="form-group rate-group">
+                                    <label for="rate-simple">Rate (%) <button type="button" class="info-btn" aria-label="Rate Info" data-tooltip="Interest rate per period specified below"><i class="fas fa-info-circle" aria-hidden="true"></i></button></label>
+                                    <div class="input-with-symbol right">
+                                        <input type="number" id="rate-simple" name="rate-simple" value="5" min="0" step="any" required inputmode="decimal" aria-describedby="rate-simple-error">
+                                        <span class="symbol" aria-hidden="true">%</span>
+                                    </div>
+                                    <span id="rate-simple-error" class="error-message" aria-live="polite"></span>
+                                </div>
+                                <div class="form-group rate-period-group">
+                                    <label for="rate-period-simple">Rate Period <button type="button" class="info-btn" aria-label="Rate Period Info" data-tooltip="The time frame for the specified interest rate"><i class="fas fa-info-circle" aria-hidden="true"></i></button></label>
+                                    <select id="rate-period-simple" name="rate-period-simple" aria-describedby="rate-period-simple-error">
+                                        <option value="annual" selected>Annual</option>
+                                        <option value="semi-annual">Semi-Annual</option>
+                                        <option value="quarterly">Quarterly</option>
+                                        <option value="monthly">Monthly</option>
+                                    </select>
+                                    <span id="rate-period-simple-error" class="error-message" aria-live="polite"></span>
+                                </div>
+                                <div class="form-group type-group">
+                                    <label for="type-simple">Interest Type <button type="button" class="info-btn" aria-label="Interest Type Info" data-tooltip="Choose between simple and compound interest"><i class="fas fa-info-circle" aria-hidden="true"></i></button></label>
+                                    <select id="type-simple" name="type-simple" aria-describedby="type-simple-error">
+                                        <option value="compound" selected>Compound</option>
+                                        <option value="simple">Simple</option>
+                                    </select>
+                                    <span id="type-simple-error" class="error-message" aria-live="polite"></span>
+                                </div>
+                                <div class="form-group compounding-group"> <!-- Initially shown/hidden by JS based on type -->
+                                    <label for="compounding-simple">Compounding <button type="button" class="info-btn" aria-label="Compounding Info" data-tooltip="Frequency interest is calculated and added (for compound type)"><i class="fas fa-info-circle" aria-hidden="true"></i></button></label>
+                                    <select id="compounding-simple" name="compounding-simple" aria-describedby="compounding-simple-error">
+                                        <option value="annually">Annually</option>
+                                        <option value="semi-annually">Semi-Annually</option>
+                                        <option value="quarterly">Quarterly</option>
+                                        <option value="monthly" selected>Monthly</option>
+                                        <option value="daily">Daily</option>
+                                    </select>
+                                    <span id="compounding-simple-error" class="error-message" aria-live="polite"></span>
+                                </div>
+
+                                <!-- Time Period Input Method Choice -->
+                                <div class="form-group time-input-method span-full">
+                                    <fieldset><legend class="group-legend">Time Period <button type="button" class="info-btn" aria-label="Time Input Info" data-tooltip="Calculate interest between specific dates or over a set duration"><i class="fas fa-info-circle" aria-hidden="true"></i></button></legend>
+                                        <div class="radio-group inline">
+                                            <label><input type="radio" name="timeMethod-simple" value="dates" checked> Dates</label>
+                                            <label><input type="radio" name="timeMethod-simple" value="duration"> Duration</label>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <!-- Conditional Time Input Containers -->
+                                <div class="time-inputs-wrapper span-full">
+                                    <div class="form-group time-input-container dates-container" id="dates-simple-container"> <!-- Start visible -->
+                                        <div class="date-inputs">
+                                            <div class="form-group start-date-group">
+                                                <label for="start-date-simple">Start Date</label>
+                                                <input type="date" id="start-date-simple" name="start-date-simple" required aria-describedby="start-date-simple-error">
+                                                <span id="start-date-simple-error" class="error-message" aria-live="polite"></span>
+                                            </div>
+                                            <div class="form-group end-date-group">
+                                                <label for="end-date-simple">End Date</label>
+                                                <input type="date" id="end-date-simple" name="end-date-simple" required aria-describedby="end-date-simple-error">
+                                                <span id="end-date-simple-error" class="error-message" aria-live="polite"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group time-input-container duration-container" id="duration-simple-container" hidden> <!-- Start hidden -->
+                                        <div class="duration-inputs">
+                                            <div class="form-group duration-value-group">
+                                                <label for="duration-value-simple">Period Length</label>
+                                                <input type="number" id="duration-value-simple" name="duration-value-simple" value="1" min="0" step="any" required inputmode="numeric" aria-describedby="duration-value-simple-error">
+                                                <span id="duration-value-simple-error" class="error-message" aria-live="polite"></span>
+                                            </div>
+                                            <div class="form-group duration-unit-group">
+                                                <label for="duration-unit-simple">Unit</label>
+                                                <select id="duration-unit-simple" name="duration-unit-simple" required aria-describedby="duration-unit-simple-error">
+                                                    <option value="years" selected>Years</option>
+                                                    <option value="months">Months</option>
+                                                    <option value="days">Days</option>
+                                                </select>
+                                                <span id="duration-unit-simple-error" class="error-message" aria-live="polite"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <!-- ==================== ADVANCED MODE ==================== -->
+                    <div id="advanced-mode" class="calculator-mode" hidden role="tabpanel" aria-labelledby="toggle-advanced">
+                        <div id="advanced-entries" class="advanced-entries-container">
+                            <!-- Entry Template - Hidden - JS will clone and update IDs/names -->
+                             <fieldset class="entry entry-template" data-entry-id="{id}" hidden aria-labelledby="entry-legend-{id}">
+                                <legend class="entry-legend" id="entry-legend-{id}">Calculation #<span class="entry-number">{id}</span></legend>
+                                <button type="button" class="remove-entry-btn" aria-label="Remove Calculation {id}" hidden> <i class="fas fa-trash-alt" aria-hidden="true"></i> Remove</button>
+                                <div class="input-grid">
+                                     <!-- Currency -->
+                                     <div class="form-group currency-group">
+                                         <label for="currency-{id}">Currency</label>
+                                         <select id="currency-{id}" name="currency-{id}" aria-describedby="currency-{id}-error">
+                                             <option value="NGN" selected>NGN (₦)</option> <option value="USD">USD ($)</option> <option value="EUR">EUR (€)</option> <option value="GBP">GBP (£)</option> <option value="JPY">JPY (¥)</option> <option value="CNY">CNY (¥)</option> <option value="CAD">CAD ($)</option> <option value="AUD">AUD ($)</option>
+                                         </select>
+                                         <span id="currency-{id}-error" class="error-message" aria-live="polite"></span>
+                                     </div>
+                                     <!-- Principal -->
+                                     <div class="form-group principal-group">
+                                         <label for="principal-{id}">Principal</label>
+                                         <div class="input-with-symbol">
+                                            <span class="currency-symbol" aria-hidden="true">₦</span>
+                                            <input type="number" id="principal-{id}" name="principal-{id}" value="10000" min="0" step="any" required inputmode="decimal" aria-describedby="principal-{id}-error">
+                                        </div>
+                                        <span id="principal-{id}-error" class="error-message" aria-live="polite"></span>
+                                     </div>
+                                     <!-- Rate -->
+                                     <div class="form-group rate-group">
+                                         <label for="rate-{id}">Rate (%)</label>
+                                         <div class="input-with-symbol right">
+                                            <input type="number" id="rate-{id}" name="rate-{id}" value="5" min="0" step="any" required inputmode="decimal" aria-describedby="rate-{id}-error">
+                                            <span class="symbol" aria-hidden="true">%</span>
+                                        </div>
+                                        <span id="rate-{id}-error" class="error-message" aria-live="polite"></span>
+                                     </div>
+                                     <!-- Rate Period -->
+                                     <div class="form-group rate-period-group">
+                                         <label for="rate-period-{id}">Rate Period</label>
+                                         <select id="rate-period-{id}" name="rate-period-{id}" aria-describedby="rate-period-{id}-error">
+                                             <option value="annual" selected>Annual</option> <option value="semi-annual">Semi-Annual</option> <option value="quarterly">Quarterly</option> <option value="monthly">Monthly</option>
+                                         </select>
+                                         <span id="rate-period-{id}-error" class="error-message" aria-live="polite"></span>
+                                     </div>
+                                     <!-- Interest Type -->
+                                     <div class="form-group type-group">
+                                         <label for="type-{id}">Interest Type</label>
+                                         <select id="type-{id}" name="type-{id}" aria-describedby="type-{id}-error">
+                                             <option value="compound" selected>Compound</option> <option value="simple">Simple</option>
+                                         </select>
+                                         <span id="type-{id}-error" class="error-message" aria-live="polite"></span>
+                                     </div>
+                                     <!-- Compounding -->
+                                     <div class="form-group compounding-group">
+                                         <label for="compounding-{id}">Compounding</label>
+                                         <select id="compounding-{id}" name="compounding-{id}" aria-describedby="compounding-{id}-error">
+                                             <option value="annually">Annually</option> <option value="semi-annually">Semi-Annually</option> <option value="quarterly">Quarterly</option> <option value="monthly" selected>Monthly</option> <option value="daily">Daily</option>
+                                         </select>
+                                         <span id="compounding-{id}-error" class="error-message" aria-live="polite"></span>
+                                     </div>
+
+                                    <!-- Time Period Input Choice - Advanced Template -->
+                                    <div class="form-group time-input-method span-full">
+                                        <fieldset><legend class="group-legend">Time Period</legend>
+                                            <div class="radio-group inline">
+                                                <label><input type="radio" name="timeMethod-{id}" value="dates" checked> Dates</label>
+                                                <label><input type="radio" name="timeMethod-{id}" value="duration"> Duration</label>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <!-- Conditional Time Input Containers - Advanced Template -->
+                                    <div class="time-inputs-wrapper span-full">
+                                         <div class="form-group time-input-container dates-container" id="dates-{id}-container">
+                                             <div class="date-inputs">
+                                                 <div class="form-group start-date-group">
+                                                     <label for="start-date-{id}">Start Date</label>
+                                                     <input type="date" id="start-date-{id}" name="start-date-{id}" required aria-describedby="start-date-{id}-error">
+                                                     <span id="start-date-{id}-error" class="error-message" aria-live="polite"></span>
+                                                 </div>
+                                                 <div class="form-group end-date-group">
+                                                     <label for="end-date-{id}">End Date</label>
+                                                     <input type="date" id="end-date-{id}" name="end-date-{id}" required aria-describedby="end-date-{id}-error">
+                                                     <span id="end-date-{id}-error" class="error-message" aria-live="polite"></span>
+                                                 </div>
+                                             </div>
+                                         </div>
+                                         <div class="form-group time-input-container duration-container" id="duration-{id}-container" hidden>
+                                             <div class="duration-inputs">
+                                                 <div class="form-group duration-value-group">
+                                                     <label for="duration-value-{id}">Period Length</label>
+                                                     <input type="number" id="duration-value-{id}" name="duration-value-{id}" value="1" min="0" step="any" required inputmode="numeric" aria-describedby="duration-value-{id}-error">
+                                                     <span id="duration-value-{id}-error" class="error-message" aria-live="polite"></span>
+                                                 </div>
+                                                 <div class="form-group duration-unit-group">
+                                                     <label for="duration-unit-{id}">Unit</label>
+                                                     <select id="duration-unit-{id}" name="duration-unit-{id}" required aria-describedby="duration-unit-{id}-error">
+                                                         <option value="years" selected>Years</option> <option value="months">Months</option> <option value="days">Days</option>
+                                                     </select>
+                                                     <span id="duration-unit-{id}-error" class="error-message" aria-live="polite"></span>
+                                                 </div>
+                                             </div>
+                                         </div>
+                                    </div>
+                                 </div>
+                             </fieldset>
+                            <!-- Entries inserted here by JS -->
+                        </div>
+
+                        <div class="advanced-actions">
+                            <button type="button" id="add-entry-btn" class="btn btn-outline btn-icon">
+                                <i class="fas fa-plus-circle" aria-hidden="true"></i> Add Calculation
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                     <div class="form-actions">
+                         <button type="submit" id="calculate-btn" class="btn btn-primary btn-large btn-icon">
+                            <i class="fas fa-calculator" aria-hidden="true"></i> Calculate
+                         </button>
+                         <button type="button" id="clear-form-btn" class="btn btn-outline">Clear All</button>
+                     </div>
+                </form>
+
+                <!-- Results Area -->
+                 <div id="results-area" class="results-area" hidden aria-live="polite" role="region" aria-labelledby="results-heading">
+                    <h2 id="results-heading" class="results-title">Calculation Results</h2>
+
+                     <!-- Simple Mode Results -->
+                     <div id="simple-results" class="results-section simple-results-display" hidden>
+                        <div class="result-item">
+                            <span class="label">Principal:</span>
+                            <strong class="value" id="result-simple-principal"></strong>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Total Interest:</span>
+                            <strong class="value" id="result-simple-interest"></strong>
+                        </div>
+                        <div class="result-item ear"> <!-- Smaller text for EAR -->
+                            <span class="label">Effective Annual Rate (EAR):</span>
+                            <strong class="value" id="result-simple-ear"></strong>
+                        </div>
+                        <div class="result-item total"> <!-- Highlighted total -->
+                            <span class="label">Final Amount:</span>
+                            <strong class="value" id="result-simple-final"></strong>
+                        </div>
+                    </div>
+
+                     <!-- Advanced Mode Results -->
+                     <div id="advanced-results" class="results-section advanced-results-display" hidden>
+                         <div class="results-subsection">
+                             <h3 class="subsection-title">Individual Results</h3>
+                             <div id="advanced-individual-results" class="individual-results-grid">
+                                 <!-- Individual results populated by JS -->
+                             </div>
+                         </div>
+                         <div class="results-subsection aggregated-results">
+                            <h3 class="subsection-title">Aggregated Total</h3>
+                             <div class="aggregation-controls">
+                                <label for="aggregation-currency">View Total In:</label>
+                                <select id="aggregation-currency" name="aggregation-currency">
+                                    <option value="NGN" selected>NGN</option>
+                                    <option value="USD">USD</option>
+                                    <option value="EUR">EUR</option>
+                                    <option value="GBP">GBP</option>
+                                    <option value="JPY">JPY</option>
+                                    <option value="CNY">CNY</option>
+                                    <option value="CAD">CAD</option>
+                                    <option value="AUD">AUD</option>
+                                </select>
+                                <span id="aggregation-error" class="error-message" aria-live="polite"></span> <!-- For conversion errors -->
+                             </div>
+                             <div id="advanced-aggregated-display">
+                                <div class="result-item">
+                                    <span class="label">Total Principal:</span>
+                                    <strong class="value" id="result-agg-principal"></strong>
+                                </div>
+                                <div class="result-item">
+                                    <span class="label">Total Interest:</span>
+                                    <strong class="value" id="result-agg-interest"></strong>
+                                </div>
+                                <div class="result-item ear"> <!-- Smaller text for EAR -->
+                                    <span class="label">Blended Effective Annual Rate (EAR):</span>
+                                    <strong class="value" id="result-agg-ear"></strong>
+                                </div>
+                                <div class="result-item total"> <!-- Highlighted total -->
+                                    <span class="label">Aggregated Final Amount:</span>
+                                    <strong class="value" id="result-agg-final"></strong>
+                                </div>
+                             </div>
+                         </div>
+                    </div>
+
+                    <!-- Chart Area -->
+                     <div id="chart-area" class="chart-area" hidden>
+                        <h3 class="subsection-title chart-title">Growth Over Time</h3>
+                        <div class="chart-container">
+                            <canvas id="interest-chart" role="img" aria-label="Interest growth chart"></canvas>
+                        </div>
+                     </div>
+
+                    <!-- Results Actions -->
+                    <div class="results-actions">
+                        <button type="button" id="print-results-btn" class="btn btn-outline btn-icon" disabled>
+                            <i class="fas fa-print" aria-hidden="true"></i> Print Results
+                        </button>
+                    </div>
+                 </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+     <footer class="site-footer" id="footer-contact" role="contentinfo">
+        <div class="container">
+            <!-- Add other footer content here if needed -->
+            <div class="copyright">
+                <p>© <span id="current-year"></span> ROFILID. All rights reserved.</p>
+            </div>
+        </div>
+     </footer>
+
+    <!-- Libraries -->
+    <!-- Use specific version for stability, added integrity check -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js" integrity="sha256-LFhnGHEdTIm6cp/L5O4j5FobjJ7dxBvKmYLj7+K+M8c=" crossorigin="anonymous" defer></script>
+
+    <!-- Calculator JS (Corrected Path) -->
+    <script src="../../assets/js/personal/calculator.js" defer></script>
+
+</body>
+</html>
