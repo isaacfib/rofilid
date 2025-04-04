@@ -8,6 +8,7 @@
  * Dependencies: quizzes.html structure, personal.css base styles, quizzes.css accordion styles.
  */
 
+
 (function() {
     'use strict';
 
