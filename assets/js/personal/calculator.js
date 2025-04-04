@@ -586,98 +586,133 @@
         return isValid;
    }
 
-    /** Perform calculation for a single validated data set */
-    function performCalculation(validatedData) {
-         console.log('%c[performCalculation] Performing calculation with:', 'color: green;', validatedData);
-         try {
-             // Destructure with safe defaults
-             const {
-                 principal = 0, rate = 0, ratePeriod = 'annual', type = 'compound',
-                 compounding = 'annually', timeMethod = 'dates', startDate = null, endDate = null,
-                 'duration-value': durationValue = 0, // Use bracket notation for hyphenated key
-                 durationUnit = 'years', currency = CONFIG.DEFAULT_CURRENCY
-             } = validatedData;
+/** Perform calculation for a single validated data set */
+function performCalculation(validatedData) {
+     // --->>> ADDED LOG 1: Check validated data received <<<---
+     console.log('%c[performCalculation] RECEIVED validatedData:', 'color: blue;', JSON.stringify(validatedData, null, 2)); // Pretty print JSON
+     try {
+         // Destructure with safe defaults
+         const {
+             principal = 0, rate = 0, ratePeriod = 'annual', type = 'compound',
+             compounding = 'annually', timeMethod = 'dates', startDate = null, endDate = null,
+             'duration-value': durationValue = 0, // Use bracket notation for hyphenated key
+             durationUnit = 'years', currency = CONFIG.DEFAULT_CURRENCY
+         } = validatedData;
 
-             // Ensure critical inputs are valid numbers (already validated, but belt-and-suspenders)
-             const principalVal = isNaN(principal) || principal < 0 ? 0 : principal;
-             const rateVal = isNaN(rate) || rate <= 0 ? 0 : rate; // Rate must be > 0
-             const durationVal = isNaN(durationValue) || durationValue <= 0 ? 0 : durationValue; // Duration must be > 0
+         // --->>> ADDED LOG 2: Check initial destructured values <<<---
+         console.log('[performCalculation] Initial values:', { principal, rate, ratePeriod, type, compounding, timeMethod, startDate, endDate, durationValue, durationUnit, currency });
 
-             // --- Calculate Time in Years ---
-             let timeInYears = 0;
-             if (timeMethod === 'dates') {
-                 timeInYears = getTimeInYears(startDate, endDate);
-             } else {
-                 timeInYears = getDurationInYears(durationVal, durationUnit);
-             }
+         // Ensure critical inputs are valid numbers (already validated, but belt-and-suspenders)
+         const principalVal = isNaN(principal) || principal < 0 ? 0 : principal;
+         // Make sure rate check uses original 'rate', not potentially NaN 'rateVal' for check
+         const rateInputVal = isNaN(rate) ? 0 : rate;
+         const rateVal = rateInputVal <= 0 ? 0 : rateInputVal; // Set to 0 if non-positive
+         // Same for duration
+         const durationInputVal = isNaN(durationValue) ? 0 : durationValue;
+         const durationVal = durationInputVal <= 0 ? 0 : durationInputVal; // Set to 0 if non-positive
 
-             // Handle zero/negative/invalid time: return principal only, no error state
-             if (isNaN(timeInYears) || timeInYears <= 0) {
-                 console.warn("[performCalculation] Time duration is zero, negative, or invalid. Result is principal only.");
-                 // Calculate annual rate even if time is 0 for EAR consistency
-                 const annualRate = getAnnualRate(rateVal / 100, ratePeriod);
-                 return {
-                    inputs: { ...validatedData, annualRate: annualRate, timeInYears: 0, compoundsPerYear: 0 },
-                    principal: principalVal, interest: 0, finalAmount: principalVal,
-                    ear: calculateEAR(annualRate, getCompoundsPerYear(compounding)), // EAR based on rate/compounding
-                    timeInYears: 0, error: false
-                 };
-             }
+         // --->>> ADDED LOG 3: Check values after NaN/Zero checks <<<---
+         console.log('[performCalculation] Values post-validation cleanup:', { principalVal, rateVal, durationVal });
 
-             // --- Calculate Annual Rate ---
-             const rateDecimal = rateVal / 100;
-             const annualRate = getAnnualRate(rateDecimal, ratePeriod);
-             if (isNaN(annualRate)) {
-                console.error("[performCalculation] Annual Rate calculation resulted in NaN.");
-                return { ...createErrorResult(validatedData, principalVal), timeInYears: timeInYears };
-             }
-
-             console.log(`[performCalculation] Time (Years): ${timeInYears.toFixed(6)}, Annual Rate: ${annualRate.toFixed(6)}`);
-
-             // --- Calculate Interest and Final Amount ---
-             let resultInterest = 0;
-             let resultFinalAmount = principalVal;
-             let compoundsPerYear = 0; // Initialize
-
-             if (type === 'simple') {
-                 resultInterest = calculateSimpleInterest(principalVal, annualRate, timeInYears);
-                 resultFinalAmount = principalVal + resultInterest;
-                 compoundsPerYear = 1; // Not applicable, but set for consistency
-                 console.log('[performCalculation] Simple Interest Calculated:', { resultInterest, resultFinalAmount });
-             } else { // compound
-                 compoundsPerYear = getCompoundsPerYear(compounding);
-                 const { interest, finalAmount } = calculateCompoundInterest(principalVal, annualRate, timeInYears, compoundsPerYear);
-                 resultInterest = interest;
-                 resultFinalAmount = finalAmount;
-                 console.log('[performCalculation] Compound Interest Calculated:', { resultInterest, resultFinalAmount, compoundsPerYear });
-             }
-
-             // --- Calculate Effective Annual Rate (EAR) ---
-             const ear = calculateEAR(annualRate, compoundsPerYear);
-
-             // Explicitly check for NaN in final results (should be rare now)
-             if (isNaN(resultInterest) || isNaN(resultFinalAmount) || isNaN(ear)) {
-                 console.error("[performCalculation] Calculation resulted in NaN!", { resultInterest, resultFinalAmount, ear });
-                  return { ...createErrorResult(validatedData, principalVal), timeInYears: timeInYears, annualRate: annualRate, compoundsPerYear: compoundsPerYear };
-             }
-
-             const finalSummary = {
-                 inputs: { ...validatedData, annualRate, timeInYears, compoundsPerYear }, // Include calculated intermediates
-                 principal: principalVal,
-                 interest: resultInterest,
-                 finalAmount: resultFinalAmount,
-                 ear: ear,
-                 timeInYears: timeInYears,
-                 error: false
-             };
-             console.log('%c[performCalculation] Final Summary:', 'color: green; font-weight: bold;', finalSummary);
-             return finalSummary;
-
-         } catch (error) {
-            console.error("[performCalculation] Unexpected error during calculation:", error);
-             return { ...createErrorResult(validatedData, validatedData?.principal || 0), errorMsg: error.message };
+         // --- Calculate Time in Years ---
+         let timeInYears = 0;
+         if (timeMethod === 'dates') {
+             timeInYears = getTimeInYears(startDate, endDate);
+         } else {
+             timeInYears = getDurationInYears(durationVal, durationUnit);
          }
-    }
+
+         // --->>> ADDED LOG 4: Check calculated timeInYears <<<---
+         console.log(`%c[performCalculation] Calculated timeInYears: ${timeInYears}`, 'font-weight: bold;');
+
+         // Handle zero/negative/invalid time: return principal only, no error state
+         if (isNaN(timeInYears) || timeInYears <= 0) {
+             // --->>> ADDED LOG 5: Check if zero-time condition met <<<---
+             console.warn("%c[performCalculation] <<< TIME IS ZERO or INVALID >>> Result will be principal only.", 'color: red; font-weight: bold;');
+             // Calculate annual rate even if time is 0 for EAR consistency
+             const annualRateForEAR = getAnnualRate( (isNaN(rate) ? 0 : rate) / 100, ratePeriod); // Use original 'rate' for calculation here
+             console.log(`[performCalculation] Calculated annualRateForEAR (for zero time EAR): ${annualRateForEAR}`);
+             const compoundsPerYearForEAR = getCompoundsPerYear(compounding); // Need this too
+             return {
+                inputs: { ...validatedData, annualRate: annualRateForEAR, timeInYears: 0, compoundsPerYear: compoundsPerYearForEAR },
+                principal: principalVal, interest: 0, finalAmount: principalVal, // INTEREST IS ZERO HERE
+                ear: calculateEAR(annualRateForEAR, compoundsPerYearForEAR), // EAR based on rate/compounding
+                timeInYears: 0, error: false
+             };
+         }
+
+         // --- Calculate Annual Rate ---
+         // Use the rateInputVal which could be positive, negative or zero before rateVal made it positive
+         const rateDecimal = rateInputVal / 100; // Base annual rate on potentially 0 or negative rate for intermediate step if needed
+         const annualRate = getAnnualRate(rateDecimal, ratePeriod);
+
+         // --->>> ADDED LOG 6: Check calculated annualRate <<<---
+         console.log(`%c[performCalculation] Calculated annualRate (for interest): ${annualRate}`, 'font-weight: bold;');
+
+         // If rate itself was invalid (<=0), annual rate used for interest must be 0
+         const effectiveAnnualRateForInterest = rateInputVal <= 0 ? 0 : annualRate;
+
+          // --->>> ADDED LOG 6.5: Check effective rate for interest <<<---
+         console.log(`[performCalculation] Effective Annual Rate used for Interest Calc: ${effectiveAnnualRateForInterest}`);
+
+
+         if (isNaN(annualRate)) { // Check the original calculation for NaN still
+            console.error("[performCalculation] Base Annual Rate calculation resulted in NaN.");
+            return { ...createErrorResult(validatedData, principalVal), timeInYears: timeInYears };
+         }
+
+         // --- Calculate Interest and Final Amount ---
+         let resultInterest = 0;
+         let resultFinalAmount = principalVal;
+         let compoundsPerYear = 0; // Initialize
+         if (type === 'simple') {
+             // --->>> ADDED LOG 7a: Inputs to simple interest <<<---
+             console.log('[performCalculation] Inputs to calculateSimpleInterest:', { principalVal, effectiveAnnualRateForInterest, timeInYears });
+             resultInterest = calculateSimpleInterest(principalVal, effectiveAnnualRateForInterest, timeInYears);
+             resultFinalAmount = principalVal + resultInterest;
+             compoundsPerYear = 1; // Not applicable, but set for consistency
+             console.log('[performCalculation] Simple Interest Calculated:', { resultInterest, resultFinalAmount });
+         } else { // compound
+             compoundsPerYear = getCompoundsPerYear(compounding);
+             // --->>> ADDED LOG 7b: Inputs to compound interest <<<---
+             console.log('[performCalculation] Inputs to calculateCompoundInterest:', { principalVal, effectiveAnnualRateForInterest, timeInYears, compoundsPerYear });
+             const { interest, finalAmount } = calculateCompoundInterest(principalVal, effectiveAnnualRateForInterest, timeInYears, compoundsPerYear);
+             resultInterest = interest;
+             resultFinalAmount = finalAmount;
+             console.log('[performCalculation] Compound Interest Calculated:', { resultInterest, resultFinalAmount, compoundsPerYear });
+         }
+
+         // --- Calculate Effective Annual Rate (EAR) ---
+         // EAR should use the potentially positive annualRate, regardless of interest calc path
+         const ear = calculateEAR(annualRate, compoundsPerYear);
+
+         // --->>> ADDED LOG 8: Check final values before return <<<---
+         console.log('[performCalculation] Pre-final NaN checks:', { resultInterest, resultFinalAmount, ear });
+
+         // Explicitly check for NaN in final results
+         if (isNaN(resultInterest) || isNaN(resultFinalAmount) || isNaN(ear)) {
+             console.error("[performCalculation] Final Calculation resulted in NaN!", { resultInterest, resultFinalAmount, ear });
+             // Return error result but try to keep calculated intermediates where possible
+             return { ...createErrorResult(validatedData, principalVal), timeInYears: timeInYears, annualRate: annualRate, compoundsPerYear: compoundsPerYear };
+         }
+
+         const finalSummary = {
+             inputs: { ...validatedData, annualRate, timeInYears, compoundsPerYear },
+             principal: principalVal,
+             interest: resultInterest, // <<< Value of Interest
+             finalAmount: resultFinalAmount,
+             ear: ear,
+             timeInYears: timeInYears,
+             error: false
+         };
+          // --->>> ADDED LOG 9: Final return object <<<---
+         console.log('%c[performCalculation] FINAL Summary Object to return:', 'color: green; font-weight: bold;', JSON.stringify(finalSummary, null, 2)); // Pretty print JSON
+         return finalSummary;
+     } catch (error) {
+        console.error("[performCalculation] Unexpected error during calculation:", error);
+         return { ...createErrorResult(validatedData, validatedData?.principal || 0), errorMsg: error.message };
+     }
+}
 
     /** Helper to create a consistent error result object */
     function createErrorResult(inputs, principal = 0) {
@@ -944,27 +979,46 @@
     }
 
     function getTimeInYears(startDateStr, endDateStr) {
-        if (!startDateStr || !endDateStr) return 0;
-        try {
-            // Use UTC to avoid timezone causing off-by-one day issues
-            const start = new Date(startDateStr + "T00:00:00Z");
-            const end = new Date(endDateStr + "T00:00:00Z");
-
-            // Check for invalid dates explicitly
-            if (isNaN(start.getTime()) || isNaN(end.getTime()) || end <= start) {
-                console.warn(`[getTimeInYears] Invalid date range or order: ${startDateStr} to ${endDateStr}`);
-                return 0; // Return 0 for invalid range or order
-            }
-            // Calculate difference in milliseconds and convert to years
-            const diffMillis = end.getTime() - start.getTime();
-            const years = diffMillis / (1000 * 60 * 60 * 24 * 365.25); // Use 365.25 for average leap year
-            return Math.max(0, years); // Ensure non-negative result
-        } catch (e) {
-            console.error("[getTimeInYears] Error parsing dates:", e);
-            return 0; // Return 0 on parsing error
-        }
+    // --->>> ADDED LOG 10: Check inputs <<<---
+    console.log('[getTimeInYears] Received date strings:', { startDateStr, endDateStr });
+    if (!startDateStr || !endDateStr) {
+         console.warn('[getTimeInYears] Date string missing.');
+         return 0;
     }
+    try {
+        // Use UTC to avoid timezone causing off-by-one day issues
+        const start = new Date(startDateStr + "T00:00:00Z");
+        const end = new Date(endDateStr + "T00:00:00Z");
 
+        // --->>> ADDED LOG 11: Parsed Date objects <<<---
+        console.log('[getTimeInYears] Parsed dates (UTC):', { start, end });
+        console.log(`[getTimeInYears] start.getTime(): ${start.getTime()}, end.getTime(): ${end.getTime()}`);
+
+
+        // Check for invalid dates explicitly BEFORE comparing them
+        if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+             console.warn(`%c[getTimeInYears] <<< INVALID date parsing: Start Valid: ${!isNaN(start.getTime())}, End Valid: ${!isNaN(end.getTime())}`, 'color: red;');
+             return 0;
+        }
+         // Now check order
+         if (end <= start) {
+             console.warn(`%c[getTimeInYears] <<< INVALID date order: ${endDateStr} is not after ${startDateStr}`, 'color: red;');
+             return 0; // Return 0 for invalid order
+        }
+
+        // Calculate difference in milliseconds and convert to years
+        const diffMillis = end.getTime() - start.getTime();
+        const years = diffMillis / (1000 * 60 * 60 * 24 * 365.25); // Use 365.25 for average leap year
+
+        // --->>> ADDED LOG 12: Calculated diff and years <<<---
+        console.log('[getTimeInYears] Date diff (ms):', diffMillis, 'Calculated years:', years);
+
+        return Math.max(0, years); // Ensure non-negative result
+    } catch (e) {
+        console.error("[getTimeInYears] Error during date processing:", e);
+        return 0; // Return 0 on parsing error
+    }
+}
     function getDurationInYears(durationValue, durationUnit) {
         const value = isNaN(durationValue) || durationValue <= 0 ? 0 : durationValue;
         switch (durationUnit) {
