@@ -591,16 +591,19 @@ function performCalculation(validatedData) {
      // --->>> ADDED LOG 1: Check validated data received <<<---
      console.log('%c[performCalculation] RECEIVED validatedData:', 'color: blue;', JSON.stringify(validatedData, null, 2)); // Pretty print JSON
      try {
-         // Destructure with safe defaults
+         // Destructure with safe defaults AND CORRECT ALIASING FOR DATES
          const {
              principal = 0, rate = 0, ratePeriod = 'annual', type = 'compound',
-             compounding = 'annually', timeMethod = 'dates', startDate = null, endDate = null,
-             'duration-value': durationValue = 0, // Use bracket notation for hyphenated key
+             compounding = 'annually', timeMethod = 'dates',
+             // Use quotes for kebab-case keys and assign to camelCase variables
+             'start-date': startDate = null, // <<< FIX: Alias 'start-date' key to startDate var
+             'end-date': endDate = null,     // <<< FIX: Alias 'end-date' key to endDate var
+             'duration-value': durationValue = 0,
              durationUnit = 'years', currency = CONFIG.DEFAULT_CURRENCY
          } = validatedData;
 
          // --->>> ADDED LOG 2: Check initial destructured values <<<---
-         console.log('[performCalculation] Initial values:', { principal, rate, ratePeriod, type, compounding, timeMethod, startDate, endDate, durationValue, durationUnit, currency });
+         console.log('[performCalculation] Initial values (post-alias):', { principal, rate, ratePeriod, type, compounding, timeMethod, startDate, endDate, durationValue, durationUnit, currency }); // <<< Add/Modify log here to check
 
          // Ensure critical inputs are valid numbers (already validated, but belt-and-suspenders)
          const principalVal = isNaN(principal) || principal < 0 ? 0 : principal;
