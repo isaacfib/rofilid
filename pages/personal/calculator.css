@@ -5,7 +5,6 @@
                 handling layout, mode toggles, forms, results display, chart,
                 and responsive adjustments. Inherits base styles from personal.css.
    ========================================================================== */
-
 /* === Variables (Assume defined in personal.css or a base file) === */
 :root {
     /* Fallbacks if not defined elsewhere */
