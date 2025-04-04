@@ -1,14 +1,14 @@
 /* ==========================================================================
-   ROFILID Interest Calculator Styles - v1.1.0
+   ROFILID Interest Calculator Styles - v1.2.0
    Location: /pages/personal/calculator.css
    Description: Styles specific to the Interest Calculator tool (calculator.html),
                 handling layout, mode toggles, forms, results display, chart,
                 and responsive adjustments. Inherits base styles from personal.css.
    ========================================================================== */
 
-/* === Variables (Consider defining these in personal.css or a base file) === */
+/* === Variables (Assume defined in personal.css or a base file) === */
 :root {
-    /* Fallbacks if not defined in personal.css */
+    /* Fallbacks if not defined elsewhere */
     --pp-color-light: #f1f5f9;
     --pp-color-secondary: #ffffff;
     --pp-color-text: #334155;
@@ -22,6 +22,8 @@
     --pp-color-danger: #dc3545;
     --pp-color-danger-light: #f8d7da;
     --pp-color-danger-dark: #b02a37;
+    --pp-color-info: #0dcaf0; /* Example Info Color */
+    --pp-color-info-light: #cff4fc;
     --pp-color-light-accent: #f0fdfa; /* Very light teal */
     --pp-font-regular: 400;
     --pp-font-medium: 500;
@@ -38,6 +40,9 @@
     --pp-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
     --pp-box-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --pp-transition-fast: all 0.2s ease-in-out;
+    /* Added RGB versions for box-shadow alpha */
+    --pp-color-primary-rgb: 13, 148, 136;
+    --pp-color-danger-rgb: 220, 53, 69;
 }
 
 /* === General Page Adjustments === */
@@ -117,7 +122,7 @@ body.tool-page {
     line-height: 1.2;
 }
 .mode-button:last-child { border-right: none; }
-.mode-button i { font-size: 1.1em; }
+.mode-button i { font-size: 1.1em; margin-right: var(--pp-space-xs);}
 
 .mode-button:hover,
 .mode-button:focus-visible { /* Style focus like hover */
@@ -134,7 +139,8 @@ body.tool-page {
     border-color: transparent;
 }
 .mode-button.active:hover,
-.mode-button[aria-checked="true"]:hover {
+.mode-button[aria-checked="true"]:hover,
+.mode-button[aria-checked="true"]:focus-visible {
     background-color: var(--pp-color-primary-light);
 }
 
@@ -162,18 +168,22 @@ body.tool-page {
 /* Shared Form Group Styles */
 .form-group {
     margin-bottom: 0; /* Grid gap handles spacing */
+    display: flex;
+    flex-direction: column; /* Ensure label and input stack correctly */
 }
 
 .form-group label,
 .form-group .group-legend {
-    display: flex;
+    display: inline-flex; /* Use inline-flex for button alignment */
     align-items: center;
     gap: var(--pp-space-xs);
     font-size: 0.9rem;
     font-weight: var(--pp-font-medium);
     color: var(--pp-color-text);
     margin-bottom: var(--pp-space-sm); /* Space between label and input */
+    cursor: default; /* Default cursor for labels */
 }
+label[for] { cursor: pointer; } /* Pointer cursor only if 'for' attribute exists */
 
 .form-group .group-legend {
     font-weight: var(--pp-font-semibold); /* Slightly bolder for legend */
@@ -192,11 +202,12 @@ select {
     font-size: 1rem;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
     background-color: var(--pp-color-secondary); /* Ensure background */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
 }
 input:focus, select:focus,
 input:focus-visible, select:focus-visible {
     border-color: var(--pp-color-primary);
-    box-shadow: 0 0 0 3px rgba(var(--pp-color-primary-rgb, 13, 148, 136), 0.2); /* Needs --pp-color-primary-rgb */
+    box-shadow: 0 0 0 3px rgba(var(--pp-color-primary-rgb), 0.2);
     outline: none;
 }
 
@@ -214,6 +225,7 @@ input:focus-visible, select:focus-visible {
     transition: color 0.2s ease;
     border-radius: 50%;
     line-height: 1; /* Prevent extra space */
+    vertical-align: middle; /* Align better with text */
 }
 .info-btn:hover,
 .info-btn:focus-visible {
@@ -227,7 +239,7 @@ input:focus-visible, select:focus-visible {
 [data-tooltip]::after {
     content: attr(data-tooltip);
     position: absolute;
-    bottom: calc(100% + 6px); /* Position above the button + gap */
+    bottom: calc(100% + 8px); /* Increased gap */
     left: 50%;
     transform: translateX(-50%) scale(0.8);
     background-color: var(--pp-color-primary-dark);
@@ -255,8 +267,9 @@ input:focus-visible, select:focus-visible {
 /* Input with Currency/Percent Symbol */
 .input-with-symbol {
     position: relative;
-    display: flex;
+    display: flex; /* Use flex to contain input */
     align-items: center;
+    width: 100%; /* Ensure wrapper takes full width */
 }
 .input-with-symbol .currency-symbol,
 .input-with-symbol .symbol {
@@ -267,52 +280,47 @@ input:focus-visible, select:focus-visible {
     font-size: 1rem;
     font-weight: var(--pp-font-medium);
     pointer-events: none;
+    z-index: 2; /* Ensure symbol is above input background */
 }
 .input-with-symbol .currency-symbol { left: var(--pp-space-md); } /* Match input padding */
 .input-with-symbol .symbol { right: var(--pp-space-md); } /* Match input padding */
-.input-with-symbol input { padding-left: calc(var(--pp-space-md) + 1.5em); } /* Adjust padding based on symbol width */
-.input-with-symbol.right input { padding-left: var(--pp-space-md); padding-right: calc(var(--pp-space-md) + 1.5em); }
 
+.input-with-symbol input {
+    flex-grow: 1; /* Allow input to fill container */
+    padding-left: calc(var(--pp-space-md) + 1.8em); /* Adjust padding based on typical symbol width */
+}
+.input-with-symbol.right input {
+    padding-left: var(--pp-space-md);
+    padding-right: calc(var(--pp-space-md) + 1.8em);
+}
 
 /* Error Message Styling */
 .error-message {
     color: var(--pp-color-danger);
     font-size: 0.8rem;
     margin-top: var(--pp-space-xs);
-    min-height: 1em; /* Prevent layout shift when message appears */
+    min-height: 1.2em; /* Prevent layout shift when message appears */
     display: block; /* Ensure it takes block space */
+    width: 100%; /* Take full width within form group */
 }
 input.is-invalid, select.is-invalid {
     border-color: var(--pp-color-danger);
+    background-color: var(--pp-color-danger-light); /* Subtle background hint */
 }
 input.is-invalid:focus, select.is-invalid:focus,
 input.is-invalid:focus-visible, select.is-invalid:focus-visible {
-    box-shadow: 0 0 0 3px rgba(var(--pp-color-danger-rgb, 220, 53, 69), 0.25); /* Needs --pp-color-danger-rgb */
+    border-color: var(--pp-color-danger-dark);
+    box-shadow: 0 0 0 3px rgba(var(--pp-color-danger-rgb), 0.25);
+    background-color: var(--pp-color-secondary); /* Restore normal background on focus */
 }
 
 /* Compounding Frequency (Visibility controlled by JS adding/removing 'hidden') */
-.form-group.compounding-group[hidden] {
-    display: none;
-}
-/* Optional: Add transition if desired (requires more complex handling than just [hidden]) */
-/*
-.form-group.compounding-group {
-    transition: opacity 0.3s ease, max-height 0.3s ease;
-    overflow: hidden;
-    opacity: 1;
-    max-height: 100px; // Estimate max height
-}
-.form-group.compounding-group[hidden] {
-    opacity: 0;
-    max-height: 0;
-    margin-bottom: 0; // Collapse margin when hidden
-    padding-top: 0;
-    padding-bottom: 0;
-}
-*/
+.form-group.compounding-group { transition: opacity 0.3s ease, max-height 0.4s ease, margin 0.3s ease, padding 0.3s ease; overflow: hidden; opacity: 1; max-height: 150px; /* Estimate max height */ }
+.form-group.compounding-group[hidden] { opacity: 0; max-height: 0; margin-bottom: 0 !important; /* Collapse margin */ padding-top: 0; padding-bottom: 0; border: none; }
 
 /* Time Period Input Styles */
-.time-input-method fieldset { border: none; padding: 0; margin: 0; }
+.time-input-method fieldset { border: none; padding: 0; margin: 0; width: 100%; }
+.time-input-method .group-legend { margin-bottom: var(--pp-space-sm); }
 .time-input-method .radio-group {
     display: flex;
     gap: var(--pp-space-sm); /* Gap between buttons */
@@ -320,11 +328,11 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
     padding: var(--pp-space-xs); /* Padding around buttons */
     border-radius: var(--pp-border-radius);
     background-color: var(--pp-color-light);
-    margin-top: var(--pp-space-sm);
+    /* Removed margin-top here, let grid gap handle */
 }
 .time-input-method .radio-group label {
     flex: 1;
-    display: block;
+    display: block; /* Was inline-block? Ensure block */
     padding: var(--pp-space-sm) var(--pp-space-md);
     text-align: center;
     border-radius: var(--pp-border-radius);
@@ -336,19 +344,15 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
     margin: 0; /* Override potential default label margin */
     background-color: transparent; /* Ensure default is transparent */
     border: 1px solid transparent; /* Prevent jumping on selection */
+    line-height: 1.4;
 }
 .time-input-method .radio-group input[type="radio"] {
     /* Visually hide radio button, still accessible */
     position: absolute;
     opacity: 0;
     pointer-events: none;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
+    width: 1px; height: 1px; margin: -1px; overflow: hidden;
+    clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
 }
 .time-input-method .radio-group input[type="radio"]:checked + label {
     background-color: var(--pp-color-secondary);
@@ -363,18 +367,37 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
 .time-input-method .radio-group input[type="radio"]:focus-visible + label {
     outline: 2px solid var(--pp-color-primary);
     outline-offset: 2px;
+    box-shadow: var(--pp-box-shadow-sm); /* Maintain shadow on focus */
 }
 
 .time-inputs-wrapper {
-    margin-top: var(--pp-space-md); /* Increased space */
+    margin-top: var(--pp-space-md); /* Space below radio buttons */
+    /* Add transition for smooth show/hide */
+    transition: opacity 0.3s ease, max-height 0.4s ease;
+    overflow: hidden;
 }
-.time-input-container[hidden] { display: none; }
+.time-input-container {
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    opacity: 1;
+    visibility: visible;
+    padding-bottom: var(--pp-space-sm); /* Add slight padding for transition spacing */
+}
+.time-input-container[hidden] {
+    display: block; /* Override default hidden for transition */
+    opacity: 0;
+    visibility: hidden;
+    max-height: 0;
+    padding: 0;
+    margin: 0;
+    border: none;
+    pointer-events: none;
+}
 
 .date-inputs, .duration-inputs {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: var(--pp-space-lg);
-    padding: var(--pp-space-md) 0;
+    padding-top: var(--pp-space-md); /* Space inside container */
 }
 
 
@@ -391,20 +414,25 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
     padding: var(--pp-space-lg);
     border-radius: var(--pp-border-radius);
     position: relative;
-    background-color: var(--pp-color-light);
+    background-color: var(--pp-color-light-accent); /* Light bg for entries */
     transition: background-color 0.3s ease;
 }
-/* First entry styling can be done via JS or more specific selectors if needed */
-/* Example: .entry[data-entry-id="1"] { border-style: solid; } */
+.entry:first-of-type { /* Style first entry slightly differently if needed */
+    border-style: solid;
+    border-color: var(--pp-color-border);
+    background-color: #fff;
+}
 
 .entry-legend {
     font-size: 1rem;
     font-weight: var(--pp-font-semibold);
     padding: 0 var(--pp-space-sm);
     color: var(--pp-color-primary);
-    background-color: var(--pp-color-light);
+    background-color: inherit; /* Inherit from fieldset bg */
     margin-left: var(--pp-space-sm); /* Adjust positioning */
     line-height: 1; /* Ensure it doesn't take too much vertical space */
+    display: inline-block; /* Needed for legend positioning */
+    width: auto; /* Don't force full width */
 }
 
 .remove-entry-btn {
@@ -412,7 +440,7 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
     top: 0;
     right: 0;
     background-color: var(--pp-color-danger-light);
-    color: var(--pp-color-danger);
+    color: var(--pp-color-danger-dark);
     border: 1px solid var(--pp-color-danger-light);
     padding: var(--pp-space-xs) var(--pp-space-sm);
     font-size: 0.8rem;
@@ -426,23 +454,26 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
     gap: var(--pp-space-xs);
 }
 .remove-entry-btn[hidden] {
-    display: none; /* Ensure hidden takes effect */
+    display: none !important; /* Ensure hidden takes effect */
 }
 .remove-entry-btn:hover, .remove-entry-btn:focus-visible {
     background-color: var(--pp-color-danger);
     color: var(--pp-color-secondary);
     opacity: 1;
-    border-color: var(--pp-color-danger);
-    outline: 1px solid var(--pp-color-danger-dark);
-    outline-offset: 1px;
+    border-color: var(--pp-color-danger-dark);
+    outline: none;
 }
-/* First entry remove button hidden by JS adding/removing the 'hidden' attribute */
+.remove-entry-btn i { margin-right: var(--pp-space-xs); }
 
 .advanced-actions {
     text-align: center;
     margin-top: var(--pp-space-md);
     border-top: 1px solid var(--pp-color-border-light);
     padding-top: var(--pp-space-xl);
+}
+#add-entry-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 /* === Form Actions (Calculate/Clear Buttons) === */
@@ -455,7 +486,10 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
     padding-top: var(--pp-space-xl);
     border-top: 1px solid var(--pp-color-border);
 }
-
+#calculate-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
 
 /* === Results Area Styles === */
 .results-area {
@@ -464,9 +498,18 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
     border: 1px solid var(--pp-color-border);
     border-radius: var(--pp-border-radius-large);
     padding: var(--pp-space-xl);
+    transition: opacity 0.3s ease, max-height 0.4s ease;
+    overflow: hidden;
+    opacity: 1;
+    max-height: 5000px; /* Large enough for content */
 }
 .results-area[hidden] {
-    display: none;
+    opacity: 0;
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    border: none;
 }
 
 .results-title {
@@ -492,10 +535,23 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
     border-bottom: 1px solid var(--pp-color-border-light);
     font-size: 1.1rem;
     gap: var(--pp-space-sm); /* Gap between label and value */
+    transition: opacity 0.3s ease, max-height 0.3s ease;
+    overflow: hidden;
+    opacity: 1;
+    max-height: 100px; /* Adjust as needed */
 }
+.simple-results-display > .result-item[hidden],
+#advanced-aggregated-display > .result-item[hidden] {
+    opacity: 0;
+    max-height: 0;
+    padding: 0;
+    border: none;
+    margin: 0;
+}
+
 .simple-results-display > .result-item:last-child,
 #advanced-aggregated-display > .result-item:last-child {
-     border-bottom: none;
+     /* Remove border only if it's the last *visible* item potentially (JS might handle this better) */
 }
 .result-item .label { color: var(--pp-color-text-light); flex-shrink: 0; } /* Prevent label shrinking */
 .result-item .value { font-weight: var(--pp-font-semibold); color: var(--pp-color-primary); text-align: right; flex-grow: 1; }
@@ -538,6 +594,12 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
     padding: var(--pp-space-md);
     border-radius: var(--pp-border-radius);
     font-size: 0.9rem;
+    background-color: #fff; /* Ensure white background */
+    transition: border-color 0.3s ease;
+}
+.entry-result.has-error {
+    border-color: var(--pp-color-danger-light);
+    background-color: var(--pp-color-danger-light);
 }
 .entry-result h4 {
     font-size: 1rem;
@@ -548,12 +610,16 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
     font-weight: var(--pp-font-semibold);
 }
 .entry-result .result-item {
+    display: flex; /* Ensure consistent layout */
+    justify-content: space-between;
     font-size: inherit;
     padding: var(--pp-space-xs) 0;
     border-bottom: none;
+    align-items: baseline;
+    gap: var(--pp-space-sm);
 }
 .entry-result .result-item .label { color: var(--pp-color-text-light); }
-.entry-result .result-item .value { font-weight: var(--pp-font-medium); color: var(--pp-color-text); }
+.entry-result .result-item .value { font-weight: var(--pp-font-medium); color: var(--pp-color-text); text-align: right;}
 .entry-result .result-item.total {
      margin-top: var(--pp-space-xs);
      padding-top: var(--pp-space-xs);
@@ -561,38 +627,55 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
      font-weight: var(--pp-font-semibold);
      font-size: 1.05em;
 }
-
-/* Aggregated Results Controls */
-.aggregated-results .aggregation-controls {
-    display: flex;
-    flex-wrap: wrap; /* Allow wrap */
-    align-items: center;
-    gap: var(--pp-space-sm) var(--pp-space-md); /* Row and column gap */
-    margin-bottom: var(--pp-space-lg);
-    font-size: 0.9rem;
-}
-.aggregated-results .aggregation-controls label {
+.entry-result .error-message { /* Style error inside result box */
+    color: var(--pp-color-danger-dark);
     font-weight: var(--pp-font-medium);
-    margin-bottom: 0; /* Override default label margin */
-    white-space: nowrap; /* Prevent label wrapping */
+    margin-top: var(--pp-space-sm);
 }
-.aggregated-results .aggregation-controls select {
-    padding: var(--pp-space-xs) var(--pp-space-sm);
+
+
+/* Aggregated Results - Status Message */
+.aggregated-results #advanced-aggregated-display {
+    padding-top: var(--pp-space-md);
+}
+.aggregation-status-message {
     font-size: 0.9rem;
-    min-width: 100px;
-    flex-grow: 1; /* Allow select to grow */
-    max-width: 150px; /* Optional max width */
+    font-style: italic;
+    color: var(--pp-color-text-light);
+    padding: var(--pp-space-md);
+    border: 1px dashed var(--pp-color-border);
+    border-radius: var(--pp-border-radius);
+    background-color: var(--pp-color-light);
+    margin-bottom: var(--pp-space-lg);
+    text-align: center;
 }
-.aggregated-results .aggregation-controls .error-message {
-    width: 100%; /* Take full width if it wraps */
-    margin-top: 0;
-    font-size: 0.8rem;
+.aggregation-status-message.error {
+    color: var(--pp-color-danger-dark);
+    background-color: var(--pp-color-danger-light);
+    border-color: var(--pp-color-danger);
+    font-style: normal;
+    font-weight: var(--pp-font-medium);
+}
+.aggregation-status-message:empty {
+    display: none; /* Hide if no message */
 }
 
 
 /* === Chart Area === */
-.chart-area { margin-top: var(--pp-space-xl); }
-.chart-area[hidden] { display: none; }
+.chart-area {
+    margin-top: var(--pp-space-xl);
+    transition: opacity 0.3s ease, max-height 0.4s ease;
+    overflow: hidden;
+    opacity: 1;
+    max-height: 600px; /* Adjust max height */
+}
+.chart-area[hidden] {
+    opacity: 0;
+    max-height: 0;
+    padding: 0;
+    margin: 0;
+    border: none;
+}
 .chart-title { text-align: center; }
 .chart-container {
     position: relative; /* Needed for chart responsiveness */
@@ -615,19 +698,20 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
 .results-actions button:disabled {
     cursor: not-allowed;
     opacity: 0.6;
+    background-color: var(--pp-color-light); /* More visual indication */
+    border-color: var(--pp-color-border);
+    color: var(--pp-color-text-lighter);
 }
 
 /* === Accessibility === */
 .sr-only { /* From common frameworks like Bootstrap/Tailwind */
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0;
+}
+/* Focus outline for accessibility on non-standard focus elements */
+.mode-button:focus-visible, .info-btn:focus-visible, .remove-entry-btn:focus-visible {
+    outline: 2px solid var(--pp-color-primary);
+    outline-offset: 2px;
 }
 
 
@@ -680,8 +764,15 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
     .chart-container { height: 300px; } /* Adjust chart height */
 }
 
+/* Print styles should be in calculator-print.css */
+
+```
+
+**3. `calculator-print.css` (No major changes needed, but reviewed for consistency)**
+
+```css
 /* ==========================================================================
-   ROFILID Interest Calculator Print Styles - v1.0.0
+   ROFILID Interest Calculator Print Styles - v1.1.0
    Location: /pages/personal/calculator-print.css
    Description: Hides non-essential elements and styles the results
                 area for printing.
@@ -691,7 +782,11 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
     body {
         font-size: 10pt; /* Adjust base font size for print */
         color: #000;
-        background-color: #fff;
+        background-color: #fff !important; /* Ensure white background */
+        margin: 0;
+        padding: 0;
+        -webkit-print-color-adjust: exact !important; /* Try to force background/colors */
+        print-color-adjust: exact !important;
     }
 
     /* Hide non-essential elements */
@@ -699,7 +794,10 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
     .site-footer,
     .mode-toggle,
     .calculator-form, /* Hide the form itself */
-    .results-actions button#print-results-btn /* Hide the print button */
+    .results-actions button#print-results-btn, /* Hide the print button */
+    .info-btn, /* Hide info buttons */
+    .mobile-menu-toggle, /* Hide mobile menu */
+    .connect-button /* Hide Get in Touch button */
     {
         display: none !important; /* Use important to override */
     }
@@ -714,17 +812,21 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
         border: none !important;
         box-shadow: none !important;
         background-color: transparent !important;
+        width: 100% !important; /* Ensure full width */
     }
 
     .container {
         max-width: 100% !important;
         padding: 0 !important;
         margin: 0 !important;
+        width: 100% !important;
     }
 
     /* Style results area for print */
     #results-area {
         margin-top: 1cm !important; /* Add some top margin */
+        border: 1px solid #ccc !important; /* Add a light border for print */
+        padding: 0.5cm !important;
     }
 
     .calculator-header {
@@ -736,9 +838,11 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
     .calculator-header h1 {
         font-size: 16pt;
         color: #000;
+        margin: 0;
     }
     .calculator-header .brand-mark {
         height: 30px; /* Smaller logo */
+        width: auto;
     }
 
     .section-description {
@@ -775,14 +879,21 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
         font-size: 10pt !important;
         border-bottom: 1px dotted #eee !important;
         padding: 0.15cm 0 !important;
+        color: #000 !important;
+        background-color: transparent !important;
+        break-inside: avoid; /* Prevent breaking mid-item */
     }
+     .result-item[hidden] { display: none !important; } /* Ensure hidden items stay hidden */
+
     .result-item.total {
         border-top: 1px solid #aaa !important;
         font-weight: bold !important;
+        color: #000 !important;
     }
-    .result-item .label { color: #333 !important; }
+    .result-item .label { color: #333 !important; font-weight: normal; }
     .result-item .value { color: #000 !important; font-weight: bold; }
-    .result-item.ear { font-size: 9pt !important; }
+    .result-item.ear { font-size: 9pt !important; color: #333 !important; }
+    .result-item.ear .value { font-weight: normal; }
 
     .individual-results-grid {
         grid-template-columns: 1fr !important; /* Stack individual results */
@@ -793,23 +904,49 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
         border: 1px solid #eee !important;
         padding: 0.3cm !important;
         break-inside: avoid;
+        background-color: transparent !important;
+        box-shadow: none !important;
     }
+     .entry-result.has-error {
+         border-color: #aaa !important; /* Less intrusive error indication in print */
+     }
     .entry-result h4 {
         font-size: 11pt;
         color: #333;
     }
-
-    .aggregation-controls {
-        display: none !important; /* Hide aggregation controls in print */
+    .entry-result .error-message {
+        color: #555 !important; /* Muted error text */
+        font-size: 9pt;
     }
 
-    /* Chart - Often difficult to print well, consider hiding or providing image */
+    /* Aggregation status message */
+    .aggregation-status-message {
+         border: 1px solid #ccc !important;
+         padding: 0.3cm !important;
+         font-size: 9pt !important;
+         color: #333 !important;
+         background-color: #f9f9f9 !important;
+         text-align: left;
+    }
+     .aggregation-status-message.error {
+         color: #000 !important;
+         background-color: #eee !important;
+         border-color: #aaa !important;
+     }
+
+    /* Chart - Often difficult to print well */
     .chart-area {
         display: block !important; /* Try to display */
         page-break-before: always; /* Put chart on new page */
         margin-top: 1cm !important;
         max-width: 100% !important;
         overflow: hidden; /* Prevent overflow */
+        border: none !important;
+        box-shadow: none !important;
+        background-color: transparent !important;
+    }
+    .chart-title {
+        text-align: left;
     }
     .chart-container {
         border: 1px solid #ccc !important;
@@ -819,15 +956,23 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
         height: auto !important; /* Allow height to adjust */
         max-width: 18cm; /* Limit width on page */
         margin: 0 auto;
+        width: 100%; /* Ensure it tries to fill width */
     }
     /* Canvas itself might need specific print handling if it doesn't render well */
     #interest-chart {
         max-width: 100%;
         height: auto !important;
+        display: block; /* Ensure it's a block element */
     }
 
-    /* Prevent links from showing URL */
+    /* Prevent links from showing URL (if any were missed) */
     a[href]::after {
         content: none !important;
+    }
+
+    /* Remove box shadows globally for print */
+    * {
+        box-shadow: none !important;
+        text-shadow: none !important;
     }
 }
