@@ -9,10 +9,13 @@
  */
 (function () {
     'use strict';
-
+'use strict';
     // --- Configuration ---
+    // Define the value separately first
+    const MAX_ADVANCED_ENTRIES_VALUE = 10; // Define the numeric value here
+
     const CONFIG = {
-        MAX_ADVANCED_ENTRIES: 10,
+        MAX_ADVANCED_ENTRIES: MAX_ADVANCED_ENTRIES_VALUE, // Use the separate value
         DEFAULT_CURRENCY: 'NGN',
         DEFAULT_PRINCIPAL: 10000,
         DEFAULT_RATE: 5,
@@ -32,7 +35,8 @@
             durationPositive: 'Duration must be positive (greater than 0).',
             dateInvalid: 'Please enter a valid date (YYYY-MM-DD).',
             dateOrder: 'End date must be after start date.',
-            maxEntries: `You can add a maximum of ${CONFIG.MAX_ADVANCED_ENTRIES} calculations.`, // Use template literal carefully if CONFIG changes
+            // Use the separate constant here inside the template literal
+            maxEntries: `You can add a maximum of ${MAX_ADVANCED_ENTRIES_VALUE} calculations.`,
             calculationError: 'Calculation failed. Please check inputs.',
             aggregationMismatch: 'Cannot aggregate totals because calculations use different currencies.',
             aggregationError: 'Cannot aggregate totals due to calculation errors in individual entries.',
@@ -45,8 +49,6 @@
             borderColor: 'rgba(15, 118, 110, 1)', // Teal solid
         }
     };
-    // Fix MAX_ADVANCED_ENTRIES message if defined later
-    CONFIG.ERROR_MESSAGES.maxEntries = `You can add a maximum of ${CONFIG.MAX_ADVANCED_ENTRIES} calculations.`;
 
     // --- State Variables ---
     let currentMode = 'simple'; // 'simple' or 'advanced'
