@@ -219,7 +219,22 @@ li { margin-bottom: var(--spacing-xs); } ul ul li { margin-bottom: var(--spacing
   .mobile-menu-toggle { display: none; }
   .connect-button { display: inline-block; } /* Show connect button */
   /* Desktop Nav structure */
-  .nav-list { display: flex; gap: var(--spacing-lg); position: static; width: auto; background-color: transparent; box-shadow: none; padding: 0; opacity: 1; flex-direction: row; flex-wrap: nowrap; top: auto; left: auto; overflow-x: visible; }
+    .nav-list {
+    display: flex;
+    gap: var(--spacing-lg);
+    position: static;
+    width: auto;
+    background-color: transparent;
+    box-shadow: none;
+    padding: 0;
+    opacity: 1;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    top: auto;
+    left: auto;
+    overflow-x: visible;
+    justify-content: center;
+  }
   #primary-navigation.active { /* Reset active state visually */ position: static; box-shadow: none; overflow-x: visible; padding: 0; gap: var(--spacing-lg); justify-content: flex-start; display: flex; background-color: transparent; }
   /* Index cards */
   .cards .card { flex-basis: calc(33.333% - var(--spacing-lg) * 2 / 3); max-width: 360px; }
