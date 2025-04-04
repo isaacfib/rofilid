@@ -22,6 +22,9 @@
 
 .quiz-page-intro .subheadline {
      max-width: 700px; /* Allow slightly wider subheadline */
+   margin-bottom: var(--pp-space-xxl);
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .quiz-page-intro .intro-actions {
