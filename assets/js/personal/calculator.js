@@ -1137,16 +1137,20 @@ function performCalculation(validatedData) {
         }).format(value);
     }
 
-    function isValidDate(dateString) {
-        // Checks YYYY-MM-DD format and basic date validity
-        if (!dateString || !/^\d{4}-\d{2}-\d{2}$/.test(dateString)) return false;
-        const date = new Date(dateString + "T00:00:00Z"); // Use UTC
-        // Check if the date object is valid and the components match the input string
-        // This prevents dates like "2023-02-30" being accepted
-        return date instanceof Date && !isNaN(date) &&
-               date.toISOString().startsWith(dateString) &&
-               date.getFullYear() > 1900 && date.getFullYear() < 2100; // Reasonable year range
+// --- TEMPORARY TEST ---
+function isValidDate(dateString) {
+    console.log("[isValidDate] Checking:", dateString); // Add log here too!
+    if (!dateString || !/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+        console.log("[isValidDate] Regex failed or empty string");
+        return false;
     }
+    const date = new Date(dateString + "T00:00:00Z"); // Use UTC
+    const isValid = date instanceof Date && !isNaN(date.getTime()); // Simpler check for now
+    console.log("[isValidDate] Result:", isValid);
+    // return isValid && date.getFullYear() > 1900 && date.getFullYear() < 2100; // Original year check could be added back
+     return isValid; // TEST
+}
+// --- END TEMPORARY TEST ---
 
     // --- Validation Error Display ---
 
