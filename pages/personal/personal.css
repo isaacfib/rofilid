@@ -1,8 +1,9 @@
 /* ==========================================================================
-   ROFILID Personal Page Styles - v2.8.0 (Refined & Optimized)
+   ROFILID Personal Page Styles - v2.8.1 (Tablet Responsiveness Enhanced)
    Location: /pages/personal/personal.css
    Description: Optimized styles for personal.html, focusing on consistency,
-                accessibility, subtle visual improvements, and organization.
+                accessibility, subtle visual improvements, organization,
+                and improved tablet responsiveness.
    ========================================================================== */
 
 /* --- Base Resets & Defaults --- */
@@ -344,7 +345,8 @@ nav[aria-label="Main navigation"] {
 
 
 /* --- Mobile Navigation Styles --- */
-@media (max-width: 991px) {
+/* UPDATED: Breakpoint lowered from 991px to 900px for better tablet handling */
+@media (max-width: 900px) {
     .header-container {
         gap: var(--pp-space-sm);
     }
@@ -754,16 +756,17 @@ main {
 /* --- Resource Grid & Cards --- */
 .resource-grid {
     display: grid;
+    /* UPDATED: Rely solely on auto-fit for better flexibility across tablets */
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
     gap: var(--pp-space-xl);
 }
-/* Explicit columns for larger screens for control */
-@media (min-width: 768px) {
-    .resource-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (min-width: 1100px) { /* Use slightly wider breakpoint */
-    .resource-grid { grid-template-columns: repeat(3, 1fr); }
-}
+/* Explicit columns for larger screens (removed for tablets, kept for >1100px if needed) */
+/* @media (min-width: 768px) { */
+    /* .resource-grid { grid-template-columns: repeat(2, 1fr); } */ /* REMOVED */
+/* } */
+/* @media (min-width: 1100px) { */ /* Kept as example if 3 cols needed on large screens */
+    /* .resource-grid { grid-template-columns: repeat(3, 1fr); } */ /* Optional: Reinstate if needed */
+/* } */
 
 .resource-card {
     background-color: var(--pp-color-secondary);
@@ -971,15 +974,17 @@ main {
 /* --- Learning Hub / Quiz Intro --- */
 .category-grid {
     display: grid;
+    /* UPDATED: Rely primarily on auto-fit. Removed 768px explicit 2-col */
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); /* Slightly wider min */
     gap: var(--pp-space-xl);
 }
 /* Explicit columns for larger screens */
-@media (min-width: 768px) {
-    .category-grid { grid-template-columns: repeat(2, 1fr); }
-}
+/* @media (min-width: 768px) { */
+    /* .category-grid { grid-template-columns: repeat(2, 1fr); } */ /* REMOVED */
+/* } */
 @media (min-width: 1100px) {
-    .category-grid { grid-template-columns: repeat(4, 1fr); } /* Force 4 columns */
+    /* Keep explicit 4 columns for large desktop if needed */
+    .category-grid { grid-template-columns: repeat(4, 1fr); }
 }
 
 .category-card {
@@ -1041,16 +1046,17 @@ main {
 /* --- Free Tools & Templates --- */
 .template-grid {
     display: grid;
+    /* UPDATED: Rely solely on auto-fit for better flexibility across tablets */
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
     gap: var(--pp-space-xl);
 }
-/* Explicit columns */
-@media (min-width: 768px) {
-    .template-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (min-width: 1200px) {
-    .template-grid { grid-template-columns: repeat(3, 1fr); }
-}
+/* Explicit columns removed for tablets, keep for very large if needed */
+/* @media (min-width: 768px) { */
+    /* .template-grid { grid-template-columns: repeat(2, 1fr); } */ /* REMOVED */
+/* } */
+/* @media (min-width: 1200px) { */
+    /* .template-grid { grid-template-columns: repeat(3, 1fr); } */ /* Optional: Reinstate if needed */
+/* } */
 
 .template-card {
     background-color: var(--pp-color-secondary);
@@ -1678,7 +1684,7 @@ main {
 }
 .footer-links-container {
     display: grid;
-    /* Responsive columns: 1 -> 2 -> 4 */
+    /* Responsive columns: relies on auto-fit with explicit overrides for larger screens */
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); /* Let it auto-fit */
     gap: var(--pp-space-xl);
 }
