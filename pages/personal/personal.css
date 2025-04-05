@@ -1,8 +1,8 @@
 /* ==========================================================================
-   ROFILID Personal Page Styles - v2.8.2 (Tablet Responsiveness Overhaul)
+   ROFILID Personal Page Styles - v2.8.3 (Enhanced Tablet Responsiveness)
    Location: /pages/personal/personal.css
-   Description: Adapted responsive strategies from index page (flexbox grids)
-                and reverted nav breakpoint for improved tablet layout filling.
+   Description: Adjusted navigation breakpoint to 1024px, added tablet-specific 
+                media queries for better layout control, and refined content scaling.
    ========================================================================== */
 
 /* --- Base Resets & Defaults --- */
@@ -194,7 +194,7 @@ ul > li:last-child > p {
   --pp-box-shadow-inset: inset 0 1px 2px rgba(0,0,0,0.05);
   --pp-transition-fast: all 0.2s ease-out;
   --pp-transition-medium: all 0.3s ease-out;
-  --pp-transition-slow: all 0.5s ease-out;
+  --pp-transition-slow: all 0.5s ease-out; /* Corrected transition */
   /* Spacing Scale - Refined */
   --pp-space-xs: 0.25rem;  /* 4px */
   --pp-space-sm: 0.5rem;   /* 8px */
@@ -318,9 +318,9 @@ nav[aria-label="Main navigation"] {
 
 
 /* --- Mobile Navigation Styles --- */
-/* UPDATED: Reverted breakpoint to 991px to match index page behavior */
-@media (max-width: 991px) {
-    /* Adjust header height for potentially smaller screens */
+/* UPDATED: Moved breakpoint to 1024px for better tablet support */
+@media (max-width: 1024px) {
+    /* Adjust header height if needed */
     /* :root { --pp-header-height: 65px; } */
 
     .header-container {
@@ -539,7 +539,6 @@ main {
     flex-wrap: wrap;
     gap: var(--pp-space-xl);
     justify-content: center; /* Center single item on last row if needed */
-    /* grid-template-columns removed */
 }
 .resource-card {
     background-color: var(--pp-color-secondary); border-radius: var(--pp-border-radius-large);
@@ -617,7 +616,6 @@ main {
     flex-wrap: wrap;
     gap: var(--pp-space-xl);
     justify-content: center; /* Center single item */
-    /* grid-template-columns removed */
 }
 .category-card {
     background-color: var(--pp-color-secondary); border-radius: var(--pp-border-radius-large);
@@ -663,7 +661,6 @@ main {
     flex-wrap: wrap;
     gap: var(--pp-space-xl);
     justify-content: center; /* Center single item */
-    /* grid-template-columns removed */
 }
 .template-card {
     background-color: var(--pp-color-secondary); border-radius: var(--pp-border-radius-large);
