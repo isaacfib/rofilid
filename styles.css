@@ -325,16 +325,22 @@ nav[aria-label="Main navigation"] {
    nav[aria-label="Main navigation"] {
     flex-grow: 1;
    }
-   .header-container {
+.header-container {
     justify-content: space-between;
   }
   
-  .nav-list {
-    margin: 0 auto;
+  nav[aria-label="Main navigation"] {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center; /* Center the nav in the available space */
   }
-   .connect-button {
-    margin-left: auto;
-   }
+  
+  .nav-list {
+    margin: 0;
+  }
+     .connect-button {
+    margin-left: var(--spacing-md); /* Add a specific margin instead of auto */
+     }
   .hero-section, .page-intro { padding-top: calc(var(--header-height) + var(--spacing-xxl)); padding-bottom: var(--spacing-xxl); }
   
   .hero-section { min-height: 550px; }
@@ -357,20 +363,6 @@ nav[aria-label="Main navigation"] {
     justify-content: center; /* Center items within the nav list */
     /* Removed margin: 0 auto; - let space-between handle positioning */
   }
-   @media (min-width: 992px) {
-  :root { --header-height: 75px; }
-  .site-header { height: var(--header-height); }
-  .hero-section, .page-intro { padding-top: calc(var(--header-height) + var(--spacing-xxl)); padding-bottom: var(--spacing-xxl); }
-  .hero-section { min-height: 550px; }
-  .mobile-menu-toggle { display: none; }
-  .connect-button { display: inline-block; } /* Show connect button */
-  /* Desktop Nav structure */
-  .nav-list { display: flex; gap: var(--spacing-lg); position: static; width: auto; background-color: transparent; box-shadow: none; padding: 0; opacity: 1; flex-direction: row; flex-wrap: nowrap; top: auto; left: auto; overflow-x: visible; }
-  #primary-navigation.active { /* Reset active state visually */ position: static; box-shadow: none; overflow-x: visible; padding: 0; gap: var(--spacing-lg); justify-content: flex-start; display: flex; background-color: transparent; }
-  /* Index cards */
-  .cards .card { flex-basis: calc(33.333% - var(--spacing-lg) * 2 / 3); max-width: 360px; }
-  /* Removed rules for service-items etc. */
-      }
   /* Reset mobile .active state styles */
   #primary-navigation.active {
     position: static;
