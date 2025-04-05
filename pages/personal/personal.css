@@ -1,8 +1,9 @@
 /* ==========================================================================
-   ROFILID Personal Page Styles - v2.8.3 (Enhanced Tablet Responsiveness)
+   ROFILID Personal Page Styles - v2.8.3 (Tablet Responsiveness Applied)
    Location: /pages/personal/personal.css
-   Description: Adjusted navigation breakpoint to 1024px, added tablet-specific 
-                media queries for better layout control, and refined content scaling.
+   Description: Applied detailed feedback to address tablet responsiveness issues.
+                Includes breakpoint adjustments, flex/grid refinements, sizing tweaks,
+                and a new intermediate tablet breakpoint.
    ========================================================================== */
 
 /* --- Base Resets & Defaults --- */
@@ -194,7 +195,7 @@ ul > li:last-child > p {
   --pp-box-shadow-inset: inset 0 1px 2px rgba(0,0,0,0.05);
   --pp-transition-fast: all 0.2s ease-out;
   --pp-transition-medium: all 0.3s ease-out;
-  --pp-transition-slow: all 0.5s ease-out; /* Corrected transition */
+  --pp-transition-slow: all 0.5s ease-out;
   /* Spacing Scale - Refined */
   --pp-space-xs: 0.25rem;  /* 4px */
   --pp-space-sm: 0.5rem;   /* 8px */
@@ -318,9 +319,9 @@ nav[aria-label="Main navigation"] {
 
 
 /* --- Mobile Navigation Styles --- */
-/* UPDATED: Moved breakpoint to 1024px for better tablet support */
-@media (max-width: 1024px) {
-    /* Adjust header height if needed */
+/* FEEDBACK #2: Adjust mobile nav breakpoint */
+@media (max-width: 767px) { /* Standard tablet breakpoint */
+    /* Adjust header height for potentially smaller screens */
     /* :root { --pp-header-height: 65px; } */
 
     .header-container {
@@ -481,14 +482,19 @@ main {
     display: grid; grid-template-columns: 1fr; /* Mobile: Stack */
     gap: var(--pp-space-xl); align-items: center; position: relative; z-index: 1;
 }
-@media (min-width: 768px) { /* Tablet: Content Left, Stats Right */
-    .hero-container { grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr); text-align: left; }
+@media (min-width: 768px) { /* Tablet */
+    /* FEEDBACK #3: Adjust hero grid columns */
+    .hero-container {
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        text-align: left;
+    }
     .hero-content { text-align: left; }
     .hero-content .subheadline { margin-left: 0; max-width: 550px; }
     .hero-actions { justify-content: flex-start; }
 }
-@media (min-width: 992px) { /* Desktop: Refine ratio */
-    .hero-container { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: var(--pp-space-xxxl); }
+@media (min-width: 992px) { /* Desktop: Refine ratio (Restore or adjust as needed) */
+     /* Keeping the feedback's auto-fit for now, might need specific desktop adjustments later */
+    .hero-container { gap: var(--pp-space-xxxl); }
 }
 .hero-content { text-align: center; } /* Mobile default */
 .hero-badge {
@@ -499,7 +505,9 @@ main {
     box-shadow: var(--pp-box-shadow-sm);
 }
 .hero-content h1 {
-    font-size: clamp(2.2rem, 7vw, 3.4rem); margin-bottom: var(--pp-space-lg);
+    /* FEEDBACK #5: Adjust hero title font size clamp */
+    font-size: clamp(2.2rem, 4.5vw, 2.8rem);
+    margin-bottom: var(--pp-space-lg);
     font-weight: var(--pp-font-extrabold); color: var(--pp-color-primary-dark); line-height: 1.2;
 }
 .subheadline {
@@ -537,8 +545,9 @@ main {
 .resource-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--pp-space-xl);
+    gap: var(--pp-space-xl); /* Default gap */
     justify-content: center; /* Center single item on last row if needed */
+    /* grid-template-columns removed */
 }
 .resource-card {
     background-color: var(--pp-color-secondary); border-radius: var(--pp-border-radius-large);
@@ -554,15 +563,26 @@ main {
     }
 }
 @media (min-width: 768px) { /* Tablet: 2 columns */
-    .resource-grid { justify-content: flex-start; } /* Align left */
+    /* FEEDBACK #1: Adjust grid gap and card basis/min-width */
+    .resource-grid {
+        justify-content: flex-start; /* Align left */
+        gap: var(--pp-space-lg); /* Reduce gap size */
+    }
     .resource-card {
-        flex-basis: calc(50% - (var(--pp-space-xl) / 2));
+        flex-basis: calc(50% - (var(--pp-space-lg) / 2));
+        min-width: 300px; /* Add minimum width constraint */
         max-width: none; /* Ensure no max-width prevents 50% basis */
     }
 }
 @media (min-width: 1100px) { /* Desktop: 3 columns */
+    /* Restore original desktop gap if reduced at 768px */
+    .resource-grid {
+        gap: var(--pp-space-xl);
+    }
     .resource-card {
+        /* Adjust basis calculation for the current gap */
         flex-basis: calc(33.333% - (var(--pp-space-xl) * 2 / 3));
+        min-width: 0; /* Reset min-width if not needed */
     }
 }
 
@@ -616,6 +636,7 @@ main {
     flex-wrap: wrap;
     gap: var(--pp-space-xl);
     justify-content: center; /* Center single item */
+    /* grid-template-columns removed */
 }
 .category-card {
     background-color: var(--pp-color-secondary); border-radius: var(--pp-border-radius-large);
@@ -634,11 +655,17 @@ main {
     .category-grid { justify-content: flex-start; }
 }
 @media (min-width: 768px) { /* Tablet: Adjust basis if needed, maybe still 2 cols is fine */
-    .category-card {
-         flex-basis: calc(50% - (var(--pp-space-xl) / 2)); /* Keep 2 columns */
-    }
+     /* Basis adjustment handled by intermediate breakpoint below */
+     /* Keep 2 columns */
+    /* .category-card {
+         flex-basis: calc(50% - (var(--pp-space-xl) / 2));
+    } */
 }
 @media (min-width: 1100px) { /* Desktop: 4 columns */
+    .category-grid {
+        /* Reset gap if changed in intermediate breakpoint */
+        gap: var(--pp-space-xl);
+    }
     .category-card {
         flex-basis: calc(25% - (var(--pp-space-xl) * 3 / 4));
     }
@@ -659,28 +686,39 @@ main {
 .template-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--pp-space-xl);
+    gap: var(--pp-space-xl); /* Default gap */
     justify-content: center; /* Center single item */
+    /* grid-template-columns removed */
 }
 .template-card {
     background-color: var(--pp-color-secondary); border-radius: var(--pp-border-radius-large);
     box-shadow: var(--pp-box-shadow); border: 1px solid var(--pp-color-border-light);
     overflow: hidden; display: flex; flex-direction: column;
     transition: transform var(--pp-transition-medium), box-shadow var(--pp-transition-medium);
-    flex-basis: 100%; /* Mobile default: full width */
-    max-width: 400px; /* Optional mobile constraint */
+    /* FEEDBACK #4: Adjust template card flex behavior */
+    max-width: none;
+    flex: 1 1 300px; /* Flexible basis */
+    /* Note: flex-basis overrides will apply in media queries below */
 }
 @media (min-width: 500px) { /* Small tablet */
-     .template-card { max-width: none; }
+     /* max-width: none is now the default */
 }
 @media (min-width: 768px) { /* Tablet: 2 columns */
-    .template-grid { justify-content: flex-start; }
+    .template-grid {
+        justify-content: flex-start;
+        /* Gap adjustment handled by intermediate breakpoint below */
+    }
     .template-card {
+        /* Adjust basis calculation for the current gap (will be updated in intermediate breakpoint) */
         flex-basis: calc(50% - (var(--pp-space-xl) / 2));
     }
 }
 @media (min-width: 1200px) { /* Desktop: 3 columns */
+    .template-grid {
+        gap: var(--pp-space-xl); /* Restore default gap */
+    }
     .template-card {
+        /* Adjust basis calculation for the current gap */
         flex-basis: calc(33.333% - (var(--pp-space-xl) * 2 / 3));
     }
 }
@@ -819,6 +857,63 @@ main {
 .feedback-form .btn { width: 100%; }
 
 
+/* --- Intermediate Tablet Breakpoint --- */
+/* FEEDBACK #6, #7, #8, #9, #10: Add styles for mid-sized tablets */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Feedback #6: Hero Stats Grid */
+  .hero-stats-grid {
+    grid-template-columns: repeat(2, 1fr); /* Stack to 2 cols */
+  }
+
+  /* Feedback #6: Category Card */
+  .category-card {
+    /* Keep 2 columns, adjust basis for reduced gap */
+    flex-basis: calc(50% - (var(--pp-space-lg) / 2));
+  }
+  .category-grid {
+      gap: var(--pp-space-lg); /* Use reduced gap */
+  }
+
+  /* Feedback #6: Template Grid */
+  .template-grid {
+    gap: var(--pp-space-lg); /* Use reduced gap */
+  }
+  /* Re-calculate template card basis for reduced gap */
+  .template-card {
+      flex-basis: calc(50% - (var(--pp-space-lg) / 2));
+  }
+
+
+  /* Feedback #7: Container Padding */
+  .container {
+    padding-left: var(--pp-space-md);
+    padding-right: var(--pp-space-md);
+  }
+
+  /* Feedback #8: Card Image Scaling */
+  .card-image {
+    aspect-ratio: 3/2; /* Override default 16/10 */
+  }
+
+  /* Feedback #9: Navigation Bar Height */
+  :root {
+    --pp-header-height: 60px; /* Reduce header height */
+  }
+  .logo img {
+    height: 25px; /* Adjust logo height */
+  }
+
+  /* Feedback #10: Button Sizing */
+  .btn {
+    padding: 10px 20px; /* Reduce padding */
+    font-size: 0.95rem; /* Slightly smaller font */
+  }
+  /* Adjust specific button sizes if needed */
+  .btn.small { padding: 6px 16px; font-size: 0.85rem; }
+  .btn.large { padding: 12px 28px; font-size: 1.05rem; }
+}
+
+
 /* --- Footer Styles --- */
 .site-footer { background-color: var(--pp-color-primary-dark); color: #cbd5e1; padding-top: var(--pp-space-xxxl); padding-bottom: var(--pp-space-xl); font-size: 0.9rem; line-height: 1.7; }
 .page-footer-links { padding-bottom: var(--pp-space-xl); margin-bottom: var(--pp-space-xl); border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
@@ -873,8 +968,8 @@ main {
     @page { size: A4; margin: 1.2cm; }
     html, body { background-color: #fff !important; color: #000 !important; box-shadow: none !important; border: none !important; }
     body { padding-top: 0 !important; font-size: 9.5pt !important; font-family: 'Times New Roman', Times, serif !important; }
-    :root { --pp-border-radius: 0px !important; --pp-border-radius-large: 0px !important; --pp-box-shadow-sm: none !important; --pp-box-shadow: none !important; --pp-box-shadow-lg: none !important; --pp-color-primary: #000 !important; --pp-color-green: #000 !important; }
-    .site-header, .mobile-menu-toggle, .deco-blur, .motivational-quote, .hero-actions, .hero-stats-grid, .approach-icon, .approach-highlights, .social-integration, #learning-hub .start-quiz-btn, .full-challenge-link, .template-preview, .get-spreadsheet-btn, .template-price-note, #financial-tools-promo, #personal-coaching .coaching-interest, .disclaimer, #mmisbalior-section .promo-visual, #mmisbalior-section .btn, #feedback-section, .modal-overlay, .site-footer .page-footer-links div:nth-child(n+2), .site-footer .social-media, .site-footer .footer-contact-info li:not(:first-of-type), .site-footer .footer-connect-title, .site-footer .footer-right { display: none !important; visibility: hidden !important; }
+    :root { --pp-border-radius: 0px !important; --pp-border-radius-large: 0px !important; --pp-box-shadow-sm: none !important; --pp-box-shadow: none !important; --pp-box-shadow-lg: none !important; --pp-color-primary: #000 !important; --pp-color-green: #000 !important; --pp-header-height: auto !important; } /* Reset header height */
+    .site-header, .mobile-menu-toggle, .deco-blur, .motivational-quote, .hero-actions, .hero-stats-grid, .approach-icon, .approach-highlights, .social-integration, #learning-hub .start-quiz-btn, .full-challenge-link, .template-preview, .get-spreadsheet-btn, .template-price-note, #financial-tools-promo, #personal-coaching .coaching-interest, .disclaimer, #mmisbalior-section .promo-visual, #mmisbalior-section .btn, #feedback-section, .modal-overlay, .site-footer .page-footer-links div:nth-child(n+2), .site-footer .social-media, .site-footer .footer-contact-info li:not(:first-of-type), .site-footer .footer-connect-title, .site-footer .footer-right, .card-cta .btn, .btn:not(.download-pdf-btn) /* Hide most buttons */ { display: none !important; visibility: hidden !important; }
     .container { max-width: 100% !important; width: auto !important; padding: 0 !important; margin: 0 !important; }
     main { padding-top: 0 !important; }
     section, aside { padding: 0.5cm 0 !important; page-break-inside: avoid !important; border: none !important; background: none !important; box-shadow: none !important; }
@@ -883,19 +978,21 @@ main {
     h1 { font-size: 1.4em; } h2 { font-size: 1.25em; } h3 { font-size: 1.15em; }
     .section-title::after { display: none !important; }
     p, li { color: #000 !important; font-family: 'Times New Roman', Times, serif !important; line-height: 1.3; text-align: left !important; font-size: 9.5pt; max-width: none !important; }
-    ul:not(.footer-contact-info):not(.calculator-features-list):not(.coaching-info ul) { padding-left: 1cm; list-style: disc; }
+    ul:not(.footer-contact-info):not(.calculator-features-list):not(.coaching-info ul):not(.nav-list) { padding-left: 1cm; list-style: disc; }
     .calculator-features-list li i::before, .coaching-info li i::before { content: '\2022'; margin-right: 0.5em; }
     .calculator-features-list li i, .coaching-info li i { display: none !important; }
     a { color: inherit !important; text-decoration: underline !important; }
     a[href]::after { content: " (" attr(href) ")"; font-size: 8pt; word-break: break-all; color: #555; }
-    a[href^="#"]::after, a[href^="mailto:"]::after, a[href^="tel:"]::after, .btn::after { content: "" !important; }
+    a[href^="#"]::after, a[href^="mailto:"]::after, a[href^="tel:"]::after, .btn::after, .nav-link::after { content: "" !important; } /* Corrected nav-link */
     .resource-card, .template-card, .category-card { flex-basis: auto !important; width: 100% !important; border: 1px solid #ccc !important; box-shadow: none !important; padding: 0.5cm !important; page-break-inside: avoid; background: #fff !important; margin-bottom: 0.5cm; } /* Flex basis reset for print */
     .resource-grid, .template-grid, .category-grid { display: block !important; } /* Reset flex for print */
-    .card-image, .category-icon { display: none !important; }
-    .template-actions .download-pdf-btn { display: block !important; border: 1px solid #ccc !important; background: #eee !important; color: #000 !important; text-decoration: none !important; padding: 3px 6px !important; font-size: 8pt !important; text-align: center; }
+    .card-image, .category-icon, .template-image { display: none !important; } /* Hide template image too */
+    .template-actions .download-pdf-btn { display: block !important; border: 1px solid #ccc !important; background: #eee !important; color: #000 !important; text-decoration: none !important; padding: 3px 6px !important; font-size: 8pt !important; text-align: center; width: auto !important; }
     .template-actions .download-pdf-btn i { display: none; }
     .template-actions .download-pdf-btn span::after { content: " (PDF)"; font-size: inherit; }
     .template-details p { flex-grow: 0; }
+    .card-content, .template-details { padding: 0 !important; /* Minimal padding inside printed cards */ }
+    .card-cta, .template-actions { margin-top: 0.5cm; padding-top: 0.3cm; border-top: 1px solid #ccc; }
     .site-footer { background: #fff !important; color: #000 !important; border-top: 1px solid #ccc !important; padding: 0.5cm 0 !important; text-align: left !important; margin-top: 1cm; }
     .footer-content { flex-direction: row; justify-content: space-between; margin-bottom: 0.5cm; align-items: flex-end; }
     .footer-left { text-align: left !important; }
