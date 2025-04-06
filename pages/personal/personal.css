@@ -1,9 +1,9 @@
 /* ==========================================================================
-   ROFILID Personal Page Styles - v2.8.3 (Tablet Responsiveness Applied)
+   ROFILID Personal Page Styles - v3.0.0 (Breakpoint Harmonization)
    Location: /pages/personal/personal.css
-   Description: Applied detailed feedback to address tablet responsiveness issues.
-                Includes breakpoint adjustments, flex/grid refinements, sizing tweaks,
-                and a new intermediate tablet breakpoint.
+   Description: Adopted breakpoints from global styles (v3.0.1) for consistent
+                responsiveness. Standardized transitions at 400, 500, 576, 768,
+                991/992, and 1200px. Removed intermediate tablet breakpoint.
    ========================================================================== */
 
 /* --- Base Resets & Defaults --- */
@@ -111,18 +111,13 @@ ul > li:last-child > p {
 /* --- Utility Classes --- */
 .container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1200px; /* Aligns with global --container-width, adjust if different */
   margin-left: auto;
   margin-right: auto;
   padding-left: var(--pp-space-lg, 1.5rem);
   padding-right: var(--pp-space-lg, 1.5rem);
 }
-@media (max-width: 767px) {
-    .container {
-        padding-left: var(--pp-space-md, 1rem);
-        padding-right: var(--pp-space-md, 1rem);
-    }
-}
+/* Container padding adjusted later in responsive section */
 
 .sr-only { /* Screen reader only - Standard implementation */
   position: absolute;
@@ -187,32 +182,33 @@ ul > li:last-child > p {
   --pp-color-overlay-bg: rgba(12, 52, 61, 0.9); /* Slightly darker overlay */
 
   /* Layout & Spacing */
-  --pp-border-radius: 6px; /* Slightly reduced default radius */
-  --pp-border-radius-large: 10px; /* Slightly reduced large radius */
-  --pp-box-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05); /* Softer small shadow */
-  --pp-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07); /* Softer default shadow */
-  --pp-box-shadow-lg: 0 8px 25px rgba(12, 52, 61, 0.12); /* Softer large shadow */
+  --pp-border-radius: 6px;
+  --pp-border-radius-large: 10px;
+  --pp-box-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --pp-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+  --pp-box-shadow-lg: 0 8px 25px rgba(12, 52, 61, 0.12);
   --pp-box-shadow-inset: inset 0 1px 2px rgba(0,0,0,0.05);
   --pp-transition-fast: all 0.2s ease-out;
   --pp-transition-medium: all 0.3s ease-out;
   --pp-transition-slow: all 0.5s ease-out;
-  /* Spacing Scale - Refined */
-  --pp-space-xs: 0.25rem;  /* 4px */
-  --pp-space-sm: 0.5rem;   /* 8px */
-  --pp-space-md: 1rem;     /* 16px */
-  --pp-space-lg: 1.5rem;   /* 24px */
-  --pp-space-xl: 2.5rem;   /* 40px - Adjusted */
-  --pp-space-xxl: 4rem;    /* 64px - Adjusted */
-  --pp-space-xxxl: 5.5rem; /* 88px - Adjusted */
-  --pp-space-xxxxl: 7rem;  /* 112px - Adjusted */
-  /* Font Weights */
+  /* Spacing Scale - Refined (matches global where applicable) */
+  --pp-space-xs: 0.25rem;  /* 4px -> global 5px, keep for now */
+  --pp-space-sm: 0.5rem;   /* 8px -> global 10px, keep for now */
+  --pp-space-md: 1rem;     /* 16px -> global 20px, keep for now */
+  --pp-space-lg: 1.5rem;   /* 24px -> global 30px, keep for now */
+  --pp-space-xl: 2.5rem;   /* 40px -> global 40px, MATCH */
+  --pp-space-xxl: 4rem;    /* 64px -> global 80px, keep for now */
+  /* Additional personal sizes */
+  --pp-space-xxxl: 5.5rem; /* 88px */
+  --pp-space-xxxxl: 7rem;  /* 112px */
+  /* Font Weights (matches global where applicable) */
   --pp-font-regular: 400;
   --pp-font-medium: 500;
-  --pp-font-semibold: 600;
+  --pp-font-semibold: 600; /* Additional */
   --pp-font-bold: 700;
-  --pp-font-extrabold: 800;
-  /* Header Height */
-  --pp-header-height: 70px; /* Default, can be adjusted */
+  --pp-font-extrabold: 800; /* Additional */
+  /* Header Height (matches global, will be adjusted in media queries) */
+  --pp-header-height: 70px;
   /* Font Family */
    --pp-font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
@@ -241,27 +237,30 @@ ul > li:last-child > p {
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    /* Inherits .container padding */
     gap: var(--pp-space-md);
 }
 
 .logo img {
-    height: 30px; /* Adjust as needed */
-    width: auto; /* Let width adjust based on height */
-    max-width: 150px; /* Prevent logo becoming too wide */
+    height: 30px; /* Adjust as needed, can be tweaked per breakpoint */
+    width: auto;
+    max-width: 150px;
     display: block;
     object-fit: contain;
     vertical-align: middle;
+    transition: height var(--pp-transition-medium); /* Add height transition */
 }
 
 nav[aria-label="Main navigation"] {
     display: flex;
     align-items: center;
-    /* margin-left: auto; /* Let space-between handle positioning */
+    /* Desktop: flex-grow handled in media query */
 }
 
-/* DESKTOP NAVIGATION (Default) */
+/* DESKTOP NAVIGATION (Default, but shown via media query > 991px) */
 .nav-list {
-    display: flex;
+    /* display: none; */ /* Mobile first: hide initially, display handled in media query */
+    display: flex; /* Defaulting to flex for desktop */
     gap: var(--pp-space-lg);
     list-style: none;
     margin: 0;
@@ -307,7 +306,7 @@ nav[aria-label="Main navigation"] {
 .nav-link[aria-current="page"]:hover { background-color: transparent; }
 
 .mobile-menu-toggle {
-    display: none; /* Hidden by default */
+    display: none; /* Hidden by default, shown via media query */
     background: transparent; border: none; color: var(--pp-color-primary);
     font-size: 1.8rem; cursor: pointer; padding: var(--pp-space-sm); line-height: 1;
     z-index: 1100;
@@ -318,87 +317,14 @@ nav[aria-label="Main navigation"] {
 .mobile-menu-toggle[aria-expanded="true"] .open-icon { display: none; }
 
 
-/* --- Mobile Navigation Styles --- */
-/* FEEDBACK #2: Adjust mobile nav breakpoint */
-@media (max-width: 767px) { /* Standard tablet breakpoint */
-    /* Adjust header height for potentially smaller screens */
-    /* :root { --pp-header-height: 65px; } */
+/* --- Mobile Navigation Styles (Now uses global breakpoint) --- */
+/* MOVED TO RESPONSIVE SECTION BELOW @media (max-width: 991px) */
 
-    .header-container {
-        gap: var(--pp-space-sm);
-    }
-    /* Reorder for mobile: Logo, Toggle, Nav */
-    .logo { order: 1; }
-    nav[aria-label="Main navigation"] { order: 3; margin-left: 0; }
-    .mobile-menu-toggle { display: block; order: 2; margin-left: auto; } /* Push toggle right */
-
-    /* Hide desktop nav list */
-    .nav-list { display: none; }
-
-    /* Mobile dropdown styles */
-    #primary-navigation.active {
-        display: flex; /* Use flex for column layout */
-        flex-direction: column;
-        position: absolute;
-        top: var(--pp-header-height); /* Position below header */
-        left: 0;
-        right: 0;
-        background-color: var(--pp-color-secondary);
-        box-shadow: var(--pp-box-shadow-lg);
-        border-top: 1px solid var(--pp-color-border-light);
-        max-height: calc(100vh - var(--pp-header-height));
-        overflow-y: auto;
-        padding: var(--pp-space-md) 0;
-        z-index: 1050;
-        opacity: 1; /* Make visible */
-        transform: translateY(0) scaleY(1); /* Ensure it's fully visible */
-        visibility: visible;
-        transition: opacity var(--pp-transition-medium), transform var(--pp-transition-medium); /* Keep transitions */
-        gap: 0; /* Reset gap for vertical layout */
-    }
-
-    /* Mobile nav item/link styles */
-    .nav-item { width: 100%; }
-    .nav-link {
-        padding: var(--pp-space-md) var(--pp-space-xl);
-        text-align: left;
-        border-bottom: 1px solid var(--pp-color-border-light);
-        border-left: 4px solid transparent;
-        width: 100%;
-        border-radius: 0;
-        font-size: 1.05rem;
-        /* Remove desktop-specific styles */
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-    }
-    .nav-item:last-child .nav-link { border-bottom: none; }
-
-    /* Remove desktop hover underline effect */
-    .nav-link::after { display: none; }
-
-    .nav-link:hover,
-    .nav-link:focus-visible {
-        background-color: var(--pp-color-light);
-        border-left-color: var(--pp-color-border);
-        color: var(--pp-color-primary-dark);
-        padding-left: calc(var(--pp-space-xl) - 4px);
-        text-decoration: none;
-    }
-
-    .nav-link.active-page,
-    .nav-link[aria-current="page"] {
-        background-color: var(--pp-color-light-accent);
-        border-left-color: var(--pp-color-green);
-        color: var(--pp-color-primary-dark);
-        padding-left: calc(var(--pp-space-xl) - 4px);
-    }
-     /* Adjust main content padding top if header height changes */
-    /* main { padding-top: var(--pp-header-height); } */
-}
 
 /* --- Main Content & Section Spacing --- */
 main {
-    /* Padding top now handled by sticky header's height */
+    /* Padding top now handled by sticky header's height automatically */
+    padding-top: 0; /* Ensure no residual padding */
 }
 
 /* Section Padding Defaults */
@@ -417,16 +343,18 @@ main {
 /* Padding overrides */
 .section-padding--large { padding-top: var(--pp-space-xxxxl); padding-bottom: var(--pp-space-xxxxl); }
 .section-tight { padding-top: var(--pp-space-xl); padding-bottom: var(--pp-space-xl); }
+/* Initial hero padding, might be adjusted based on header height later */
 #hero { padding-top: var(--pp-space-xxxl); padding-bottom: var(--pp-space-xxxxl); }
 
 
 /* --- Button Styles --- */
 .btn {
     display: inline-flex; align-items: center; justify-content: center;
-    gap: var(--pp-space-sm); padding: 12px 26px;
+    gap: var(--pp-space-sm); padding: 12px 26px; /* Base padding */
     border-radius: var(--pp-border-radius); font-weight: var(--pp-font-semibold);
     transition: var(--pp-transition-medium); border: 1px solid transparent;
-    cursor: pointer; text-align: center; font-size: 1rem; line-height: 1.5;
+    cursor: pointer; text-align: center; font-size: 1rem; /* Base size */
+    line-height: 1.5;
     white-space: nowrap; box-shadow: var(--pp-box-shadow-sm);
     text-decoration: none !important;
     will-change: transform, box-shadow, background-color, border-color, color;
@@ -444,6 +372,7 @@ main {
 .btn-secondary:focus-visible { box-shadow: 0 0 0 3px rgba(12, 52, 61, 0.3); }
 .btn.small { padding: 8px 18px; font-size: 0.9rem; }
 .btn.large { padding: 14px 32px; font-size: 1.1rem; }
+/* Button sizing adjustments might happen in small media queries */
 .btn-icon i { font-size: 1.1em; transition: transform var(--pp-transition-fast); line-height: 1; }
 .btn span { line-height: inherit; }
 .btn-icon:hover i.fa-arrow-right, .btn-icon:focus-visible i.fa-arrow-right { transform: translateX(4px); }
@@ -477,25 +406,13 @@ main {
 .hero-section {
     background: linear-gradient(180deg, #fcfdfe 0%, var(--pp-color-light-accent) 100%);
     position: relative; overflow: hidden;
+    /* Padding top handled automatically by main/header interaction */
 }
 .hero-container {
     display: grid; grid-template-columns: 1fr; /* Mobile: Stack */
     gap: var(--pp-space-xl); align-items: center; position: relative; z-index: 1;
 }
-@media (min-width: 768px) { /* Tablet */
-    /* FEEDBACK #3: Adjust hero grid columns */
-    .hero-container {
-        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-        text-align: left;
-    }
-    .hero-content { text-align: left; }
-    .hero-content .subheadline { margin-left: 0; max-width: 550px; }
-    .hero-actions { justify-content: flex-start; }
-}
-@media (min-width: 992px) { /* Desktop: Refine ratio (Restore or adjust as needed) */
-     /* Keeping the feedback's auto-fit for now, might need specific desktop adjustments later */
-    .hero-container { gap: var(--pp-space-xxxl); }
-}
+/* Tablet/Desktop Grid adjustments in media queries */
 .hero-content { text-align: center; } /* Mobile default */
 .hero-badge {
     display: inline-block; background-color: rgba(255, 255, 255, 0.9);
@@ -505,7 +422,6 @@ main {
     box-shadow: var(--pp-box-shadow-sm);
 }
 .hero-content h1 {
-    /* FEEDBACK #5: Adjust hero title font size clamp */
     font-size: clamp(2.2rem, 4.5vw, 2.8rem);
     margin-bottom: var(--pp-space-lg);
     font-weight: var(--pp-font-extrabold); color: var(--pp-color-primary-dark); line-height: 1.2;
@@ -515,11 +431,9 @@ main {
     max-width: 600px; margin: 0 auto var(--pp-space-xl) auto; /* Mobile centering */
 }
 .hero-actions { display: flex; flex-wrap: wrap; gap: var(--pp-space-md); justify-content: center; } /* Mobile */
-@media (min-width: 768px) { .hero-actions { gap: var(--pp-space-lg); } }
 /* Hero Stats Grid */
 .hero-stats-grid { display: grid; grid-template-columns: 1fr; gap: var(--pp-space-lg); }
-@media (min-width: 500px) { .hero-stats-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 768px) { .hero-stats-grid { grid-template-columns: repeat(3, 1fr); gap: var(--pp-space-xl); } }
+/* Grid columns adjusted in media queries */
 .stat-card {
     background-color: var(--pp-color-secondary); border-radius: var(--pp-border-radius-large);
     padding: var(--pp-space-lg); text-align: center; box-shadow: var(--pp-box-shadow);
@@ -546,8 +460,7 @@ main {
     display: flex;
     flex-wrap: wrap;
     gap: var(--pp-space-xl); /* Default gap */
-    justify-content: center; /* Center single item on last row if needed */
-    /* grid-template-columns removed */
+    justify-content: center;
 }
 .resource-card {
     background-color: var(--pp-color-secondary); border-radius: var(--pp-border-radius-large);
@@ -557,38 +470,10 @@ main {
     flex-basis: 100%; /* Mobile default: full width */
     max-width: 400px; /* Optional: prevent cards becoming too wide on mobile */
 }
-@media (min-width: 500px) { /* Small tablet adjustments (optional) */
-    .resource-card {
-        max-width: none; /* Remove mobile max-width if set */
-    }
-}
-@media (min-width: 768px) { /* Tablet: 2 columns */
-    /* FEEDBACK #1: Adjust grid gap and card basis/min-width */
-    .resource-grid {
-        justify-content: flex-start; /* Align left */
-        gap: var(--pp-space-lg); /* Reduce gap size */
-    }
-    .resource-card {
-        flex-basis: calc(50% - (var(--pp-space-lg) / 2));
-        min-width: 300px; /* Add minimum width constraint */
-        max-width: none; /* Ensure no max-width prevents 50% basis */
-    }
-}
-@media (min-width: 1100px) { /* Desktop: 3 columns */
-    /* Restore original desktop gap if reduced at 768px */
-    .resource-grid {
-        gap: var(--pp-space-xl);
-    }
-    .resource-card {
-        /* Adjust basis calculation for the current gap */
-        flex-basis: calc(33.333% - (var(--pp-space-xl) * 2 / 3));
-        min-width: 0; /* Reset min-width if not needed */
-    }
-}
-
-/* Card Content (remains largely the same) */
+/* Column adjustments in media queries */
+/* Card Content */
 .resource-card:hover, .resource-card:focus-within { transform: translateY(-5px); box-shadow: var(--pp-box-shadow-lg); }
-.card-image { aspect-ratio: 16 / 10; overflow: hidden; border-bottom: 1px solid var(--pp-color-border-light); }
+.card-image { aspect-ratio: 16 / 10; overflow: hidden; border-bottom: 1px solid var(--pp-color-border-light); } /* Default aspect ratio */
 .card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--pp-transition-slow); }
 .resource-card:hover .card-image img, .resource-card:focus-within .card-image img { transform: scale(1.05); }
 .card-content { padding: var(--pp-space-lg); display: flex; flex-direction: column; flex-grow: 1; }
@@ -598,7 +483,7 @@ main {
 .card-cta { margin-top: auto; padding-top: var(--pp-space-lg); border-top: 1px solid var(--pp-color-border-light); }
 .card-cta .btn { width: 100%; font-size: 0.95rem; }
 
-/* Social Integration Card Specifics (No layout changes needed here) */
+/* Social Integration Card Specifics */
 .social-integration .card-header { display: flex; align-items: center; gap: var(--pp-space-md); padding: var(--pp-space-lg); border-bottom: 1px solid var(--pp-color-border-light); background-color: var(--pp-color-light); }
 .social-integration .card-header i { font-size: 1.6rem; color: var(--pp-color-primary); }
 .social-integration .card-header h3 { margin-bottom: 0; font-size: 1.2rem; }
@@ -620,11 +505,10 @@ main {
 /* --- Motivational Quotes --- */
 .motivational-quote { background-color: var(--pp-color-primary-dark); color: var(--pp-color-light); text-align: center; }
 .motivational-quote .container { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--pp-space-md); }
-@media (min-width: 768px) { .motivational-quote .container { flex-direction: row; gap: var(--pp-space-lg); } }
+/* Layout adjusted in media queries */
 .motivational-quote p { font-size: clamp(1.2rem, 4vw, 1.6rem); margin: 0; color: inherit; font-weight: var(--pp-font-medium); max-width: none; }
 .motivational-quote .highlight { color: var(--pp-color-light-accent); font-weight: var(--pp-font-semibold); }
 .quote-icon { font-size: 2rem; color: var(--pp-color-light-accent); margin-bottom: var(--pp-space-sm); }
-@media (min-width: 768px) { .quote-icon { margin-bottom: 0; } }
 .motivational-quote.alt-bg { background-color: var(--pp-color-light-accent); color: var(--pp-color-primary-dark); }
 .motivational-quote.alt-bg p, .motivational-quote.alt-bg .quote-icon { color: inherit; }
 .motivational-quote.alt-bg .highlight { color: var(--pp-color-green); }
@@ -635,8 +519,7 @@ main {
     display: flex;
     flex-wrap: wrap;
     gap: var(--pp-space-xl);
-    justify-content: center; /* Center single item */
-    /* grid-template-columns removed */
+    justify-content: center;
 }
 .category-card {
     background-color: var(--pp-color-secondary); border-radius: var(--pp-border-radius-large);
@@ -647,31 +530,8 @@ main {
     flex-basis: 100%; /* Mobile default: full width */
     max-width: 350px; /* Optional: constrain width on mobile */
 }
-@media (min-width: 500px) { /* Small tablet adjustments */
-    .category-card {
-        flex-basis: calc(50% - (var(--pp-space-xl) / 2)); /* Try 2 columns earlier */
-        max-width: none;
-    }
-    .category-grid { justify-content: flex-start; }
-}
-@media (min-width: 768px) { /* Tablet: Adjust basis if needed, maybe still 2 cols is fine */
-     /* Basis adjustment handled by intermediate breakpoint below */
-     /* Keep 2 columns */
-    /* .category-card {
-         flex-basis: calc(50% - (var(--pp-space-xl) / 2));
-    } */
-}
-@media (min-width: 1100px) { /* Desktop: 4 columns */
-    .category-grid {
-        /* Reset gap if changed in intermediate breakpoint */
-        gap: var(--pp-space-xl);
-    }
-    .category-card {
-        flex-basis: calc(25% - (var(--pp-space-xl) * 3 / 4));
-    }
-}
-
-/* Category Card Content (remains same) */
+/* Column adjustments in media queries */
+/* Category Card Content */
 .category-card:hover, .category-card:focus-within { transform: translateY(-5px); box-shadow: var(--pp-box-shadow-lg); }
 .category-icon { font-size: 2.2rem; color: var(--pp-color-green); margin-bottom: var(--pp-space-md); }
 .category-card h4 { font-size: 1.15rem; color: var(--pp-color-primary); margin-bottom: var(--pp-space-sm); font-weight: var(--pp-font-semibold); }
@@ -687,43 +547,18 @@ main {
     display: flex;
     flex-wrap: wrap;
     gap: var(--pp-space-xl); /* Default gap */
-    justify-content: center; /* Center single item */
-    /* grid-template-columns removed */
+    justify-content: center;
 }
 .template-card {
     background-color: var(--pp-color-secondary); border-radius: var(--pp-border-radius-large);
     box-shadow: var(--pp-box-shadow); border: 1px solid var(--pp-color-border-light);
     overflow: hidden; display: flex; flex-direction: column;
     transition: transform var(--pp-transition-medium), box-shadow var(--pp-transition-medium);
-    /* FEEDBACK #4: Adjust template card flex behavior */
-    max-width: none;
-    flex: 1 1 300px; /* Flexible basis */
-    /* Note: flex-basis overrides will apply in media queries below */
+    max-width: none; /* Allow flex to control width */
+    flex: 1 1 300px; /* Flexible basis, allows wrapping */
 }
-@media (min-width: 500px) { /* Small tablet */
-     /* max-width: none is now the default */
-}
-@media (min-width: 768px) { /* Tablet: 2 columns */
-    .template-grid {
-        justify-content: flex-start;
-        /* Gap adjustment handled by intermediate breakpoint below */
-    }
-    .template-card {
-        /* Adjust basis calculation for the current gap (will be updated in intermediate breakpoint) */
-        flex-basis: calc(50% - (var(--pp-space-xl) / 2));
-    }
-}
-@media (min-width: 1200px) { /* Desktop: 3 columns */
-    .template-grid {
-        gap: var(--pp-space-xl); /* Restore default gap */
-    }
-    .template-card {
-        /* Adjust basis calculation for the current gap */
-        flex-basis: calc(33.333% - (var(--pp-space-xl) * 2 / 3));
-    }
-}
-
-/* Template Card Content (remains same) */
+/* Column adjustments in media queries */
+/* Template Card Content */
 .template-card:hover, .template-card:focus-within { transform: translateY(-5px); box-shadow: var(--pp-box-shadow-lg); }
 .template-preview { position: relative; overflow: hidden; background-color: var(--pp-color-light); aspect-ratio: 4 / 3; border-bottom: 1px solid var(--pp-color-border-light); }
 .template-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; transition: opacity var(--pp-transition-medium) ease-in-out; backface-visibility: hidden; }
@@ -753,10 +588,8 @@ main {
 
 
 /* --- Coaching Section --- */
-/* This section uses Grid, but the 1fr/1fr split at 768px is often okay for tablets */
 .coaching-content-redesigned { display: grid; grid-template-columns: 1fr; gap: var(--pp-space-xl); }
-@media (min-width: 768px) { .coaching-content-redesigned { grid-template-columns: 1fr 1fr; } }
-@media (min-width: 992px) { .coaching-content-redesigned { gap: var(--pp-space-xxl); } }
+/* Grid columns adjusted in media queries */
 .coaching-info h3, .coaching-interest h3 { font-size: 1.4rem; margin-bottom: var(--pp-space-lg); padding-bottom: var(--pp-space-sm); border-bottom: 2px solid var(--pp-color-green); display: inline-block; }
 .coaching-info p { margin-bottom: var(--pp-space-lg); }
 .coaching-info ul { list-style: none; padding-left: 0; }
@@ -791,12 +624,11 @@ main {
 
 
 /* --- MMISBALIOR Promo Section --- */
-/* Uses Grid, similar 2-col split on tablets */
 .mmisbalior-promo { display: grid; grid-template-columns: 1fr; gap: var(--pp-space-xl); align-items: center; background-color: var(--pp-color-secondary); border-radius: var(--pp-border-radius-large); padding: var(--pp-space-xl); box-shadow: var(--pp-box-shadow); border: 1px solid var(--pp-color-border-light); overflow: hidden; }
-@media (min-width: 768px) { .mmisbalior-promo { grid-template-columns: 1.8fr 1.2fr; gap: var(--pp-space-xxl); } .promo-visual { order: 2; } .promo-content { order: 1; text-align: left; } }
-.promo-content { text-align: center; }
+/* Grid columns adjusted in media queries */
+.promo-content { text-align: center; } /* Mobile Default */
 .promo-content h3 { font-size: 1.4rem; margin-bottom: var(--pp-space-md); display: flex; align-items: center; justify-content: center; gap: var(--pp-space-sm); font-weight: var(--pp-font-semibold); }
-@media (min-width: 768px) { .promo-content h3 { justify-content: flex-start; } }
+/* Justify content adjusted in media query */
 .promo-content h3 i { color: var(--pp-color-green); }
 .promo-content p { margin-bottom: var(--pp-space-lg); }
 .promo-content .btn { font-size: 0.95rem; }
@@ -812,7 +644,7 @@ main {
 .modal-overlay { position: fixed; inset: 0; z-index: 2000; background-color: var(--pp-color-overlay-bg); display: flex; align-items: center; justify-content: center; padding: var(--pp-space-md); opacity: 0; visibility: hidden; transition: opacity var(--pp-transition-medium) ease, visibility 0s var(--pp-transition-medium) linear; }
 .modal-overlay:not([hidden]) { opacity: 1; visibility: visible; transition-delay: 0s; }
 .modal-content { background-color: var(--pp-color-secondary); border-radius: var(--pp-border-radius-large); padding: var(--pp-space-xl); box-shadow: var(--pp-box-shadow-lg); width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; position: relative; transform: scale(0.97) translateY(10px); transform-origin: center center; transition: transform var(--pp-transition-medium) cubic-bezier(0.175, 0.885, 0.32, 1.275); will-change: transform; }
-@media (max-width: 767px) { .modal-content { padding: var(--pp-space-lg); } }
+/* Padding adjusted in media queries */
 .modal-overlay:not([hidden]) .modal-content { transform: scale(1) translateY(0); }
 .modal-close-btn { position: absolute; top: calc(var(--pp-space-md) / 2); right: calc(var(--pp-space-md) / 2); background: none; border: none; font-size: 1.6rem; line-height: 1; color: var(--pp-color-text-lighter); cursor: pointer; padding: var(--pp-space-sm); transition: color var(--pp-transition-fast), transform var(--pp-transition-fast); z-index: 10; border-radius: 50%; }
 .modal-close-btn:hover, .modal-close-btn:focus-visible { color: var(--pp-color-primary-dark); transform: rotate(90deg); background-color: var(--pp-color-light); }
@@ -857,69 +689,11 @@ main {
 .feedback-form .btn { width: 100%; }
 
 
-/* --- Intermediate Tablet Breakpoint --- */
-/* FEEDBACK #6, #7, #8, #9, #10: Add styles for mid-sized tablets */
-@media (min-width: 768px) and (max-width: 1023px) {
-  /* Feedback #6: Hero Stats Grid */
-  .hero-stats-grid {
-    grid-template-columns: repeat(2, 1fr); /* Stack to 2 cols */
-  }
-
-  /* Feedback #6: Category Card */
-  .category-card {
-    /* Keep 2 columns, adjust basis for reduced gap */
-    flex-basis: calc(50% - (var(--pp-space-lg) / 2));
-  }
-  .category-grid {
-      gap: var(--pp-space-lg); /* Use reduced gap */
-  }
-
-  /* Feedback #6: Template Grid */
-  .template-grid {
-    gap: var(--pp-space-lg); /* Use reduced gap */
-  }
-  /* Re-calculate template card basis for reduced gap */
-  .template-card {
-      flex-basis: calc(50% - (var(--pp-space-lg) / 2));
-  }
-
-
-  /* Feedback #7: Container Padding */
-  .container {
-    padding-left: var(--pp-space-md);
-    padding-right: var(--pp-space-md);
-  }
-
-  /* Feedback #8: Card Image Scaling */
-  .card-image {
-    aspect-ratio: 3/2; /* Override default 16/10 */
-  }
-
-  /* Feedback #9: Navigation Bar Height */
-  :root {
-    --pp-header-height: 60px; /* Reduce header height */
-  }
-  .logo img {
-    height: 25px; /* Adjust logo height */
-  }
-
-  /* Feedback #10: Button Sizing */
-  .btn {
-    padding: 10px 20px; /* Reduce padding */
-    font-size: 0.95rem; /* Slightly smaller font */
-  }
-  /* Adjust specific button sizes if needed */
-  .btn.small { padding: 6px 16px; font-size: 0.85rem; }
-  .btn.large { padding: 12px 28px; font-size: 1.05rem; }
-}
-
-
 /* --- Footer Styles --- */
 .site-footer { background-color: var(--pp-color-primary-dark); color: #cbd5e1; padding-top: var(--pp-space-xxxl); padding-bottom: var(--pp-space-xl); font-size: 0.9rem; line-height: 1.7; }
 .page-footer-links { padding-bottom: var(--pp-space-xl); margin-bottom: var(--pp-space-xl); border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
 .footer-links-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: var(--pp-space-xl); }
-@media (min-width: 768px) { .footer-links-container { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1024px) { .footer-links-container { grid-template-columns: repeat(4, 1fr); } }
+/* Grid columns adjusted in media queries */
 .page-footer-links h4 { font-size: 1.05rem; font-weight: var(--pp-font-semibold); color: var(--pp-color-secondary); margin-bottom: var(--pp-space-lg); padding-bottom: var(--pp-space-sm); border-bottom: 1px solid rgba(255, 255, 255, 0.15); }
 .page-footer-links ul li { margin-bottom: var(--pp-space-sm); }
 .page-footer-links ul li a { color: #e2e8f0; transition: color var(--pp-transition-fast), padding-left var(--pp-transition-fast); display: inline-block; text-decoration: none; }
@@ -934,11 +708,9 @@ main {
 .social-link { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; font-size: 1rem; color: #e2e8f0; background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.15); transition: var(--pp-transition-medium); }
 .social-link:hover, .social-link:focus-visible { background-color: var(--pp-color-secondary); border-color: var(--pp-color-secondary); color: var(--pp-color-primary-dark); transform: translateY(-2px) scale(1.08); text-decoration: none; }
 .footer-content { display: flex; flex-direction: column; align-items: center; gap: var(--pp-space-md); margin-bottom: var(--pp-space-xl); padding-top: var(--pp-space-sm); }
-@media (min-width: 768px) { .footer-content { flex-direction: row; justify-content: space-between; align-items: flex-end; } }
-.footer-left { text-align: center; }
-@media (min-width: 768px) { .footer-left { text-align: left; } }
-.footer-left .logo img { display: block; height: 30px; width: 120px; object-fit: contain; margin: 0 auto var(--pp-space-sm) auto; }
-@media (min-width: 768px) { .footer-left .logo img { margin: 0 0 var(--pp-space-sm) 0; } }
+/* Layout adjusted in media queries */
+.footer-left { text-align: center; } /* Mobile Default */
+.footer-left .logo img { display: block; height: 30px; width: 120px; object-fit: contain; margin: 0 auto var(--pp-space-sm) auto; } /* Mobile Default */
 .footer-tagline { margin: 0; font-size: 0.9rem; color: rgba(255, 255, 255, 0.8); max-width: none; }
 .footer-right { /* Empty placeholder */ }
 .copyright { text-align: center; padding-top: var(--pp-space-lg); margin-top: var(--pp-space-xl); border-top: 1px solid rgba(255, 255, 255, 0.1); }
@@ -963,12 +735,397 @@ main {
 [data-animate-fade-in].is-visible { opacity: 1; transform: translateY(0); }
 
 
-/* --- Print Styles --- */
+/* ==========================================================================
+   RESPONSIVE OVERRIDES - Aligned with Global v3.0.1 Breakpoints
+   ========================================================================== */
+
+/* Mobile Small */
+@media (max-width: 400px) {
+  /* Reduce spacing for very small screens */
+  :root {
+    /* Example: Adjust spacing like global */
+     /* --pp-space-md: 0.8rem; /* 12.8px */
+     /* --pp-space-lg: 1.2rem; /* 19.2px */
+     /* --pp-space-xl: 2rem; /* 32px */
+    /* Keeping personal spacing for now unless specific issues arise */
+  }
+  .container {
+    padding-left: var(--pp-space-md); /* Use smaller padding */
+    padding-right: var(--pp-space-md);
+  }
+  /* Example: Reduce button padding slightly */
+  .btn { padding: 10px 20px; font-size: 0.95rem; }
+  .btn.small { padding: 6px 14px; font-size: 0.85rem; }
+  .btn.large { padding: 12px 26px; font-size: 1rem; }
+
+  /* Adjust mobile nav link padding if needed */
+  #primary-navigation.active .nav-link {
+      padding: var(--pp-space-md) var(--pp-space-lg); /* Reduce horizontal padding slightly */
+      font-size: 1rem;
+  }
+  .modal-content { padding: var(--pp-space-md); } /* Reduce modal padding */
+}
+
+
+/* Mobile Medium */
+@media (max-width: 500px) {
+  /* Adjust header height similar to global */
+  :root { --pp-header-height: 65px; }
+  .logo img { height: 28px; } /* Slightly smaller logo */
+
+  /* Adjust section padding */
+  #main-content > section,
+  #main-content > aside.motivational-quote {
+      padding-top: var(--pp-space-xxl);
+      padding-bottom: var(--pp-space-xxl);
+  }
+  #hero { padding-top: var(--pp-space-xxl); padding-bottom: var(--pp-space-xxxl); }
+
+  /* Adjust footer gaps/sizes */
+   .footer-content { gap: var(--pp-space-md); }
+   .social-media { gap: var(--pp-space-sm); }
+   .social-link { width: 32px; height: 32px; font-size: 0.9rem; }
+
+   /* Hero Stats Grid - Ensure 1 column */
+   .hero-stats-grid { grid-template-columns: 1fr; }
+
+   /* Card Grids - Ensure 1 column */
+   .resource-card { flex-basis: 100%; max-width: 400px; }
+   .category-card { flex-basis: 100%; max-width: 350px; }
+   .template-card { flex-basis: 100%; /* Already flexible, but ensure it fills width */ max-width: 420px;} /* Optional max-width for mobile */
+
+   .resource-grid, .category-grid, .template-grid { justify-content: center; }
+}
+
+
+/* Tablet Small / Large Mobile */
+@media (min-width: 576px) {
+    /* Apply 2-column layouts earlier if desired */
+    .hero-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--pp-space-lg);
+    }
+    /* Optional: Start 2-col for cards earlier */
+    .resource-card, .category-card {
+        max-width: none; /* Remove mobile max-width */
+        flex-basis: calc(50% - (var(--pp-space-xl) / 2)); /* Assumes default gap */
+    }
+    .resource-grid, .category-grid { justify-content: flex-start; }
+
+    /* Template card is already flex-basis 300px, might naturally form 2 cols here */
+     .template-card { max-width: none; } /* Remove mobile max-width */
+}
+
+
+/* Tablet */
+@media (min-width: 768px) {
+  /* Restore default header height if changed earlier */
+  :root { --pp-header-height: 70px; }
+  .logo img { height: 30px; }
+
+  /* --- Layout Adjustments --- */
+  .container {
+    padding-left: var(--pp-space-lg); /* Restore default padding */
+    padding-right: var(--pp-space-lg);
+  }
+
+  /* Hero Section */
+  .hero-container {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Flexible columns */
+      text-align: left;
+      gap: var(--pp-space-xl);
+  }
+  .hero-content { text-align: left; }
+  .hero-content .subheadline { margin-left: 0; max-width: 550px; }
+  .hero-actions { justify-content: flex-start; gap: var(--pp-space-lg); }
+  .hero-stats-grid { grid-template-columns: repeat(3, 1fr); gap: var(--pp-space-xl); } /* 3 columns */
+
+  /* Resource Cards */
+  .resource-grid {
+      justify-content: flex-start; /* Align left */
+      gap: var(--pp-space-lg); /* Reduce gap size */
+  }
+  .resource-card {
+      flex-basis: calc(50% - (var(--pp-space-lg) / 2)); /* Explicit 2 columns */
+      min-width: 300px;
+      max-width: none;
+  }
+
+  /* Category Cards */
+  .category-grid {
+      justify-content: flex-start;
+      gap: var(--pp-space-lg); /* Use reduced gap */
+  }
+  .category-card {
+      flex-basis: calc(50% - (var(--pp-space-lg) / 2)); /* Explicit 2 columns */
+      max-width: none;
+  }
+
+  /* Template Cards */
+  .template-grid {
+      justify-content: flex-start;
+      gap: var(--pp-space-lg); /* Use reduced gap */
+  }
+  .template-card {
+      /* flex: 1 1 calc(50% - (var(--pp-space-lg) / 2)); Alternative combined syntax */
+      flex-basis: calc(50% - (var(--pp-space-lg) / 2)); /* Explicit 2 columns */
+      flex-grow: 0; /* Prevent growing beyond basis on 2-col layout */
+      min-width: 0; /* Reset min-width */
+      max-width: none;
+  }
+
+  /* Motivational Quote */
+  .motivational-quote .container { flex-direction: row; gap: var(--pp-space-lg); }
+  .quote-icon { margin-bottom: 0; }
+
+  /* Coaching Section */
+  .coaching-content-redesigned { grid-template-columns: 1fr 1fr; }
+
+  /* Mmisbalior Promo */
+  .mmisbalior-promo { grid-template-columns: 1.8fr 1.2fr; gap: var(--pp-space-lg); } /* Slightly less gap than desktop */
+  .promo-visual { order: 2; }
+  .promo-content { order: 1; text-align: left; }
+  .promo-content h3 { justify-content: flex-start; }
+
+  /* Footer */
+  .footer-links-container { grid-template-columns: repeat(2, 1fr); } /* 2 columns */
+  .footer-content { flex-direction: row; justify-content: space-between; align-items: flex-end; }
+  .footer-left { text-align: left; }
+  .footer-left .logo img { margin: 0 0 var(--pp-space-sm) 0; }
+}
+
+
+/* Mobile Nav Trigger Point */
+@media (max-width: 991px) {
+    .header-container {
+        gap: var(--pp-space-sm);
+    }
+    /* Reorder for mobile/tablet: Logo, Toggle, Nav */
+    .logo { order: 1; flex-shrink: 0; } /* Prevent logo shrinking */
+    nav[aria-label="Main navigation"] { order: 3; margin-left: 0; } /* Ensure nav comes after toggle */
+    .mobile-menu-toggle { display: block; order: 2; margin-left: auto; } /* Show toggle, push right */
+
+    /* Hide desktop nav list */
+    .nav-list { display: none; }
+
+    /* Mobile dropdown styles */
+    #primary-navigation.active {
+        display: flex; /* Use flex for column layout */
+        flex-direction: column;
+        position: absolute;
+        top: var(--pp-header-height); /* Position below header */
+        left: 0;
+        right: 0;
+        background-color: var(--pp-color-secondary);
+        box-shadow: var(--pp-box-shadow-lg);
+        border-top: 1px solid var(--pp-color-border-light);
+        max-height: calc(100vh - var(--pp-header-height));
+        overflow-y: auto;
+        padding: var(--pp-space-md) 0;
+        z-index: 1050;
+        opacity: 1; /* Make visible */
+        transform: translateY(0) scaleY(1); /* Ensure it's fully visible */
+        visibility: visible;
+        transition: opacity var(--pp-transition-medium), transform var(--pp-transition-medium), visibility 0s linear;
+        gap: 0; /* Reset gap for vertical layout */
+    }
+     /* Hide dropdown initially */
+    #primary-navigation:not(.active) {
+         opacity: 0;
+         transform: translateY(-10px) scaleY(0.98);
+         visibility: hidden;
+         transition: opacity var(--pp-transition-medium) ease-out, transform var(--pp-transition-medium) ease-out, visibility 0s var(--pp-transition-medium) linear;
+    }
+
+    /* Mobile nav item/link styles */
+    .nav-item { width: 100%; }
+    .nav-link {
+        padding: var(--pp-space-md) var(--pp-space-xl);
+        text-align: left;
+        border-bottom: 1px solid var(--pp-color-border-light);
+        border-left: 4px solid transparent;
+        width: 100%;
+        border-radius: 0;
+        font-size: 1.05rem;
+        /* Remove desktop-specific styles */
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+    .nav-item:last-child .nav-link { border-bottom: none; }
+
+    /* Remove desktop hover underline effect */
+    .nav-link::after { display: none; }
+
+    .nav-link:hover,
+    .nav-link:focus-visible {
+        background-color: var(--pp-color-light);
+        border-left-color: var(--pp-color-border);
+        color: var(--pp-color-primary-dark);
+        padding-left: calc(var(--pp-space-xl) - 4px);
+        text-decoration: none;
+    }
+
+    .nav-link.active-page,
+    .nav-link[aria-current="page"] {
+        background-color: var(--pp-color-light-accent);
+        border-left-color: var(--pp-color-green);
+        color: var(--pp-color-primary-dark);
+        padding-left: calc(var(--pp-space-xl) - 4px);
+    }
+    /* Reduce modal content padding on smaller tablets too */
+    .modal-content { padding: var(--pp-space-lg); }
+}
+
+
+/* Desktop */
+@media (min-width: 992px) {
+  /* Adjust header height for desktop */
+  :root { --pp-header-height: 75px; }
+  .logo img { height: 35px; } /* Optional: slightly larger logo */
+
+  /* --- Header & Navigation --- */
+  .mobile-menu-toggle { display: none; } /* Hide toggle */
+
+  nav[aria-label="Main navigation"] {
+      flex-grow: 1; /* Allow nav to take space */
+      margin-left: 0; /* Reset mobile margin */
+      order: 0; /* Reset mobile order */
+      justify-content: flex-end; /* Align nav items to the right by default */
+      /* If centering nav like global: */
+      /* justify-content: center; */
+  }
+  .header-container {
+       /* If centering nav like global: keep space-between */
+       /* justify-content: space-between; */
+       /* If nav is right aligned: */
+       justify-content: flex-start; /* Align logo left, nav fills remaining */
+       gap: var(--pp-space-xl);
+  }
+  .logo { order: 0; margin-left: 0; } /* Reset mobile order */
+
+  /* Desktop Nav list structure */
+  .nav-list {
+    display: flex !important; /* Override mobile display:none */
+    flex-direction: row;
+    gap: var(--pp-space-lg); /* Space between nav items */
+    position: static;
+    width: auto;
+    background-color: transparent;
+    box-shadow: none;
+    padding: 0;
+    opacity: 1;
+    flex-wrap: nowrap;
+    overflow: visible;
+    /* Reset mobile dropdown styles */
+    border-top: none;
+    max-height: none;
+    transform: none;
+    visibility: visible;
+    /* Centering if needed */
+     /* margin: 0 auto; /* Center list within the nav container */
+  }
+  /* Reset mobile .active state styles */
+  #primary-navigation.active {
+    display: flex; /* Ensure flex is applied */
+    position: static;
+    box-shadow: none;
+    overflow: visible;
+    padding: 0;
+    background-color: transparent;
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+    /* If centered */
+     /* justify-content: center; */
+  }
+  .nav-item { width: auto; }
+  .nav-link {
+    /* Reset mobile styles */
+    padding: var(--pp-space-sm) var(--pp-space-md);
+    text-align: center; /* If centered */
+    border-bottom: 3px solid transparent;
+    border-left: none;
+    border-radius: 4px 4px 0 0;
+    font-size: 1rem;
+  }
+  .nav-link:hover,
+  .nav-link:focus-visible {
+      background-color: var(--pp-color-light);
+      border-left-color: transparent;
+      padding-left: var(--pp-space-md); /* Reset mobile padding */
+  }
+   .nav-link:focus-visible { background-color: transparent; }
+  .nav-link.active-page,
+  .nav-link[aria-current="page"] {
+      background-color: transparent;
+      border-left-color: transparent;
+      padding-left: var(--pp-space-md); /* Reset mobile padding */
+  }
+  .nav-link.active-page:hover,
+  .nav-link[aria-current="page"]:hover { background-color: transparent; }
+  .nav-link::after { display: block; } /* Re-enable desktop underline */
+
+  /* --- Layout Adjustments --- */
+
+  /* Hero Section */
+  .hero-container { gap: var(--pp-space-xxxl); } /* Larger gap */
+  /* Columns might adjust naturally due to auto-fit, or set explicitly: */
+  /* .hero-container { grid-template-columns: 1.2fr 0.8fr; } /* Example ratio */
+
+  /* Resource Cards */
+  .resource-grid { gap: var(--pp-space-xl); } /* Restore default gap */
+  .resource-card {
+      flex-basis: calc(33.333% - (var(--pp-space-xl) * 2 / 3)); /* 3 columns */
+      min-width: 0; /* Reset min-width */
+  }
+
+  /* Category Cards */
+  .category-grid { gap: var(--pp-space-xl); } /* Restore default gap */
+  .category-card {
+      flex-basis: calc(25% - (var(--pp-space-xl) * 3 / 4)); /* 4 columns */
+  }
+
+  /* Template Cards */
+  /* Template grid adjusts at 1200px */
+
+  /* Coaching Section */
+  .coaching-content-redesigned { gap: var(--pp-space-xxl); } /* Wider gap */
+
+   /* Mmisbalior Promo */
+   .mmisbalior-promo { gap: var(--pp-space-xxl); } /* Wider gap */
+
+  /* Footer Links */
+  .footer-links-container { grid-template-columns: repeat(4, 1fr); } /* 4 columns */
+}
+
+
+/* Large Desktop */
+@media (min-width: 1200px) {
+  /* Fine-tune for very large screens */
+  .container { max-width: 1200px; } /* Explicitly match global container */
+
+  /* Example: Increase font sizes slightly like global */
+  .hero-content h1 { font-size: clamp(2.5rem, 4.8vw, 3.2rem); } /* Adjust clamp */
+  .section-description { font-size: 1.15rem; }
+
+  /* Template Cards */
+  .template-grid { gap: var(--pp-space-xl); } /* Ensure default gap */
+  .template-card {
+      flex-basis: calc(33.333% - (var(--pp-space-xl) * 2 / 3)); /* 3 columns */
+      flex-grow: 0; /* Prevent growing */
+  }
+}
+
+
+/* ==========================================================================
+   PRINT STYLES (Largely unchanged, review for consistency)
+   ========================================================================== */
 @media print {
     @page { size: A4; margin: 1.2cm; }
     html, body { background-color: #fff !important; color: #000 !important; box-shadow: none !important; border: none !important; }
     body { padding-top: 0 !important; font-size: 9.5pt !important; font-family: 'Times New Roman', Times, serif !important; }
     :root { --pp-border-radius: 0px !important; --pp-border-radius-large: 0px !important; --pp-box-shadow-sm: none !important; --pp-box-shadow: none !important; --pp-box-shadow-lg: none !important; --pp-color-primary: #000 !important; --pp-color-green: #000 !important; --pp-header-height: auto !important; } /* Reset header height */
+    /* Hide elements */
     .site-header, .mobile-menu-toggle, .deco-blur, .motivational-quote, .hero-actions, .hero-stats-grid, .approach-icon, .approach-highlights, .social-integration, #learning-hub .start-quiz-btn, .full-challenge-link, .template-preview, .get-spreadsheet-btn, .template-price-note, #financial-tools-promo, #personal-coaching .coaching-interest, .disclaimer, #mmisbalior-section .promo-visual, #mmisbalior-section .btn, #feedback-section, .modal-overlay, .site-footer .page-footer-links div:nth-child(n+2), .site-footer .social-media, .site-footer .footer-contact-info li:not(:first-of-type), .site-footer .footer-connect-title, .site-footer .footer-right, .card-cta .btn, .btn:not(.download-pdf-btn) /* Hide most buttons */ { display: none !important; visibility: hidden !important; }
     .container { max-width: 100% !important; width: auto !important; padding: 0 !important; margin: 0 !important; }
     main { padding-top: 0 !important; }
@@ -983,10 +1140,11 @@ main {
     .calculator-features-list li i, .coaching-info li i { display: none !important; }
     a { color: inherit !important; text-decoration: underline !important; }
     a[href]::after { content: " (" attr(href) ")"; font-size: 8pt; word-break: break-all; color: #555; }
-    a[href^="#"]::after, a[href^="mailto:"]::after, a[href^="tel:"]::after, .btn::after, .nav-link::after { content: "" !important; } /* Corrected nav-link */
-    .resource-card, .template-card, .category-card { flex-basis: auto !important; width: 100% !important; border: 1px solid #ccc !important; box-shadow: none !important; padding: 0.5cm !important; page-break-inside: avoid; background: #fff !important; margin-bottom: 0.5cm; } /* Flex basis reset for print */
-    .resource-grid, .template-grid, .category-grid { display: block !important; } /* Reset flex for print */
-    .card-image, .category-icon, .template-image { display: none !important; } /* Hide template image too */
+    a[href^="#"]::after, a[href^="mailto:"]::after, a[href^="tel:"]::after, .btn::after, .nav-link::after { content: "" !important; }
+    /* Ensure flex grids become block elements */
+    .resource-grid, .template-grid, .category-grid, .hero-container, .coaching-content-redesigned, .mmisbalior-promo, .footer-content, .footer-links-container { display: block !important; }
+    .resource-card, .template-card, .category-card, .stat-card { flex-basis: auto !important; width: 100% !important; border: 1px solid #ccc !important; box-shadow: none !important; padding: 0.5cm !important; page-break-inside: avoid; background: #fff !important; margin-bottom: 0.5cm; }
+    .card-image, .category-icon, .template-image, .promo-visual { display: none !important; }
     .template-actions .download-pdf-btn { display: block !important; border: 1px solid #ccc !important; background: #eee !important; color: #000 !important; text-decoration: none !important; padding: 3px 6px !important; font-size: 8pt !important; text-align: center; width: auto !important; }
     .template-actions .download-pdf-btn i { display: none; }
     .template-actions .download-pdf-btn span::after { content: " (PDF)"; font-size: inherit; }
@@ -994,7 +1152,7 @@ main {
     .card-content, .template-details { padding: 0 !important; /* Minimal padding inside printed cards */ }
     .card-cta, .template-actions { margin-top: 0.5cm; padding-top: 0.3cm; border-top: 1px solid #ccc; }
     .site-footer { background: #fff !important; color: #000 !important; border-top: 1px solid #ccc !important; padding: 0.5cm 0 !important; text-align: left !important; margin-top: 1cm; }
-    .footer-content { flex-direction: row; justify-content: space-between; margin-bottom: 0.5cm; align-items: flex-end; }
+    /* Footer print adjustments */
     .footer-left { text-align: left !important; }
     .footer-left .logo { display: none; }
     .footer-tagline { color: #333 !important; font-size: 9pt; margin-top: 0;}
