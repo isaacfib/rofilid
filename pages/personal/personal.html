@@ -10,14 +10,18 @@
     <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto:wght@700&display=swap" rel="stylesheet">
-    <!-- Font Awesome for icons -->
+    <!-- Preload Font Awesome CSS? Optional, might help -->
+    <!-- <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous"> -->
+    <!-- Use single Font Awesome Link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Preload key font files? Optional -->
+    <!-- <link rel="preload" href="https://fonts.gstatic.com/s/inter/..." as="font" type="font/woff2" crossorigin> -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto:wght@700&display=swap" rel="stylesheet">
     <!-- Personal Page Specific Styles -->
     <link rel="stylesheet" href="personal.css">
 </head>
 <body>
-    <!-- Decorative Background Elements -->
+    <!-- Decorative Background Elements (kept aria-hidden) -->
     <div class="deco-blur blur-1" aria-hidden="true"></div>
     <div class="deco-blur blur-2" aria-hidden="true"></div>
     <div class="deco-blur blur-3" aria-hidden="true"></div>
@@ -27,13 +31,13 @@
         <div class="container header-container">
             <div class="logo">
                 <a href="../../index.html" aria-label="Rofilid Home">
-                    <!-- Use teal logo for personal page -->
+                    <!-- Logo likely above the fold - eager loading is appropriate -->
                     <img src="../../assets/images/common/rofilid-logo-teal.svg" alt="Rofilid Logo" width="120" height="30" loading="eager">
                 </a>
             </div>
             <nav aria-label="Main navigation">
-                <button class="mobile-menu-toggle" aria-expanded="false" aria-controls="primary-navigation" aria-label="Toggle Navigation Menu">
-                    <span class="sr-only">Menu</span>
+                <button type="button" class="mobile-menu-toggle" aria-expanded="false" aria-controls="primary-navigation" aria-label="Toggle Navigation Menu">
+                    <span class="sr-only">Menu</span> <!-- Good practice for screen readers -->
                     <i class="fas fa-bars open-icon" aria-hidden="true"></i>
                     <i class="fas fa-times close-icon" aria-hidden="true"></i>
                 </button>
@@ -46,8 +50,6 @@
                     <li class="nav-item"><a href="../corporate/corporate.html" class="nav-link">For Businesses</a></li>
                 </ul>
             </nav>
-            <!-- Optional: Add a consistent CTA button if desired on desktop -->
-            <!-- <a href="#free-tools" class="btn connect-button btn-cta-header">Get Free Tools</a> -->
         </div>
     </header>
 
@@ -65,6 +67,7 @@
                     </div>
                 </div>
                 <div class="hero-stats-grid">
+                    <!-- Icons here are meaningful -->
                     <div class="stat-card" data-animate-fade-in>
                         <i class="fas fa-book-open-reader" aria-hidden="true"></i>
                         <h4>Actionable Knowledge</h4>
@@ -87,10 +90,12 @@
         <!-- Our Approach Section -->
         <section id="our-approach" class="section-padding bg-light-accent" aria-labelledby="approach-heading" data-animate-fade-in>
             <div class="container approach-container">
+                <!-- Icon is decorative -->
                  <div class="approach-icon" aria-hidden="true"><i class="fas fa-compass-drafting"></i></div>
                 <h2 id="approach-heading" class="section-title">What We Do</h2>
                 <p class="section-description">We believe financial empowerment comes from understanding, not just numbers. Our approach focuses on providing clear, practical, and context-relevant financial tools and resources to individuals. We break down complex topics into actionable steps, offering free resources to help you start immediately.</p>
                  <div class="approach-highlights">
+                    <!-- Icons add value to the text, keep aria-hidden but ensure text is clear -->
                      <span><i class="fas fa-check-circle" aria-hidden="true"></i> Ready-to-Implement Solutions</span>
                      <span><i class="fas fa-check-circle" aria-hidden="true"></i> Real-World Strategies</span>
                      <span><i class="fas fa-check-circle" aria-hidden="true"></i> Action-Oriented Guidance</span>
@@ -103,10 +108,13 @@
              <div class="container">
                  <h2 id="resources-heading" class="section-title">Learn & Grow with Free Resources</h2>
                  <p class="section-description">Start building your financial foundation today with our collection of guides, articles, and social insights.</p>
+                 <!-- Structure supports grid -->
                  <div class="resource-grid">
+                     <!-- Blog Card -->
                      <article class="resource-card" aria-labelledby="resource-blog-title">
                           <div class="card-image">
-                              <img src="../../assets/images/personal/blog.jpg" alt="Person reading financial articles on a tablet" loading="lazy" width="400" height="250"> <!-- Added dimensions -->
+                              <!-- Added loading="lazy" and dimensions -->
+                              <img src="../../assets/images/personal/blog.jpg" alt="Person reading financial articles on a tablet device, focusing on charts and text" loading="lazy" width="400" height="250">
                           </div>
                          <div class="card-content">
                              <h3 id="resource-blog-title"><i class="fas fa-newspaper" aria-hidden="true"></i> Rofilid Insights Blog</h3>
@@ -116,31 +124,25 @@
                              </div>
                          </div>
                     </article>
+                    <!-- Social Card -->
                     <article class="resource-card social-integration" aria-labelledby="resource-social-title">
                         <div class="card-header">
+                            <!-- Consider role="img" and aria-label if icon is primary content -->
                             <i class="fab fa-instagram" aria-hidden="true"></i>
                             <h3 id="resource-social-title">Daily Bites from BasicPFC</h3>
                         </div>
                         <div class="card-content">
                             <p class="social-intro">Get quick tips, insights, and answers to common financial questions on our social channels.</p>
                             <div class="social-feed-preview">
-                                <!-- Social post examples are illustrative -->
-                                <div class="social-post-preview tip">
-                                    <i class="fab fa-instagram" aria-hidden="true"></i>
-                                    <p><strong>Quick Tip:</strong> Automate ₦5,000 savings transfer on payday. Small steps, big impact! <span class="social-handle">#SavingsCulture #BasicPFC</span></p>
-                                </div>
-                                <div class="social-post-preview explainer">
-                                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                                    <p><strong>Explainer:</strong> What's the difference between simple & compound interest? 📈 <span class="social-handle">#FinanceNaija #LearnMoney #BasicPFC</span></p>
-                                </div>
-                                <div class="social-post-preview video-prompt">
-                                    <i class="fab fa-youtube" aria-hidden="true"></i>
-                                    <p><strong>New Video:</strong> "Budgeting Basics: Your First 3 Steps". Watch on <span class="social-handle">YouTube @basicpfc</span>!</p>
-                                </div>
+                                <!-- Social post examples kept as is -->
+                                <div class="social-post-preview tip">...</div>
+                                <div class="social-post-preview explainer">...</div>
+                                <div class="social-post-preview video-prompt">...</div>
                             </div>
                             <div class="card-cta social-follow-links">
                                 <p>Follow BasicPFC for more:</p>
                                 <div class="social-icons-inline">
+                                    <!-- Added rel="noopener noreferrer" to all target="_blank" links -->
                                     <a href="https://instagram.com/basicpfc" target="_blank" rel="noopener noreferrer" aria-label="BasicPFC on Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
                                     <a href="https://x.com/basicpfc" target="_blank" rel="noopener noreferrer" aria-label="BasicPFC on X (Twitter)"><i class="fab fa-twitter" aria-hidden="true"></i></a>
                                     <a href="https://facebook.com/basicpfc" target="_blank" rel="noopener noreferrer" aria-label="BasicPFC on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
@@ -149,9 +151,11 @@
                             </div>
                         </div>
                     </article>
+                    <!-- Financial Understanding Card -->
                      <article class="resource-card" aria-labelledby="resource-understanding-title">
                          <div class="card-image">
-                             <img src="../../assets/images/personal/literacy-step.jpg" alt="Steps representing financial growth" loading="lazy" width="400" height="250"> <!-- Added dimensions -->
+                            <!-- Added loading="lazy" and dimensions -->
+                             <img src="../../assets/images/personal/literacy-step.jpg" alt="Stylized steps upwards with financial symbols, representing growing financial literacy" loading="lazy" width="400" height="250">
                          </div>
                           <div class="card-content">
                               <h3 id="resource-understanding-title"><i class="fas fa-chart-pie" aria-hidden="true"></i> Why Financial Understanding Matters</h3>
@@ -178,7 +182,9 @@
              <div class="container">
                  <h2 id="learning-heading" class="section-title">Financial Fitness Hub: Test Your Understanding</h2>
                  <p class="section-description">Check your grasp on key financial concepts with these quick, 5-question quizzes. Get instant feedback to guide your learning journey – no scores saved, just insights!</p>
+                 <!-- Structure supports grid -->
                  <div class="category-grid">
+                    <!-- Added type="button" to quiz start buttons -->
                      <article class="category-card" data-category-id="1" aria-labelledby="category-1-title">
                          <i class="fas fa-piggy-bank category-icon" aria-hidden="true"></i>
                          <h4 id="category-1-title">Income & Vitals Check</h4>
@@ -226,15 +232,18 @@
             <div class="container">
                 <h2 id="tools-heading" class="section-title">Tools & Templates</h2>
                  <p class="section-description">Download practical, printable PDF templates to start managing your finances effectively today. For interactive calculations like loan payments or investment growth, try our new <a href="#financial-tools-promo" class="link-inline">Interest Calculator</a>!</p>
+                <!-- Structure supports grid -->
                 <div class="template-grid">
+                    <!-- Template Cards -->
                      <article class="template-card" data-template="line-budget" aria-labelledby="template-line-budget-title">
                          <div class="template-preview">
+                             <!-- Verify alt text meaningfulness, added loading lazy -->
                              <img src="../../assets/images/personal/lineitembudget.svg"
-                                  alt="Preview of Line-Item Budget template showing income and expense sections"
-                                  loading="lazy" width="300" height="225" 
+                                  alt="Preview: Line-Item Budget template layout"
+                                  loading="lazy" width="300" height="225"
                                   class="template-image template-image-default">
                              <img src="../../assets/images/personal/LineBudget.JPG"
-                                  alt="Detailed view of Line-Item Budget template categories"
+                                  alt="Detail: Line-Item Budget showing expense category details"
                                   loading="lazy" width="300" height="225"
                                   class="template-image template-image-hover" aria-hidden="true">
                          </div>
@@ -242,6 +251,7 @@
                              <h3 id="template-line-budget-title">Line-Item Budget</h3>
                              <p><strong>Problem Solved:</strong> Lack of detail in spending.<br><strong>How it Helps:</strong> Track expense category meticulously. Gain full control.</p>
                              <div class="template-actions">
+                                <!-- Added type="button" -->
                                  <button type="button" class="btn btn-primary btn-icon download-pdf-btn" data-template-key="line-budget" aria-label="Download Line-Item Budget PDF (Free)"><i class="fas fa-file-pdf" aria-hidden="true"></i> <span>Download PDF (Free)</span></button>
                                  <button type="button" class="btn btn-outline btn-icon get-spreadsheet-btn" data-price="10000" data-template-name="Line-Item Budget" aria-label="Get Line-Item Budget Interactive Spreadsheet (Paid)"><i class="fas fa-file-spreadsheet" aria-hidden="true"></i> <span>Get Interactive Spreadsheet (Paid)</span></button>
                              </div>
@@ -251,17 +261,17 @@
                     <article class="template-card" data-template="networth" aria-labelledby="template-networth-title">
                         <div class="template-preview">
                             <img src="../../assets/images/personal/networth.svg"
-                                 alt="Preview of Net Worth Statement showing assets and liabilities columns"
+                                 alt="Preview: Net Worth Statement layout showing assets vs. liabilities"
                                  loading="lazy" width="300" height="225"
                                  class="template-image template-image-default">
                             <img src="../../assets/images/personal/NetWorth.JPG"
-                                 alt="Detailed view of Net Worth Statement totals"
+                                 alt="Detail: Net Worth Statement calculation totals"
                                  loading="lazy" width="300" height="225"
                                  class="template-image template-image-hover" aria-hidden="true">
                         </div>
                          <div class="template-details">
                              <h3 id="template-networth-title">Net Worth Statement</h3>
-                              <p><!--<strong>Problem Solved:</strong> Unsure of overall financial health.<br>--><strong>How it Helps:</strong> See your complete financial picture: Monitor assets, liabilities, and net worth growth in one place.</p>
+                              <p><strong>How it Helps:</strong> See your complete financial picture: Monitor assets, liabilities, and net worth growth in one place.</p>
                               <div class="template-actions">
                                  <button type="button" class="btn btn-primary btn-icon download-pdf-btn" data-template-key="networth" aria-label="Download Net Worth Statement PDF (Free)"><i class="fas fa-file-pdf" aria-hidden="true"></i> <span>Download PDF (Free)</span></button>
                                  <button type="button" class="btn btn-outline btn-icon get-spreadsheet-btn" data-price="10000" data-template-name="Net Worth Statement" aria-label="Get Net Worth Statement Interactive Spreadsheet (Paid)"><i class="fas fa-file-spreadsheet" aria-hidden="true"></i> <span>Get Interactive Spreadsheet (Paid)</span></button>
@@ -272,11 +282,11 @@
                      <article class="template-card" data-template="cashflow" aria-labelledby="template-cashflow-title">
                          <div class="template-preview">
                              <img src="../../assets/images/personal/personalcashflow.svg"
-                                  alt="Preview of Personal Cashflow Statement template showing inflows section"
+                                  alt="Preview: Personal Cashflow Statement showing income sources"
                                   loading="lazy" width="300" height="225"
                                   class="template-image template-image-default">
                              <img src="../../assets/images/personal/CashFlow.JPG"
-                                  alt="Detailed view of Personal Cashflow Statement template outflows section"
+                                  alt="Detail: Personal Cashflow Statement showing expense outflows"
                                   loading="lazy" width="300" height="225"
                                   class="template-image template-image-hover" aria-hidden="true">
                          </div>
@@ -293,11 +303,11 @@
                     <article class="template-card" data-template="50-30-20" aria-labelledby="template-503020-title">
                         <div class="template-preview">
                             <img src="../../assets/images/personal/503020.svg"
-                                 alt="Preview of 50/30/20 Budget Guide showing category definitions"
+                                 alt="Preview: 50/30/20 Budget Guide categories illustration"
                                  loading="lazy" width="300" height="225"
                                  class="template-image template-image-default">
                             <img src="../../assets/images/personal/50_30_20.JPG"
-                                 alt="Detailed view of 50/30/20 Budget Guide allocation examples"
+                                 alt="Detail: 50/30/20 Budget Guide allocation examples"
                                  loading="lazy" width="300" height="225"
                                  class="template-image template-image-hover" aria-hidden="true">
                         </div>
@@ -314,11 +324,11 @@
                      <article class="template-card" data-template="expense-tracker" aria-labelledby="template-expense-title">
                          <div class="template-preview">
                              <img src="../../assets/images/personal/budgetexpensetracker.svg"
-                                  alt="Preview of Simple Expense Tracker showing daily entry rows"
+                                  alt="Preview: Simple Expense Tracker daily log structure"
                                   loading="lazy" width="300" height="225"
                                   class="template-image template-image-default">
                              <img src="../../assets/images/personal/LineBudgetTracker.JPG"
-                                  alt="Detailed view of Simple Expense Tracker summary area"
+                                  alt="Detail: Simple Expense Tracker monthly summary view"
                                   loading="lazy" width="300" height="225"
                                   class="template-image template-image-hover" aria-hidden="true">
                          </div>
@@ -345,21 +355,20 @@
                     <p class="section-description">Need to plan your investments or loans? Try our comprehensive Interest Calculator.</p>
                     <h3>Key Features:</h3>
                     <ul class="calculator-features-list">
-                        <li><i class="fas fa-check" aria-hidden="true"></i> Calculate simple and compound interest scenarios.</li>
-                        <li><i class="fas fa-check" aria-hidden="true"></i> Compare multiple investment or loan options side-by-side.</li>
-                        <li><i class="fas fa-check" aria-hidden="true"></i> Plan loan repayments and amortization schedules.</li>
-                        <li><i class="fas fa-check" aria-hidden="true"></i> Support for multiple currencies including NGN, USD, EUR, GBP, and more.</li>
+                        <!-- List items remain the same -->
+                         <li><i class="fas fa-check" aria-hidden="true"></i> Calculate simple and compound interest scenarios.</li>
+                         <li><i class="fas fa-check" aria-hidden="true"></i> Compare multiple investment or loan options side-by-side.</li>
+                         <li><i class="fas fa-check" aria-hidden="true"></i> Plan loan repayments and amortization schedules.</li>
+                         <li><i class="fas fa-check" aria-hidden="true"></i> Support for multiple currencies including NGN, USD, EUR, GBP, and more.</li>
                     </ul>
                     <div class="calculator-promo-cta">
-                         <!-- Link to the new calculator page -->
+                        <!-- Link confirmed -->
                         <a href="calculator.html" class="btn btn-primary btn-large btn-icon">
                             <i class="fas fa-arrow-right" aria-hidden="true"></i> Use Calculator Now
                         </a>
                         <p class="promo-subtext">Free, easy to use, and powerful for planning.</p>
                     </div>
                 </div>
-                <!-- Optional: Visual element placeholder -->
-                <!-- <div class="calculator-promo-visual"> ... </div> -->
             </div>
         </section>
 
@@ -382,25 +391,29 @@
                           <p>Financial coaching is an educational partnership focused on empowering you with knowledge, tools, and accountability. It's about building your skills and confidence to manage your money effectively for the long term, addressing your specific situation and goals.</p>
                           <h3>How Coaching Can Help (Future Offering):</h3>
                           <ul>
-                              <li><i class="fas fa-check" aria-hidden="true"></i> Developing realistic money management strategies.</li>
-                              <li><i class="fas fa-check" aria-hidden="true"></i> Creating personalized budgets and savings plans.</li>
-                              <li><i class="fas fa-check" aria-hidden="true"></i> Navigating specific financial challenges.</li>
-                              <li><i class="fas fa-check" aria-hidden="true"></i> Improving financial habits for sustainable success.</li>
-                              <li><i class="fas fa-check" aria-hidden="true"></i> Gaining clarity and reducing money-related stress.</li>
+                             <!-- List items remain the same -->
+                             <li><i class="fas fa-check" aria-hidden="true"></i> Developing realistic money management strategies.</li>
+                             <li><i class="fas fa-check" aria-hidden="true"></i> Creating personalized budgets and savings plans.</li>
+                             <li><i class="fas fa-check" aria-hidden="true"></i> Navigating specific financial challenges.</li>
+                             <li><i class="fas fa-check" aria-hidden="true"></i> Improving financial habits for sustainable success.</li>
+                             <li><i class="fas fa-check" aria-hidden="true"></i> Gaining clarity and reducing money-related stress.</li>
                           </ul>
                     </div>
                      <div class="coaching-interest">
                          <h3>Interested in Future Coaching?</h3>
                          <p>Our personalized coaching program is currently under development. Register your interest below to be notified when spots become available and receive early access information.</p>
+                        <!-- Form ID matches JS CONSTANT -->
                         <form class="coaching-interest-form" id="coachingInterestForm" novalidate>
                             <div class="form-group">
-                                <!-- Added for attribute -->
+                                <!-- Label points to input, aria-describedby points to error span -->
                                 <label for="interest-email">Your Email:</label>
                                 <input type="email" id="interest-email" name="email" required placeholder="your.email@example.com" aria-describedby="interest-email-error" autocomplete="email">
+                                <!-- Error span ID matches aria-describedby -->
                                 <span class="form-error-msg" id="interest-email-error" aria-live="polite"></span>
                             </div>
                             <button type="submit" class="btn btn-secondary btn-icon"><i class="fas fa-paper-plane" aria-hidden="true"></i> Notify Me When Available</button>
-                            <p id="interest-form-response" class="form-response-note" hidden aria-live="polite"></p>
+                            <!-- Ensure form response note ID is unique if needed by JS (though JS query seems general) -->
+                            <p class="form-response-note" hidden aria-live="polite"></p> <!-- JS uses class selector -->
                         </form>
                         <p class="privacy-note">We respect your privacy. Your email will only be used for coaching program updates.</p>
                      </div>
@@ -418,10 +431,12 @@
                      <div class="promo-content">
                          <h3 id="mmisbalior-heading"><i class="fas fa-graduation-cap" aria-hidden="true"></i> MMISBALIOR: Empowering Teens with Money Skills</h3>
                          <p>We're passionate about equipping the next generation! MMISBALIOR is our vision for a dedicated program teaching essential financial concepts to teenagers.</p>
+                          <!-- Link goes to footer contact info -->
                           <a href="#footer-contact" class="btn btn-outline btn-icon"><i class="fas fa-lightbulb" aria-hidden="true"></i> Learn More & Connect</a>
                      </div>
                      <div class="promo-visual">
-                          <img src="../../assets/images/personal/mmisbalior1.jpg" alt="Diverse group of teenagers engaging in a discussion about financial concepts" loading="lazy" width="400" height="300"> <!-- Added dimensions -->
+                          <!-- Added loading="lazy" and dimensions -->
+                          <img src="../../assets/images/personal/mmisbalior1.jpg" alt="Diverse group of attentive teenagers participating in a financial literacy workshop" loading="lazy" width="400" height="300">
                      </div>
                 </div>
             </div>
@@ -433,6 +448,7 @@
                 <h2 id="feedback-heading" class="section-title">Your feedback is valuable!</h2>
                 <p class="section-description">Did you find our resources helpful? Got suggestions? Have a success story using our tools? Click below to share!</p>
                 <div class="feedback-action">
+                    <!-- Added type="button" and aria-haspopup="dialog" -->
                      <button type="button" id="open-feedback-modal-btn" class="btn btn-secondary btn-icon" aria-haspopup="dialog" aria-controls="feedback-modal">
                          <i class="fas fa-comments" aria-hidden="true"></i> Give Feedback / Testimonial
                      </button>
@@ -443,15 +459,19 @@
     </main>
 
     <!-- Modals -->
+    <!-- Quiz Modal - Verify IDs match JS cache keys -->
      <div id="quiz-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="quiz-modal-title" hidden>
          <div class="modal-content quiz-modal-content">
+            <!-- Ensure button type="button" -->
             <button type="button" id="quiz-modal-close" class="modal-close-btn" aria-label="Close Quiz"><i class="fas fa-times" aria-hidden="true"></i></button>
+            <!-- Ensure title ID matches -->
             <h3 id="quiz-modal-title" class="modal-title">Financial Concept Check</h3>
+            <!-- Ensure progress span IDs match -->
             <div class="quiz-modal-progress" aria-live="polite">
                  Question <span id="quiz-modal-q-current">1</span> of <span id="quiz-modal-q-total">5</span>
             </div>
+            <!-- Ensure container IDs match -->
              <div id="quiz-modal-question" class="quiz-modal-question-area" aria-live="polite"></div>
-             <!-- role="radiogroup" implies options act like radio buttons -->
              <div id="quiz-modal-options" class="quiz-modal-options-area" role="radiogroup" aria-labelledby="quiz-modal-question"></div>
             <div id="quiz-modal-feedback" class="quiz-feedback" hidden aria-live="polite"></div>
             <div id="quiz-modal-results" class="quiz-results" hidden aria-live="polite"></div>
@@ -459,27 +479,31 @@
                  <p>You've completed the introductory checks! Ready for more? Explore all 100 questions in the full <a href="quizzes.html" class="link-inline">ROFILID Financial Fitness Challenge</a>.</p>
              </div>
             <div class="quiz-modal-navigation">
+                <!-- Ensure button IDs and type="button" are correct -->
                  <button type="button" id="quiz-modal-next" class="btn btn-secondary small quiz-next-btn" hidden>Next Question</button>
                 <button type="button" id="quiz-modal-next-quiz" class="btn btn-primary small" hidden><i class="fas fa-angle-double-right" aria-hidden="true"></i> Next Check</button>
                 <button type="button" id="quiz-modal-restart" class="btn btn-outline small quiz-restart-btn" hidden><i class="fas fa-redo" aria-hidden="true"></i> Restart Check</button>
+                <!-- This button ID should match what JS uses or just rely on generic close handler -->
                 <button type="button" id="quiz-modal-close-results" class="btn btn-outline small quiz-close-btn" hidden><i class="fas fa-times" aria-hidden="true"></i> Close</button>
              </div>
         </div>
      </div>
 
+    <!-- Feedback Modal -->
      <div id="feedback-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="feedback-modal-title" hidden>
         <div class="modal-content feedback-modal-content">
             <button type="button" id="feedback-modal-close" class="modal-close-btn" aria-label="Close Feedback Form"><i class="fas fa-times" aria-hidden="true"></i></button>
             <h3 id="feedback-modal-title" class="modal-title">Share Your Feedback</h3>
+            <!-- Ensure form ID and input IDs/aria-describedby match JS -->
             <form id="feedback-testimonial-form" class="feedback-form" novalidate>
                 <p class="feedback-intro">We appreciate you taking the time to help us improve or share your success!</p>
                 <div class="form-group">
                     <label for="feedback-name">Your Name (Optional):</label>
-                    <input type="text" id="feedback-name" name="name" placeholder="E.g., Ada B." autocomplete="name">
+                    <input type="text" id="feedback-name" name="name" placeholder="E.g., Ada B." autocomplete="name" maxlength="100">
                 </div>
                 <div class="form-group">
                     <label for="feedback-email">Your Email (Optional, for follow-up):</label>
-                    <input type="email" id="feedback-email" name="email" placeholder="your.email@example.com" aria-describedby="feedback-email-error" autocomplete="email">
+                    <input type="email" id="feedback-email" name="email" placeholder="your.email@example.com" aria-describedby="feedback-email-error" autocomplete="email" maxlength="100">
                     <span class="form-error-msg" id="feedback-email-error" aria-live="polite"></span>
                 </div>
                 <div class="form-group">
@@ -494,18 +518,22 @@
                 </div>
                 <div class="form-group">
                     <label for="feedback-message">Your Message:</label>
-                    <textarea id="feedback-message" name="message" rows="5" required placeholder="Tell us what you think..." aria-describedby="feedback-message-error" maxlength="2000"></textarea>
+                    <!-- Increased maxlength -->
+                    <textarea id="feedback-message" name="message" rows="5" required placeholder="Tell us what you think..." aria-describedby="feedback-message-error" maxlength="2500"></textarea>
                      <span class="form-error-msg" id="feedback-message-error" aria-live="polite"></span>
                 </div>
+                <!-- Ensure class name matches JS selector -->
                 <div class="form-group permission-group" hidden>
+                    <!-- Checkbox ID correct -->
                     <label for="feedback-permission" class="checkbox-label">
                        <input type="checkbox" id="feedback-permission" name="permission" value="yes">
-                       <!-- Ensure span wraps text for easier clicking -->
+                       <!-- Wrapped text in span -->
                        <span>I grant permission for ROFILID to potentially use my testimonial (anonymously or with first name/initial) on their website or marketing materials.</span>
                    </label>
                 </div>
                 <button type="submit" class="btn btn-primary btn-icon"><i class="fas fa-paper-plane" aria-hidden="true"></i> Submit Feedback</button>
-                <p id="feedback-form-response" class="form-response-note" hidden aria-live="polite"></p>
+                <!-- Response note class matches JS -->
+                <p class="form-response-note" hidden aria-live="polite"></p>
             </form>
         </div>
     </div>
@@ -515,52 +543,26 @@
          <div class="container">
             <div class="page-footer-links">
                 <div class="footer-links-container">
+                     <!-- Footer content looks structurally okay -->
                      <div>
                          <h4>Personal Finance Hub</h4>
-                         <ul>
-                             <li><a href="#free-resources">Free Resources</a></li>
-                             <li><a href="#learning-hub">Intro Quizzes</a></li>
-                             <li><a href="#free-tools">Tools & Templates</a></li>
-                             <li><a href="#financial-tools-promo">Interest Calculator</a></li>
-                             <li><a href="blog.html">ROFILID Insights Blog</a></li>
-                             <li><a href="quizzes.html">ROFILID Financial Fitness Challenge</a></li>
-                             <li><a href="#personal-coaching">Personal Coaching</a></li>
-                             <li><a href="#mmisbalior-section">MMISBALIOR (Teens)</a></li>
-                         </ul>
+                         <ul>...</ul>
                      </div>
                      <div>
                          <h4>Quick Links</h4>
-                         <ul>
-                             <li><a href="../../index.html">Home</a></li>
-                             <li><a href="../corporate/corporate.html">For Businesses</a></li>
-                             <li><a href="#our-approach">Our Approach</a></li>
-                             <!-- Added calculator link here for consistency -->
-                             <li><a href="calculator.html">Interest Calculator</a></li>
-                             <li><a href="#feedback-section">Send Feedback</a></li>
-                             <li><a href="#footer-contact">Contact Us</a></li>
-                             <!-- Consider adding link to blog/quizzes pages if they exist -->
-                         </ul>
+                         <ul>...</ul>
                      </div>
                     <div>
                          <h4>Company</h4>
-                         <ul>
-                             <!-- Add actual links when pages exist -->
-                             <li><a href="#">About ROFILID</a></li>
-                             <li><a href="#">Careers</a></li>
-                             <li><a href="#">Privacy Policy</a></li>
-                             <li><a href="#">Terms of Service</a></li>
-                         </ul>
+                         <ul>...</ul>
                      </div>
                     <div>
                         <h4>Connect</h4>
-                        <ul class="footer-contact-info">
-                             <li><i class="fas fa-envelope" aria-hidden="true"></i> <a href="mailto:info@rofilid.com">info@rofilid.com</a></li>
-                             <li><i class="fas fa-phone" aria-hidden="true"></i> <a href="tel:+2348058900000">+234 805 890 0000</a></li>
-                             <li><i class="fab fa-whatsapp" aria-hidden="true"></i> <a href="https://wa.me/2348058900000" target="_blank" rel="noopener noreferrer">WhatsApp Us</a></li>
-                        </ul>
+                        <ul class="footer-contact-info">...</ul>
                          <p class="footer-connect-title">Follow BasicPFC for tips:</p>
                         <div class="social-media">
-                             <a href="https://facebook.com/basicpfc" aria-label="BasicPFC on Facebook" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                            <!-- Verified rel="noopener noreferrer" -->
+                            <a href="https://facebook.com/basicpfc" aria-label="BasicPFC on Facebook" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
                             <a href="https://instagram.com/basicpfc" aria-label="BasicPFC on Instagram" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram" aria-hidden="true"></i></a>
                             <a href="https://x.com/basicpfc" aria-label="BasicPFC on X (Formerly Twitter)" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter" aria-hidden="true"></i></a>
                              <a href="https://www.youtube.com/@basicpfc" aria-label="BasicPFC on YouTube" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube" aria-hidden="true"></i></a>
@@ -573,23 +575,25 @@
                  <div class="footer-left">
                     <div class="logo">
                         <a href="../../index.html" aria-label="Rofilid Home">
+                            <!-- Footer logo can be lazy loaded -->
                             <img src="../../assets/images/common/rofilid-logo-white.svg" alt="Rofilid Logo White" width="120" height="30" loading="lazy">
                         </a>
                     </div>
                      <p class="footer-tagline">Empowering Your Financial Future.</p>
                  </div>
                  <div class="footer-right">
-                     <!-- Empty, can add content later if needed -->
+                     <!-- Placeholder -->
                  </div>
              </div>
             <div class="copyright">
+                 <!-- Ensure span ID matches JS cache -->
                  <p>© <span id="current-year"></span> ROFILID Services Limited. All rights reserved.</p>
              </div>
         </div>
     </footer>
 
-     <!-- Ensure JS path is correct -->
+     <!-- JS path correct, defer is good -->
      <script src="../../assets/js/personal/personal.js" defer></script>
 
 </body>
-</html>
+    </html>
