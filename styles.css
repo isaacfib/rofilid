@@ -96,6 +96,10 @@ li { margin-bottom: var(--spacing-xs); } ul ul li { margin-bottom: var(--spacing
     /* gap removed */
 }
 /* Default uses white logo */
+.logo {
+    /* Added flex-shrink just in case */
+    flex-shrink: 0;
+}
 .logo img {
     height: 40px;
     width: auto;
@@ -104,12 +108,16 @@ li { margin-bottom: var(--spacing-xs); } ul ul li { margin-bottom: var(--spacing
     filter: none;
     transition: filter 0.3s ease;
 }
-/* Nav wrapper - No specific flex needed here by default */
+/* Nav wrapper - Now contains list and button */
 nav[aria-label="Main navigation"] {
     /* Styles applied in media query for desktop */
+    display: flex; /* Needed for mobile toggle positioning relative to button */
+    justify-content: flex-end; /* Push toggle/button right on mobile */
+    align-items: center;
+    flex-grow: 1; /* Allow nav to take space on mobile too */
 }
 /* Nav Shared Structure */
-.nav-list { display: none; list-style: none; padding-left: 0; }
+.nav-list { display: none; list-style: none; padding-left: 0; margin: 0; /* Ensure no default margin */ }
 .nav-item { margin: 0; flex-shrink: 0; }
 .nav-link {
     color: var(--color-secondary); /* Default White */
@@ -140,6 +148,7 @@ nav[aria-label="Main navigation"] {
     padding: var(--spacing-xs);
     line-height: 1;
     transition: color 0.3s ease;
+    margin-left: auto; /* Push toggle right within nav on small screens if button hidden */
 }
 /* Default Button Style (used when visible) */
 .connect-button {
@@ -152,6 +161,7 @@ nav[aria-label="Main navigation"] {
     transition: all 0.3s ease;
     font-weight: 500;
     flex-shrink: 0; /* Prevent button shrinking */
+    /* Default display (inline-block set later for desktop) */
 }
 .connect-button:hover { background-color: var(--color-accent); color: var(--color-primary); transform: translateY(-2px);}
 
@@ -314,10 +324,10 @@ nav[aria-label="Main navigation"] {
 
 /* Mobile Nav Trigger Point */
 @media (max-width: 991px) {
-  .mobile-menu-toggle { display: block; }
-  .connect-button { display: none; } /* Hide connect button when toggle is shown */
-  .nav-list { display: none; } /* Ensure desktop nav is hidden */
-  #primary-navigation.active { display: flex; } /* Show dropdown when active */
+  .mobile-menu-toggle { display: block; /* Show toggle */ }
+  .connect-button { display: none; /* Hide connect button when toggle is shown */ }
+  .nav-list { display: none; /* Ensure desktop nav is hidden */ }
+  #primary-navigation.active { display: flex; /* Show dropdown when active */ }
 }
 
 /* Desktop */
@@ -325,13 +335,12 @@ nav[aria-label="Main navigation"] {
   :root { --header-height: 75px; }
   .site-header { height: var(--header-height); }
 
-  /* --- Header Layout Fix: Logo Left, Nav Center, Button Right --- */
+  /* --- Revised Header Layout Fix for Desktop (Button inside Nav) --- */
   .header-container {
-    /* Align items left initially */
-    justify-content: flex-start;
-    /* Keep items vertically centered */
+    display: flex;
+    justify-content: space-between; /* Logo left, Nav container right */
     align-items: center;
-    /* Ensure it still fills the width */
+    /* Other .header-container styles remain */
     width: 100%;
     max-width: var(--container-width);
     margin: 0 auto;
@@ -339,66 +348,65 @@ nav[aria-label="Main navigation"] {
   }
 
   .header-container .logo {
-    /* Push everything else (nav, button) to the right */
-    margin-right: auto;
-    flex-shrink: 0; /* Prevent logo from shrinking */
+    flex-shrink: 0; /* Prevent logo shrinking */
   }
 
   nav[aria-label="Main navigation"] {
-    /* Remove flex-grow; nav only takes space needed for links */
-    flex-grow: 0;
-    /* Add some space around the nav */
-    margin-left: var(--spacing-lg);
-    margin-right: var(--spacing-lg);
-    /* Keep internal centering for the nav-list items */
-    display: flex;
-    justify-content: center;
+    display: flex;        /* Make nav a flex container */
+    align-items: center;  /* Vertically align nav-list and button */
+    flex-grow: 1;         /* Allow nav to fill space */
+    justify-content: flex-start; /* Align items inside nav container (list, button) to start */
   }
 
-  /* Desktop Nav list structure */
-  .nav-list {
-    display: flex !important; /* Override mobile display:none */
+  .nav-list { /* This is the UL (#primary-navigation) */
+    display: flex !important; /* Override mobile display:none and ensure flex */
     flex-direction: row;
-    gap: var(--spacing-lg); /* Space between nav items */
+    gap: var(--spacing-lg);
     position: static;
-    width: auto; /* Size based on content */
+    width: auto;
     background-color: transparent;
     box-shadow: none;
     padding: 0;
     opacity: 1;
-    flex-wrap: nowrap; /* Prevent wrapping */
+    flex-wrap: nowrap;
     overflow: visible;
-    justify-content: center; /* Center items within the nav list */
-    margin: 0; /* Ensure no conflicting margins */
+    /* ** Add margin-left: auto to push list away from the left edge (logo) ** */
+    margin-left: auto;
+    /* Removed margin-right: auto */
+    /* Removed justify-content: center */
+    margin-right: 0; /* Explicitly remove right margin */
   }
 
-  /* Connect button pushed to the far right */
   .connect-button {
-    /* Add auto margin to the left of the button */
-    margin-left: auto;
-    flex-shrink: 0; /* Prevent button from shrinking */
     display: inline-block; /* Ensure it's displayed */
-     /* Reset any specific smaller margin if needed, auto handles it */
-    /* margin-left from previous version removed */
+    flex-shrink: 0; /* Prevent button shrinking */
+    /* ** Add margin-left to space it from the nav list ** */
+    margin-left: var(--spacing-lg); /* Adjust spacing as needed */
   }
-  /* --- End Header Layout Fix --- */
+
+  .mobile-menu-toggle {
+    display: none !important; /* Ensure mobile toggle is hidden */
+  }
+   /* --- End Revised Header Layout Fix --- */
 
 
   /* Other Desktop Styles (Unchanged) */
   .hero-section, .page-intro { padding-top: calc(var(--header-height) + var(--spacing-xxl)); padding-bottom: var(--spacing-xxl); }
   .hero-section { min-height: 550px; }
-  .mobile-menu-toggle { display: none; } /* Hide toggle */
 
   /* Reset mobile .active state styles for nav */
-  #primary-navigation.active {
+   #primary-navigation.active { /* This selector targets the UL */
     position: static;
     box-shadow: none;
     overflow: visible;
     padding: 0;
     background-color: transparent;
     display: flex; /* Ensure flex is still applied */
-    justify-content: center; /* Ensure centering */
-    flex-wrap: nowrap; /* Ensure no wrap */
+    flex-wrap: nowrap;
+    width: auto;
+    gap: var(--spacing-lg);
+    /* Remove mobile justify-content if present */
+    justify-content: initial; /* Reset mobile centering */
   }
   /* Index cards - 3 columns */
   .cards .card { flex-basis: calc(33.333% - var(--spacing-lg) * 2 / 3); max-width: 360px; }
