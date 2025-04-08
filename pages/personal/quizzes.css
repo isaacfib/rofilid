@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ROFILID Quizzes Page Styles - v1.1.0
+   ROFILID Quizzes Page Styles - v1.2.0 (Accordion Animation Refinement)
    Location: /pages/personal/quizzes.css
    Description: Styles specific to the Quizzes page (quizzes.html), mainly
                 the accordion functionality and intro section adjustments.
@@ -16,13 +16,11 @@
 
 .quiz-page-intro .hero-content h1 {
     /* Inherits h1 styles from personal.css */
-    /* Add specific overrides if needed, e.g.: */
-    /* font-size: clamp(2.3rem, 5.5vw, 3.2rem); */
 }
 
 .quiz-page-intro .subheadline {
      max-width: 700px; /* Allow slightly wider subheadline */
-   margin-bottom: var(--pp-space-xxl);
+    margin-bottom: var(--pp-space-xxl); /* Ensure enough space below */
     margin-left: auto;
     margin-right: auto;
 }
@@ -41,12 +39,12 @@
 }
 
 
-/* --- Accordion Styles --- */
+/* --- Accordion Styles (Refined Animations) --- */
 .accordion {
     /* Inherit variables from :root in personal.css */
     --accordion-border-color: var(--pp-color-border-light);
     --accordion-border-width: 1px;
-    --accordion-border-radius: var(--pp-border-radius-large);
+    --accordion-border-radius: var(--pp-border-radius-lg);
     --accordion-icon-color: var(--pp-color-text-lighter);
     --accordion-btn-padding-y: 1.1rem; /* Adjusted padding */
     --accordion-btn-padding-x: 1.5rem;
@@ -56,9 +54,8 @@
     --accordion-active-bg: var(--pp-color-light-accent); /* Active button background */
     --accordion-body-padding-y: 1.5rem;
     --accordion-body-padding-x: 1.5rem;
-    --accordion-body-bg: #ffffff; /* Ensure body has distinct BG if needed */
     /* Focus ring based on primary button focus */
-     --accordion-btn-focus-shadow: 0 0 0 0.25rem rgba(12, 52, 61, 0.25); /* Softer focus glow */
+     --accordion-btn-focus-shadow: 0 0 0 3px rgba(16, 122, 117, 0.2); /* Use accent focus */
 
     max-width: 960px; /* Limit accordion width */
     margin-left: auto;
@@ -70,7 +67,7 @@
     border: var(--accordion-border-width) solid var(--accordion-border-color);
     margin-bottom: var(--pp-space-md); /* Consistent spacing */
     border-radius: var(--accordion-border-radius);
-    overflow: hidden;
+    overflow: hidden; /* Crucial for hiding collapsed content */
     box-shadow: var(--pp-box-shadow-sm); /* Subtle shadow */
     transition: box-shadow var(--pp-transition-medium);
 }
@@ -78,7 +75,7 @@
     margin-bottom: 0;
 }
 .accordion-item:hover {
-     /* Slightly enhance shadow on hover, but rely on card hover for more */
+     /* Slightly enhance shadow on hover */
      box-shadow: var(--pp-box-shadow);
 }
 
@@ -103,13 +100,12 @@
     cursor: pointer;
 }
 
-/* Consistent focus style */
+/* Consistent focus style using variables */
 .accordion-button:focus { outline: none; } /* Handled by :focus-visible */
 .accordion-button:focus-visible {
     z-index: 1; /* Ensure focus style is above others */
-    /* Use variables matching base button focus, slightly adjusted */
-    outline: 2px solid var(--pp-color-primary-light);
-    outline-offset: 1px;
+    outline: 3px solid var(--pp-color-accent-light); /* Match global focus */
+    outline-offset: 2px; /* Adjust offset */
     box-shadow: var(--accordion-btn-focus-shadow);
 }
 
@@ -151,20 +147,25 @@
 }
 
 
-/* Collapsing Panel */
+/* Collapsing Panel (CSS Transition approach) */
 .accordion-collapse {
     overflow: hidden;
-    /* No transition needed if height set by JS */
+    transition: height var(--pp-transition-medium) ease-in-out, /* Animate height */
+                visibility 0s linear var(--pp-transition-medium); /* Delay visibility change */
+    height: 0; /* Start closed */
+    visibility: hidden; /* Start hidden */
+    will-change: height; /* Optimize animation */
 }
-/* If JS sets height:
-.accordion-collapse {
-    transition: height var(--pp-transition-slow) ease;
-    height: 0; // JS will calculate and set scrollHeight
-} */
+.accordion-collapse.show {
+    height: auto; /* Let content determine height when open - JS might override this temporarily */
+    visibility: visible;
+    transition: height var(--pp-transition-medium) ease-in-out, visibility 0s linear 0s; /* Adjust transition for showing */
+}
+
 
 .accordion-body {
     padding: var(--accordion-body-padding-y) var(--accordion-body-padding-x);
-    background-color: var(--accordion-body-bg);
+    /* background-color: transparent; /* Typically inherits background */
     border-top: var(--accordion-border-width) solid var(--accordion-border-color); /* Add border separator */
 }
 /* Style category grid inside accordion body */
@@ -212,12 +213,10 @@
 
 
 /* --- Quiz Modal Overrides (Specific to this page, if any) --- */
-/* Example: Might want slightly different modal width if needed */
-/* .quiz-page .quiz-modal-content { max-width: 750px; } */
-/* Generally, relying on personal.css modal styles is preferred for consistency */
+/* No specific overrides needed currently, relying on personal.css */
 
 
-/* --- Print styles for quizzes page --- */
+/* --- Print styles for quizzes page (Refined) --- */
 @media print {
     .quiz-page-intro, /* Hide entire intro block */
     .accordion-button, /* Hide accordion buttons */
@@ -226,32 +225,61 @@
         display: none !important;
         visibility: hidden !important;
     }
-    .accordion-item,
+    .accordion-item { /* Print each theme as a block */
+        border: none !important; /* Remove item border */
+        box-shadow: none !important;
+        display: block !important;
+        margin: 0 0 1.5cm 0 !important; /* Add space between printed themes */
+        overflow: visible !important; /* Ensure content isn't clipped */
+        page-break-inside: avoid; /* Try to keep theme content together */
+    }
     .accordion-collapse,
     .accordion-body { /* Make content visible and remove styling */
-        border: none !important;
-        box-shadow: none !important;
         display: block !important;
         height: auto !important;
         visibility: visible !important;
         background: none !important;
         padding: 0 !important;
-        margin: 0 0 1cm 0 !important; /* Add space between printed themes */
+        border: none !important; /* Remove internal borders */
         overflow: visible !important;
     }
-    .accordion-body .category-grid { /* Ensure grid resets */
-         display: grid !important; /* Keep grid */
-         grid-template-columns: 1fr 1fr !important; /* Try two columns for print */
-         gap: 0.5cm !important;
+    /* Add a heading for each theme in print */
+    .accordion-item::before {
+        content: attr(aria-labelledby); /* Use the header ID */
+        display: block;
+        font-size: 12pt;
+        font-weight: bold;
+        margin-bottom: 0.5cm;
+        padding-bottom: 2px;
+        border-bottom: 1px solid #ccc;
+        font-family: 'Times New Roman', Times, serif !important;
+        color: #000 !important;
+    }
+     /* Try to use theme title directly if possible */
+     .accordion-item[data-theme-id='1']::before { content: 'Theme 1: Your Financial Groundwork'; }
+     .accordion-item[data-theme-id='2']::before { content: 'Theme 2: Building Your Financial Future'; }
+     .accordion-item[data-theme-id='3']::before { content: 'Theme 3: Investing & Growth'; }
+     .accordion-item[data-theme-id='4']::before { content: 'Theme 4: Protection & Long-Term Security'; }
+
+
+    .accordion-body .category-grid { /* Ensure grid resets and layout */
+         display: grid !important; /* Use grid */
+         grid-template-columns: 1fr 1fr !important; /* Two columns */
+         gap: 0.6cm !important;
+         margin-top: 0.5cm; /* Space below theme title */
     }
     .accordion-body .category-card {
         page-break-inside: avoid !important;
-        border: 1px solid #ccc !important;
-        padding: 0.5cm !important; /* Reset padding */
+        border: 1px solid #ddd !important; /* Lighter border */
+        padding: 0.4cm !important; /* Less padding */
+        background: #fff !important;
+        box-shadow: none !important;
+        margin-bottom: 0 !important; /* Grid handles gap */
     }
     .accordion-body .category-card button.start-quiz-btn {
          display: none !important; /* Hide start buttons */
     }
-     .accordion-body .category-card h4 { font-size: 10pt; } /* Adjust heading size */
-     .accordion-body .category-card p { font-size: 9pt; } /* Adjust text size */
-   }
+    .accordion-body .category-card i.category-icon { display: none !important; } /* Hide icons */
+    .accordion-body .category-card h4 { font-size: 10pt; margin-bottom: 0.2cm; color: #000; } /* Adjust heading size */
+    .accordion-body .category-card p { font-size: 9pt; margin-bottom: 0; color: #333;} /* Adjust text size */
+}
