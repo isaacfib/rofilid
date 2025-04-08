@@ -37,14 +37,19 @@
                     <i class="fas fa-bars open-icon" aria-hidden="true"></i>
                     <i class="fas fa-times close-icon" aria-hidden="true"></i>
                 </button>
+                <!-- <<< MODIFIED: Added nav-indicator span >>> -->
                 <ul id="primary-navigation" class="nav-list">
                     <li class="nav-item"><a href="../../index.html" class="nav-link">Home</a></li>
                     <li class="nav-item"><a href="personal.html" class="nav-link active-page" aria-current="page">Personal Finance</a></li>
-                    <li class="nav-item"><a href="#free-resources" class="nav-link">Resources</a></li>
-                    <li class="nav-item"><a href="#learning-hub" class="nav-link">ROFILID Financial Fitness Hub</a></li>
-                    <li class="nav-item"><a href="#free-tools" class="nav-link">Tools</a></li>
+                    <li class="nav-item"><a href="personal.html#free-resources" class="nav-link">Resources</a></li>
+                    <li class="nav-item"><a href="personal.html#learning-hub" class="nav-link">ROFILID Financial Fitness Hub</a></li>
+                    <li class="nav-item"><a href="personal.html#free-tools" class="nav-link">Tools</a></li>
                     <li class="nav-item"><a href="../corporate/corporate.html" class="nav-link">For Businesses</a></li>
+                    <!-- ADD THIS SPAN -->
+                    <span class="nav-indicator" aria-hidden="true"></span>
+                    <!-- END ADDED SPAN -->
                 </ul>
+                <!-- <<< END MODIFICATION >>> -->
             </nav>
             <!-- Optional: Add a consistent CTA button if desired on desktop -->
             <!-- <a href="#free-tools" class="btn connect-button btn-cta-header">Get Free Tools</a> -->
@@ -231,7 +236,7 @@
                          <div class="template-preview">
                              <img src="../../assets/images/personal/lineitembudget.svg"
                                   alt="Preview of Line-Item Budget template showing income and expense sections"
-                                  loading="lazy" width="300" height="225" 
+                                  loading="lazy" width="300" height="225"
                                   class="template-image template-image-default">
                              <img src="../../assets/images/personal/LineBudget.JPG"
                                   alt="Detailed view of Line-Item Budget template categories"
@@ -396,7 +401,7 @@
                             <div class="form-group">
                                 <!-- Added for attribute -->
                                 <label for="interest-email">Your Email:</label>
-                                <input type="email" id="interest-email" name="email" required placeholder="your.email@example.com" aria-describedby="interest-email-error" autocomplete="email">
+                                <input type="email" id="interest-email" name="email" required placeholder="your.email@example.com" aria-describedby="interest-email-error interest-form-response" autocomplete="email">
                                 <span class="form-error-msg" id="interest-email-error" aria-live="polite"></span>
                             </div>
                             <button type="submit" class="btn btn-secondary btn-icon"><i class="fas fa-paper-plane" aria-hidden="true"></i> Notify Me When Available</button>
@@ -479,12 +484,12 @@
                 </div>
                 <div class="form-group">
                     <label for="feedback-email">Your Email (Optional, for follow-up):</label>
-                    <input type="email" id="feedback-email" name="email" placeholder="your.email@example.com" aria-describedby="feedback-email-error" autocomplete="email">
+                    <input type="email" id="feedback-email" name="email" placeholder="your.email@example.com" aria-describedby="feedback-email-error feedback-form-response" autocomplete="email">
                     <span class="form-error-msg" id="feedback-email-error" aria-live="polite"></span>
                 </div>
                 <div class="form-group">
                     <label for="feedback-type">Type:</label>
-                    <select id="feedback-type" name="type" required aria-describedby="feedback-type-error">
+                    <select id="feedback-type" name="type" required aria-describedby="feedback-type-error feedback-form-response">
                         <option value="" disabled selected>-- Select Type --</option>
                         <option value="feedback">General Feedback / Suggestion</option>
                         <option value="testimonial">Testimonial / Success Story</option>
@@ -494,7 +499,7 @@
                 </div>
                 <div class="form-group">
                     <label for="feedback-message">Your Message:</label>
-                    <textarea id="feedback-message" name="message" rows="5" required placeholder="Tell us what you think..." aria-describedby="feedback-message-error" maxlength="2000"></textarea>
+                    <textarea id="feedback-message" name="message" rows="5" required placeholder="Tell us what you think..." aria-describedby="feedback-message-error feedback-form-response" maxlength="2000"></textarea>
                      <span class="form-error-msg" id="feedback-message-error" aria-live="polite"></span>
                 </div>
                 <div class="form-group permission-group" hidden>
@@ -592,4 +597,3 @@
      <script src="../../assets/js/personal/personal.js" defer></script>
 </body>
 </html>
-
