@@ -1,9 +1,9 @@
 /* ==========================================================================
-   ROFILID Interest Calculator Styles - v2.0.0 (Elite Responsiveness & Design)
+   ROFILID Interest Calculator Styles - v2.1.0 (Elite Responsiveness & Design)
    Location: /pages/personal/calculator.css
    Description: Elite responsiveness and modern design overhaul for the
                 Interest Calculator tool. Inherits base styles and variables
-                from personal.css v3.0.0.
+                from personal.css v3.0.0. Refined for enhanced polish & clarity.
    ========================================================================== */
 
 /* === General Page Adjustments === */
@@ -13,10 +13,8 @@ body.tool-page {
 }
 
 .calculator-section .container {
-    /* ELITE: Keep container width consistent with personal.css or adjust as needed */
-    max-width: var(--pp-container-width, 1240px);
-    /* Reduce max-width slightly for better focus on the tool */
-    max-width: 1000px;
+    /* ELITE: Slightly reduced max-width for better focus on the tool */
+    max-width: var(--pp-container-width-narrow, 960px); /* Introduce a narrower container variable if available, else use px */
 }
 
 .calculator-header {
@@ -68,6 +66,7 @@ body.tool-page {
     background-color: var(--pp-color-light); /* Use light grey background */
     padding: var(--pp-space-xxs); /* Small padding around buttons */
     max-width: 100%; /* Ensure it doesn't overflow container */
+    box-shadow: var(--pp-shadow-inset-xs); /* Subtle inset shadow */
 }
 
 .mode-button {
@@ -95,7 +94,7 @@ body.tool-page {
 .mode-button:hover:not(.active):not([aria-checked="true"]),
 .mode-button:focus-visible:not(.active):not([aria-checked="true"]) {
     color: var(--pp-color-primary-dark);
-    background-color: rgba(255, 255, 255, 0.6); /* Subtle white highlight */
+    background-color: rgba(255, 255, 255, 0.7); /* Slightly more opaque highlight */
     outline: none;
 }
 
@@ -103,7 +102,7 @@ body.tool-page {
 .mode-button[aria-checked="true"] {
     background-color: var(--pp-color-secondary); /* White background for active */
     color: var(--pp-color-accent-dark); /* Use Accent color for text */
-    box-shadow: var(--pp-shadow-xs); /* Use subtle shadow */
+    box-shadow: var(--pp-shadow-sm); /* Slightly stronger shadow for active state */
     font-weight: var(--pp-font-semibold); /* Bolder active text */
 }
 .mode-button.active:hover,
@@ -167,7 +166,7 @@ input[type="number"],
 input[type="date"],
 select {
     /* Inherits padding, border, radius, font-size, transitions, focus from personal.css */
-    /* Add any specific calculator adjustments here if needed */
+    width: 100%; /* Ensure full width within grid cell */
     background-color: var(--pp-color-secondary); /* Ensure white background */
 }
 /* Ensure focus styles from personal.css v3 apply */
@@ -184,13 +183,13 @@ input:focus-visible, select:focus-visible {
     padding: 0; /* Remove padding */
     margin-left: var(--pp-space-xxs); /* Space from label */
     cursor: help;
-    transition: color var(--pp-transition-fast);
+    transition: color var(--pp-transition-fast), background-color var(--pp-transition-fast);
     border-radius: 50%; line-height: 1; vertical-align: middle;
-    width: 1.2em; height: 1.2em; /* Define size */
+    width: 1.3em; height: 1.3em; /* Slightly larger tap target */
 }
 .info-btn:hover,
 .info-btn:focus-visible {
-    color: var(--pp-color-accent); /* Use Accent */
+    color: var(--pp-color-accent-dark); /* Use Darker Accent */
     background-color: var(--pp-color-light-accent);
     outline: none;
 }
@@ -200,7 +199,7 @@ input:focus-visible, select:focus-visible {
 [data-tooltip] { position: relative; }
 [data-tooltip]::after {
     content: attr(data-tooltip);
-    position: absolute; bottom: calc(100% + 6px); /* Closer gap */
+    position: absolute; bottom: calc(100% + 7px); /* Slightly increased gap */
     left: 50%; transform: translateX(-50%) scale(0.9); /* Start smaller */
     background-color: var(--pp-color-primary-dark); /* Dark background */
     color: var(--pp-color-secondary); /* White text */
@@ -208,8 +207,8 @@ input:focus-visible, select:focus-visible {
     border-radius: var(--pp-border-radius-sm); /* Smaller radius */
     font-size: 0.8rem; font-weight: var(--pp-font-regular);
     line-height: 1.4; white-space: normal; /* Allow wrapping */
-    width: max-content; max-width: 200px; /* Limit width */
-    box-shadow: var(--pp-shadow-sm);
+    width: max-content; max-width: 220px; /* Slightly wider max */
+    box-shadow: var(--pp-shadow-sm); /* Softer shadow */
     opacity: 0; visibility: hidden;
     transition: opacity var(--pp-transition-fast), visibility var(--pp-transition-fast), transform var(--pp-transition-fast);
     z-index: 10; pointer-events: none;
@@ -220,7 +219,7 @@ input:focus-visible, select:focus-visible {
     opacity: 1; visibility: visible;
     transform: translateX(-50%) scale(1);
 }
-/* ELITE: Add focus style for keyboard nav */
+/* ELITE: Add focus style for keyboard nav to the button itself */
 .info-btn:focus-visible {
      outline: 2px solid var(--pp-color-accent);
      outline-offset: 1px;
@@ -235,13 +234,17 @@ input:focus-visible, select:focus-visible {
 .input-with-symbol .symbol-suffix {
     position: absolute; top: 0; bottom: 0; /* Span full height */
     display: flex; align-items: center;
-    color: var(--pp-color-text-lighter); font-size: 0.9em; /* Slightly smaller */
+    color: var(--pp-color-text-light); /* Lighter symbol text */
+    font-size: 0.9em; /* Slightly smaller */
     font-weight: var(--pp-font-medium);
     padding: 0 var(--pp-space-sm); /* Consistent padding */
     pointer-events: none; z-index: 2;
     border: 1px solid var(--pp-color-border); /* Match input border */
-    background-color: var(--pp-color-light); /* Subtle background */
+    /* ELITE: Subtle, slightly transparent background for integration */
+    background-color: rgba(var(--pp-color-border-rgb), 0.05);
     border-radius: var(--pp-border-radius) 0 0 var(--pp-border-radius); /* Round left corners */
+    height: 100%; /* Ensure full height */
+    box-sizing: border-box; /* Include border in height */
 }
 .input-with-symbol .symbol-suffix {
     right: 0; left: auto;
@@ -258,9 +261,21 @@ input:focus-visible, select:focus-visible {
     padding-left: var(--pp-space-md); /* Default padding */
     padding-right: var(--pp-space-md);
     position: relative; z-index: 1; /* Ensure input is clickable */
+    /* Ensure input border visually connects */
+    border-radius: var(--pp-border-radius);
 }
-.input-with-symbol.has-prefix input { padding-left: 3.2em; /* Approx width of symbol container */ }
-.input-with-symbol.has-suffix input { padding-right: 3.2em; }
+/* ELITE: Calculate padding more precisely if needed, but em often suffices */
+/* Use a CSS variable if symbol width is consistent or calculable */
+.input-with-symbol.has-prefix input { padding-left: 3.5em; border-left: none; border-top-left-radius: 0; border-bottom-left-radius: 0;}
+.input-with-symbol.has-suffix input { padding-right: 3.5em; border-right: none; border-top-right-radius: 0; border-bottom-right-radius: 0;}
+
+/* Ensure focus state looks good with symbol */
+.input-with-symbol input:focus-visible {
+    z-index: 3; /* Bring focused input above symbol visually */
+    /* Re-apply border radius that was removed */
+}
+.input-with-symbol.has-prefix input:focus-visible { border-top-left-radius: var(--pp-border-radius); border-bottom-left-radius: var(--pp-border-radius); border-left: 1px solid var(--pp-color-accent); }
+.input-with-symbol.has-suffix input:focus-visible { border-top-right-radius: var(--pp-border-radius); border-bottom-right-radius: var(--pp-border-radius); border-right: 1px solid var(--pp-color-accent); }
 
 /* Error Message Styling */
 .error-message {
@@ -276,19 +291,20 @@ input.is-invalid, select.is-invalid {
 input.is-invalid:focus-visible, select.is-invalid:focus-visible {
     border-color: var(--pp-color-danger-dark);
     box-shadow: 0 0 0 3px rgba(var(--pp-color-danger-rgb), 0.25);
-    background-color: var(--pp-color-secondary);
+    background-color: var(--pp-color-secondary); /* Return to white on focus */
 }
 
 /* Compounding Frequency */
-/* ELITE: Smoother transition */
+/* ELITE: Smoother transition including margin */
 .form-group.compounding-group {
-    transition: opacity 0.3s ease, max-height 0.4s ease, margin-top 0.3s ease, visibility 0.3s ease;
+    transition: opacity 0.3s ease, max-height 0.4s ease, margin-top 0.3s ease, visibility 0.3s 0s;
     overflow: hidden; opacity: 1; max-height: 150px; visibility: visible;
     margin-top: var(--pp-space-lg); /* Add margin when visible */
 }
 .form-group.compounding-group[hidden] {
     opacity: 0; max-height: 0; visibility: hidden;
     margin-top: 0 !important; border: none; padding: 0;
+    transition: opacity 0.3s ease, max-height 0.4s ease, margin-top 0.3s ease, visibility 0s 0.3s; /* Delay hiding visibility */
 }
 
 /* Time Period Input Styles */
@@ -307,7 +323,7 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
     text-align: center;
     border-radius: var(--pp-border-radius);
     cursor: pointer;
-    transition: var(--pp-transition-fast);
+    transition: background-color var(--pp-transition-fast), color var(--pp-transition-fast), border-color var(--pp-transition-fast), box-shadow var(--pp-transition-fast);
     font-weight: var(--pp-font-regular);
     font-size: 0.9rem;
     color: var(--pp-color-text-light);
@@ -317,14 +333,14 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
     line-height: 1.4;
 }
 .time-input-method .radio-group input[type="radio"] { /* Hide radio */
-    position: absolute; opacity: 0; pointer-events: none; width: 1px; height: 1px;
+    position: absolute; opacity: 0; pointer-events: none; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0,0,0,0);
 }
 .time-input-method .radio-group input[type="radio"]:checked + label {
     background-color: var(--pp-color-light-accent); /* Light accent for selected */
     color: var(--pp-color-accent-dark); /* Accent text */
     font-weight: var(--pp-font-semibold);
     border-color: var(--pp-color-accent); /* Accent border */
-    box-shadow: var(--pp-shadow-xs); /* Subtle shadow */
+    box-shadow: var(--pp-shadow-inset-xs); /* Subtle inset shadow for pressed feel */
 }
 .time-input-method .radio-group label:hover:not(input:checked + label) {
      background-color: var(--pp-color-border-lighter); /* Subtle hover */
@@ -345,8 +361,11 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
     transition: opacity 0.3s ease, visibility 0.3s ease, margin-top 0.3s ease;
     opacity: 1; visibility: visible; margin-top: 0;
 }
+/* Use [hidden] for better semantics and potentially JS interaction */
 .time-input-container[hidden] {
-    display: block; opacity: 0; visibility: hidden; max-height: 0;
+    display: none; /* More robust hiding than visibility/opacity alone */
+    /* Keep transition properties if dynamically shown/hidden via JS adding/removing [hidden] */
+    opacity: 0; visibility: hidden; max-height: 0;
     padding: 0; margin: 0; border: none; pointer-events: none;
 }
 
@@ -403,7 +422,7 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
     cursor: pointer;
     transition: var(--pp-transition-fast);
     display: inline-flex; align-items: center; justify-content: center;
-    width: 30px; height: 30px; /* Explicit size */
+    width: 32px; height: 32px; /* Explicit size, slightly larger */
 }
 .remove-entry-btn[hidden] { display: none !important; }
 
@@ -411,6 +430,9 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
     background-color: var(--pp-color-danger-light);
     color: var(--pp-color-danger-dark);
     outline: none;
+}
+.remove-entry-btn:focus-visible {
+    box-shadow: 0 0 0 2px rgba(var(--pp-color-danger-rgb), 0.3);
 }
 .remove-entry-btn i { font-size: 0.9em; }
 
@@ -420,21 +442,26 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
 }
 /* ELITE: Style Add Entry as an outline button */
 #add-entry-btn { /* Inherit .btn, apply .btn-outline */
-    background-color: transparent; color: var(--pp-color-accent);
-    border: 1px solid var(--pp-color-accent); box-shadow: none;
+    /* Ensure base .btn styles apply, then override for outline */
+    background-color: transparent;
+    color: var(--pp-color-accent);
+    border: 1px solid var(--pp-color-accent);
+    box-shadow: none;
 }
 #add-entry-btn:hover, #add-entry-btn:focus-visible {
     background-color: var(--pp-color-light-accent);
-    color: var(--pp-color-accent-dark); border-color: var(--pp-color-accent-dark);
+    color: var(--pp-color-accent-dark);
+    border-color: var(--pp-color-accent-dark);
     box-shadow: none;
 }
 #add-entry-btn:focus-visible {
-     box-shadow: 0 0 0 3px rgba(16, 122, 117, 0.25);
+     box-shadow: 0 0 0 3px rgba(var(--pp-color-accent-rgb), 0.25); /* Use accent RGB if available */
 }
 #add-entry-btn:disabled { /* Ensure disabled outline looks right */
     background-color: transparent !important;
     border-color: var(--pp-color-border-light) !important;
     color: var(--pp-color-text-lighter) !important;
+    cursor: not-allowed;
     /* Inherit other disabled styles */
 }
 
@@ -450,12 +477,18 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
 /* ELITE: Style Calculate as primary, Clear as ghost/secondary */
 #calculate-btn { /* Inherit .btn, .btn-primary */ }
 #clear-form-btn { /* Inherit .btn, apply .btn-ghost or .btn-outline */
-    background-color: transparent; color: var(--pp-color-text-light);
-    border-color: transparent; box-shadow: none;
+    background-color: transparent;
+    color: var(--pp-color-text-light);
+    border-color: transparent;
+    box-shadow: none;
 }
 #clear-form-btn:hover, #clear-form-btn:focus-visible {
-    background-color: var(--pp-color-light); color: var(--pp-color-primary-dark);
-    text-decoration: none; transform: none; box-shadow: none;
+    background-color: var(--pp-color-light);
+    color: var(--pp-color-primary-dark);
+    text-decoration: none;
+    transform: none; /* Override potential base btn transforms */
+    box-shadow: none;
+    border-color: transparent; /* Ensure border stays transparent */
 }
 #calculate-btn:disabled { /* Inherits disabled style */ }
 
@@ -463,7 +496,7 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
 .results-area {
     margin-top: var(--pp-space-xxl);
     background-color: var(--pp-color-light-accent);
-    border: 1px solid var(--pp-color-border);
+    border: 1px solid rgba(var(--pp-color-accent-rgb), 0.2); /* Subtle accent border */
     border-radius: var(--pp-border-radius-lg); /* ELITE: Larger radius */
     padding: clamp(var(--pp-space-lg), 5vw, var(--pp-space-xl));
     transition: opacity 0.4s ease, max-height 0.5s ease, margin-top 0.4s ease, padding 0.4s ease, border 0.4s ease;
@@ -472,13 +505,15 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
 .results-area[hidden] {
     opacity: 0; max-height: 0; padding-top: 0; padding-bottom: 0;
     margin-top: 0; border: none;
+    visibility: hidden; /* Add visibility */
+    transition: opacity 0.4s ease, max-height 0.5s ease, margin-top 0.4s ease, padding 0.4s ease, border 0.4s ease, visibility 0s 0.5s;
 }
 
 .results-title {
     text-align: center;
     font-size: clamp(1.6rem, 3vw + 0.5rem, 2rem); /* ELITE: Fluid size */
     margin-bottom: var(--pp-space-xl);
-    color: var(--pp-color-primary-dark);
+    color: var(--pp-color-accent-dark); /* Use accent color for results title */
     font-weight: var(--pp-font-semibold); /* ELITE: Make semi-bold */
 }
 .results-title::after { display: none; }
@@ -509,7 +544,7 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
 .results-display-list > .result-item:last-child { border-bottom: none; }
 
 .results-display-list > .result-item[hidden] {
-    opacity: 0; max-height: 0; padding: 0; border: none; margin: 0;
+    opacity: 0; max-height: 0; padding: 0; border: none; margin: 0; display: none;
 }
 
 .result-item .label { color: var(--pp-color-text-light); flex-shrink: 0; }
@@ -519,18 +554,21 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
     text-align: right; flex-grow: 1;
 }
 
+/* ELITE: Enhanced Total Styling */
 .result-item.total {
     font-weight: var(--pp-font-bold); /* Bold */
-    border-top: 2px solid var(--pp-color-border); /* Thicker top border */
-    margin-top: var(--pp-space-sm); padding-top: var(--pp-space-md);
+    border-top: 2px solid var(--pp-color-accent); /* Accent top border */
+    margin-top: var(--pp-space-md); /* More space above total */
+    padding-top: var(--pp-space-md);
+    font-size: 1.2em; /* Larger total */
 }
 .result-item.total .label,
 .result-item.total .value {
-    color: var(--pp-color-primary-dark); font-size: 1.2em; /* Larger total */
+    color: var(--pp-color-accent-dark); /* Accent color for total */
 }
-.result-item.ear { font-size: 0.9em; }
+.result-item.ear { font-size: 0.9em; margin-top: var(--pp-space-xs); }
 .result-item.ear .label,
-.result-item.ear .value { color: var(--pp-color-text); }
+.result-item.ear .value { color: var(--pp-color-text); font-weight: var(--pp-font-regular); }
 
 /* Advanced Individual Results */
 .results-subsection {
@@ -579,13 +617,18 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
     font-size: inherit; padding: var(--pp-space-xxs) 0; /* Tighter padding */
     border-bottom: none; align-items: baseline; gap: var(--pp-space-sm);
 }
-.entry-result .result-item .label { color: var(--pp-color-text-light); }
+.entry-result .result-item .label { color: var(--pp-color-text-light); flex-shrink: 0; }
 .entry-result .result-item .value { font-weight: var(--pp-font-medium); color: var(--pp-color-text); text-align: right;}
 .entry-result .result-item.total {
      margin-top: var(--pp-space-xs); padding-top: var(--pp-space-xs);
      border-top: 1px solid var(--pp-color-border-lighter);
      font-weight: var(--pp-font-semibold); font-size: 1.05em;
 }
+.entry-result .result-item.total .label, /* Ensure total colors are consistent if needed */
+.entry-result .result-item.total .value {
+    color: var(--pp-color-primary); /* Match h4 color */
+}
+
 .entry-result .error-message {
     color: var(--pp-color-danger-dark); font-weight: var(--pp-font-medium);
     margin-top: var(--pp-space-sm); font-size: 0.85rem;
@@ -624,7 +667,7 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
     overflow: hidden; opacity: 1; max-height: 600px; /* Adjust as needed */
 }
 .chart-area[hidden] {
-    opacity: 0; max-height: 0; padding: 0; margin: 0; border: none;
+    opacity: 0; max-height: 0; padding: 0; margin: 0; border: none; display: none;
 }
 .chart-title {
     text-align: center;
@@ -640,8 +683,9 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
     /* ELITE: Let width be flexible, control max-width */
     max-width: 800px; /* Wider chart allowed */
     width: 100%;
-    height: 0; /* Use padding-bottom for aspect ratio */
-    padding-bottom: 50%; /* Default aspect ratio (2:1). Adjust as needed */
+    /* Remove aspect ratio padding, let Chart.js control height or set explicit height */
+    /* height: 0; padding-bottom: 50%; */
+    height: 400px; /* Example fixed height, adjust as needed or use JS */
     margin: var(--pp-space-md) auto 0 auto;
     background-color: var(--pp-color-secondary);
     padding: var(--pp-space-md);
@@ -650,10 +694,12 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
     border: 1px solid var(--pp-color-border-light);
 }
 .chart-container canvas { /* Ensure canvas fills container */
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    padding: var(--pp-space-md); /* Padding inside container, around canvas */
+    display: block; /* Important for Chart.js */
+    max-width: 100%;
+    max-height: 100%;
+    /* Removed absolute positioning, let Chart.js handle canvas sizing within container */
+    /* position: absolute; top: 0; left: 0; width: 100%; height: 100%; */
+    /* Padding moved to container */
     box-sizing: border-box; /* Include padding in dimensions */
 }
 
@@ -666,19 +712,27 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
 }
 /* Buttons inherit styles */
 #print-results-btn { /* Inherit .btn, maybe .btn-outline? */
-    background-color: transparent; color: var(--pp-color-accent);
-    border: 1px solid var(--pp-color-accent); box-shadow: none;
+    /* Replicate outline styles from #add-entry-btn for consistency */
+    background-color: transparent;
+    color: var(--pp-color-accent);
+    border: 1px solid var(--pp-color-accent);
+    box-shadow: none;
 }
 #print-results-btn:hover, #print-results-btn:focus-visible {
     background-color: var(--pp-color-light-accent);
-    color: var(--pp-color-accent-dark); border-color: var(--pp-color-accent-dark);
+    color: var(--pp-color-accent-dark);
+    border-color: var(--pp-color-accent-dark);
     box-shadow: none;
+}
+#print-results-btn:focus-visible {
+    box-shadow: 0 0 0 3px rgba(var(--pp-color-accent-rgb), 0.25);
 }
 #print-results-btn:disabled {
      /* Inherits base disabled + outline disabled */
      background-color: transparent !important;
      border-color: var(--pp-color-border-light) !important;
      color: var(--pp-color-text-lighter) !important;
+     cursor: not-allowed;
 }
 
 /* === Accessibility === */
@@ -706,28 +760,34 @@ input.is-invalid:focus-visible, select.is-invalid:focus-visible {
          /* Already uses auto-fit */
     }
     .calculator-header {
-        flex-direction: column; align-items: flex-start; gap: var(--pp-space-md);
+        flex-direction: column; align-items: flex-start; gap: var(--pp-space-sm); /* Reduced gap */
     }
-    .calculator-header h1 { font-size: 1.8rem; }
+    .calculator-header h1 { font-size: clamp(1.6rem, 4vw + 0.5rem, 2rem); /* Slightly smaller */ }
 
     .results-display-list > .result-item {
         font-size: 1rem; /* Smaller text on mobile */
         gap: var(--pp-space-sm); /* Smaller gap */
     }
-    .result-item.total .label,
-    .result-item.total .value { font-size: 1.15em; }
+    .result-item.total { font-size: 1.15em; } /* Adjust total size */
 
-    .chart-container { padding-bottom: 65%; /* Adjust aspect ratio for mobile */ }
+    .chart-container { height: 350px; /* Adjust height for mobile */ }
 }
 
 @media (max-width: 480px) {
-    .mode-button { font-size: 0.9rem; padding: var(--pp-space-sm); } /* Adjust padding */
+    .calculator-section .container { padding-left: var(--pp-space-sm); padding-right: var(--pp-space-sm); }
+    .mode-button { font-size: 0.85rem; padding: var(--pp-space-xs) var(--pp-space-sm); } /* Adjust padding */
     .calculator-form { padding: var(--pp-space-md); } /* Reduce padding */
     .results-area { padding: var(--pp-space-md); }
-
-    .chart-container { padding-bottom: 75%; /* Taller aspect ratio */ }
-    .results-display-list { padding: var(--pp-space-sm) var(--pp-space-md); }
     .input-grid { gap: var(--pp-space-md); } /* Reduce grid gap */
+
+    .chart-container { height: 300px; /* Further adjust height */ padding: var(--pp-space-sm);}
+    .results-display-list { padding: var(--pp-space-xs) var(--pp-space-sm); }
+    .results-title { font-size: clamp(1.4rem, 3vw + 0.5rem, 1.8rem); }
+    .subsection-title, .chart-title { font-size: 1.2rem; }
+
+    /* Ensure input with symbol looks okay */
+    .input-with-symbol.has-prefix input { padding-left: 3em; }
+    .input-with-symbol.has-suffix input { padding-right: 3em; }
 }
 
 /* === Print Styles === */
