@@ -1,9 +1,9 @@
 /* ==========================================================================
-   ROFILID Personal Page Styles - v3.0.0 (Elite Responsiveness & Design)
+   ROFILID Personal Page Styles - v3.1.0 (Scrollspy Indicator & Modal Fix)
    Location: /pages/personal/personal.css
    Description: Comprehensive overhaul focusing on elite responsiveness,
                 modern design aesthetics, fluidity, and optimized layout
-                techniques using the Rofilid theme.
+                techniques using the Rofilid theme. Added scrollspy indicator.
    ========================================================================== */
 
 /* --- Base Resets & Defaults --- */
@@ -243,11 +243,14 @@ ul > li:last-child > p {
 nav[aria-label="Main navigation"] { display: flex; align-items: center; }
 
 /* DESKTOP NAVIGATION */
+/* <<< MODIFIED: Added position: relative >>> */
 .nav-list {
     display: flex; gap: var(--pp-space-xs); /* ELITE: Reduced gap between items */
     list-style: none; margin: 0; padding: 0; align-items: center;
+    position: relative; /* Needed for absolute positioning of indicator */
 }
 
+/* <<< MODIFIED: Added z-index: 1 and background-color: transparent >>> */
 .nav-link {
     display: block;
     padding: var(--pp-space-sm) var(--pp-space-md); /* ELITE: Adjusted padding */
@@ -255,31 +258,56 @@ nav[aria-label="Main navigation"] { display: flex; align-items: center; }
     font-weight: var(--pp-font-medium);
     border-radius: var(--pp-border-radius-sm); /* ELITE: Rounded corners */
     transition: color var(--pp-transition-fast), background-color var(--pp-transition-fast), transform var(--pp-transition-fast);
-    white-space: nowrap; position: relative;
+    white-space: nowrap; position: relative; z-index: 1; /* <<< ADDED z-index: 1 */
     transform: translateY(0); /* Base state for hover */
+    background-color: transparent; /* <<< ADDED: Ensure default is transparent */
 }
-.nav-link::after { content: none; /* ELITE: Remove underline effect, rely on bg/color change */ }
+.nav-link::after { content: none; /* ELITE: Remove underline effect, rely on indicator */ }
 
+/* <<< MODIFIED: Removed background-color change >>> */
 .nav-link:hover,
 .nav-link:focus-visible {
     color: var(--pp-color-primary-dark); /* ELITE: Darker text on hover/focus */
-    background-color: var(--pp-color-light-accent); /* ELITE: Use light accent bg */
+    /* background-color: var(--pp-color-light-accent); <<< REMOVED: Indicator handles active background now */
     text-decoration: none;
     transform: translateY(-1px); /* ELITE: Subtle lift */
 }
-.nav-link:focus-visible { background-color: var(--pp-color-light-accent); } /* Keep bg on focus */
+/* <<< MODIFIED: Keep distinct focus style on focus-visible >>> */
+.nav-link:focus-visible {
+    background-color: var(--pp-color-light-accent); /* Keep bg on focus for visibility */
+}
 
+/* <<< MODIFIED: Removed background-color >>> */
 .nav-link.active-page,
 .nav-link[aria-current="page"] {
     color: var(--pp-color-primary-dark); /* ELITE: Darker text for active */
     font-weight: var(--pp-font-semibold);
-    background-color: var(--pp-color-light-accent); /* ELITE: Use light accent bg for active */
+    /* background-color: var(--pp-color-light-accent); <<< REMOVED: Indicator handles active background now */
 }
+/* <<< MODIFIED: Removed hover background-color >>> */
 .nav-link.active-page:hover,
 .nav-link[aria-current="page"]:hover {
-    background-color: var(--pp-color-light-accent); /* Keep active background on hover */
+    /* background-color: var(--pp-color-light-accent); <<< REMOVED */
     transform: translateY(0); /* ELITE: No lift for already active item */
 }
+
+/* <<< NEW: Styles for the moving indicator >>> */
+.nav-indicator {
+    position: absolute;
+    bottom: 4px; /* Adjust vertical position as needed */
+    height: calc(100% - 8px); /* Adjust height based on link padding & desired look */
+    background-color: var(--pp-color-light-accent); /* Match active bg color */
+    border-radius: var(--pp-border-radius-sm);
+    z-index: 0; /* Behind the links */
+    opacity: 0; /* Hidden by default, shown by JS */
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1),  /* Smoother transition */
+                width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.2s ease-in-out;
+    pointer-events: none; /* Don't interfere with clicks */
+    will-change: left, width, opacity; /* Hint browser for optimization */
+}
+/* <<< END NEW >>> */
+
 
 .mobile-menu-toggle {
     display: none; background: none; border: none;
@@ -311,7 +339,10 @@ nav[aria-label="Main navigation"] { display: flex; align-items: center; }
     nav[aria-label="Main navigation"] { order: 3; margin-left: 0; }
     .mobile-menu-toggle { display: block; order: 2; margin-left: auto; }
 
-    .nav-list { display: none; } /* Hide desktop nav */
+    .nav-list { display: none; position: static; /* Reset relative position */ } /* Hide desktop nav */
+
+    /* <<< MODIFIED: Hide indicator on mobile nav >>> */
+    .nav-indicator { display: none; }
 
     /* Mobile dropdown */
     #primary-navigation {
@@ -349,18 +380,21 @@ nav[aria-label="Main navigation"] { display: flex; align-items: center; }
         font-size: 1.1rem; /* ELITE: Slightly larger font for touch */
         color: var(--pp-color-text); /* ELITE: Standard text color */
         font-weight: var(--pp-font-medium);
+        /* Ensure background is transparent by default here too */
+        background-color: transparent; /* <<< ADDED */
     }
     .nav-item:last-child .nav-link { border-bottom: none; }
 
+    /* <<< MODIFIED: Ensure mobile hover/focus gets background >>> */
     .nav-link:hover,
     .nav-link:focus-visible {
         background-color: var(--pp-color-light);
         border-left-color: var(--pp-color-border);
         color: var(--pp-color-primary-dark);
         transform: none; /* Disable desktop hover effect */
-        /* ELITE: Keep padding consistent, don't shift text on hover */
     }
 
+    /* <<< MODIFIED: Ensure mobile active links still have a background >>> */
     .nav-link.active-page,
     .nav-link[aria-current="page"] {
         background-color: var(--pp-color-light-accent);
@@ -391,8 +425,8 @@ main {
 /* Padding overrides (keep for specific sections if needed) */
 /* ELITE: Review if these are still necessary with fluid padding */
 .section-padding--large {
-    padding-top: clamp(var(--pp-space-xxl), 10vw, var(--pp-space-xxxxl, 7rem)); /* Placeholder */
-    padding-bottom: clamp(var(--pp-space-xxl), 10vw, var(--pp-space-xxxxl, 7rem));
+    padding-top: clamp(var(--pp-space-xxl), 10vw, 7rem); /* Removed placeholder var */
+    padding-bottom: clamp(var(--pp-space-xxl), 10vw, 7rem);
 }
 .section-tight {
     padding-top: clamp(var(--pp-space-lg), 6vw, var(--pp-space-xl));
@@ -400,7 +434,7 @@ main {
 }
 #hero { /* Give Hero slightly more top padding */
     padding-top: clamp(var(--pp-space-xl), 10vw, var(--pp-space-xxxl));
-    padding-bottom: clamp(var(--pp-space-xxl), 12vw, var(--pp-space-xxxxl, 7rem)); /* Keep bottom padding large */
+    padding-bottom: clamp(var(--pp-space-xxl), 12vw, 7rem); /* Keep bottom padding large */
 }
 
 
@@ -1155,9 +1189,14 @@ main {
     display: flex; align-items: center; justify-content: center;
     padding: var(--pp-space-md); /* Padding around modal */
     opacity: 0; visibility: hidden;
-    transition: opacity var(--pp-transition-medium) ease, visibility 0s var(--pp-transition-medium) linear;
+    /* <<< MODIFIED: Explicit transitions and use 'visible' class >>> */
+    transition: opacity var(--pp-transition-medium) ease, visibility 0s linear var(--pp-transition-medium);
+    will-change: opacity; /* Optimize overlay fade */
 }
-.modal-overlay:not([hidden]) { opacity: 1; visibility: visible; transition-delay: 0s; }
+.modal-overlay.visible {
+    opacity: 1; visibility: visible;
+    transition-delay: 0s;
+}
 
 .modal-content {
     background-color: var(--pp-color-secondary);
@@ -1166,7 +1205,7 @@ main {
     box-shadow: var(--pp-shadow-xl); /* ELITE: Use larger shadow */
     width: 100%; max-width: 600px; max-height: 90vh;
     overflow-y: auto; position: relative;
-    /* ELITE: Subtle scale-up and fade-in */
+    /* <<< MODIFIED: Animate based on '.visible' class >>> */
     transform: scale(0.98) translateY(5px);
     opacity: 0;
     transition: transform var(--pp-transition-medium) cubic-bezier(0.175, 0.885, 0.32, 1.275),
@@ -1176,7 +1215,8 @@ main {
 @media (max-width: 639px) { /* Smaller screens */
     .modal-content { padding: var(--pp-space-md); }
 }
-.modal-overlay:not([hidden]) .modal-content {
+/* <<< MODIFIED: Selector targets visible state >>> */
+.modal-overlay.visible .modal-content {
     transform: scale(1) translateY(0);
     opacity: 1;
 }
@@ -1351,14 +1391,6 @@ main {
    are now integrated into the base styles or main breakpoints (like min-width: 768px)
    using more fluid techniques (flex, grid auto-fit, clamp) to avoid needing
    this specific override range. The layout should adapt more smoothly.
-   We removed specific overrides for:
-   - Hero Stats Grid (now uses flex wrap)
-   - Category Card Grid (now uses grid auto-fit)
-   - Template Grid (now uses grid auto-fit)
-   - Container Padding (now uses clamp)
-   - Card Image Scaling (kept aspect-ratio, can be adjusted per card if needed)
-   - Nav Bar Height (handled by media query for mobile nav)
-   - Button Sizing (uses em units now for scalability)
 */
 
 
@@ -1503,7 +1535,7 @@ main {
     100% { transform: translate(-30px, 50px) rotate(350deg) scale(0.95); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .deco-blur, .btn, .btn-icon i, .resource-card, .category-card, .template-card, .card-image img, .modal-content, .modal-close-btn, .social-link, .nav-link, .template-image { animation: none !important; transition: none !important; transform: none !important; }
+  .deco-blur, .btn, .btn-icon i, .resource-card, .category-card, .template-card, .card-image img, .modal-content, .modal-close-btn, .social-link, .nav-link, .template-image, .nav-indicator /* Added indicator */ { animation: none !important; transition: none !important; transform: none !important; }
    .template-image-default { opacity: 1 !important; } .template-image-hover { opacity: 0 !important; }
    .modal-content { transform: scale(1) translateY(0) !important; opacity: 1 !important; } /* Ensure modal visible */
 }
@@ -1532,7 +1564,7 @@ main {
       --pp-color-accent: #000 !important; --pp-color-cta: #000 !important;
       --pp-header-height: auto !important;
     }
-    .site-header, .mobile-menu-toggle, .deco-blur, .motivational-quote, .hero-actions, .hero-stats-grid, .approach-icon, .approach-highlights, .social-integration, #learning-hub .start-quiz-btn, .full-challenge-link, .template-preview, .get-spreadsheet-btn, .template-price-note, #financial-tools-promo, #personal-coaching .coaching-interest, .disclaimer, #mmisbalior-section .promo-visual, #mmisbalior-section .btn, #feedback-section, .modal-overlay, .site-footer .page-footer-links div:not(:first-child), /* Keep first footer links column */ .site-footer .social-media, .footer-connect-title, .site-footer .footer-right, .card-cta .btn, .btn:not(.download-pdf-btn), .hero-badge, .template-actions .btn:not(.download-pdf-btn) /* Hide more buttons/elements */ { display: none !important; visibility: hidden !important; }
+    .site-header, .mobile-menu-toggle, .nav-indicator, /* Hide indicator */ .deco-blur, .motivational-quote, .hero-actions, .hero-stats-grid, .approach-icon, .approach-highlights, .social-integration, #learning-hub .start-quiz-btn, .full-challenge-link, .template-preview, .get-spreadsheet-btn, .template-price-note, #financial-tools-promo, #personal-coaching .coaching-interest, .disclaimer, #mmisbalior-section .promo-visual, #mmisbalior-section .btn, #feedback-section, .modal-overlay, .site-footer .page-footer-links div:not(:first-child), /* Keep first footer links column */ .site-footer .social-media, .footer-connect-title, .site-footer .footer-right, .card-cta .btn, .btn:not(.download-pdf-btn), .hero-badge, .template-actions .btn:not(.download-pdf-btn) /* Hide more buttons/elements */ { display: none !important; visibility: hidden !important; }
     .container { max-width: 100% !important; width: auto !important; padding: 0 !important; margin: 0 !important; }
     main { padding-top: 0 !important; }
     section, aside { padding: 0.5cm 0 !important; page-break-inside: avoid !important; border: none !important; background: none !important; box-shadow: none !important; }
@@ -1565,5 +1597,3 @@ main {
     .copyright { border-top: none !important; padding-top: 0; margin-top: 0.5cm; text-align: left;}
     .copyright p { color: #555 !important; font-size: 8pt; }
 }
-
-
