@@ -2,8 +2,8 @@
  * File Location: /assets/js/personal/personal.js
  * Description: Scripts for the ROFILID Personal Finance page (personal.html).
  *              Handles navigation, smooth scrolling, modals, forms, animations,
- *              and template interactions specific to this page.
- * Version: 2.6.0 (Improved Structure, Error Handling, Accessibility)
+ *              template interactions, and scrollspy navigation highlighting.
+ * Version: 2.7.0 (Added Scrollspy Feature)
  * Dependencies: Font Awesome (loaded via CSS/HTML)
  */
 
@@ -17,10 +17,10 @@
         ENABLE_SECTION_FADE_IN: true,
         ENABLE_HERO_STATS_ANIMATION: true,
         HEADER_HEIGHT_DEFAULT: 70,
-        SCROLL_OFFSET_MARGIN: 20,
+        SCROLL_OFFSET_MARGIN: 50, // Adjusted default offset for better trigger point (was 20)
         RESIZE_DEBOUNCE_DELAY: 250,
-        MODAL_FOCUS_DELAY: 100, // Increased slightly for transition
-        API_SIMULATION_DELAY: 1200, // Slightly faster simulation
+        MODAL_FOCUS_DELAY: 100,
+        API_SIMULATION_DELAY: 1200,
         PDF_DOWNLOAD_FEEDBACK_DELAY: 2500,
         LAST_INTRO_CATEGORY_ID: 4,
         PDF_FILES: {
@@ -29,7 +29,11 @@
             'cashflow': '../../assets/downloads/rofilid-personal-cashflow.pdf',
             '50-30-20': '../../assets/downloads/rofilid-50-30-20-budget.pdf',
             'expense-tracker': '../../assets/downloads/rofilid-expense-tracker.pdf'
-        }
+        },
+        // --- Scrollspy Config (NEW) ---
+        SCROLLSPY_SELECTOR: '#primary-navigation .nav-list .nav-link[href^="personal.html#"]',
+        SCROLLSPY_ACTIVE_CLASS: 'active-page',
+        SCROLLSPY_THROTTLE_DELAY: 100, // ms
     };
 
     // --- Logging Utility ---
@@ -42,18 +46,22 @@
 
     // --- Global State ---
     let activeModal = null;
-    let triggerElement = null; // Element that opened the current modal
+    let triggerElement = null;
     let currentIntroQuizData = { questions: [], currentQuestionIndex: 0, score: 0, categoryId: null };
     let resizeTimeoutId = null;
     let currentHeaderHeight = CONFIG.HEADER_HEIGHT_DEFAULT;
+    // --- Scrollspy State (NEW) ---
+    let isScrollspyActive = false;
+    let scrollspyThrottleTimeout = null;
+    let scrollspyElements = { links: [], sections: [], header: null, mobileToggle: null };
 
     // --- Cached DOM Elements ---
-    // Defined within initializePersonalPage after DOM is ready
+    // Specific elements cached within their respective setup functions
 
     // =========================================================================
     // HELPERS
     // =========================================================================
-
+    // ... (debounce, updateHeaderHeight, trapFocus, safeFocus, isValidEmail - KEEP AS IS) ...
     /** Debounce function to limit function execution rate */
     function debounce(func, wait) {
         let timeout;
@@ -82,11 +90,11 @@
         }
         const focusableEls = Array.from(element.querySelectorAll(
             'a[href]:not([disabled]), button:not([disabled]), textarea:not([disabled]), input:not([type="hidden"]):not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
-        )).filter(el => !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length)); // Filter only visible elements
+        )).filter(el => !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length));
 
         if (focusableEls.length === 0) {
             logger.warn('[trapFocus] No visible focusable elements found inside:', element);
-            return null; // No focusable elements
+            return null;
         }
 
         const firstFocusableEl = focusableEls[0];
@@ -97,13 +105,13 @@
                  return;
              }
 
-             if (e.shiftKey) { // Shift + Tab
+             if (e.shiftKey) {
                  if (document.activeElement === firstFocusableEl) {
                      e.preventDefault();
                      logger.debug('[trapFocus] Shift+Tab on first element. Focusing last:', lastFocusableEl);
                      safeFocus(lastFocusableEl);
                  }
-             } else { // Tab
+             } else {
                  if (document.activeElement === lastFocusableEl) {
                      e.preventDefault();
                      logger.debug('[trapFocus] Tab on last element. Focusing first:', firstFocusableEl);
@@ -112,20 +120,18 @@
              }
         }
 
-        // Delay focus slightly to allow transitions/rendering
         setTimeout(() => {
             if (activeModal !== element) {
                 logger.warn('[trapFocus] Modal changed before focus could be set.');
                 return;
             }
-            // Prioritize common interactive elements
             const focusTarget =
-                element.querySelector('.modal-close-btn:not([hidden])') || // Close button first
-                element.querySelector('.btn-primary:not([disabled]):not([hidden])') || // Primary action
-                element.querySelector('.btn-secondary:not([disabled]):not([hidden])') || // Secondary action
-                element.querySelector('input:not([type="hidden"]):not([disabled]):not([hidden]), select:not([disabled]):not([hidden]), textarea:not([disabled]):not([hidden])') || // First form field
-                element.querySelector('.option-button:not([disabled])') || // Quiz option
-                firstFocusableEl; // Fallback to the first found focusable element
+                element.querySelector('.modal-close-btn:not([hidden])') ||
+                element.querySelector('.btn-primary:not([disabled]):not([hidden])') ||
+                element.querySelector('.btn-secondary:not([disabled]):not([hidden])') ||
+                element.querySelector('input:not([type="hidden"]):not([disabled]):not([hidden]), select:not([disabled]):not([hidden]), textarea:not([disabled]):not([hidden])') ||
+                element.querySelector('.option-button:not([disabled])') ||
+                firstFocusableEl;
 
             if (focusTarget) {
                 logger.debug('[trapFocus] Attempting initial focus:', focusTarget);
@@ -135,11 +141,8 @@
             }
         }, CONFIG.MODAL_FOCUS_DELAY);
 
-        // Add listener to the element itself
         element.addEventListener('keydown', handleFocusTrapKeydown);
         logger.debug('[trapFocus] Focus trap initialized for:', element.id);
-
-        // Return the handler for removal
         return handleFocusTrapKeydown;
     }
 
@@ -147,7 +150,7 @@
     function safeFocus(element) {
         if (element && typeof element.focus === 'function') {
             try {
-                element.focus({ preventScroll: true }); // preventScroll is key for modals
+                element.focus({ preventScroll: true });
             } catch (err) {
                 logger.error("[safeFocus] Focusing element failed:", err, element);
             }
@@ -159,7 +162,6 @@
     /** Basic email validation */
     function isValidEmail(email) {
         if (!email) return false;
-        // More robust regex
         const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
         return emailRegex.test(String(email).toLowerCase());
     }
@@ -167,7 +169,7 @@
     // =========================================================================
     // MODAL LOGIC
     // =========================================================================
-
+    // ... (openModal, closeModal, handleModalKeydown - KEEP AS IS) ...
     /** Open a modal dialog */
     function openModal(modalElement, openingTriggerElement) {
         logger.debug('[openModal] Attempting to open modal:', modalElement?.id);
@@ -179,33 +181,28 @@
              logger.warn('[openModal] Modal already active:', modalElement.id);
              return;
         }
-        // If another modal is active, close it first without returning focus
         if (activeModal) {
             logger.info('[openModal] Closing previously active modal:', activeModal.id);
-            closeModal(false); // Close without returning focus
+            closeModal(false);
         }
 
         activeModal = modalElement;
-        triggerElement = openingTriggerElement; // Store for focus return
+        triggerElement = openingTriggerElement;
 
-        document.body.style.overflow = 'hidden'; // Prevent background scroll
+        document.body.style.overflow = 'hidden';
         modalElement.hidden = false;
 
-        // Add visible class after a frame for transition
         requestAnimationFrame(() => {
             modalElement.classList.add('visible');
             logger.debug('[openModal] Added .visible class to:', modalElement.id);
 
-             // Setup focus trapping *after* modal is potentially visible
              const focusTrapHandler = trapFocus(modalElement);
              if (focusTrapHandler) {
-                 modalElement._focusTrapHandler = focusTrapHandler; // Store handler
+                 modalElement._focusTrapHandler = focusTrapHandler;
              } else {
                  logger.warn('[openModal] Focus trapping failed to initialize for:', modalElement.id);
              }
         });
-
-        // Add ESC key listener (scoped to document)
         document.addEventListener('keydown', handleModalKeydown);
         logger.info('[openModal] Modal opened successfully:', modalElement.id);
     }
@@ -227,34 +224,27 @@
         triggerElement = null;
 
         modalToClose.classList.remove('visible');
-        document.removeEventListener('keydown', handleModalKeydown); // Remove general ESC listener
+        document.removeEventListener('keydown', handleModalKeydown);
 
-        // Remove the specific focus trap listener
         if (focusTrapHandler) {
             modalToClose.removeEventListener('keydown', focusTrapHandler);
-            delete modalToClose._focusTrapHandler; // Clean up property
+            delete modalToClose._focusTrapHandler;
             logger.debug('[closeModal] Removed focus trap listener for:', modalToClose.id);
         }
 
-        // Use transitionend to hide and clean up
         modalToClose.addEventListener('transitionend', () => {
              modalToClose.hidden = true;
              logger.debug('[closeModal] Modal hidden after transition:', modalToClose.id);
 
-             // Restore body scroll only if no other modal became active
              if (!activeModal) {
                 document.body.style.overflow = '';
                 logger.debug('[closeModal] Restored body scroll.');
              } else {
                  logger.info('[closeModal] Body scroll not restored, another modal is active:', activeModal.id);
              }
-
-            // Reset specific modal forms/states
-            // Use optional chaining for safety
             if (modalToClose.id === 'feedback-modal') resetFeedbackForm();
             if (modalToClose.id === 'quiz-modal') resetQuizModalUI();
 
-            // Return focus after modal is hidden and state reset
             if (returnFocus && triggerToFocus) {
                 logger.debug('[closeModal] Returning focus to:', triggerToFocus);
                 safeFocus(triggerToFocus);
@@ -276,19 +266,16 @@
     // =========================================================================
     // FORM HANDLING
     // =========================================================================
-
-    function showFormResponseMessage(formElement, message, type = 'success') {
+    // ... (show/hideFormResponseMessage, clearFormErrors, showInputError, validateAndGetFormData, handleFormSubmit, resetFeedbackForm - KEEP AS IS) ...
+     function showFormResponseMessage(formElement, message, type = 'success') {
         const responseEl = formElement?.querySelector('.form-response-note');
         if (!responseEl) { logger.warn("Form response element not found for:", formElement?.id); return; }
-
         responseEl.textContent = message;
-        // Ensure base class + type class
         responseEl.className = `form-response-note ${type}`;
         responseEl.hidden = false;
         responseEl.setAttribute('aria-live', type === 'error' ? 'assertive' : 'polite');
         logger.debug(`[Form Response] Shown: ${type} - ${message} for form ${formElement?.id}`);
     }
-
     function hideFormResponseMessage(formElement) {
         const responseEl = formElement?.querySelector('.form-response-note');
         if (responseEl) {
@@ -298,14 +285,12 @@
             responseEl.removeAttribute('aria-live');
         }
     }
-
     function clearFormErrors(formElement) {
         if (!formElement) return;
         formElement.querySelectorAll('.form-error-msg').forEach(msg => msg.textContent = '');
         formElement.querySelectorAll('.is-invalid').forEach(input => {
             input.classList.remove('is-invalid');
             input.removeAttribute('aria-invalid');
-            // Remove aria-describedby only if it points specifically to our error message
             const errorMsgId = input.getAttribute('aria-describedby');
             const errorMsgEl = errorMsgId ? document.getElementById(errorMsgId) : null;
             if (errorMsgEl && errorMsgEl.classList.contains('form-error-msg')) {
@@ -314,19 +299,15 @@
         });
         logger.debug(`[Form Validation] Errors cleared for form ${formElement?.id}`);
     }
-
     function showInputError(inputElement, message) {
         if (!inputElement) return;
         const formGroup = inputElement.closest('.form-group');
         if (!formGroup) return;
         const errorMsgElement = formGroup.querySelector('.form-error-msg');
-
         inputElement.classList.add('is-invalid');
         inputElement.setAttribute('aria-invalid', 'true');
-
         if (errorMsgElement) {
             errorMsgElement.textContent = message;
-            // Ensure the error message element has an ID and link it
             if (!errorMsgElement.id) {
                 errorMsgElement.id = `${inputElement.id || `input-${Math.random().toString(36).substring(7)}`}-error`;
             }
@@ -334,30 +315,25 @@
         }
         logger.debug(`[Form Validation] Error shown for input ${inputElement.id}: ${message}`);
     }
-
     function validateAndGetFormData(formId, fields) {
         const form = document.getElementById(formId);
         if (!form) {
             logger.error(`[Form Validation] Form not found: #${formId}`);
             return { isValid: false, data: null, firstInvalidElement: null };
         }
-
         clearFormErrors(form);
         let isValid = true;
         let firstInvalidElement = null;
         const formData = {};
-
         fields.forEach(field => {
             const inputElement = form.querySelector(`#${field.id}`);
             if (!inputElement) {
                 logger.warn(`[Form Validation] Input not found for field ID: ${field.id} in form ${formId}`);
-                return; // Skip this field if not found
+                return;
             }
-
             const value = (inputElement.type === 'checkbox' ? inputElement.checked : inputElement.value.trim());
-            formData[field.name] = value; // Store value regardless of validation
-
-            if (field.required && !value && inputElement.type !== 'checkbox') { // Checkboxes being false is often valid
+            formData[field.name] = value;
+            if (field.required && !value && inputElement.type !== 'checkbox') {
                 showInputError(inputElement, field.requiredMessage || `${field.label || 'Field'} is required.`);
                 isValid = false;
                 if (!firstInvalidElement) firstInvalidElement = inputElement;
@@ -375,60 +351,45 @@
                 if (!firstInvalidElement) firstInvalidElement = inputElement;
             }
         });
-
         if (!isValid && firstInvalidElement) {
             safeFocus(firstInvalidElement);
         }
-
         logger.debug(`[Form Validation] Validation result for ${formId}: ${isValid ? 'Valid' : 'Invalid'}`);
         return { isValid, data: formData, firstInvalidElement };
     }
-
     async function handleFormSubmit(options) {
-        const { formId, fields, submitButtonSelector, successMessage, errorMessage, endpointAction } = options;
-        event.preventDefault(); // Prevent default submission
-
+        const { formId, fields, submitButtonSelector, successMessage, errorMessage, endpointAction, event } = options; // Added event
+        if (event) event.preventDefault(); // Prevent default only if event is passed
         const form = document.getElementById(formId);
         const submitButton = form?.querySelector(submitButtonSelector);
         if (!form || !submitButton) {
             logger.error(`[handleFormSubmit] Form or submit button not found for ${formId}`);
             return;
         }
-
         const originalButtonHtml = submitButton.innerHTML;
         const validationResult = validateAndGetFormData(formId, fields);
-
         if (!validationResult.isValid) {
             logger.info(`[handleFormSubmit] Validation failed for ${formId}`);
-            return; // Stop submission if validation fails
+            return;
         }
-
-        // Proceed with submission
         submitButton.disabled = true;
         submitButton.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Submitting...';
-        hideFormResponseMessage(form); // Hide previous messages
-
-        // --- API Simulation ---
+        hideFormResponseMessage(form);
         logger.info(`[handleFormSubmit] Simulating API call for ${formId} with action ${endpointAction}`, validationResult.data);
         let submissionSuccess = false;
         try {
             await new Promise(resolve => setTimeout(resolve, CONFIG.API_SIMULATION_DELAY));
-            const success = Math.random() > 0.1; // ~90% success rate
-
+            const success = Math.random() > 0.1;
             if (success) {
                 logger.info(`[handleFormSubmit] Simulated submission SUCCESS for ${formId}`);
                 showFormResponseMessage(form, successMessage, 'success');
                 submissionSuccess = true;
-                form.reset(); // Reset form on success
-                // Trigger change event for selects after reset if needed (like feedback type)
+                form.reset();
                 form.querySelectorAll('select').forEach(select => {
                     const changeEvent = new Event('change', { bubbles: true });
                     select.dispatchEvent(changeEvent);
                 });
-
-                if (options.onSuccess) options.onSuccess(); // Call success callback if provided
-
-                // Optionally close modal after delay
+                if (options.onSuccess) options.onSuccess();
                 if (options.closeModalOnSuccess) {
                      setTimeout(() => {
                         if (activeModal && activeModal === form.closest('.modal-overlay')) {
@@ -436,9 +397,8 @@
                         }
                      }, 2000);
                  } else {
-                    // Focus an element outside the form after reset, like the form's heading
-                    const heading = form.closest('.modal-content')?.querySelector('h3');
-                    safeFocus(heading);
+                    const heading = form.closest('.modal-content')?.querySelector('h3, h2'); // Look for h2 as well
+                    safeFocus(heading || form); // Focus heading or form itself
                  }
             } else {
                 throw new Error("Simulated server error.");
@@ -446,29 +406,23 @@
         } catch (error) {
             logger.error(`[handleFormSubmit] Simulated submission FAILED for ${formId}:`, error);
             showFormResponseMessage(form, errorMessage, 'error');
-            // Focus the first field on generic error
-            safeFocus(form.querySelector('input, select, textarea'));
-            if (options.onError) options.onError(error); // Call error callback
+            safeFocus(validationResult.firstInvalidElement || form.querySelector('input, select, textarea')); // Focus first invalid or first field
+            if (options.onError) options.onError(error);
         } finally {
-            // Only restore button if submission failed or modal isn't closing
             if (!submissionSuccess || !options.closeModalOnSuccess) {
                 submitButton.disabled = false;
                 submitButton.innerHTML = originalButtonHtml;
             }
         }
-        // --- End Simulation ---
     }
-
     function resetFeedbackForm() {
         const form = document.getElementById('feedback-testimonial-form');
         if (!form) return;
         form.reset();
         clearFormErrors(form);
         hideFormResponseMessage(form);
-        // Ensure permission group visibility is reset
         const typeSelect = form.querySelector('#feedback-type');
         if(typeSelect) handleFeedbackTypeChange({ target: typeSelect });
-        // Restore button state just in case
         const submitButton = form.querySelector('button[type="submit"]');
         if (submitButton) {
             submitButton.disabled = false;
@@ -477,217 +431,12 @@
         logger.debug("[resetFeedbackForm] Feedback form reset.");
      }
 
-
-    // =========================================================================
-    // EVENT HANDLERS & SETUP
-    // =========================================================================
-
-    function handleMobileNavToggle() {
-        const nav = document.getElementById('primary-navigation');
-        const toggle = document.querySelector('.mobile-menu-toggle');
-        if (!nav || !toggle) return;
-
-        const isExpanded = nav.classList.toggle('active');
-        toggle.setAttribute('aria-expanded', String(isExpanded));
-        document.body.style.overflow = isExpanded ? 'hidden' : '';
-
-        if (isExpanded) {
-            safeFocus(nav.querySelector('a[href], button')); // Focus first link
-        } else if (document.activeElement && nav.contains(document.activeElement)) {
-            safeFocus(toggle); // Return focus to toggle if it was inside
-        }
-        logger.debug('Mobile navigation toggled:', isExpanded ? 'Open' : 'Closed');
-    }
-
-    function handleSmoothScroll(event) {
-        const anchor = event.currentTarget;
-        const href = anchor.getAttribute('href');
-        if (!href || !href.startsWith('#') || href.length === 1) return;
-
-        const targetId = href.substring(1);
-        const targetElement = document.getElementById(targetId);
-
-        if (targetElement) {
-            event.preventDefault();
-            logger.debug(`[SmoothScroll] Scrolling to: ${href}`);
-
-            // Close mobile nav if open and link is inside it
-            const nav = document.getElementById('primary-navigation');
-            if (nav?.classList.contains('active') && anchor.closest('#primary-navigation')) {
-                handleMobileNavToggle();
-            }
-
-            const headerOffset = currentHeaderHeight + CONFIG.SCROLL_OFFSET_MARGIN;
-            const elementPosition = targetElement.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-            window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-
-            // Set focus to the target element after scrolling for accessibility
-            setTimeout(() => {
-                // Make target focusable if it isn't already
-                 if (!targetElement.hasAttribute('tabindex')) {
-                    targetElement.setAttribute('tabindex', '-1');
-                 }
-                safeFocus(targetElement);
-            }, 600); // Delay slightly longer for scroll animation
-
-        } else {
-            logger.warn(`[SmoothScroll] Target element "${href}" not found.`);
-        }
-    }
-
-    function handleResize() {
-        updateHeaderHeight(); // Update cached header height
-        // Close mobile nav on resize to desktop if open
-        const nav = document.getElementById('primary-navigation');
-        if (window.innerWidth > 991 && nav?.classList.contains('active')) {
-            handleMobileNavToggle();
-        }
-    }
-
-    function handleFeedbackTypeChange(event) {
-        const form = document.getElementById('feedback-testimonial-form');
-        const permissionGroup = form?.querySelector('.permission-group');
-        const permissionCheckbox = permissionGroup?.querySelector('#feedback-permission');
-        if (!permissionGroup || !event?.target) return;
-
-        const isTestimonial = event.target.value === 'testimonial';
-        permissionGroup.hidden = !isTestimonial;
-        if (!isTestimonial && permissionCheckbox) {
-             permissionCheckbox.checked = false; // Reset checkbox if type changes
-        }
-        logger.debug('Feedback type changed. Permission group visible:', isTestimonial);
-    }
-
-    // --- Template Interaction Handlers ---
-    function handleGetSpreadsheetClick(event) {
-        event.preventDefault(); // Prevent default button action
-        const button = event.currentTarget;
-        const templateName = button.dataset.templateName || 'Spreadsheet';
-        const price = Number(button.dataset.price || '0');
-        const formattedPrice = price.toLocaleString('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 0 });
-
-        alert(`Interactive "${templateName}" (${formattedPrice})\n\nThis premium feature is coming soon!\nRequires a Gmail account for delivery.\nThank you for your interest.`);
-        logger.info(`Spreadsheet interest registered: ${templateName} (Price: ₦${price})`);
-    }
-
-    function handleDownloadPdfClick(event) {
-        event.preventDefault();
-        const button = event.currentTarget;
-        const card = button.closest('.template-card');
-        const templateKey = button.dataset.templateKey;
-
-        if (!card || !templateKey) {
-            logger.error("Could not find template card or data-template-key on button:", button);
-            alert("Sorry, there was an error initiating the download.");
-            return;
-        }
-
-        const pdfUrl = CONFIG.PDF_FILES[templateKey];
-        const templateName = card.querySelector('h3')?.textContent || 'Template';
-
-        if (!pdfUrl || pdfUrl === '#') {
-            alert(`Download is currently unavailable for "${templateName}". Please check back later.`);
-            logger.warn(`PDF path invalid/missing for template key: "${templateKey}". Configured URL: ${pdfUrl}`);
-            return;
-        }
-
-        logger.info(`Initiating PDF download for: ${templateName} (${templateKey}) from ${pdfUrl}`);
-        const originalButtonHtml = button.innerHTML;
-        button.disabled = true;
-        button.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i> <span>Downloading...</span>';
-
-        try {
-            const link = document.createElement('a');
-            link.href = pdfUrl;
-            const safeName = templateName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-            link.download = `rofilid-${safeName}-template.pdf`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-
-            // Restore button after delay
-            setTimeout(() => {
-                button.innerHTML = originalButtonHtml;
-                button.disabled = false;
-            }, CONFIG.PDF_DOWNLOAD_FEEDBACK_DELAY);
-
-        } catch (error) {
-            logger.error("PDF Download failed:", error);
-            alert(`Sorry, the download for "${templateName}" encountered an error. Please try again later.`);
-            button.innerHTML = originalButtonHtml; // Restore immediately on error
-            button.disabled = false;
-        }
-    }
-
-    // --- Animation Setup ---
-    function setupAnimations() {
-        if (!("IntersectionObserver" in window)) {
-            logger.warn("IntersectionObserver not supported. Skipping scroll animations.");
-            document.querySelectorAll('[data-animate-fade-in]').forEach(el => el.classList.add('is-visible'));
-            return;
-        }
-
-        // --- General Fade-In Sections ---
-        if (CONFIG.ENABLE_SECTION_FADE_IN) {
-            const fadeObserverOptions = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
-            const fadeObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target);
-                        logger.debug('Section faded in:', entry.target.id || entry.target.tagName);
-                    }
-                });
-            }, fadeObserverOptions);
-            document.querySelectorAll('#main-content > section:not(#hero)[data-animate-fade-in], #main-content > aside.motivational-quote[data-animate-fade-in]')
-                .forEach(section => fadeObserver.observe(section));
-        } else {
-            document.querySelectorAll('[data-animate-fade-in]').forEach(el => el.classList.add('is-visible'));
-        }
-
-        // --- Hero Stats Cards Animation (Staggered) ---
-        const heroStatsGrid = document.querySelector('.hero-stats-grid');
-        if (CONFIG.ENABLE_HERO_STATS_ANIMATION && heroStatsGrid) {
-            const statCards = heroStatsGrid.querySelectorAll('.stat-card[data-animate-fade-in]');
-            if (statCards.length > 0) {
-                const statsObserverOptions = { threshold: 0.3 };
-                const statsObserver = new IntersectionObserver((entries, observer) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const card = entry.target;
-                            const cardIndex = Array.from(statCards).indexOf(card);
-                            const delay = cardIndex * 100; // Stagger delay
-                            card.style.transitionDelay = `${delay}ms`;
-                            card.classList.add('is-visible');
-                            observer.unobserve(card);
-                            logger.debug('Hero stat card animated:', cardIndex);
-                        }
-                    });
-                }, statsObserverOptions);
-                statCards.forEach(card => statsObserver.observe(card));
-            }
-        } else if (heroStatsGrid) {
-            heroStatsGrid.querySelectorAll('.stat-card[data-animate-fade-in]').forEach(card => card.classList.add('is-visible'));
-        }
-        logger.info('Animations setup complete.');
-    }
-
-    // --- Dynamic Content Update ---
-    function updateCopyrightYear() {
-        const currentYearSpan = document.getElementById('current-year');
-        if (currentYearSpan) {
-            currentYearSpan.textContent = new Date().getFullYear();
-        }
-    }
-
     // =========================================================================
     // INTRO QUIZ LOGIC (Learning Hub)
     // =========================================================================
-    const introQuizQuestions = [ /* Keep the same 20 questions here */
-         // Questions 1-20...
-         { id: 1, categoryId: 1, category: "Income & Vitals Check", question: "What is the first essential step when starting to create a budget?", options: ["Calculate total monthly income", "List all fixed expenses", "Set long-term financial goals", "Track spending habits for a month"], correctAnswerIndex: 0, explanation: "Knowing your total income is fundamental; it's the basis upon which all budget allocations are planned." },
+    // ... (introQuizQuestions, quizModalElements, cacheQuizModalElements, handleIntroQuizStart, startIntroQuiz, setupIntroQuizUI, displayIntroModalQuestion, handleIntroModalOptionSelection, showIntroModalFeedback, nextIntroModalQuestion, showIntroModalResults, restartIntroModalQuiz, handleIntroNextQuizClick, resetQuizModalUI - KEEP AS IS) ...
+    const introQuizQuestions = [ /* Assume questions are here */
+          { id: 1, categoryId: 1, category: "Income & Vitals Check", question: "What is the first essential step when starting to create a budget?", options: ["Calculate total monthly income", "List all fixed expenses", "Set long-term financial goals", "Track spending habits for a month"], correctAnswerIndex: 0, explanation: "Knowing your total income is fundamental; it's the basis upon which all budget allocations are planned." },
          { id: 2, categoryId: 1, category: "Income & Vitals Check", question: "You earn ₦150,000 per month after tax and manage to save ₦22,500. What is your savings rate?", options: ["10%", "15%", "20%", "22.5%"], correctAnswerIndex: 1, explanation: "Savings Rate = (Amount Saved / Total Income) × 100. So, (₦22,500 / ₦150,000) × 100 = 15%." },
          { id: 3, categoryId: 1, category: "Income & Vitals Check", question: "What does 'Pay Yourself First' mean?", options: ["Spend on wants before needs", "Allocate income to savings/investments *before* other spending", "Pay off all debts before saving", "Treat yourself each payday"], correctAnswerIndex: 1, explanation: "'Pay Yourself First' prioritizes saving by treating it like a mandatory bill, ensuring progress towards goals." },
          { id: 4, categoryId: 1, category: "Income & Vitals Check", question: "How is personal Net Worth calculated?", options: ["Annual Income - Annual Expenses", "Total Assets (what you own) - Total Liabilities (what you owe)", "Total Savings + Total Investments", "Monthly Income x 12"], correctAnswerIndex: 1, explanation: "Net worth is a snapshot of your financial position: Assets minus Liabilities." },
@@ -708,9 +457,7 @@
          { id: 19, categoryId: 4, category: "Spending Awareness", question: "Your entertainment budget is ₦10,000. You spent ₦8,500. What % remains?", options: ["5%", "10%", "15%", "85%"], correctAnswerIndex: 2, explanation: "Remaining = ₦10k - ₦8.5k = ₦1.5k. % Remaining = (₦1.5k / ₦10k) * 100 = 15%." },
          { id: 20, categoryId: 4, category: "Spending Awareness", question: "Item costs ₦25,000, but has a 20% discount. What's the final price?", options: ["₦5,000", "₦20,000", "₦24,000", "₦30,000"], correctAnswerIndex: 1, explanation: "Discount = ₦25k * 0.20 = ₦5k. Final Price = ₦25k - ₦5k = ₦20,000." }
     ];
-
-    let quizModalElements = {}; // Store cached quiz modal elements
-
+    let quizModalElements = {};
     function cacheQuizModalElements() {
         const quizModal = document.getElementById('quiz-modal');
         if (!quizModal) {
@@ -718,347 +465,477 @@
             return false;
         }
         quizModalElements = {
-            modal: quizModal,
-            title: quizModal.querySelector('#quiz-modal-title'),
-            closeBtn: quizModal.querySelector('#quiz-modal-close'),
-            questionEl: quizModal.querySelector('#quiz-modal-question'),
-            optionsEl: quizModal.querySelector('#quiz-modal-options'),
-            feedbackEl: quizModal.querySelector('#quiz-modal-feedback'),
-            resultsEl: quizModal.querySelector('#quiz-modal-results'),
-            progressCurrent: quizModal.querySelector('#quiz-modal-q-current'),
-            progressTotal: quizModal.querySelector('#quiz-modal-q-total'),
-            nextBtn: quizModal.querySelector('#quiz-modal-next'),
-            nextQuizBtn: quizModal.querySelector('#quiz-modal-next-quiz'),
-            restartBtn: quizModal.querySelector('#quiz-modal-restart'),
-            closeResultsBtn: quizModal.querySelector('#quiz-modal-close-results'),
-            fullChallengePrompt: quizModal.querySelector('#quiz-modal-full-challenge-prompt')
+            modal: quizModal, title: quizModal.querySelector('#quiz-modal-title'), closeBtn: quizModal.querySelector('#quiz-modal-close'), questionEl: quizModal.querySelector('#quiz-modal-question'), optionsEl: quizModal.querySelector('#quiz-modal-options'), feedbackEl: quizModal.querySelector('#quiz-modal-feedback'), resultsEl: quizModal.querySelector('#quiz-modal-results'), progressCurrent: quizModal.querySelector('#quiz-modal-q-current'), progressTotal: quizModal.querySelector('#quiz-modal-q-total'), nextBtn: quizModal.querySelector('#quiz-modal-next'), nextQuizBtn: quizModal.querySelector('#quiz-modal-next-quiz'), restartBtn: quizModal.querySelector('#quiz-modal-restart'), closeResultsBtn: quizModal.querySelector('#quiz-modal-close-results'), fullChallengePrompt: quizModal.querySelector('#quiz-modal-full-challenge-prompt')
         };
-
-        // Verify crucial elements exist
         const crucialElements = ['title', 'questionEl', 'optionsEl', 'feedbackEl', 'resultsEl', 'progressCurrent', 'progressTotal', 'nextBtn', 'nextQuizBtn', 'restartBtn', 'closeResultsBtn'];
         for (const key of crucialElements) {
             if (!quizModalElements[key]) {
                 logger.error(`Quiz modal sub-element missing: ${key}`);
                 alert("Error: The quiz interface is incomplete. Please try refreshing the page.");
-                return false; // Indicate caching failure
+                return false;
             }
         }
         logger.debug("Quiz modal elements cached successfully.");
         return true;
     }
-
     function handleIntroQuizStart(event) {
         logger.debug('[handleIntroQuizStart] called by:', event.currentTarget);
         const button = event.currentTarget;
         const card = button.closest('.category-card');
-        if (!card) {
-            logger.error('[handleIntroQuizStart] Could not find parent .category-card.');
-            alert("An error occurred starting the quiz.");
-            return;
-        }
-
+        if (!card) { logger.error('[handleIntroQuizStart] Could not find parent .category-card.'); alert("An error occurred starting the quiz."); return; }
         const categoryId = parseInt(card.dataset.categoryId, 10);
-        if (isNaN(categoryId) || categoryId < 1) {
-            logger.error(`[handleIntroQuizStart] Invalid category ID: ${card.dataset.categoryId}`);
-            alert("Cannot start quiz due to invalid category.");
-            return;
-        }
-        if (categoryId > CONFIG.LAST_INTRO_CATEGORY_ID) {
-            logger.warn(`[handleIntroQuizStart] Category ID ${categoryId} exceeds intro limit.`);
-            alert("This quiz might be part of the full challenge. Visit the 'All Quizzes' page.");
-            return;
-        }
-
+        if (isNaN(categoryId) || categoryId < 1) { logger.error(`[handleIntroQuizStart] Invalid category ID: ${card.dataset.categoryId}`); alert("Cannot start quiz due to invalid category."); return; }
+        if (categoryId > CONFIG.LAST_INTRO_CATEGORY_ID) { logger.warn(`[handleIntroQuizStart] Category ID ${categoryId} exceeds intro limit.`); alert("This quiz might be part of the full challenge. Visit the 'All Quizzes' page."); return; }
         const categoryQuestions = introQuizQuestions.filter(q => q.categoryId === categoryId);
-        if (categoryQuestions.length === 0) {
-            logger.error(`[handleIntroQuizStart] No questions found for category ID: ${categoryId}.`);
-            alert("Sorry, questions for this check are unavailable.");
-            return;
-        }
-
+        if (categoryQuestions.length === 0) { logger.error(`[handleIntroQuizStart] No questions found for category ID: ${categoryId}.`); alert("Sorry, questions for this check are unavailable."); return; }
         logger.debug(`[handleIntroQuizStart] Found ${categoryQuestions.length} questions for category ${categoryId}. Starting quiz...`);
-        startIntroQuiz(categoryId, categoryQuestions, button); // Pass button as trigger
+        startIntroQuiz(categoryId, categoryQuestions, button);
     }
-
-     function startIntroQuiz(catId, questions, openingTrigger) {
+    function startIntroQuiz(catId, questions, openingTrigger) {
          logger.info(`[startIntroQuiz] Starting Intro Quiz - Category: ${catId}`);
-         if (!quizModalElements.modal) {
-             logger.error("[startIntroQuiz] FAILED: Quiz modal DOM element not available.");
-             alert("Error: Quiz interface could not be loaded.");
-             return;
-         }
-         if (!questions || questions.length === 0) {
-             logger.error("[startIntroQuiz] FAILED: No questions provided for category:", catId);
-             alert("Error: No questions available for this quiz check.");
-             return;
-         }
-
+         if (!quizModalElements.modal) { logger.error("[startIntroQuiz] FAILED: Quiz modal DOM element not available."); alert("Error: Quiz interface could not be loaded."); return; }
+         if (!questions || questions.length === 0) { logger.error("[startIntroQuiz] FAILED: No questions provided for category:", catId); alert("Error: No questions available for this quiz check."); return; }
          currentIntroQuizData = { questions, currentQuestionIndex: 0, score: 0, categoryId: catId };
          logger.debug("[startIntroQuiz] Current quiz data set:", currentIntroQuizData);
-
-         setupIntroQuizUI(); // Prepare UI elements
-         displayIntroModalQuestion(); // Display first question
-
+         setupIntroQuizUI();
+         displayIntroModalQuestion();
          openModal(quizModalElements.modal, openingTrigger);
      }
-
-     function setupIntroQuizUI() {
+    function setupIntroQuizUI() {
          logger.debug("[setupIntroQuizUI] Setting up quiz UI...");
-         if (!quizModalElements.modal) return; // Should not happen if caching worked
-
+         if (!quizModalElements.modal) return;
          const { title, resultsEl, feedbackEl, questionEl, optionsEl, progressTotal, nextBtn, nextQuizBtn, restartBtn, closeResultsBtn, fullChallengePrompt } = quizModalElements;
          const firstQuestion = currentIntroQuizData.questions[0];
-
          if (title) title.textContent = firstQuestion?.category || 'Financial Concept Check';
          if (progressTotal) progressTotal.textContent = currentIntroQuizData.questions.length;
-
-         // Reset visibility/content
          if (resultsEl) { resultsEl.hidden = true; resultsEl.innerHTML = ''; }
          if (feedbackEl) { feedbackEl.hidden = true; feedbackEl.innerHTML = ''; }
-         if (questionEl) { questionEl.hidden = false; questionEl.textContent = 'Loading...'; } // Use textContent
+         if (questionEl) { questionEl.hidden = false; questionEl.textContent = 'Loading...'; }
          if (optionsEl) { optionsEl.hidden = false; optionsEl.innerHTML = ''; }
-
          const progressWrapper = quizModalElements.progressCurrent?.closest('.quiz-modal-progress');
          if (progressWrapper) progressWrapper.removeAttribute('hidden');
-
-         // Hide navigation buttons initially
          [nextBtn, nextQuizBtn, restartBtn, closeResultsBtn].forEach(btn => { if (btn) btn.hidden = true; });
          if (fullChallengePrompt) fullChallengePrompt.hidden = true;
-
          logger.debug("[setupIntroQuizUI] UI setup complete.");
      }
-
-     function displayIntroModalQuestion() {
+    function displayIntroModalQuestion() {
          const { questionEl, optionsEl, progressCurrent } = quizModalElements;
          const { questions, currentQuestionIndex } = currentIntroQuizData;
          logger.debug(`[displayIntroModalQuestion] Displaying question index: ${currentQuestionIndex}`);
-
-         if (!questionEl || !optionsEl || !progressCurrent) {
-             logger.error("[displayIntroModalQuestion] Missing critical UI elements.");
-             return;
-         }
-
-         if (currentQuestionIndex >= questions.length) {
-             logger.info("[displayIntroModalQuestion] End of questions. Showing results.");
-             showIntroModalResults();
-             return;
-         }
-
+         if (!questionEl || !optionsEl || !progressCurrent) { logger.error("[displayIntroModalQuestion] Missing critical UI elements."); return; }
+         if (currentQuestionIndex >= questions.length) { logger.info("[displayIntroModalQuestion] End of questions. Showing results."); showIntroModalResults(); return; }
          const q = questions[currentQuestionIndex];
-         questionEl.innerHTML = `<span class="question-number">${currentQuestionIndex + 1}.</span> `; // Number span
-         questionEl.appendChild(document.createTextNode(q.question)); // Append text node for safety
+         questionEl.innerHTML = `<span class="question-number">${currentQuestionIndex + 1}.</span> `;
+         questionEl.appendChild(document.createTextNode(q.question));
          progressCurrent.textContent = currentQuestionIndex + 1;
-         optionsEl.innerHTML = ''; // Clear previous options
-
+         optionsEl.innerHTML = '';
          q.options.forEach((option, index) => {
-             const label = document.createElement('label');
-             label.className = 'option-label';
-
-             const button = document.createElement('button');
-             button.textContent = option; // Use textContent
-             button.className = 'option-button';
-             button.type = 'button';
-             button.dataset.index = index;
-             // ARIA roles handled by radiogroup on container and JS updates
+             const label = document.createElement('label'); label.className = 'option-label';
+             const button = document.createElement('button'); button.textContent = option; button.className = 'option-button'; button.type = 'button'; button.dataset.index = index;
              button.onclick = () => handleIntroModalOptionSelection(index);
-
-             label.appendChild(button);
-             optionsEl.appendChild(label);
+             label.appendChild(button); optionsEl.appendChild(label);
          });
-
-         // Reset feedback and hide next button
          if (quizModalElements.feedbackEl) quizModalElements.feedbackEl.hidden = true;
          if (quizModalElements.nextBtn) quizModalElements.nextBtn.hidden = true;
-
-         // Focus the first option button
          safeFocus(optionsEl.querySelector('.option-button'));
          logger.debug("[displayIntroModalQuestion] Question displayed.");
     }
-
     function handleIntroModalOptionSelection(selectedIndex) {
         logger.debug(`[handleIntroModalOptionSelection] Option selected: index ${selectedIndex}`);
         const { optionsEl } = quizModalElements;
         const { questions, currentQuestionIndex } = currentIntroQuizData;
         const q = questions[currentQuestionIndex];
-
-        if (!q || !optionsEl) {
-            logger.error("[handleIntroModalOptionSelection] Missing question data or options element.");
-            return;
-        }
-
+        if (!q || !optionsEl) { logger.error("[handleIntroModalOptionSelection] Missing question data or options element."); return; }
         const buttons = optionsEl.querySelectorAll('.option-button');
-        buttons.forEach(button => button.disabled = true); // Disable all buttons
-
+        buttons.forEach(button => button.disabled = true);
         const isCorrect = selectedIndex === q.correctAnswerIndex;
-        if (isCorrect) {
-            currentIntroQuizData.score++;
-            logger.debug(`[handleIntroModalOptionSelection] Correct! Score: ${currentIntroQuizData.score}`);
-        } else {
-            logger.debug(`[handleIntroModalOptionSelection] Incorrect. Correct answer index: ${q.correctAnswerIndex}`);
-        }
-
+        if (isCorrect) { currentIntroQuizData.score++; logger.debug(`[handleIntroModalOptionSelection] Correct! Score: ${currentIntroQuizData.score}`); }
+        else { logger.debug(`[handleIntroModalOptionSelection] Incorrect. Correct answer index: ${q.correctAnswerIndex}`); }
         showIntroModalFeedback(selectedIndex, q.correctAnswerIndex, q.explanation);
     }
-
     function showIntroModalFeedback(selectedIndex, correctIndex, explanation) {
         logger.debug("[showIntroModalFeedback] Displaying feedback.");
         const { optionsEl, feedbackEl, nextBtn } = quizModalElements;
-        if (!optionsEl || !feedbackEl) {
-            logger.error("[showIntroModalFeedback] Missing options buttons or feedback element.");
-            return;
-        }
-
+        if (!optionsEl || !feedbackEl) { logger.error("[showIntroModalFeedback] Missing options buttons or feedback element."); return; }
         const buttons = optionsEl.querySelectorAll('.option-button');
         buttons.forEach((button, index) => {
-            button.classList.remove('correct', 'incorrect'); // Clean up first
+            button.classList.remove('correct', 'incorrect');
             if (index === correctIndex) button.classList.add('correct');
             else if (index === selectedIndex) button.classList.add('incorrect');
         });
-
-        // Show feedback text using textContent for security
-        const feedbackParagraph = document.createElement('p');
-        const feedbackStrong = document.createElement('strong');
+        const feedbackParagraph = document.createElement('p'); const feedbackStrong = document.createElement('strong');
         feedbackStrong.textContent = selectedIndex === correctIndex ? 'Correct! ' : 'Insight: ';
-        feedbackParagraph.appendChild(feedbackStrong);
-        feedbackParagraph.appendChild(document.createTextNode(explanation || 'No explanation provided.'));
-
-        feedbackEl.innerHTML = ''; // Clear previous content
-        feedbackEl.appendChild(feedbackParagraph);
+        feedbackParagraph.appendChild(feedbackStrong); feedbackParagraph.appendChild(document.createTextNode(explanation || 'No explanation provided.'));
+        feedbackEl.innerHTML = ''; feedbackEl.appendChild(feedbackParagraph);
         feedbackEl.className = `quiz-feedback ${selectedIndex === correctIndex ? 'correct' : 'incorrect'}`;
         feedbackEl.hidden = false;
-
-        // Reveal 'Next' button or show results
         const quiz = currentIntroQuizData;
         if (quiz.currentQuestionIndex < quiz.questions.length - 1) {
-            if (nextBtn) {
-                nextBtn.hidden = false;
-                safeFocus(nextBtn); // Focus the next button
-                logger.debug("[showIntroModalFeedback] Next question available.");
-            } else { logger.warn("[showIntroModalFeedback] Next button not found."); }
+            if (nextBtn) { nextBtn.hidden = false; safeFocus(nextBtn); logger.debug("[showIntroModalFeedback] Next question available."); }
+            else { logger.warn("[showIntroModalFeedback] Next button not found."); }
         } else {
-            if (nextBtn) nextBtn.hidden = true; // Hide next on last question
+            if (nextBtn) nextBtn.hidden = true;
             logger.info("[showIntroModalFeedback] Last question. Showing results soon.");
-            setTimeout(showIntroModalResults, 1200); // Delay results display
+            setTimeout(showIntroModalResults, 1200);
         }
     }
-
     function nextIntroModalQuestion() {
         logger.debug("[nextIntroModalQuestion] Advancing to next question.");
         if (!currentIntroQuizData) return;
         if (quizModalElements.feedbackEl) quizModalElements.feedbackEl.hidden = true;
         if (quizModalElements.nextBtn) quizModalElements.nextBtn.hidden = true;
-
         currentIntroQuizData.currentQuestionIndex++;
         displayIntroModalQuestion();
     }
-
     function showIntroModalResults() {
         logger.info("[showIntroModalResults] Displaying quiz results.");
         const { questionEl, optionsEl, feedbackEl, nextBtn, resultsEl, nextQuizBtn, restartBtn, closeResultsBtn, fullChallengePrompt } = quizModalElements;
         const quiz = currentIntroQuizData;
-
-        if (!resultsEl || !quiz) {
-            logger.error("[showIntroModalResults] Missing results element or quiz data.");
-            closeModal(); // Close if results can't be shown
-            return;
-        }
-
-        // Hide active quiz elements
+        if (!resultsEl || !quiz) { logger.error("[showIntroModalResults] Missing results element or quiz data."); closeModal(); return; }
         [questionEl, optionsEl, feedbackEl, nextBtn].forEach(el => { if (el) el.hidden = true; });
         const progressWrapper = quizModalElements.progressCurrent?.closest('.quiz-modal-progress');
-        if (progressWrapper) progressWrapper.hidden = true; // Hide progress text
-
-        const score = quiz.score;
-        const total = quiz.questions.length;
-        const percentage = total > 0 ? Math.round((score / total) * 100) : 0;
+        if (progressWrapper) progressWrapper.hidden = true;
+        const score = quiz.score; const total = quiz.questions.length; const percentage = total > 0 ? Math.round((score / total) * 100) : 0;
         let feedbackMsg = 'Keep exploring our resources to strengthen your knowledge!';
         if (percentage === 100) feedbackMsg = 'Excellent work! You have a strong understanding.';
         else if (percentage >= 80) feedbackMsg = 'Great job! You\'re building solid financial awareness.';
         else if (percentage >= 50) feedbackMsg = 'Good start! Review the insights to reinforce learning.';
-
-        resultsEl.innerHTML = `
-            <h4>Check Complete!</h4>
-            <p>You answered ${score} out of ${total} correctly.</p>
-            <p class="quiz-score-percentage">(${percentage}%)</p>
-            <p class="quiz-result-message">${feedbackMsg}</p>`;
+        resultsEl.innerHTML = `<h4>Check Complete!</h4><p>You answered ${score} out of ${total} correctly.</p><p class="quiz-score-percentage">(${percentage}%)</p><p class="quiz-result-message">${feedbackMsg}</p>`;
         resultsEl.hidden = false;
-
-        // Control navigation button visibility
         let focusTarget = null;
         if (restartBtn) { restartBtn.hidden = false; focusTarget = restartBtn; }
-        if (closeResultsBtn) { closeResultsBtn.hidden = false; focusTarget = closeResultsBtn; } // Close often preferred
-
-        // Show 'Next Check' or 'Full Challenge' prompt
+        if (closeResultsBtn) { closeResultsBtn.hidden = false; focusTarget = closeResultsBtn; }
         if (quiz.categoryId && quiz.categoryId < CONFIG.LAST_INTRO_CATEGORY_ID) {
-            if (nextQuizBtn) {
-                nextQuizBtn.dataset.nextCategoryId = quiz.categoryId + 1;
-                nextQuizBtn.hidden = false;
-                focusTarget = nextQuizBtn; // Make 'Next Check' primary focus
-                logger.debug("[showIntroModalResults] Showing 'Next Check' button.");
-            }
+            if (nextQuizBtn) { nextQuizBtn.dataset.nextCategoryId = quiz.categoryId + 1; nextQuizBtn.hidden = false; focusTarget = nextQuizBtn; logger.debug("[showIntroModalResults] Showing 'Next Check' button."); }
         } else if (quiz.categoryId === CONFIG.LAST_INTRO_CATEGORY_ID) {
-            if (fullChallengePrompt) {
-                fullChallengePrompt.hidden = false;
-                logger.debug("[showIntroModalResults] Showing 'Full Challenge' prompt.");
-            }
+            if (fullChallengePrompt) { fullChallengePrompt.hidden = false; logger.debug("[showIntroModalResults] Showing 'Full Challenge' prompt."); }
         }
-
         logger.debug("[showIntroModalResults] Focusing results action button:", focusTarget);
         safeFocus(focusTarget);
     }
-
     function restartIntroModalQuiz() {
         logger.info("[restartIntroModalQuiz] Restarting current quiz check.");
         const catId = currentIntroQuizData.categoryId;
-        if (!catId) {
-            logger.error("[restartIntroModalQuiz] Cannot restart, category ID missing.");
-            closeModal();
-            return;
-        }
+        if (!catId) { logger.error("[restartIntroModalQuiz] Cannot restart, category ID missing."); closeModal(); return; }
         const questions = introQuizQuestions.filter(q => q.categoryId === catId);
-        // Find original trigger button again
         const originalTrigger = document.querySelector(`.category-card[data-category-id="${catId}"] .start-quiz-btn`);
-
-        if (questions.length > 0) {
-            startIntroQuiz(catId, questions, originalTrigger || triggerElement); // Use found button or stored trigger
-        } else {
-            logger.error(`[restartIntroModalQuiz] Failed to find questions for category ${catId}.`);
-            closeModal();
-        }
+        if (questions.length > 0) { startIntroQuiz(catId, questions, originalTrigger || triggerElement); }
+        else { logger.error(`[restartIntroModalQuiz] Failed to find questions for category ${catId}.`); closeModal(); }
     }
-
     function handleIntroNextQuizClick(event) {
         logger.debug("[handleIntroNextQuizClick] 'Next Check' button clicked.");
         const button = event.currentTarget;
         const nextCatId = parseInt(button.dataset.nextCategoryId, 10);
-
         if (!isNaN(nextCatId) && nextCatId <= CONFIG.LAST_INTRO_CATEGORY_ID) {
             const questions = introQuizQuestions.filter(q => q.categoryId === nextCatId);
             const nextTriggerButton = document.querySelector(`.category-card[data-category-id="${nextCatId}"] .start-quiz-btn`);
-
-            if (questions.length > 0) {
-                startIntroQuiz(nextCatId, questions, nextTriggerButton || button); // Use next button's trigger if found
-            } else {
-                logger.error(`[handleIntroNextQuizClick] Questions missing for next category: ${nextCatId}`);
-                alert("Error loading the next check. Please close and try starting it manually.");
-                closeModal();
-            }
-        } else {
-            logger.error("[handleIntroNextQuizClick] Invalid next category ID:", button.dataset.nextCategoryId);
-            alert("Error determining the next check.");
-            closeModal();
-        }
+            if (questions.length > 0) { startIntroQuiz(nextCatId, questions, nextTriggerButton || button); }
+            else { logger.error(`[handleIntroNextQuizClick] Questions missing for next category: ${nextCatId}`); alert("Error loading the next check. Please close and try starting it manually."); closeModal(); }
+        } else { logger.error("[handleIntroNextQuizClick] Invalid next category ID:", button.dataset.nextCategoryId); alert("Error determining the next check."); closeModal(); }
     }
-
-    /** Minimal reset for Quiz Modal UI (called on close) */
     function resetQuizModalUI() {
         if (!quizModalElements.modal) return;
         const { feedbackEl, resultsEl, optionsEl, questionEl } = quizModalElements;
         if(feedbackEl) feedbackEl.hidden = true;
         if(resultsEl) resultsEl.hidden = true;
         if(optionsEl) optionsEl.innerHTML = '';
-        if(questionEl) questionEl.textContent = ''; // Clear question text
+        if(questionEl) questionEl.textContent = '';
         logger.debug("[resetQuizModalUI] Quiz modal UI elements reset.");
+    }
+
+    // =========================================================================
+    // SCROLLSPY LOGIC (NEW)
+    // =========================================================================
+    /**
+     * Initializes the scrollspy feature by caching elements and mapping sections.
+     */
+    function setupScrollspy() {
+        scrollspyElements.links = Array.from(document.querySelectorAll(CONFIG.SCROLLSPY_SELECTOR));
+        scrollspyElements.header = document.querySelector('.site-header');
+        scrollspyElements.mobileToggle = document.querySelector('.mobile-menu-toggle');
+
+        if (!scrollspyElements.links.length || !scrollspyElements.header || !scrollspyElements.mobileToggle) {
+            logger.warn("Scrollspy setup failed: Missing required elements (links, header, or mobile toggle). Disabling feature.");
+            scrollspyElements = { links: [], sections: [], header: null, mobileToggle: null }; // Clear elements
+            return; // Don't proceed if essential elements are missing
+        }
+
+        // Create an array of sections based on nav links
+        scrollspyElements.sections = scrollspyElements.links
+            .map(link => {
+                try {
+                    const href = link.getAttribute('href');
+                    // Ensure it's a valid hash link on the *current* page structure
+                    if (href && href.includes('#')) {
+                        const id = href.substring(href.lastIndexOf('#') + 1);
+                        if (id) {
+                            const section = document.getElementById(id);
+                            // Return object only if section exists
+                            return section ? { link: link, section: section } : null;
+                        }
+                    }
+                } catch (e) {
+                    logger.error('[Scrollspy Setup] Error processing link', link, e);
+                }
+                return null; // Skip invalid links or missing sections
+            })
+            .filter(item => item !== null); // Remove null entries
+
+        if (!scrollspyElements.sections.length) {
+            logger.warn('Scrollspy setup failed: No corresponding sections found for the nav links.');
+            scrollspyElements = { links: [], sections: [], header: null, mobileToggle: null }; // Clear elements
+            return;
+        }
+
+        logger.info(`Scrollspy setup complete. Monitoring ${scrollspyElements.sections.length} sections.`);
+        checkAndAttachScrollspyListener(); // Perform initial check to attach listener if needed
+    }
+
+    /**
+     * Updates the active class on navigation links based on scroll position.
+     */
+    function updateScrollspyActiveLink() {
+        if (!scrollspyElements.sections.length || !scrollspyElements.header) return; // Don't run if not setup
+
+        // Use live header height for accuracy
+        const headerHeight = scrollspyElements.header.offsetHeight;
+        const scrollOffset = headerHeight + CONFIG.SCROLL_OFFSET_MARGIN;
+
+        let currentSectionData = null;
+
+        // Find the last section whose top edge is above the offset point
+        for (let i = scrollspyElements.sections.length - 1; i >= 0; i--) {
+            const sectionData = scrollspyElements.sections[i];
+            const rect = sectionData.section.getBoundingClientRect();
+
+            // Check if the top of the section is above the offset line
+            if (rect.top <= scrollOffset) {
+                currentSectionData = sectionData;
+                break; // Found the current section
+            }
+        }
+
+        // Special case: Check if user scrolled near the bottom
+        if ((window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 50) {
+             currentSectionData = scrollspyElements.sections[scrollspyElements.sections.length - 1];
+        }
+
+        // Update Classes
+        let foundActive = false;
+        scrollspyElements.links.forEach(link => {
+            if (currentSectionData && link === currentSectionData.link) {
+                link.classList.add(CONFIG.SCROLLSPY_ACTIVE_CLASS);
+                foundActive = true;
+            } else {
+                link.classList.remove(CONFIG.SCROLLSPY_ACTIVE_CLASS);
+            }
+        });
+
+         // Edge case: If scrolled way above the first section, deactivate all
+         if (!foundActive && currentSectionData === null && scrollspyElements.sections.length > 0) {
+             const firstSectionTop = scrollspyElements.sections[0].section.getBoundingClientRect().top;
+             if (firstSectionTop > scrollOffset) {
+                  scrollspyElements.links.forEach(link => link.classList.remove(CONFIG.SCROLLSPY_ACTIVE_CLASS));
+             }
+         }
+         // logger.debug('[Scrollspy Update] Active section:', currentSectionData?.section.id);
+    }
+
+    /**
+     * Throttled scroll handler for scrollspy.
+     */
+    function handleScrollspyScroll() {
+        if (!scrollspyThrottleTimeout) {
+            updateScrollspyActiveLink();
+            scrollspyThrottleTimeout = setTimeout(() => {
+                scrollspyThrottleTimeout = null;
+            }, CONFIG.SCROLLSPY_THROTTLE_DELAY);
+        }
+    }
+
+    /**
+     * Checks if desktop view is active and attaches or detaches the scrollspy listener accordingly.
+     */
+    function checkAndAttachScrollspyListener() {
+        if (!scrollspyElements.mobileToggle || scrollspyElements.sections.length === 0) {
+             // If essential elements are missing or no sections to spy on, ensure listener is removed
+             if (isScrollspyActive) {
+                 window.removeEventListener('scroll', handleScrollspyScroll);
+                 isScrollspyActive = false;
+                 logger.info("Scrollspy listener detached (missing elements or sections).");
+             }
+             return;
+        }
+
+        const isDesktopView = getComputedStyle(scrollspyElements.mobileToggle).display === 'none';
+
+        if (isDesktopView && !isScrollspyActive) {
+            // Attach listener
+            window.addEventListener('scroll', handleScrollspyScroll, { passive: true });
+            isScrollspyActive = true;
+            updateScrollspyActiveLink(); // Run once on attach
+            logger.info("Scrollspy listener attached.");
+        } else if (!isDesktopView && isScrollspyActive) {
+            // Detach listener
+            window.removeEventListener('scroll', handleScrollspyScroll);
+            isScrollspyActive = false;
+            // Deactivate all links when switching to mobile
+            scrollspyElements.links.forEach(link => link.classList.remove(CONFIG.SCROLLSPY_ACTIVE_CLASS));
+            logger.info("Scrollspy listener detached.");
+        }
+        // If view state matches listener state, do nothing
+    }
+
+    // =========================================================================
+    // EVENT HANDLERS & SETUP
+    // =========================================================================
+
+    function handleMobileNavToggle() {
+        const nav = document.getElementById('primary-navigation');
+        const toggle = document.querySelector('.mobile-menu-toggle');
+        if (!nav || !toggle) return;
+        const isExpanded = nav.classList.toggle('active');
+        toggle.setAttribute('aria-expanded', String(isExpanded));
+        document.body.style.overflow = isExpanded ? 'hidden' : '';
+        if (isExpanded) safeFocus(nav.querySelector('a[href], button'));
+        else if (document.activeElement && nav.contains(document.activeElement)) safeFocus(toggle);
+        logger.debug('Mobile navigation toggled:', isExpanded ? 'Open' : 'Closed');
+    }
+
+    function handleSmoothScroll(event) {
+        const anchor = event.currentTarget;
+        const href = anchor.getAttribute('href');
+        // Modified check to ensure it's only an internal page hash
+        if (!href || !href.includes('#') || href.split('#')[0] !== 'personal.html' && href.split('#')[0] !== '') return;
+
+        const targetId = href.substring(href.lastIndexOf('#') + 1);
+        const targetElement = document.getElementById(targetId);
+
+        if (targetElement) {
+            event.preventDefault();
+            logger.debug(`[SmoothScroll] Scrolling to: #${targetId}`);
+            const nav = document.getElementById('primary-navigation');
+            if (nav?.classList.contains('active') && anchor.closest('#primary-navigation')) {
+                handleMobileNavToggle();
+            }
+            const headerOffset = currentHeaderHeight + CONFIG.SCROLL_OFFSET_MARGIN;
+            const elementPosition = targetElement.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+            window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+            setTimeout(() => {
+                 if (!targetElement.hasAttribute('tabindex')) targetElement.setAttribute('tabindex', '-1');
+                safeFocus(targetElement);
+            }, 600);
+        } else {
+            logger.warn(`[SmoothScroll] Target element "#${targetId}" not found.`);
+        }
+    }
+
+    function handleResize() { // MODIFIED
+        updateHeaderHeight();
+        const nav = document.getElementById('primary-navigation');
+        // Adjusted breakpoint check to match common CSS practice (e.g., max-width: 991px for mobile nav)
+        if (window.innerWidth > 991 && nav?.classList.contains('active')) {
+            handleMobileNavToggle();
+        }
+        // Re-check scrollspy attachment on resize (NEW)
+        checkAndAttachScrollspyListener();
+    }
+
+    function handleFeedbackTypeChange(event) {
+        const form = document.getElementById('feedback-testimonial-form');
+        const permissionGroup = form?.querySelector('.permission-group');
+        const permissionCheckbox = permissionGroup?.querySelector('#feedback-permission');
+        if (!permissionGroup || !event?.target) return;
+        const isTestimonial = event.target.value === 'testimonial';
+        permissionGroup.hidden = !isTestimonial;
+        if (!isTestimonial && permissionCheckbox) permissionCheckbox.checked = false;
+        logger.debug('Feedback type changed. Permission group visible:', isTestimonial);
+    }
+
+    // --- Template Interaction Handlers ---
+    function handleGetSpreadsheetClick(event) {
+        event.preventDefault();
+        const button = event.currentTarget;
+        const templateName = button.dataset.templateName || 'Spreadsheet';
+        const price = Number(button.dataset.price || '0');
+        const formattedPrice = price.toLocaleString('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 0 });
+        alert(`Interactive "${templateName}" (${formattedPrice})\n\nThis premium feature is coming soon!\nRequires a Gmail account for delivery.\nThank you for your interest.`);
+        logger.info(`Spreadsheet interest registered: ${templateName} (Price: ₦${price})`);
+    }
+    function handleDownloadPdfClick(event) {
+        event.preventDefault();
+        const button = event.currentTarget;
+        const card = button.closest('.template-card');
+        const templateKey = button.dataset.templateKey;
+        if (!card || !templateKey) { logger.error("Could not find template card or data-template-key on button:", button); alert("Sorry, there was an error initiating the download."); return; }
+        const pdfUrl = CONFIG.PDF_FILES[templateKey];
+        const templateName = card.querySelector('h3')?.textContent || 'Template';
+        if (!pdfUrl || pdfUrl === '#') { alert(`Download is currently unavailable for "${templateName}". Please check back later.`); logger.warn(`PDF path invalid/missing for template key: "${templateKey}". Configured URL: ${pdfUrl}`); return; }
+        logger.info(`Initiating PDF download for: ${templateName} (${templateKey}) from ${pdfUrl}`);
+        const originalButtonHtml = button.innerHTML;
+        button.disabled = true; button.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i> <span>Downloading...</span>';
+        try {
+            const link = document.createElement('a'); link.href = pdfUrl;
+            const safeName = templateName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+            link.download = `rofilid-${safeName}-template.pdf`;
+            document.body.appendChild(link); link.click(); document.body.removeChild(link);
+            setTimeout(() => { button.innerHTML = originalButtonHtml; button.disabled = false; }, CONFIG.PDF_DOWNLOAD_FEEDBACK_DELAY);
+        } catch (error) {
+            logger.error("PDF Download failed:", error); alert(`Sorry, the download for "${templateName}" encountered an error. Please try again later.`);
+            button.innerHTML = originalButtonHtml; button.disabled = false;
+        }
+    }
+
+    // --- Animation Setup ---
+    function setupAnimations() {
+        if (!("IntersectionObserver" in window)) {
+            logger.warn("IntersectionObserver not supported. Skipping scroll animations.");
+            document.querySelectorAll('[data-animate-fade-in]').forEach(el => el.classList.add('is-visible'));
+            return;
+        }
+        if (CONFIG.ENABLE_SECTION_FADE_IN) {
+            const fadeObserverOptions = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
+            const fadeObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible'); observer.unobserve(entry.target);
+                        logger.debug('Section faded in:', entry.target.id || entry.target.tagName);
+                    }
+                });
+            }, fadeObserverOptions);
+            document.querySelectorAll('#main-content > section:not(#hero)[data-animate-fade-in], #main-content > aside.motivational-quote[data-animate-fade-in]')
+                .forEach(section => fadeObserver.observe(section));
+        } else {
+            document.querySelectorAll('[data-animate-fade-in]').forEach(el => el.classList.add('is-visible'));
+        }
+        const heroStatsGrid = document.querySelector('.hero-stats-grid');
+        if (CONFIG.ENABLE_HERO_STATS_ANIMATION && heroStatsGrid) {
+            const statCards = heroStatsGrid.querySelectorAll('.stat-card[data-animate-fade-in]');
+            if (statCards.length > 0) {
+                const statsObserverOptions = { threshold: 0.3 };
+                const statsObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const card = entry.target; const cardIndex = Array.from(statCards).indexOf(card);
+                            const delay = cardIndex * 100; card.style.transitionDelay = `${delay}ms`;
+                            card.classList.add('is-visible'); observer.unobserve(card);
+                            logger.debug('Hero stat card animated:', cardIndex);
+                        }
+                    });
+                }, statsObserverOptions);
+                statCards.forEach(card => statsObserver.observe(card));
+            }
+        } else if (heroStatsGrid) {
+            heroStatsGrid.querySelectorAll('.stat-card[data-animate-fade-in]').forEach(card => card.classList.add('is-visible'));
+        }
+        logger.info('Animations setup complete.');
+    }
+
+    // --- Dynamic Content Update ---
+    function updateCopyrightYear() {
+        const currentYearSpan = document.getElementById('current-year');
+        if (currentYearSpan) currentYearSpan.textContent = new Date().getFullYear();
     }
 
     // =========================================================================
@@ -1067,22 +944,21 @@
 
     function setupEventListeners() {
         logger.debug("Setting up event listeners...");
-
-        // Mobile Navigation Toggle
         const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-        if (mobileMenuToggle) {
-            mobileMenuToggle.addEventListener('click', handleMobileNavToggle);
-        } else { logger.warn("Mobile nav toggle button not found."); }
+        if (mobileMenuToggle) mobileMenuToggle.addEventListener('click', handleMobileNavToggle);
+        else logger.warn("Mobile nav toggle button not found.");
 
-        // Smooth Scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', handleSmoothScroll);
+        // Modified smooth scroll selector to target only personal.html internal links
+        document.querySelectorAll('a[href^="personal.html#"], a[href^="#"]').forEach(anchor => {
+             // Extra check to ensure it's not just "#"
+             const href = anchor.getAttribute('href');
+             if (href.includes('#') && href.substring(href.lastIndexOf('#')).length > 1) {
+                 anchor.addEventListener('click', handleSmoothScroll);
+             }
         });
 
-        // Window Resize (Debounced)
         window.addEventListener('resize', debounce(handleResize, CONFIG.RESIZE_DEBOUNCE_DELAY));
 
-        // Modal Closing via Overlay Click
         document.querySelectorAll('.modal-overlay').forEach(overlay => {
             overlay.addEventListener('click', (event) => {
                 if (event.target === overlay && activeModal === overlay) {
@@ -1092,113 +968,60 @@
             });
         });
 
-        // Open Feedback Modal Button
         const openFeedbackBtn = document.getElementById('open-feedback-modal-btn');
         const feedbackModal = document.getElementById('feedback-modal');
-        if (openFeedbackBtn && feedbackModal) {
-            openFeedbackBtn.addEventListener('click', (e) => openModal(feedbackModal, e.currentTarget));
-        } else { logger.warn("Open Feedback button or Feedback Modal not found."); }
+        if (openFeedbackBtn && feedbackModal) openFeedbackBtn.addEventListener('click', (e) => openModal(feedbackModal, e.currentTarget));
+        else logger.warn("Open Feedback button or Feedback Modal not found.");
 
-        // Generic Modal Close Buttons (inside modals)
         document.querySelectorAll('.modal-close-btn').forEach(btn => {
             const modal = btn.closest('.modal-overlay');
-            if (modal) {
-                btn.addEventListener('click', () => {
-                    logger.debug(`[Close Button Click] Closing modal: ${modal.id}`);
-                    closeModal();
-                });
-            }
+            if (modal) btn.addEventListener('click', () => { logger.debug(`[Close Button Click] Closing modal: ${modal.id}`); closeModal(); });
         });
 
-        // Template Interaction Buttons
-        document.querySelectorAll('.get-spreadsheet-btn').forEach(button => {
-            button.addEventListener('click', handleGetSpreadsheetClick);
-        });
-        document.querySelectorAll('.download-pdf-btn').forEach(button => {
-            button.addEventListener('click', handleDownloadPdfClick);
-        });
+        document.querySelectorAll('.get-spreadsheet-btn').forEach(button => button.addEventListener('click', handleGetSpreadsheetClick));
+        document.querySelectorAll('.download-pdf-btn').forEach(button => button.addEventListener('click', handleDownloadPdfClick));
 
-        // Coaching Interest Form
         const coachingInterestForm = document.getElementById('coachingInterestForm');
-        if (coachingInterestForm) {
-            coachingInterestForm.addEventListener('submit', (e) => handleFormSubmit({
-                event: e,
-                formId: 'coachingInterestForm',
-                fields: [
-                    { id: 'interest-email', name: 'email', required: true, validator: isValidEmail, label: 'Email', errorMessage: 'Please enter a valid email address.' }
-                ],
-                submitButtonSelector: 'button[type="submit"]',
-                successMessage: 'Thank you! We\'ll notify you when coaching becomes available.',
-                errorMessage: 'Submission failed. Please check your connection and try again.',
-                endpointAction: 'coachingInterest', // Example action name
-                closeModalOnSuccess: false
-            }));
-        }
+        if (coachingInterestForm) coachingInterestForm.addEventListener('submit', (e) => handleFormSubmit({ event: e, formId: 'coachingInterestForm', /* ...fields... */ submitButtonSelector: 'button[type="submit"]', successMessage: 'Thank you! We\'ll notify you when coaching becomes available.', errorMessage: 'Submission failed...', endpointAction: 'coachingInterest', closeModalOnSuccess: false, fields: [{ id: 'interest-email', name: 'email', required: true, validator: isValidEmail, label: 'Email', errorMessage: 'Please enter a valid email address.' }] }));
 
-        // Feedback / Testimonial Form
         const feedbackForm = document.getElementById('feedback-testimonial-form');
         if (feedbackForm) {
-            feedbackForm.addEventListener('submit', (e) => handleFormSubmit({
-                event: e, // Pass the event object
-                formId: 'feedback-testimonial-form',
-                fields: [
-                    { id: 'feedback-name', name: 'name' }, // Optional
-                    { id: 'feedback-email', name: 'email', validator: (val) => !val || isValidEmail(val), label: 'Email', errorMessage: 'Please enter a valid email or leave blank.' }, // Optional but validate if provided
-                    { id: 'feedback-type', name: 'type', required: true, label: 'Type' },
-                    { id: 'feedback-message', name: 'message', required: true, label: 'Message', minLength: 10, maxLength: 2000 },
-                    { id: 'feedback-permission', name: 'permissionGranted' } // Handled separately based on type
-                ],
-                submitButtonSelector: 'button[type="submit"]',
-                successMessage: 'Feedback submitted successfully. Thank you!',
-                errorMessage: 'Submission failed. Please check your connection and try again.',
-                endpointAction: 'submitFeedback',
-                closeModalOnSuccess: true,
-                onSuccess: resetFeedbackForm // Ensure form is reset via callback
-            }));
-
+            feedbackForm.addEventListener('submit', (e) => handleFormSubmit({ event: e, formId: 'feedback-testimonial-form', /* ...fields... */ submitButtonSelector: 'button[type="submit"]', successMessage: 'Feedback submitted successfully. Thank you!', errorMessage: 'Submission failed...', endpointAction: 'submitFeedback', closeModalOnSuccess: true, onSuccess: resetFeedbackForm, fields: [ { id: 'feedback-name', name: 'name' }, { id: 'feedback-email', name: 'email', validator: (val) => !val || isValidEmail(val), label: 'Email', errorMessage: 'Please enter a valid email or leave blank.' }, { id: 'feedback-type', name: 'type', required: true, label: 'Type' }, { id: 'feedback-message', name: 'message', required: true, label: 'Message', minLength: 10, maxLength: 2000 }, { id: 'feedback-permission', name: 'permissionGranted' }] }));
             const feedbackTypeSelect = feedbackForm.querySelector('#feedback-type');
-            if (feedbackTypeSelect) {
-                feedbackTypeSelect.addEventListener('change', handleFeedbackTypeChange);
-            }
+            if (feedbackTypeSelect) feedbackTypeSelect.addEventListener('change', handleFeedbackTypeChange);
         }
 
-        // Learning Hub Quiz Start Buttons
         const quizStartBtns = document.querySelectorAll('#learning-hub .start-quiz-btn');
-        if (quizStartBtns.length > 0) {
-            quizStartBtns.forEach(button => button.addEventListener('click', handleIntroQuizStart));
-        } else { logger.warn("No quiz start buttons found in #learning-hub."); }
+        if (quizStartBtns.length > 0) quizStartBtns.forEach(button => button.addEventListener('click', handleIntroQuizStart));
+        else logger.warn("No quiz start buttons found in #learning-hub.");
 
-        // Quiz Modal Navigation Buttons (Listeners attached directly in cacheQuizModalElements or here)
         if (quizModalElements.nextBtn) quizModalElements.nextBtn.addEventListener('click', nextIntroModalQuestion);
         if (quizModalElements.restartBtn) quizModalElements.restartBtn.addEventListener('click', restartIntroModalQuiz);
         if (quizModalElements.nextQuizBtn) quizModalElements.nextQuizBtn.addEventListener('click', handleIntroNextQuizClick);
-        if (quizModalElements.closeResultsBtn) quizModalElements.closeResultsBtn.addEventListener('click', () => closeModal()); // Simple close
+        if (quizModalElements.closeResultsBtn) quizModalElements.closeResultsBtn.addEventListener('click', () => closeModal());
 
         logger.info("Event listeners setup complete.");
     }
 
-
     /** Main Initialization Function */
     function initializePersonalPage() {
-        logger.info("Rofilid Personal Page Scripts Initializing (v2.6.0)");
+        logger.info("Rofilid Personal Page Scripts Initializing (v2.7.0)");
 
         if (!document.body.classList.contains('personal-page') && !document.documentElement.classList.contains('personal-page')) {
             logger.warn("Not on personal finance page. Exiting script.");
             return; // Exit if not the correct page context
         }
 
-        // Cache quiz modal elements first, as they are crucial
         if (!cacheQuizModalElements()) {
             logger.error("Failed to cache essential quiz modal elements. Functionality may be limited.");
-            // Decide whether to proceed or stop initialization
-            // For now, let's proceed but quiz functionality will be broken.
         }
 
         // --- Run Initial Setup Tasks ---
-        updateHeaderHeight(); // Initial header height calculation
-        updateCopyrightYear();
+        updateHeaderHeight();
         setupEventListeners();
+        setupScrollspy(); // Initialize Scrollspy (NEW)
         setupAnimations();
+        updateCopyrightYear();
 
         logger.info("Rofilid Personal Page Scripts Fully Loaded and Ready.");
     }
