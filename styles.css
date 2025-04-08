@@ -87,13 +87,13 @@ li { margin-bottom: var(--spacing-xs); } ul ul li { margin-bottom: var(--spacing
 }
 .header-container {
     display: flex;
-    justify-content: space-between; /* Reverted to space-between */
+    justify-content: space-between; /* Default for mobile/tablet */
     align-items: center;
     width: 100%;
     max-width: var(--container-width);
     margin: 0 auto;
     padding: 0 var(--spacing-md);
-    /* gap: var(--spacing-md); */ /* Gap removed as space-between handles it */
+    /* gap removed */
 }
 /* Default uses white logo */
 .logo img {
@@ -104,8 +104,9 @@ li { margin-bottom: var(--spacing-xs); } ul ul li { margin-bottom: var(--spacing
     filter: none;
     transition: filter 0.3s ease;
 }
+/* Nav wrapper - No specific flex needed here by default */
 nav[aria-label="Main navigation"] {
-    /* No specific flex properties needed here with space-between on parent */
+    /* Styles applied in media query for desktop */
 }
 /* Nav Shared Structure */
 .nav-list { display: none; list-style: none; padding-left: 0; }
@@ -140,6 +141,7 @@ nav[aria-label="Main navigation"] {
     line-height: 1;
     transition: color 0.3s ease;
 }
+/* Default Button Style (used when visible) */
 .connect-button {
     padding: var(--spacing-xs) var(--spacing-md);
     white-space: nowrap;
@@ -322,30 +324,36 @@ nav[aria-label="Main navigation"] {
 @media (min-width: 992px) {
   :root { --header-height: 75px; }
   .site-header { height: var(--header-height); }
-   nav[aria-label="Main navigation"] {
-    flex-grow: 1;
-   }
-.header-container {
-    justify-content: space-between;
+
+  /* --- Header Layout Fix: Logo Left, Nav Center, Button Right --- */
+  .header-container {
+    /* Align items left initially */
+    justify-content: flex-start;
+    /* Keep items vertically centered */
+    align-items: center;
+    /* Ensure it still fills the width */
+    width: 100%;
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
   }
-  
+
+  .header-container .logo {
+    /* Push everything else (nav, button) to the right */
+    margin-right: auto;
+    flex-shrink: 0; /* Prevent logo from shrinking */
+  }
+
   nav[aria-label="Main navigation"] {
-    flex-grow: 1;
+    /* Remove flex-grow; nav only takes space needed for links */
+    flex-grow: 0;
+    /* Add some space around the nav */
+    margin-left: var(--spacing-lg);
+    margin-right: var(--spacing-lg);
+    /* Keep internal centering for the nav-list items */
     display: flex;
-    justify-content: center; /* Center the nav in the available space */
+    justify-content: center;
   }
-  
-  .nav-list {
-    margin: 0;
-  }
-     .connect-button {
-    margin-left: var(--spacing-md); /* Add a specific margin instead of auto */
-     }
-  .hero-section, .page-intro { padding-top: calc(var(--header-height) + var(--spacing-xxl)); padding-bottom: var(--spacing-xxl); }
-  
-  .hero-section { min-height: 550px; }
-  .mobile-menu-toggle { display: none; } /* Hide toggle */
-  .connect-button { display: inline-block; } /* Show connect button */
 
   /* Desktop Nav list structure */
   .nav-list {
@@ -361,9 +369,27 @@ nav[aria-label="Main navigation"] {
     flex-wrap: nowrap; /* Prevent wrapping */
     overflow: visible;
     justify-content: center; /* Center items within the nav list */
-    /* Removed margin: 0 auto; - let space-between handle positioning */
+    margin: 0; /* Ensure no conflicting margins */
   }
-  /* Reset mobile .active state styles */
+
+  /* Connect button pushed to the far right */
+  .connect-button {
+    /* Add auto margin to the left of the button */
+    margin-left: auto;
+    flex-shrink: 0; /* Prevent button from shrinking */
+    display: inline-block; /* Ensure it's displayed */
+     /* Reset any specific smaller margin if needed, auto handles it */
+    /* margin-left from previous version removed */
+  }
+  /* --- End Header Layout Fix --- */
+
+
+  /* Other Desktop Styles (Unchanged) */
+  .hero-section, .page-intro { padding-top: calc(var(--header-height) + var(--spacing-xxl)); padding-bottom: var(--spacing-xxl); }
+  .hero-section { min-height: 550px; }
+  .mobile-menu-toggle { display: none; } /* Hide toggle */
+
+  /* Reset mobile .active state styles for nav */
   #primary-navigation.active {
     position: static;
     box-shadow: none;
@@ -410,4 +436,4 @@ nav[aria-label="Main navigation"] {
     .footer-left .logo img { filter: invert(1) grayscale(1) !important; height: 30px; }
     .footer-content { flex-direction: column; align-items: flex-start; }
     .copyright { color: #555 !important; border-top-color: #ccc !important; padding-top: 0.5cm; margin-top: 1cm;}
-   }
+}
