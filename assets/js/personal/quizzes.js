@@ -4,7 +4,7 @@
  *              Handles accordion theme toggling and launching quizzes
  *              (both category-specific and the full 100-question challenge)
  *              in the shared modal structure.
- * Version: 2.5.0 (Patched for ID/Config issues)
+ * Version: 2.6.0 (Improved Modal Handling, Accordion Animation, Validation)
  * Dependencies: quizzes.html structure, personal.css base styles, quizzes.css accordion styles.
  */
 
@@ -14,34 +14,43 @@
 
     // --- Configuration & Constants ---
     const CONFIG = {
-        ACCORDION_SELECTOR: '#quizAccordion', // ID for the main accordion container
+        LOG_LEVEL: 'info', // 'debug', 'info', 'warn', 'error', 'none'
+        ACCORDION_SELECTOR: '#quizAccordion',
         ACCORDION_ITEM_SELECTOR: '.accordion-item',
         ACCORDION_BUTTON_SELECTOR: '.accordion-button',
         ACCORDION_COLLAPSE_SELECTOR: '.accordion-collapse',
-        ACCORDION_BTN_COLLAPSED_CLASS: 'collapsed', // Class indicating the button's collapsed state
-        // Note: Removed ACCORDION_ACTIVE_CLASS if panel visibility relies only on height/button state
+        ACCORDION_BTN_COLLAPSED_CLASS: 'collapsed',
 
         CATEGORY_CARD_SELECTOR: '.category-card',
-        START_QUIZ_BTN_SELECTOR: '.start-quiz-btn', // Selector for buttons starting category quizzes
+        START_QUIZ_BTN_SELECTOR: '.start-quiz-btn', // Targets category quiz buttons
 
-        QUIZ_MODAL_SELECTOR: '#quiz-modal', // ID for the quiz modal overlay
-        MODAL_VISIBLE_CLASS: 'visible', // CSS class to transition modal visibility
-        MODAL_FOCUS_DELAY: 100, // ms delay before setting focus in modal
+        QUIZ_MODAL_SELECTOR: '#quiz-modal',
+        MODAL_VISIBLE_CLASS: 'visible', // CSS class for modal visibility transition
+        MODAL_FOCUS_DELAY: 100,
 
-        START_FULL_CHALLENGE_BTN_ID: 'start-full-challenge-btn', // ID for the 100q challenge button
+        START_FULL_CHALLENGE_BTN_ID: 'start-full-challenge-btn',
 
-        CURRENT_YEAR_SELECTOR: '#current-year', // Selector for footer year span
+        CURRENT_YEAR_SELECTOR: '#current-year', // Footer year span
 
         EXPECTED_TOTAL_QUESTIONS: 100,
-        QUESTIONS_PER_CATEGORY: 5, // Expected number of questions per category quiz
-        ACCORDION_COLLAPSE_DURATION: 350, // Match CSS transition duration (used implicitly by CSS)
+        QUESTIONS_PER_CATEGORY: 5,
+        ACCORDION_COLLAPSE_DURATION: 350, // Approx CSS transition duration (for potential future use)
+    };
+
+    // --- Logging Utility ---
+    const logger = {
+        debug: (...args) => CONFIG.LOG_LEVEL === 'debug' && console.debug('[DEBUG][Quizzes]', ...args),
+        info: (...args) => ['debug', 'info'].includes(CONFIG.LOG_LEVEL) && console.info('[INFO][Quizzes]', ...args),
+        warn: (...args) => ['debug', 'info', 'warn'].includes(CONFIG.LOG_LEVEL) && console.warn('[WARN][Quizzes]', ...args),
+        error: (...args) => ['debug', 'info', 'warn', 'error'].includes(CONFIG.LOG_LEVEL) && console.error('[ERROR][Quizzes]', ...args),
     };
 
     // --- Global Variables & Element Caching ---
     let accordion, startFullChallengeBtn, quizModal, currentYearSpan;
-    let activeModal = null; // Shared modal state tracking
-    let triggerElement = null; // Element that opened the modal
-    let activeFocusTrapHandler = null; // Store the active focus trap handler
+    // Shared Modal State (consistent with personal.js)
+    let activeModal = null;
+    let triggerElement = null;
+    let activeFocusTrapHandler = null; // Stores the *function* reference for removal
 
     // Quiz Modal specific elements (cached on demand)
     let quizModalTitle, quizModalCloseBtn, quizModalQuestionEl, quizModalOptionsEl,
@@ -53,13 +62,12 @@
         questions: [],
         currentQuestionIndex: 0,
         score: 0,
-        userAnswers: {}, // Store user's selection index for potential review
+        userAnswers: {},
         isFullChallenge: false,
-        quizId: null // Store category quiz ID (string)
+        quizId: null
     };
 
-    // --- START: Full Quiz Data (100 Questions - Updated with quizId strings) ---
-    // Assume fullQuizData is defined here (same 100 questions but with quizId)
+    // --- START: Full Quiz Data (100 Questions - Assumed Correct from Input) ---
     const fullQuizData = [
         // Theme 1: Your Financial Groundwork (Categories 1-5)
         // Category 1: Income & Financial Vitals
@@ -190,256 +198,346 @@
 
 
     // --- Basic Data Validation ---
+    /** Validates the structure and count of the main quiz data array */
     function validateQuizData() {
+        logger.debug("Validating quiz data...");
+        // Check if data exists and is an array
+        if (!Array.isArray(fullQuizData)) {
+            logger.error(`CRITICAL ERROR: fullQuizData is not an array.`);
+            return false;
+        }
         // Check total question count
-        if (!Array.isArray(fullQuizData) || fullQuizData.length !== CONFIG.EXPECTED_TOTAL_QUESTIONS) {
-            console.error(`CRITICAL ERROR: Expected ${CONFIG.EXPECTED_TOTAL_QUESTIONS} questions in fullQuizData array, but found ${fullQuizData?.length || 'none'}.`);
-            // Optionally disable buttons or show UI error message here
+        if (fullQuizData.length !== CONFIG.EXPECTED_TOTAL_QUESTIONS) {
+            logger.error(`CRITICAL ERROR: Expected ${CONFIG.EXPECTED_TOTAL_QUESTIONS} questions, but found ${fullQuizData.length}.`);
             return false;
         }
         // Check structure of the first question as a sample
         const firstQ = fullQuizData[0];
-        if (!firstQ || typeof firstQ.quizId !== 'string' || !Array.isArray(firstQ.options) || typeof firstQ.correctAnswerIndex !== 'number') {
-             console.error("CRITICAL ERROR: First question in fullQuizData has unexpected structure.", firstQ);
+        if (!firstQ || typeof firstQ.id !== 'number' || typeof firstQ.quizId !== 'string' || typeof firstQ.category !== 'string' || typeof firstQ.question !== 'string' || !Array.isArray(firstQ.options) || firstQ.options.length === 0 || typeof firstQ.correctAnswerIndex !== 'number' || typeof firstQ.explanation !== 'string') {
+             logger.error("CRITICAL ERROR: First question in fullQuizData has missing or invalid properties:", firstQ);
              return false;
         }
+         // Optional: Check if all quizIds exist and have the expected number of questions
+         const quizIds = [...new Set(fullQuizData.map(q => q.quizId))];
+         let allCategoriesValid = true;
+         quizIds.forEach(qid => {
+             const count = fullQuizData.filter(q => q.quizId === qid).length;
+             if (count !== CONFIG.QUESTIONS_PER_CATEGORY) {
+                 logger.warn(`Data Validation Warning: Quiz ID "${qid}" has ${count} questions, expected ${CONFIG.QUESTIONS_PER_CATEGORY}.`);
+                 // You might choose to make this an error (allCategoriesValid = false;) if exact counts are critical
+             }
+         });
 
-        console.info(`Quiz data loaded: ${fullQuizData.length} questions validated.`);
-        return true;
+        logger.info(`Quiz data loaded: ${fullQuizData.length} questions validated.`);
+        return allCategoriesValid; // Return true even if counts are off, but log warnings
     }
 
 
     // --- Helper Functions (Modal Control, Focus Trap, Utilities) ---
 
+    /** Safely attempt to focus an element */
+     function safeFocus(element) {
+        if (element && typeof element.focus === 'function') {
+             try {
+                 // preventScroll can sometimes be unreliable, but worth trying
+                 element.focus({ preventScroll: true });
+             } catch (err) {
+                 logger.error("[safeFocus] Focusing element failed:", err, element);
+             }
+         } else {
+             logger.warn("[safeFocus] Element is not focusable or doesn't exist:", element);
+         }
+     }
+
     /** Trap focus within a specified element */
-     function trapFocus(element) {
-         if (!element) return null; // Return null if no element
-        const focusableEls = element.querySelectorAll(
-            'a[href]:not([disabled], [hidden]), button:not([disabled], [hidden]), textarea:not([disabled], [hidden]), input:not([type="hidden"], [disabled], [hidden]), select:not([disabled], [hidden]), [tabindex]:not([tabindex="-1"], [disabled], [hidden])'
-         );
-         if (focusableEls.length === 0) return null; // Return null if no focusable elements
+    function trapFocus(element) {
+        if (!element) {
+            logger.warn('[trapFocus] Target element is null.');
+            return null;
+        }
+        // Query only *visible* focusable elements
+        const focusableEls = Array.from(element.querySelectorAll(
+            'a[href]:not([disabled]), button:not([disabled]), textarea:not([disabled]), input:not([type="hidden"]):not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )).filter(el => !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length)); // Check visibility
 
-         const firstFocusableEl = focusableEls[0];
-         const lastFocusableEl = focusableEls[focusableEls.length - 1];
+        if (focusableEls.length === 0) {
+            logger.warn('[trapFocus] No visible focusable elements found inside:', element);
+            return null;
+        }
 
+        const firstFocusableEl = focusableEls[0];
+        const lastFocusableEl = focusableEls[focusableEls.length - 1];
+
+        // Define the keydown handler
         const handleKeyDown = (e) => {
-            if (e.key !== 'Tab' || !element.contains(document.activeElement)) return; // Only trap if focus is inside
+             // Only process Tab key events where focus is currently inside the trapped element
+             if (e.key !== 'Tab' || !element.contains(document.activeElement)) {
+                 return;
+             }
 
-            if (e.shiftKey) { // Shift + Tab
-                if (document.activeElement === firstFocusableEl) {
-                    e.preventDefault();
-                    lastFocusableEl.focus();
-                }
-            } else { // Tab
-                if (document.activeElement === lastFocusableEl) {
-                    e.preventDefault();
-                    firstFocusableEl.focus();
-                }
-            }
+             if (e.shiftKey) { // Shift + Tab
+                 if (document.activeElement === firstFocusableEl) {
+                     e.preventDefault(); // Prevent tabbing out
+                     logger.debug('[trapFocus] Shift+Tab on first element. Focusing last:', lastFocusableEl);
+                     safeFocus(lastFocusableEl);
+                 }
+             } else { // Tab
+                 if (document.activeElement === lastFocusableEl) {
+                     e.preventDefault(); // Prevent tabbing out
+                     logger.debug('[trapFocus] Tab on last element. Focusing first:', firstFocusableEl);
+                     safeFocus(firstFocusableEl);
+                 }
+             }
         };
 
-        // Add listener to the element itself or document? Document might be safer for edge cases.
-        document.addEventListener('keydown', handleKeyDown);
+        // Add listener to the modal element itself. This is usually sufficient.
+        // Using document can sometimes catch edge cases but might interfere elsewhere.
+        element.addEventListener('keydown', handleKeyDown);
+        logger.debug('[trapFocus] Focus trap initialized for:', element.id);
 
         // Set initial focus after a short delay
-         setTimeout(() => {
-            if (!element.contains(document.activeElement)) { // Only focus if modal is still active and focus isn't already inside somehow
-                const closeButton = element.querySelector('.modal-close-btn:not([disabled])');
-                const primaryButton = element.querySelector('.btn-primary:not([hidden], :disabled), .btn-secondary:not([hidden], :disabled)');
-                const firstOption = element.querySelector('.option-button:not([disabled])'); // Prioritize quiz options
-                const firstInput = element.querySelector('input:not([type="hidden"], [disabled], [hidden]), select:not([disabled], [hidden]), textarea:not([disabled], [hidden])');
-
-                let elementToFocus = null;
-
-                // Prioritize visible elements within the modal
-                if (firstOption && firstOption.offsetParent !== null) {
-                    elementToFocus = firstOption;
-                } else if (primaryButton && primaryButton.offsetParent !== null) {
-                    elementToFocus = primaryButton;
-                } else if (closeButton && closeButton.offsetParent !== null) {
-                    elementToFocus = closeButton;
-                } else if (firstInput && firstInput.offsetParent !== null) {
-                    elementToFocus = firstInput;
-                } else {
-                    elementToFocus = firstFocusableEl; // Fallback
-                }
-
-                if (elementToFocus) {
-                    try {
-                        elementToFocus.focus();
-                    } catch (err) {
-                        console.warn("Initial modal focus failed:", err);
-                    }
-                }
+        setTimeout(() => {
+            // Ensure the modal we're setting focus in is still the active one
+            if (activeModal !== element) {
+                logger.warn('[trapFocus] Modal changed before initial focus could be set.');
+                return;
             }
+            // Determine the best element to focus initially
+             const focusTarget =
+                element.querySelector('.modal-close-btn:not([hidden])') || // Close button
+                element.querySelector('.option-button:not([disabled])') || // First Quiz Option
+                element.querySelector('.btn-primary:not([disabled]):not([hidden]), .btn-secondary:not([disabled]):not([hidden]), .quiz-next-btn:not([hidden]), .quiz-restart-btn:not([hidden]), .quiz-close-btn:not([hidden])') || // Action buttons
+                element.querySelector('input:not([type="hidden"]):not([disabled]):not([hidden]), select:not([disabled]):not([hidden]), textarea:not([disabled]):not([hidden])') || // Form fields
+                firstFocusableEl; // Fallback to first focusable
+
+             if (focusTarget) {
+                 logger.debug('[trapFocus] Attempting initial focus on:', focusTarget);
+                 safeFocus(focusTarget);
+             } else {
+                 logger.warn("[trapFocus] No suitable initial focus target found within:", element);
+             }
          }, CONFIG.MODAL_FOCUS_DELAY);
 
          return handleKeyDown; // Return the handler function so it can be removed later
     }
 
-
     /** Open a modal dialog */
      function openModal(modalElement, openingTriggerElement) {
+         logger.debug('[openModal] Attempting to open modal:', modalElement?.id);
          if (!modalElement) {
-            console.error("Attempted to open a non-existent modal.");
+            logger.error('[openModal] Failed: Target modal element not found.');
             return;
          }
-         if (activeModal === modalElement) return; // Already open
-
+         if (activeModal === modalElement) {
+             logger.warn('[openModal] Modal already active:', modalElement.id);
+             return;
+         }
          // Close any previously active modal cleanly first
          if (activeModal) {
-             closeModal(false); // Don't return focus yet
+             logger.info('[openModal] Closing previously active modal:', activeModal.id);
+             closeModal(false); // Close previous without returning focus yet
          }
 
          activeModal = modalElement;
-         triggerElement = openingTriggerElement;
+         triggerElement = openingTriggerElement; // Store element that opened the modal
 
-        document.body.style.overflow = 'hidden';
-         modalElement.hidden = false;
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+         modalElement.hidden = false; // Make modal element available in the accessibility tree
 
+         // Use rAF to ensure 'hidden=false' is applied before adding 'visible' for transition
          requestAnimationFrame(() => {
              modalElement.classList.add(CONFIG.MODAL_VISIBLE_CLASS);
+             logger.debug('[openModal] Added .visible class to:', modalElement.id);
+
               // Set up focus trap *after* modal is visible
-              if (activeFocusTrapHandler) { // Remove any lingering handler
-                document.removeEventListener('keydown', activeFocusTrapHandler);
+              if (activeFocusTrapHandler) { // Remove any lingering handler from a previous modal
+                 activeModal.removeEventListener('keydown', activeFocusTrapHandler); // Use element listener
+                 // document.removeEventListener('keydown', activeFocusTrapHandler); // Use document listener if trapFocus uses document
               }
-              activeFocusTrapHandler = trapFocus(modalElement);
+              activeFocusTrapHandler = trapFocus(modalElement); // Assign new handler
+              if (!activeFocusTrapHandler) {
+                 logger.warn('[openModal] Focus trapping failed to initialize for:', modalElement.id);
+              }
          });
 
-        document.addEventListener('keydown', handleModalKeydown); // Use document for Escape key
+        // Add Escape key listener globally (or on modal if preferred)
+        document.addEventListener('keydown', handleModalKeydown);
+        logger.info('[openModal] Modal opened successfully:', modalElement.id);
      }
 
     /** Close the currently active modal */
      function closeModal(returnFocus = true) {
-         if (!activeModal) return;
+         if (!activeModal) {
+             logger.debug('[closeModal] No active modal to close.');
+             return;
+         }
 
         const modalToClose = activeModal;
          const triggerToFocus = triggerElement;
+         // Retrieve the stored handler reference
+         const focusTrapHandler = activeFocusTrapHandler; // Use the globally tracked handler
 
-         // Remove focus trap and escape listeners immediately
-         if (activeFocusTrapHandler) {
-             document.removeEventListener('keydown', activeFocusTrapHandler);
-             activeFocusTrapHandler = null;
+         logger.info('[closeModal] Closing modal:', modalToClose.id);
+
+         // --- Remove listeners EARLY ---
+         document.removeEventListener('keydown', handleModalKeydown); // Remove escape listener
+         if (focusTrapHandler) {
+            modalToClose.removeEventListener('keydown', focusTrapHandler); // Remove trap listener from element
+            // document.removeEventListener('keydown', focusTrapHandler); // Remove if trapFocus used document
+            activeFocusTrapHandler = null; // Clear the global handler variable
+            logger.debug('[closeModal] Removed focus trap listener early for:', modalToClose.id);
          }
-         document.removeEventListener('keydown', handleModalKeydown);
+         // --- End Remove Listeners ---
 
-         // Reset state variables before transition starts
+         // Reset state variables *before* transition starts
          activeModal = null;
          triggerElement = null;
 
-         modalToClose.classList.remove(CONFIG.MODAL_VISIBLE_CLASS);
+         modalToClose.classList.remove(CONFIG.MODAL_VISIBLE_CLASS); // Start the closing CSS transition
 
-         const handleTransitionEnd = () => {
-            modalToClose.hidden = true;
-            if (!activeModal) { // Only restore scroll if no *other* modal immediately opened
-                document.body.style.overflow = '';
-            }
-            // Reset specific modal content if needed
-            if (modalToClose === quizModal) {
-                 resetQuizModalUI();
-            }
-            modalToClose.removeEventListener('transitionend', handleTransitionEnd); // Clean up listener
-         };
+         // Use transitionend event for cleanup
+         modalToClose.addEventListener('transitionend', function handleTransitionEnd(event) {
+             // Ensure the event is for the overlay itself and a relevant property
+             if (event.target === modalToClose && (event.propertyName === 'opacity' || event.propertyName === 'transform')) {
+                 modalToClose.hidden = true; // Hide from accessibility tree
+                 logger.debug('[closeModal] Modal hidden after transition:', modalToClose.id);
 
-         modalToClose.addEventListener('transitionend', handleTransitionEnd);
-
-        if (returnFocus && triggerToFocus && typeof triggerToFocus.focus === 'function') {
-             // Delay focus return slightly to ensure it happens after potential scroll restoration
-             setTimeout(() => {
-                 try {
-                     triggerToFocus.focus(); //{ preventScroll: true }); // preventScroll might not always work as expected
-                 } catch (e) {
-                     console.warn("Return focus failed:", e);
+                 // Restore body scroll ONLY if no *other* modal became active during the transition
+                 if (!activeModal) {
+                    document.body.style.overflow = '';
+                    logger.debug('[closeModal] Restored body scroll.');
+                 } else {
+                     logger.info('[closeModal] Body scroll not restored, another modal is active:', activeModal.id);
                  }
-             }, 50); // Small delay
-         }
+
+                 // Reset specific modal content if needed (Quiz Modal)
+                 if (modalToClose.id === 'quiz-modal') { // Use ID check
+                     resetQuizModalUI();
+                 }
+
+                 // Return focus if requested and possible
+                 if (returnFocus && triggerToFocus) {
+                     logger.debug('[closeModal] Returning focus to:', triggerToFocus);
+                     safeFocus(triggerToFocus);
+                 } else if (returnFocus) {
+                     logger.warn('[closeModal] Could not return focus. Trigger element was not stored or is invalid.');
+                 }
+                 // Listener automatically removed by { once: true }
+             }
+         }, { once: true });
+
+         // Fallback timeout (Good practice)
+         setTimeout(() => {
+            // Check if the modal is still in the DOM, not hidden, and doesn't have the visible class
+            if (modalToClose.parentNode && !modalToClose.hidden && !modalToClose.classList.contains(CONFIG.MODAL_VISIBLE_CLASS)) {
+                logger.warn('[closeModal Fallback] TransitionEnd did not fire for', modalToClose.id, '- forcing hidden state.');
+                modalToClose.hidden = true;
+                if (!activeModal) { document.body.style.overflow = ''; } // Check activeModal again
+                if (modalToClose.id === 'quiz-modal') resetQuizModalUI();
+                if (returnFocus && triggerToFocus) safeFocus(triggerToFocus);
+            }
+        }, 600); // Adjust timeout based on longest transition duration + buffer
     }
 
     /** Handle Escape key press for modals */
      function handleModalKeydown(event) {
          if (event.key === 'Escape' && activeModal) {
+             logger.debug('[handleModalKeydown] Escape key pressed. Closing modal:', activeModal.id);
              closeModal();
         }
     }
 
     /** Reset Quiz Modal UI to initial state */
      function resetQuizModalUI() {
-        if (!quizModal) return;
-        cacheQuizModalElements(); // Ensure elements are cached
+        if (!quizModal) {
+             logger.warn("[resetQuizModalUI] Quiz modal element not found, cannot reset.");
+             return; // Can't reset if modal doesn't exist
+        }
+        // Ensure elements are cached (or try to cache again)
+        if (!quizModalTitle && !cacheQuizModalElements()) {
+            logger.warn("[resetQuizModalUI] Failed to cache modal elements, reset might be incomplete.");
+            // Continue resetting what we can find...
+        }
 
-        // Reset dynamic content areas
+        // Reset dynamic content areas safely
         if(quizModalTitle) quizModalTitle.textContent = 'Financial Fitness Quiz'; // Default title
         if(quizModalQuestionEl) quizModalQuestionEl.innerHTML = '';
         if(quizModalOptionsEl) quizModalOptionsEl.innerHTML = '';
-        if(quizModalFeedbackEl) { quizModalFeedbackEl.innerHTML = ''; quizModalFeedbackEl.hidden = true; }
+        if(quizModalFeedbackEl) { quizModalFeedbackEl.innerHTML = ''; quizModalFeedbackEl.hidden = true; quizModalFeedbackEl.className = 'quiz-feedback'; } // Reset class
         if(quizModalResultsEl) { quizModalResultsEl.innerHTML = ''; quizModalResultsEl.hidden = true; }
 
-        // Reset progress display
+        // Reset progress display safely
+        const progressContainer = quizModal.querySelector('.quiz-modal-progress');
+        if(progressContainer) progressContainer.hidden = true; // Hide container
         if(quizModalProgressCurrent) quizModalProgressCurrent.textContent = '0';
         if(quizModalProgressTotal) quizModalProgressTotal.textContent = '0';
-        quizModalProgressCurrent?.closest('.quiz-modal-progress')?.setAttribute('hidden', ''); // Hide progress initially
 
-        // Hide all navigation buttons
-        if(quizModalNextBtn) quizModalNextBtn.hidden = true;
-        if(quizModalRestartBtn) quizModalRestartBtn.hidden = true;
-        if(quizModalCloseResultsBtn) quizModalCloseResultsBtn.hidden = true;
 
-        // Ensure question/options areas are visible for next quiz start
+        // Hide all navigation buttons safely
+        [quizModalNextBtn, quizModalRestartBtn, quizModalCloseResultsBtn].forEach(btn => {
+            if (btn) btn.hidden = true;
+        });
+
+        // Ensure question/options areas are visible for next quiz start (if they exist)
         if (quizModalQuestionEl) quizModalQuestionEl.hidden = false;
         if (quizModalOptionsEl) quizModalOptionsEl.hidden = false;
 
-         console.info("Quiz modal UI state reset.");
+        logger.info("Quiz modal UI state reset.");
     }
 
 
-    // --- Accordion Logic ---
+    // --- Accordion Logic (Refined for CSS Height Animation) ---
     function initializeAccordion(accordionElement) {
         if (!accordionElement) {
-            console.warn("Accordion element not found using selector:", CONFIG.ACCORDION_SELECTOR);
+            logger.warn("Accordion element not found using selector:", CONFIG.ACCORDION_SELECTOR);
             return;
         }
 
         const accordionItems = accordionElement.querySelectorAll(CONFIG.ACCORDION_ITEM_SELECTOR);
+        logger.debug(`Found ${accordionItems.length} accordion items.`);
 
-        accordionItems.forEach(item => {
+        accordionItems.forEach((item, index) => {
             const button = item.querySelector(CONFIG.ACCORDION_BUTTON_SELECTOR);
             const collapsePanel = item.querySelector(CONFIG.ACCORDION_COLLAPSE_SELECTOR);
 
             if (button && collapsePanel) {
-                 // Set initial state based on the presence of the 'collapsed' class
+                 // Set initial ARIA state and styles based on the 'collapsed' class in HTML
                  const isInitiallyCollapsed = button.classList.contains(CONFIG.ACCORDION_BTN_COLLAPSED_CLASS);
                  button.setAttribute('aria-expanded', !isInitiallyCollapsed);
-                 collapsePanel.style.overflow = 'hidden'; // Prevent content spill during animation
 
+                 // Set initial styles for animation (height: 0 for collapsed, height: auto for expanded)
+                 collapsePanel.style.overflow = 'hidden'; // Keep hidden during animation
                  if (isInitiallyCollapsed) {
                      collapsePanel.style.height = '0px';
+                     collapsePanel.style.visibility = 'hidden'; // Ensure hidden from screen readers initially
                  } else {
-                     // If starting open, set height explicitly (or use 'auto' if transition handles it)
-                     collapsePanel.style.height = 'auto'; // Assume CSS handles initial open state, fallback if needed
-                     // collapsePanel.style.height = collapsePanel.scrollHeight + 'px'; // Use this if CSS doesn't set initial height
+                     // If starting open, set height to auto immediately
+                     collapsePanel.style.height = 'auto';
+                     collapsePanel.style.visibility = 'visible';
                  }
 
+                 // Add click listener to the button
                  button.addEventListener('click', () => toggleAccordionItem(button, collapsePanel, accordionElement));
 
-                 // Optional: Listen for transition end to set height to 'auto' for open panels
-                 collapsePanel.addEventListener('transitionend', () => {
-                     if (button.getAttribute('aria-expanded') === 'true') {
-                         collapsePanel.style.height = 'auto';
+                 // Add transition end listener to set height to 'auto' after opening animation
+                 collapsePanel.addEventListener('transitionend', (event) => {
+                     // Only run if the transition was for 'height' and panel is now open
+                     if (event.propertyName === 'height' && button.getAttribute('aria-expanded') === 'true') {
+                         collapsePanel.style.height = 'auto'; // Allow content reflow
                      }
                  });
 
              } else {
-                console.warn("Accordion item missing button or collapse panel:", item);
+                logger.warn(`Accordion item ${index + 1} missing button or collapse panel.`);
              }
         });
-        console.info("Accordion initialized.");
+        logger.info("Accordion initialized.");
     }
 
     function toggleAccordionItem(button, collapsePanel, parentAccordion) {
          const isCurrentlyExpanded = button.getAttribute('aria-expanded') === 'true';
 
          // --- Close Other Items (Standard Accordion Behavior) ---
-         // Comment out this block if multiple items should be open simultaneously
          parentAccordion.querySelectorAll(CONFIG.ACCORDION_ITEM_SELECTOR).forEach(otherItem => {
             const otherButton = otherItem.querySelector(CONFIG.ACCORDION_BUTTON_SELECTOR);
             const otherCollapse = otherItem.querySelector(CONFIG.ACCORDION_COLLAPSE_SELECTOR);
@@ -460,30 +558,33 @@
 
      function openAccordionItem(button, collapsePanel) {
          if (!button || !collapsePanel) return;
-         // Prepare for opening: set height to 0 if it was auto, then get scrollHeight
-         collapsePanel.style.height = '0px';
-         collapsePanel.style.display = 'block'; // Ensure it's block for scrollHeight calculation
-
-         requestAnimationFrame(() => {
-             const scrollHeight = collapsePanel.scrollHeight;
-             button.classList.remove(CONFIG.ACCORDION_BTN_COLLAPSED_CLASS);
-             button.setAttribute('aria-expanded', 'true');
-             collapsePanel.style.height = scrollHeight + 'px';
-             // Transition end listener will set height to 'auto'
-         });
+         // Make panel visible for height calculation
+         collapsePanel.style.visibility = 'visible';
+         // Set height to its natural content height to trigger transition
+         const scrollHeight = collapsePanel.scrollHeight;
+         collapsePanel.style.height = scrollHeight + 'px';
+         // Update ARIA and class after starting transition
+         button.classList.remove(CONFIG.ACCORDION_BTN_COLLAPSED_CLASS);
+         button.setAttribute('aria-expanded', 'true');
+         // Note: transitionend listener will set height to 'auto'
+         logger.debug('Opened accordion item:', button.id || button.textContent.trim());
      }
 
      function closeAccordionItem(button, collapsePanel) {
          if (!button || !collapsePanel) return;
-         // Start closing: set height from 'auto' or current height to actual pixel value
+         // Set height explicitly from 'auto' or current height to start transition
         const currentHeight = collapsePanel.scrollHeight;
         collapsePanel.style.height = currentHeight + 'px';
 
+        // Force browser repaint/reflow before setting height to 0
          requestAnimationFrame(() => {
+             collapsePanel.style.height = '0px';
+             collapsePanel.style.visibility = 'hidden'; // Hide after transition (via CSS delay)
+             // Update ARIA and class
              button.classList.add(CONFIG.ACCORDION_BTN_COLLAPSED_CLASS);
              button.setAttribute('aria-expanded', 'false');
-             collapsePanel.style.height = '0px';
          });
+         logger.debug('Closed accordion item:', button.id || button.textContent.trim());
      }
 
 
@@ -491,14 +592,19 @@
 
     /** Cache quiz modal elements if not already cached */
     function cacheQuizModalElements() {
-        if (quizModalTitle) return true; // Already cached
-
-        quizModal = document.querySelector(CONFIG.QUIZ_MODAL_SELECTOR);
-        if (!quizModal) {
-            console.error("Quiz modal element not found. Cannot cache elements.");
-            return false;
+        // If essential elements are already cached, assume success
+        if (quizModalTitle && quizModalCloseBtn && quizModalQuestionEl && quizModalOptionsEl) {
+            return true;
         }
 
+        logger.debug("Attempting to cache quiz modal elements...");
+        quizModal = document.querySelector(CONFIG.QUIZ_MODAL_SELECTOR);
+        if (!quizModal) {
+            logger.error("FATAL: Quiz modal element not found with selector:", CONFIG.QUIZ_MODAL_SELECTOR);
+            return false; // Critical failure
+        }
+
+        // Cache individual elements
         quizModalTitle = quizModal.querySelector('#quiz-modal-title');
         quizModalCloseBtn = quizModal.querySelector('#quiz-modal-close');
         quizModalQuestionEl = quizModal.querySelector('#quiz-modal-question');
@@ -511,105 +617,121 @@
         quizModalRestartBtn = quizModal.querySelector('#quiz-modal-restart');
         quizModalCloseResultsBtn = quizModal.querySelector('#quiz-modal-close-results');
 
-        // Check if all essential elements were found
-        if (!quizModalTitle || !quizModalCloseBtn || !quizModalQuestionEl || !quizModalOptionsEl ||
-            !quizModalFeedbackEl || !quizModalNextBtn || !quizModalResultsEl || !quizModalProgressCurrent ||
-            !quizModalProgressTotal || !quizModalRestartBtn || !quizModalCloseResultsBtn) {
-            console.error("One or more essential quiz modal elements could not be found within:", CONFIG.QUIZ_MODAL_SELECTOR);
-            return false; // Caching failed
+        // Verify that all essential elements were found
+        const essentialElements = [
+            quizModalTitle, quizModalCloseBtn, quizModalQuestionEl, quizModalOptionsEl,
+            quizModalFeedbackEl, quizModalNextBtn, quizModalResultsEl, quizModalProgressCurrent,
+            quizModalProgressTotal, quizModalRestartBtn, quizModalCloseResultsBtn
+        ];
+
+        if (essentialElements.some(el => !el)) {
+            logger.error("CRITICAL: One or more essential quiz modal sub-elements could not be found. Check HTML IDs/structure.");
+            // Clear potentially partially cached elements to indicate failure
+             quizModalTitle = quizModalCloseBtn = quizModalQuestionEl = quizModalOptionsEl =
+             quizModalFeedbackEl = quizModalNextBtn = quizModalResultsEl = quizModalProgressCurrent =
+             quizModalProgressTotal = quizModalRestartBtn = quizModalCloseResultsBtn = null;
+             return false; // Caching failed
         }
+
+        logger.debug("Quiz modal elements cached successfully.");
         return true; // Caching successful
     }
 
 
     /** Starts a quiz for a specific category ID (string) */
     function startCategoryQuiz(quizId, openingTrigger) {
-        console.info(`Starting Category Quiz: ID "${quizId}"`);
+        logger.info(`Starting Category Quiz: ID "${quizId}"`);
+        // Filter questions ensuring case-insensitivity isn't needed if IDs are consistent
         const categoryQuestions = fullQuizData.filter(q => q.quizId === quizId);
 
         if (!categoryQuestions || categoryQuestions.length === 0) {
-            console.error(`No questions found for quiz ID: "${quizId}"`);
+            logger.error(`No questions found for quiz ID: "${quizId}"`);
             alert("Sorry, questions for this category could not be loaded.");
             return;
         }
-        // Warn if question count deviates, but proceed.
         if (categoryQuestions.length !== CONFIG.QUESTIONS_PER_CATEGORY) {
-            console.warn(`Expected ${CONFIG.QUESTIONS_PER_CATEGORY} questions for quiz "${quizId}", found ${categoryQuestions.length}.`);
+            logger.warn(`Expected ${CONFIG.QUESTIONS_PER_CATEGORY} questions for quiz "${quizId}", found ${categoryQuestions.length}. Proceeding anyway.`);
         }
 
+        // Reset quiz state for the new quiz
         currentQuizData = {
             questions: categoryQuestions,
             currentQuestionIndex: 0,
             score: 0,
             userAnswers: {},
             isFullChallenge: false,
-            quizId: quizId // Store category quiz ID (string)
+            quizId: quizId // Store string ID
         };
 
-        if (setupQuizModalUI()) { // Setup UI for this quiz
-            displayModalQuestion(); // Display first question
-            openModal(quizModal, openingTrigger); // Open the modal
+        if (setupQuizModalUI()) { // Setup UI returns true on success
+            displayModalQuestion();
+            openModal(quizModal, openingTrigger);
         } else {
-            alert("Error setting up the quiz interface.");
+            alert("Error: Could not prepare the quiz interface.");
+            logger.error("Quiz start aborted due to UI setup failure.");
         }
     }
 
     /** Starts the full 100-question challenge */
     function startFullChallenge(openingTrigger) {
-        console.info("Starting Full 100-Question Challenge");
-        // Validation should have happened on init, but double check length
-        if (fullQuizData.length !== CONFIG.EXPECTED_TOTAL_QUESTIONS) {
-            alert(`Error: Full quiz data is incomplete (${fullQuizData.length}/${CONFIG.EXPECTED_TOTAL_QUESTIONS}). Cannot start the challenge.`);
+        logger.info("Starting Full 100-Question Challenge");
+        // Validation should have happened, but re-check length
+        if (!Array.isArray(fullQuizData) || fullQuizData.length !== CONFIG.EXPECTED_TOTAL_QUESTIONS) {
+            alert(`Error: Full quiz data is incomplete or invalid (${fullQuizData?.length || 0}/${CONFIG.EXPECTED_TOTAL_QUESTIONS}). Cannot start the challenge.`);
+            logger.error("Full challenge aborted due to invalid quiz data length.");
             return;
         }
 
+        // Reset quiz state for the full challenge
         currentQuizData = {
-            questions: [...fullQuizData], // Use a fresh copy
+            questions: [...fullQuizData], // Use a copy of the full data
             currentQuestionIndex: 0,
             score: 0,
             userAnswers: {},
             isFullChallenge: true,
-            quizId: null // Not applicable
+            quizId: null // Not applicable for full challenge
         };
 
-        if (setupQuizModalUI()) { // Setup UI
-            displayModalQuestion(); // Display first question
-            openModal(quizModal, openingTrigger); // Open modal
+        if (setupQuizModalUI()) { // Setup UI returns true on success
+            displayModalQuestion();
+            openModal(quizModal, openingTrigger);
         } else {
-             alert("Error setting up the quiz interface.");
+             alert("Error: Could not prepare the quiz interface.");
+             logger.error("Full challenge start aborted due to UI setup failure.");
         }
     }
 
      /** Sets up the quiz modal UI elements for a new quiz, returns true on success */
     function setupQuizModalUI() {
-        if (!quizModal && !cacheQuizModalElements()) { // Try caching if modal not yet cached
-             console.error("Cannot setup quiz UI: Modal or its elements not found.");
+        logger.debug("Setting up quiz modal UI...");
+        // Ensure modal and its elements are cached and valid
+        if (!quizModal && !cacheQuizModalElements()) {
+             logger.error("Cannot setup quiz UI: Modal element caching failed.");
+             return false;
+         }
+         // Double check critical elements are present after caching attempt
+         if (!quizModalTitle || !quizModalProgressTotal || !quizModalResultsEl || !quizModalFeedbackEl || !quizModalQuestionEl || !quizModalOptionsEl || !quizModalNextBtn || !quizModalRestartBtn || !quizModalCloseResultsBtn || !quizModalProgressCurrent) {
+             logger.error("Cannot setup quiz UI: One or more critical elements are missing.");
              return false;
          }
 
-        // Ensure elements are valid after caching attempt
-        if (!quizModalTitle || !quizModalProgressTotal || !quizModalResultsEl || !quizModalFeedbackEl ||
-            !quizModalQuestionEl || !quizModalOptionsEl || !quizModalNextBtn || !quizModalRestartBtn ||
-            !quizModalCloseResultsBtn || !quizModalProgressCurrent) {
-            console.error("One or more required quiz modal elements are missing after cache attempt. Aborting UI setup.");
-            closeModal(); // Close if critical elements are gone
-            return false;
-        }
-
         const totalQuestions = currentQuizData.questions.length;
-        // Determine title safely
+        // Determine title safely, using optional chaining
         const firstQuestionCategory = currentQuizData.questions?.[0]?.category;
         const title = currentQuizData.isFullChallenge ? "Full Financial Fitness Challenge" : (firstQuestionCategory || 'Financial Fitness Quiz');
 
-        // Reset UI states
+        // --- Reset UI states ---
         quizModalTitle.textContent = title;
         quizModalProgressTotal.textContent = totalQuestions;
-        quizModalProgressCurrent.textContent = '1'; // Start at question 1 display
-        quizModalResultsEl.hidden = true; quizModalResultsEl.innerHTML = '';
-        quizModalFeedbackEl.hidden = true; quizModalFeedbackEl.innerHTML = '';
-        quizModalQuestionEl.hidden = false; quizModalQuestionEl.innerHTML = ''; // Clear first
-        quizModalOptionsEl.hidden = false; quizModalOptionsEl.innerHTML = ''; // Clear first
-        quizModalProgressCurrent.closest('.quiz-modal-progress')?.removeAttribute('hidden'); // Show progress
+        quizModalProgressCurrent.textContent = '1'; // Display starts at 1
+        quizModalResultsEl.hidden = true; quizModalResultsEl.innerHTML = ''; // Clear previous results
+        quizModalFeedbackEl.hidden = true; quizModalFeedbackEl.innerHTML = ''; quizModalFeedbackEl.className = 'quiz-feedback'; // Clear feedback & state class
+        quizModalQuestionEl.hidden = false; quizModalQuestionEl.innerHTML = 'Loading question...'; // Clear and show loading state
+        quizModalOptionsEl.hidden = false; quizModalOptionsEl.innerHTML = ''; // Clear previous options
+
+        // Show progress container
+        const progressContainer = quizModal.querySelector('.quiz-modal-progress');
+        if (progressContainer) progressContainer.hidden = false;
 
 
         // Hide all navigation buttons initially
@@ -621,52 +743,73 @@
         const restartText = currentQuizData.isFullChallenge ? "Restart Full Challenge" : "Restart Quiz";
         quizModalRestartBtn.innerHTML = `<i class="fas fa-redo" aria-hidden="true"></i> ${restartText}`;
 
+        logger.debug("Quiz modal UI setup complete.");
         return true; // Setup successful
     }
 
      /** Displays the current question and options in the modal */
     function displayModalQuestion() {
-        if (!quizModal || !quizModalQuestionEl || !quizModalOptionsEl || !quizModalProgressCurrent || !currentQuizData) return;
+        logger.debug(`Displaying question index: ${currentQuizData.currentQuestionIndex}`);
+        // Ensure elements are cached and data is available
+        if (!quizModal || !cacheQuizModalElements() || !currentQuizData) {
+             logger.error("Cannot display question: Modal elements or quiz data unavailable.");
+             closeModal(); // Close if setup is broken
+             return;
+         }
 
         const quiz = currentQuizData;
         // Check if quiz finished
         if (quiz.currentQuestionIndex >= quiz.questions.length) {
+            logger.info("End of questions reached. Showing results.");
             showModalResults();
             return;
         }
 
         const q = quiz.questions[quiz.currentQuestionIndex];
         if (!q) {
-            console.error(`Error: Question data missing for index ${quiz.currentQuestionIndex}`);
+            logger.error(`Error: Question data missing for index ${quiz.currentQuestionIndex}. Ending quiz.`);
+            alert("An error occurred loading the next question. Showing results.");
             showModalResults(); // Show results even if data is bad
             return;
         }
 
-        quizModalQuestionEl.innerHTML = `<span class="question-number">${quiz.currentQuestionIndex + 1}.</span> ${q.question || 'Error: Question text missing'}`;
+        // Display question text
+        // Use textContent for security unless HTML is explicitly needed and controlled
+        quizModalQuestionEl.innerHTML = ''; // Clear previous
+        const numberSpan = document.createElement('span');
+        numberSpan.className = 'question-number';
+        numberSpan.textContent = `${quiz.currentQuestionIndex + 1}. `;
+        quizModalQuestionEl.appendChild(numberSpan);
+        quizModalQuestionEl.appendChild(document.createTextNode(q.question || 'Error: Question text missing'));
+
+        // Update progress display
         quizModalProgressCurrent.textContent = quiz.currentQuestionIndex + 1;
         quizModalOptionsEl.innerHTML = ''; // Clear previous options
 
-        if (!q.options || q.options.length === 0) {
-            console.error(`Error: Options missing for question id ${q.id}`);
-             quizModalOptionsEl.innerHTML = '<p class="error-message">Error loading options.</p>';
-             // Hide nav buttons? Maybe allow closing.
+        // Check for valid options
+        if (!q.options || !Array.isArray(q.options) || q.options.length === 0) {
+            logger.error(`Error: Options missing or invalid for question id ${q.id}`);
+             quizModalOptionsEl.innerHTML = '<p class="error-message">Error: Options could not be loaded for this question.</p>';
+             // Consider how to handle this - maybe just allow closing?
             quizModalNextBtn.hidden = true;
             quizModalRestartBtn.hidden = true; // Hide restart if question broken
             quizModalCloseResultsBtn.hidden = false; // Allow closing
             return;
         }
 
-
+        // Create and append option buttons
         q.options.forEach((option, index) => {
-            const button = document.createElement('button');
-            button.type = 'button';
-            button.textContent = option;
-            button.className = 'option-button btn'; // Base class + specific class
-            button.dataset.index = index;
-            // Use event listener instead of onclick for better management if needed later
-            button.addEventListener('click', () => handleModalOptionSelection(index));
-            quizModalOptionsEl.appendChild(button);
-        });
+             const label = document.createElement('label'); // Using label for potentially better semantics if styled right
+             label.className = 'option-label';
+             const button = document.createElement('button');
+             button.type = 'button';
+             button.textContent = option;
+             button.className = 'option-button'; // Use specific class for styling
+             button.dataset.index = index;
+             button.addEventListener('click', () => handleModalOptionSelection(index));
+             label.appendChild(button);
+             quizModalOptionsEl.appendChild(label);
+         });
 
         // Hide feedback and next button until selection made
         quizModalFeedbackEl.hidden = true;
@@ -675,147 +818,208 @@
         // Focus the first option button for accessibility
         const firstOptionButton = quizModalOptionsEl.querySelector('.option-button');
         if (firstOptionButton) {
-            setTimeout(() => firstOptionButton.focus(), 50); // Slight delay may help focus
+            safeFocus(firstOptionButton); // Use safeFocus helper
         }
+        logger.debug("Question displayed successfully.");
     }
 
     /** Handles the user clicking a quiz option button */
     function handleModalOptionSelection(selectedIndex) {
+        logger.debug(`Option selected: index ${selectedIndex}`);
+        // Ensure elements are cached and data is available
+        if (!quizModal || !cacheQuizModalElements() || !currentQuizData) return;
+
         const quiz = currentQuizData;
-        if (!quiz || quiz.currentQuestionIndex >= quiz.questions.length) return; // Prevent action if quiz ended
+        if (quiz.currentQuestionIndex >= quiz.questions.length) {
+             logger.warn("Option selected after quiz supposedly ended.");
+             return; // Prevent action if quiz ended
+        }
 
         const q = quiz.questions[quiz.currentQuestionIndex];
-        if (!q || !quizModalOptionsEl) return;
+        if (!q || !quizModalOptionsEl) {
+            logger.error("Cannot handle selection: Question data or options element missing.");
+            return;
+        }
 
-        // Prevent selecting again if already answered (check if feedback is visible?)
-        if (!quizModalFeedbackEl.hidden) return;
+        // Prevent selecting again if feedback is already visible
+        if (!quizModalFeedbackEl.hidden) {
+            logger.debug("Selection ignored, feedback already visible.");
+            return;
+        }
 
-        const buttons = quizModalOptionsEl.querySelectorAll('button');
-        buttons.forEach(button => button.disabled = true); // Disable all options
+        // Disable all option buttons immediately
+        const buttons = quizModalOptionsEl.querySelectorAll('.option-button');
+        buttons.forEach(button => button.disabled = true);
 
+        // Record answer and update score
         quiz.userAnswers[q.id] = selectedIndex; // Record answer using question ID
         const isCorrect = selectedIndex === q.correctAnswerIndex;
-        if (isCorrect) quiz.score++; // Update score
+        if (isCorrect) {
+             quiz.score++;
+             logger.debug(`Correct! Score is now ${quiz.score}`);
+        } else {
+             logger.debug(`Incorrect. Correct answer was index ${q.correctAnswerIndex}`);
+        }
 
-        showModalFeedback(selectedIndex, q.correctAnswerIndex, q.explanation); // Show feedback
+        // Show feedback and potentially the next button
+        showModalFeedback(selectedIndex, q.correctAnswerIndex, q.explanation);
+
+         // Focus the next button if it becomes visible
+         if (quizModalNextBtn && !quizModalNextBtn.hidden) {
+             safeFocus(quizModalNextBtn);
+         }
     }
 
      /** Displays feedback after an option is selected */
     function showModalFeedback(selectedIndex, correctIndex, explanation) {
-        if (!quizModal || !quizModalOptionsEl || !quizModalFeedbackEl || !quizModalNextBtn) return;
+        logger.debug("Displaying feedback.");
+        // Ensure elements are cached and available
+        if (!quizModal || !cacheQuizModalElements()) return;
 
-        const buttons = quizModalOptionsEl.querySelectorAll('button');
+        const buttons = quizModalOptionsEl.querySelectorAll('.option-button');
         const isCorrect = selectedIndex === correctIndex;
 
+        // Apply visual styling to buttons
         buttons.forEach((button, index) => {
              button.classList.remove('correct', 'incorrect'); // Clear previous states first
              if (index === correctIndex) {
                  button.classList.add('correct');
-             } else if (index === selectedIndex) { // Only mark the selected incorrect one
+             } else if (index === selectedIndex) { // Only mark the *selected* incorrect one
                  button.classList.add('incorrect');
              }
-            // Ensure they remain disabled
+             // Ensure buttons remain disabled
              button.disabled = true;
          });
 
-         // Sanitize explanation slightly (basic protection)
-         const safeExplanation = explanation ? explanation.replace(/</g, "<").replace(/>/g, ">") : 'Check your understanding.';
-         quizModalFeedbackEl.innerHTML = `<p><strong>${isCorrect ? 'Correct!' : 'Insight:'}</strong> ${safeExplanation}</p>`;
-         quizModalFeedbackEl.className = `quiz-feedback ${isCorrect ? 'correct' : 'incorrect'}`; // Base class + state class
-         quizModalFeedbackEl.hidden = false;
+         // Construct and display feedback message safely
+         const feedbackPrefix = isCorrect ? 'Correct!' : 'Insight:';
+         const feedbackText = explanation || 'Review the correct answer shown above.';
+         quizModalFeedbackEl.innerHTML = ''; // Clear previous content
+         const p = document.createElement('p');
+         const strong = document.createElement('strong');
+         strong.textContent = feedbackPrefix + ' ';
+         p.appendChild(strong);
+         p.appendChild(document.createTextNode(feedbackText)); // Use text node for safety
+         quizModalFeedbackEl.appendChild(p);
 
-        // Show 'Next' button if not the last question, otherwise prepare for results
+         quizModalFeedbackEl.className = `quiz-feedback ${isCorrect ? 'correct' : 'incorrect'}`; // Set class for styling
+         quizModalFeedbackEl.hidden = false; // Show feedback area
+
+        // Show/Hide 'Next' button based on progress
         if (currentQuizData.currentQuestionIndex < currentQuizData.questions.length - 1) {
             quizModalNextBtn.hidden = false;
-             quizModalNextBtn.focus(); // Focus next button
+            logger.debug("Next button shown.");
+            // Focus is handled in handleModalOptionSelection after this runs
         } else {
              quizModalNextBtn.hidden = true;
-            // Optionally trigger showing results automatically after a delay
-             setTimeout(showModalResults, 1500); // Delay before showing final results
+            logger.info("Last question answered. Results will show shortly.");
+            // Trigger results display after a delay
+             setTimeout(showModalResults, 1500); // e.g., 1.5 seconds delay
          }
     }
 
     /** Moves to the next question */
     function nextModalQuestion() {
-        if (!currentQuizData || currentQuizData.currentQuestionIndex >= currentQuizData.questions.length -1) return; // Safety check
+        logger.debug("Moving to next question.");
+        // Ensure quiz is ongoing
+        if (!currentQuizData || currentQuizData.currentQuestionIndex >= currentQuizData.questions.length -1) {
+            logger.warn("Next button clicked but no more questions or quiz inactive.");
+            return;
+        }
 
         currentQuizData.currentQuestionIndex++;
-        displayModalQuestion(); // This handles displaying the next question or results
+        displayModalQuestion(); // This function will display the next question/handle results
     }
 
     /** Displays the final results in the modal */
     function showModalResults() {
-        if (!quizModal || !cacheQuizModalElements() || !currentQuizData) return; // Ensure modal and elements exist
+        logger.info("Displaying quiz results.");
+        // Ensure modal elements are ready
+        if (!quizModal || !cacheQuizModalElements() || !currentQuizData) {
+             logger.error("Cannot show results: Modal elements or quiz data unavailable.");
+             closeModal();
+             return;
+         }
 
-        // Hide quiz active areas
+        // Hide active quiz elements
         quizModalQuestionEl.hidden = true;
         quizModalOptionsEl.hidden = true;
         quizModalFeedbackEl.hidden = true;
         quizModalNextBtn.hidden = true;
-        quizModalProgressCurrent?.closest('.quiz-modal-progress')?.setAttribute('hidden', ''); // Hide progress count
+        const progressContainer = quizModal.querySelector('.quiz-modal-progress');
+        if(progressContainer) progressContainer.hidden = true; // Hide progress count
 
 
         const { score, questions, isFullChallenge } = currentQuizData;
-        const total = questions?.length || 0; // Handle potential empty questions array
+        const total = questions?.length || 0;
         const percentage = total > 0 ? Math.round((score / total) * 100) : 0;
         let resultTitle = isFullChallenge ? 'Full Challenge Complete!' : 'Quiz Complete!';
         let feedbackMessage;
 
-        // Generate feedback based on mode and score
+        // --- Determine Result Message ---
          if (isFullChallenge) {
              if (percentage >= 90) feedbackMessage = 'Outstanding performance! Top financial fitness!';
              else if (percentage >= 75) feedbackMessage = 'Excellent work! Strong understanding overall.';
              else if (percentage >= 50) feedbackMessage = 'Good effort! Solid grasp of many concepts.';
              else feedbackMessage = 'You completed the challenge! Review the insights to boost your knowledge.';
          } else { // Category quiz
-            const categoryName = questions?.[0]?.category || 'Quiz'; // Safely get category name
-            resultTitle = `${categoryName} Results`;
+            const categoryName = questions?.[0]?.category || 'Quiz';
+            resultTitle = `${categoryName} Results`; // Use category name in title
             if (percentage === 100) feedbackMessage = 'Perfect score! Excellent!';
             else if (percentage >= 80) feedbackMessage = 'Great job! Strong understanding.';
             else if (percentage >= 60) feedbackMessage = 'Good grasp of the basics.';
              else feedbackMessage = 'Keep learning and exploring this topic!';
         }
-         quizModalTitle.textContent = resultTitle; // Update modal title
+        quizModalTitle.textContent = resultTitle; // Update modal title
 
-
-         // Display results HTML (using textContent for safety where possible)
+         // --- Populate Results Area ---
         quizModalResultsEl.innerHTML = `
             <h4>${resultTitle}</h4>
             <p>Your Score: <span class="score-value">${score}</span> out of <span class="score-total">${total}</span></p>
             <p class="quiz-score-percentage">(${percentage}%)</p>
-            <p class="quiz-result-message"></p> <!-- Inject message safely -->
+            <p class="quiz-result-message"></p> <!-- Placeholder for safe text injection -->
         `;
-        // Safely set the feedback message
+        // Inject feedback message safely
         const messageElement = quizModalResultsEl.querySelector('.quiz-result-message');
         if(messageElement) messageElement.textContent = feedbackMessage;
+        else logger.warn("Could not find .quiz-result-message element to display feedback.");
 
-        quizModalResultsEl.hidden = false;
+        quizModalResultsEl.hidden = false; // Show results section
 
-        // Show relevant navigation buttons (Restart and Close)
+        // --- Show Action Buttons ---
         quizModalRestartBtn.hidden = false;
         quizModalCloseResultsBtn.hidden = false;
 
-        quizModalRestartBtn.focus(); // Focus restart as primary action after results
+        // Focus restart button as primary action
+        safeFocus(quizModalRestartBtn);
+        logger.debug("Results displayed. Restart and Close buttons visible.");
     }
 
     /** Handles restarting the current quiz (category or full) */
     function handleRestartClick() {
-        if (!currentQuizData) return;
-        const trigger = triggerElement; // Preserve original trigger if available
+        logger.info("Restart button clicked.");
+        if (!currentQuizData) {
+            logger.error("Cannot restart: No current quiz data available.");
+            return;
+        }
+        // Preserve original trigger if available for focus context
+        const trigger = triggerElement;
 
-        // Reset UI elements immediately (setup will handle full reset)
-        quizModalResultsEl.hidden = true;
-        quizModalRestartBtn.hidden = true;
-        quizModalCloseResultsBtn.hidden = true;
+        // Reset UI elements related to results before starting new quiz
+        if (quizModalResultsEl) quizModalResultsEl.hidden = true;
+        if (quizModalRestartBtn) quizModalRestartBtn.hidden = true;
+        if (quizModalCloseResultsBtn) quizModalCloseResultsBtn.hidden = true;
 
         if (currentQuizData.isFullChallenge) {
+            logger.debug("Restarting Full Challenge...");
             startFullChallenge(trigger);
         } else {
             const quizId = currentQuizData.quizId; // Use the string quizId
             if (quizId) {
+                 logger.debug(`Restarting Category Quiz: ID "${quizId}"...`);
                  startCategoryQuiz(quizId, trigger);
              } else {
-                 console.error("Cannot restart category quiz: Quiz ID unknown.");
+                 logger.error("Cannot restart category quiz: Quiz ID unknown in current data.");
                  alert("An error occurred while trying to restart the quiz.");
                  closeModal(); // Close if restart fails critically
              }
@@ -824,99 +1028,142 @@
 
     // --- Initialization ---
     function initializePage() {
-         console.info("Rofilid Quizzes Page Script Initializing (v2.5.0)");
+         logger.info(`Rofilid Quizzes Page Script Initializing (v${'2.6.0'})`);
 
          // --- Cache Global Page Elements ---
          accordion = document.querySelector(CONFIG.ACCORDION_SELECTOR);
          startFullChallengeBtn = document.getElementById(CONFIG.START_FULL_CHALLENGE_BTN_ID);
-         quizModal = document.querySelector(CONFIG.QUIZ_MODAL_SELECTOR); // Cache modal early
+         quizModal = document.querySelector(CONFIG.QUIZ_MODAL_SELECTOR); // Cache main modal element
          currentYearSpan = document.querySelector(CONFIG.CURRENT_YEAR_SELECTOR);
 
          // --- Critical Checks ---
          if (!quizModal) {
-             console.error("CRITICAL: Quiz modal element not found using selector:", CONFIG.QUIZ_MODAL_SELECTOR, ". Quiz functionality disabled.");
-             // Disable all start buttons if modal is missing
-             document.querySelectorAll(CONFIG.START_QUIZ_BTN_SELECTOR + ', #' + CONFIG.START_FULL_CHALLENGE_BTN_ID)
-                  .forEach(btn => { btn.disabled = true; btn.title = "Quiz unavailable."; btn.style.cursor = 'not-allowed'; });
-             return; // Stop initialization
+             logger.error("CRITICAL: Quiz modal element not found. Quiz functionality will be disabled.");
+             // Disable all quiz start buttons to prevent errors
+             document.querySelectorAll(`${CONFIG.START_QUIZ_BTN_SELECTOR}, #${CONFIG.START_FULL_CHALLENGE_BTN_ID}`)
+                  .forEach(btn => {
+                      btn.disabled = true;
+                      btn.style.opacity = '0.6';
+                      btn.style.cursor = 'not-allowed';
+                      btn.setAttribute('title', 'Quiz interface is currently unavailable.');
+                  });
+             // Attempt to initialize other non-quiz parts
+             initializeAccordion(accordion);
+             updateCopyrightYear();
+             return; // Stop further quiz-related initialization
          }
+         // Cache modal internals early
+         if (!cacheQuizModalElements()) {
+             logger.error("CRITICAL: Failed to cache essential quiz modal sub-elements. Quiz functionality likely disabled.");
+             // Disable buttons as modal structure is broken
+              document.querySelectorAll(`${CONFIG.START_QUIZ_BTN_SELECTOR}, #${CONFIG.START_FULL_CHALLENGE_BTN_ID}`)
+                  .forEach(btn => {
+                      btn.disabled = true;
+                       btn.style.opacity = '0.6';
+                      btn.style.cursor = 'not-allowed';
+                      btn.setAttribute('title', 'Quiz interface error.');
+                  });
+             initializeAccordion(accordion);
+             updateCopyrightYear();
+             return;
+         }
+
+         // Validate the quiz data structure and content
          if (!validateQuizData()) {
-             console.error("CRITICAL: Quiz data failed validation. Quiz functionality disabled.");
-              document.querySelectorAll(CONFIG.START_QUIZ_BTN_SELECTOR + ', #' + CONFIG.START_FULL_CHALLENGE_BTN_ID)
-                  .forEach(btn => { btn.disabled = true; btn.title = "Quiz data error."; btn.style.cursor = 'not-allowed'; });
-             return; // Stop initialization
+             logger.error("CRITICAL: Quiz data failed validation. Quiz functionality will be disabled.");
+              document.querySelectorAll(`${CONFIG.START_QUIZ_BTN_SELECTOR}, #${CONFIG.START_FULL_CHALLENGE_BTN_ID}`)
+                  .forEach(btn => {
+                       btn.disabled = true;
+                       btn.style.opacity = '0.6';
+                       btn.style.cursor = 'not-allowed';
+                       btn.setAttribute('title', 'Quiz data is unavailable or invalid.');
+                  });
+             initializeAccordion(accordion);
+             updateCopyrightYear();
+             return; // Stop further quiz-related initialization
          }
 
          // --- Setup Features ---
          initializeAccordion(accordion); // Initialize accordion interactions
-         setupEventListeners(); // Setup button clicks etc.
+         setupEventListeners(); // Setup button clicks etc. AFTER elements/data confirmed valid
          updateCopyrightYear(); // Update dynamic year
 
-         console.info("Rofilid Quizzes Page Scripts Fully Loaded and Ready.");
+         logger.info("Rofilid Quizzes Page Scripts Fully Loaded and Ready.");
     }
 
 
     // --- Setup Event Listeners specific to Quizzes page ---
     function setupEventListeners() {
+        logger.debug("Setting up Quizzes page event listeners...");
+
         // Full Challenge Button
          if (startFullChallengeBtn) {
-             startFullChallengeBtn.addEventListener('click', (e) => startFullChallenge(e.currentTarget));
+             startFullChallengeBtn.addEventListener('click', (e) => {
+                 logger.debug("Full Challenge button clicked.");
+                 startFullChallenge(e.currentTarget); // Pass button as trigger
+             });
          } else {
-             console.warn("Start Full Challenge button not found with ID:", CONFIG.START_FULL_CHALLENGE_BTN_ID);
+             logger.warn("Start Full Challenge button not found.");
         }
 
-        // Category Quiz Buttons (Event Delegation on Accordion)
+        // Category Quiz Buttons (Using Event Delegation on Accordion)
          if (accordion) {
              accordion.addEventListener('click', (event) => {
+                 // Find the closest ancestor button matching the selector
                  const startButton = event.target.closest(CONFIG.START_QUIZ_BTN_SELECTOR);
-                 if (!startButton) return; // Click wasn't on or within a start button
+                 if (!startButton) return; // Click wasn't on or inside a relevant button
 
-                 // Use data-quiz-id (string) from the button itself
+                 // Get the quiz ID from the button's dataset
                  const quizId = startButton.dataset.quizId;
+                 logger.debug(`Start Quiz button clicked for quizId: "${quizId}"`);
 
                 if (quizId) {
-                     startCategoryQuiz(quizId, startButton); // Pass the button as trigger
+                     startCategoryQuiz(quizId, startButton); // Pass button as trigger
                 } else {
-                     console.error("Missing 'data-quiz-id' attribute on start button:", startButton);
-                    alert("Could not determine which quiz to start.");
+                     logger.error("Missing 'data-quiz-id' attribute on start button:", startButton);
+                    alert("Could not determine which quiz to start. Button is missing necessary data.");
                 }
              });
         } else {
-            console.warn("Accordion container not found. Category quiz buttons may not work.");
+            logger.warn("Accordion container not found. Category quiz button delegation may not work.");
         }
 
-        // Modal Navigation & Overlay Listeners (ensure elements are cached first)
-         if (quizModal && cacheQuizModalElements()) { // Cache elements before adding listeners
-            quizModalCloseBtn.addEventListener('click', () => closeModal());
-            quizModalNextBtn.addEventListener('click', nextModalQuestion);
-            quizModalRestartBtn.addEventListener('click', handleRestartClick);
-            quizModalCloseResultsBtn.addEventListener('click', () => closeModal());
+        // Modal Navigation & Overlay Listeners (Elements assumed cached by initializePage)
+         if (quizModal && quizModalCloseBtn && quizModalNextBtn && quizModalRestartBtn && quizModalCloseResultsBtn) {
+            quizModalCloseBtn.addEventListener('click', () => { logger.debug("Modal Close button clicked."); closeModal(); });
+            quizModalNextBtn.addEventListener('click', () => { logger.debug("Modal Next button clicked."); nextModalQuestion(); });
+            quizModalRestartBtn.addEventListener('click', () => { logger.debug("Modal Restart button clicked."); handleRestartClick(); });
+            quizModalCloseResultsBtn.addEventListener('click', () => { logger.debug("Modal Close Results button clicked."); closeModal(); });
 
-             // Overlay click listener
+             // Overlay click listener (added here for completeness, already in closeModal helpers)
              quizModal.addEventListener('click', (event) => {
-                // Close only if the click is directly on the overlay (modal background)
+                // Close only if the click is directly on the overlay background
                  if (event.target === quizModal) {
+                     logger.debug("Modal overlay clicked.");
                      closeModal();
                 }
             });
-         } else if(quizModal) {
-             console.error("Could not attach modal button listeners because element caching failed.");
+             logger.debug("Quiz modal button listeners attached.");
+         } else {
+             // This case should have been caught by initializePage, but log just in case.
+             logger.error("Could not attach modal button listeners: one or more button elements not found/cached.");
          }
-         // Note: Escape key listener is handled globally by openModal/closeModal
+         // Note: Escape key listener is attached/removed globally by openModal/closeModal helpers
     }
 
 
-    /** Update copyright year */
+    /** Update copyright year in the footer */
     function updateCopyrightYear() {
          if (currentYearSpan) {
              currentYearSpan.textContent = new Date().getFullYear();
+             logger.debug("Copyright year updated.");
         } else {
-            console.warn("Current year span not found with selector:", CONFIG.CURRENT_YEAR_SELECTOR);
+            logger.warn("Current year span not found.");
         }
     }
 
 
-    // --- Run Initialization ---
+    // --- Run Initialization on DOM Ready ---
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initializePage);
     } else {
