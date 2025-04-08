@@ -330,17 +330,15 @@ nav[aria-label="Main navigation"] {
   #primary-navigation.active { display: flex; /* Show dropdown when active */ }
 }
 
-/* Desktop */
+/* Desktop - This block should be in your global styles.css */
 @media (min-width: 992px) {
   :root { --header-height: 75px; }
   .site-header { height: var(--header-height); }
 
-  /* --- Revised Header Layout Fix for Desktop (Button inside Nav) --- */
+  /* --- Corrected Header Layout Fix: Centering Nav Between Auto Margins --- */
   .header-container {
     display: flex;
-    justify-content: space-between; /* Logo left, Nav container right */
-    align-items: center;
-    /* Other .header-container styles remain */
+    align-items: center; /* Vertically center items */
     width: 100%;
     max-width: var(--container-width);
     margin: 0 auto;
@@ -348,65 +346,63 @@ nav[aria-label="Main navigation"] {
   }
 
   .header-container .logo {
-    flex-shrink: 0; /* Prevent logo shrinking */
+    /* Push everything else right */
+    margin-right: auto; /* Creates space on the right */
+    flex-shrink: 0;     /* Prevent logo shrinking */
   }
 
   nav[aria-label="Main navigation"] {
-    display: flex;        /* Make nav a flex container */
-    align-items: center;  /* Vertically align nav-list and button */
-    flex-grow: 1;         /* Allow nav to fill space */
-    justify-content: flex-start; /* Align items inside nav container (list, button) to start */
+    /* Make nav expand to fill the available space */
+    flex-grow: 1;
+    /* Use flex to center its content (the UL) horizontally */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Keep vertical alignment */
+    /* Explicit margins are not needed when flex-grow is used for centering */
   }
 
-  .nav-list { /* This is the UL (#primary-navigation) */
-    display: flex !important; /* Override mobile display:none and ensure flex */
+  /* Desktop Nav list structure (UL inside Nav) */
+  .nav-list {
+    display: flex !important; /* Override mobile display:none */
     flex-direction: row;
-    gap: var(--spacing-lg);
+    gap: var(--spacing-lg); /* Space between nav items */
     position: static;
-    width: auto;
+    width: auto; /* Size based on content */
     background-color: transparent;
     box-shadow: none;
     padding: 0;
     opacity: 1;
-    flex-wrap: nowrap;
+    flex-wrap: nowrap; /* Prevent wrapping */
     overflow: visible;
-    /* ** Add margin-left: auto to push list away from the left edge (logo) ** */
-    margin-left: auto;
-    /* Removed margin-right: auto */
-    /* Removed justify-content: center */
-    margin-right: 0; /* Explicitly remove right margin */
+    /* Centering is now handled by the parent <nav>, no justify-content needed here */
+    margin: 0; /* Reset default margins */
   }
 
   .connect-button {
+    /* Push button itself to the far right edge of the container */
+    margin-left: auto; /* Creates space on its left */
+    flex-shrink: 0;   /* Prevent button shrinking */
     display: inline-block; /* Ensure it's displayed */
-    flex-shrink: 0; /* Prevent button shrinking */
-    /* ** Add margin-left to space it from the nav list ** */
-    margin-left: var(--spacing-lg); /* Adjust spacing as needed */
   }
-
-  .mobile-menu-toggle {
-    display: none !important; /* Ensure mobile toggle is hidden */
-  }
-   /* --- End Revised Header Layout Fix --- */
-
+  /* --- End Corrected Header Layout Fix --- */
 
   /* Other Desktop Styles (Unchanged) */
   .hero-section, .page-intro { padding-top: calc(var(--header-height) + var(--spacing-xxl)); padding-bottom: var(--spacing-xxl); }
   .hero-section { min-height: 550px; }
+  .mobile-menu-toggle { display: none !important; } /* Hide toggle */
 
   /* Reset mobile .active state styles for nav */
-   #primary-navigation.active { /* This selector targets the UL */
+  #primary-navigation.active {
     position: static;
     box-shadow: none;
     overflow: visible;
     padding: 0;
     background-color: transparent;
-    display: flex; /* Ensure flex is still applied */
+    display: flex;
+    justify-content: center; /* Centering is fine for active dropdown */
     flex-wrap: nowrap;
     width: auto;
     gap: var(--spacing-lg);
-    /* Remove mobile justify-content if present */
-    justify-content: initial; /* Reset mobile centering */
   }
   /* Index cards - 3 columns */
   .cards .card { flex-basis: calc(33.333% - var(--spacing-lg) * 2 / 3); max-width: 360px; }
