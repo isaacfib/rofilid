@@ -10,7 +10,7 @@
     <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto:wght@700&display=swap" rel="stylesheet">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Personal Page Specific Styles -->
@@ -34,15 +34,14 @@
             <nav aria-label="Main navigation">
                 <button class="mobile-menu-toggle" aria-expanded="false" aria-controls="primary-navigation" aria-label="Toggle Navigation Menu">
                     <span class="sr-only">Menu</span>
-                    <!-- Updated Icon Structure for Animation -->
-                    <i class="fas fa-bars open-icon icon" aria-hidden="true"></i>
-                    <i class="fas fa-times close-icon icon" aria-hidden="true"></i>
+                    <i class="fas fa-bars open-icon" aria-hidden="true"></i>
+                    <i class="fas fa-times close-icon" aria-hidden="true"></i>
                 </button>
                 <ul id="primary-navigation" class="nav-list">
                     <li class="nav-item"><a href="../../index.html" class="nav-link">Home</a></li>
                     <li class="nav-item"><a href="personal.html" class="nav-link active-page" aria-current="page">Personal Finance</a></li>
                     <li class="nav-item"><a href="#free-resources" class="nav-link">Resources</a></li>
-                    <li class="nav-item"><a href="#learning-hub" class="nav-link">Fitness Hub</a></li> <!-- Shortened Name -->
+                    <li class="nav-item"><a href="#learning-hub" class="nav-link">ROFILID Financial Fitness Hub</a></li>
                     <li class="nav-item"><a href="#free-tools" class="nav-link">Tools</a></li>
                     <li class="nav-item"><a href="../corporate/corporate.html" class="nav-link">For Businesses</a></li>
                 </ul>
@@ -54,20 +53,18 @@
 
     <main id="main-content">
         <!-- Hero Section -->
-        <section id="hero" class="hero-section section-padding--large" aria-labelledby="hero-heading" role="region"> <!-- Added role -->
+        <section id="hero" class="hero-section section-padding--large" aria-labelledby="hero-heading">
             <div class="container hero-container">
                 <div class="hero-content">
                     <span class="hero-badge">Your Journey to Financial Clarity Starts Here</span>
                     <h1 id="hero-heading">Navigate Your Finances with Confidence</h1>
                     <p class="subheadline">Gain practical knowledge, access tools & calculators, and build sustainable money habits.</p>
                     <div class="hero-actions">
-                        <!-- Added btn-icon-leading class where icon is first -->
-                        <a href="#free-resources" class="btn btn-primary btn-large btn-icon btn-icon-leading"><i class="fas fa-gift" aria-hidden="true"></i> Explore Free Resources</a>
-                        <a href="#learning-hub" class="btn btn-outline btn-large btn-icon btn-icon-leading"><i class="fas fa-lightbulb" aria-hidden="true"></i> Test Your Knowledge</a>
+                        <a href="#free-resources" class="btn btn-primary btn-large btn-icon"><i class="fas fa-gift" aria-hidden="true"></i> Explore Free Resources</a>
+                        <a href="#learning-hub" class="btn btn-outline btn-large btn-icon"><i class="fas fa-lightbulb" aria-hidden="true"></i> Test Your Knowledge</a>
                     </div>
                 </div>
                 <div class="hero-stats-grid">
-                    <!-- data-animate-fade-in handled by JS - No changes needed here unless adding stagger data attributes -->
                     <div class="stat-card" data-animate-fade-in>
                         <i class="fas fa-book-open-reader" aria-hidden="true"></i>
                         <h4>Actionable Knowledge</h4>
@@ -88,7 +85,7 @@
         </section>
 
         <!-- Our Approach Section -->
-        <section id="our-approach" class="section-padding bg-light-accent" aria-labelledby="approach-heading" role="region" data-animate-fade-in> <!-- Added role -->
+        <section id="our-approach" class="section-padding bg-light-accent" aria-labelledby="approach-heading" data-animate-fade-in>
             <div class="container approach-container">
                  <div class="approach-icon" aria-hidden="true"><i class="fas fa-compass-drafting"></i></div>
                 <h2 id="approach-heading" class="section-title">What We Do</h2>
@@ -102,27 +99,24 @@
         </section>
 
         <!-- Free Resources Section -->
-         <section id="free-resources" class="section-padding" aria-labelledby="resources-heading" role="region" data-animate-fade-in> <!-- Added role -->
+         <section id="free-resources" class="section-padding" aria-labelledby="resources-heading" data-animate-fade-in>
              <div class="container">
                  <h2 id="resources-heading" class="section-title">Learn & Grow with Free Resources</h2>
                  <p class="section-description">Start building your financial foundation today with our collection of guides, articles, and social insights.</p>
                  <div class="resource-grid">
-                     <!-- Added grid-card class -->
-                     <article class="grid-card resource-card" aria-labelledby="resource-blog-title">
+                     <article class="resource-card" aria-labelledby="resource-blog-title">
                           <div class="card-image">
-                              <img src="../../assets/images/personal/blog.jpg" alt="Person reading financial articles on a tablet" loading="lazy" width="400" height="250">
+                              <img src="../../assets/images/personal/blog.jpg" alt="Person reading financial articles on a tablet" loading="lazy" width="400" height="250"> <!-- Added dimensions -->
                           </div>
                          <div class="card-content">
                              <h3 id="resource-blog-title"><i class="fas fa-newspaper" aria-hidden="true"></i> Rofilid Insights Blog</h3>
                              <p>Explore practical articles on budgeting methods, understanding savings options, demystifying debt, and planning for your goals.</p>
                              <div class="card-cta">
-                                 <!-- Icon is trailing by default, no class needed unless explicitly changed -->
-                                 <a href="blog.html" class="btn btn-outline btn-icon"><span>Read Latest Posts</span> <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                                 <a href="blog.html" class="btn btn-outline btn-icon"><i class="fas fa-arrow-right" aria-hidden="true"></i> Read Latest Posts</a>
                              </div>
                          </div>
                     </article>
-                    <!-- Added grid-card class -->
-                    <article class="grid-card resource-card social-integration" aria-labelledby="resource-social-title">
+                    <article class="resource-card social-integration" aria-labelledby="resource-social-title">
                         <div class="card-header">
                             <i class="fab fa-instagram" aria-hidden="true"></i>
                             <h3 id="resource-social-title">Daily Bites from BasicPFC</h3>
@@ -130,6 +124,7 @@
                         <div class="card-content">
                             <p class="social-intro">Get quick tips, insights, and answers to common financial questions on our social channels.</p>
                             <div class="social-feed-preview">
+                                <!-- Social post examples are illustrative -->
                                 <div class="social-post-preview tip">
                                     <i class="fab fa-instagram" aria-hidden="true"></i>
                                     <p><strong>Quick Tip:</strong> Automate ₦5,000 savings transfer on payday. Small steps, big impact! <span class="social-handle">#SavingsCulture #BasicPFC</span></p>
@@ -154,17 +149,15 @@
                             </div>
                         </div>
                     </article>
-                    <!-- Added grid-card class -->
-                     <article class="grid-card resource-card" aria-labelledby="resource-understanding-title">
+                     <article class="resource-card" aria-labelledby="resource-understanding-title">
                          <div class="card-image">
-                             <img src="../../assets/images/personal/literacy-step.jpg" alt="Steps representing financial growth" loading="lazy" width="400" height="250">
+                             <img src="../../assets/images/personal/literacy-step.jpg" alt="Steps representing financial growth" loading="lazy" width="400" height="250"> <!-- Added dimensions -->
                          </div>
                           <div class="card-content">
                               <h3 id="resource-understanding-title"><i class="fas fa-chart-pie" aria-hidden="true"></i> Why Financial Understanding Matters</h3>
                               <p>Knowing your finances empowers you to make informed decisions, reduce stress, plan for emergencies, and confidently work towards your goals.</p>
                               <div class="card-cta">
-                                  <!-- Added btn-icon-leading -->
-                                  <a href="#our-approach" class="btn btn-outline btn-icon btn-icon-leading"><i class="fas fa-info-circle" aria-hidden="true"></i> Our Approach</a>
+                                  <a href="#our-approach" class="btn btn-outline btn-icon"><i class="fas fa-info-circle" aria-hidden="true"></i> Our Approach</a>
                               </div>
                           </div>
                      </article>
@@ -181,49 +174,40 @@
         </aside>
 
         <!-- Learning Hub Section -->
-        <section id="learning-hub" class="section-padding bg-light" aria-labelledby="learning-heading" role="region" data-animate-fade-in> <!-- Added role -->
+        <section id="learning-hub" class="section-padding bg-light" aria-labelledby="learning-heading" data-animate-fade-in>
              <div class="container">
                  <h2 id="learning-heading" class="section-title">Financial Fitness Hub: Test Your Understanding</h2>
                  <p class="section-description">Check your grasp on key financial concepts with these quick, 5-question quizzes. Get instant feedback to guide your learning journey – no scores saved, just insights!</p>
                  <div class="category-grid">
-                    <!-- Added grid-card class -->
-                     <article class="grid-card category-card" data-category-id="1" aria-labelledby="category-1-title">
+                     <article class="category-card" data-category-id="1" aria-labelledby="category-1-title">
                          <i class="fas fa-piggy-bank category-icon" aria-hidden="true"></i>
                          <h4 id="category-1-title">Income & Vitals Check</h4>
                          <p>How well do you know your financial starting point?</p>
-                         <!-- Added btn-icon-leading -->
-                         <button type="button" class="btn btn-secondary btn-icon btn-icon-leading start-quiz-btn" aria-label="Start Income & Vitals Check Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Check</button>
+                         <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" aria-label="Start Income & Vitals Check Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Check</button>
                      </article>
-                    <!-- Added grid-card class -->
-                     <article class="grid-card category-card" data-category-id="2" aria-labelledby="category-2-title">
+                     <article class="category-card" data-category-id="2" aria-labelledby="category-2-title">
                          <i class="fas fa-sack-dollar category-icon" aria-hidden="true"></i>
                          <h4 id="category-2-title">Savings Smarts</h4>
                          <p>Explore the fundamentals of building savings.</p>
-                         <!-- Added btn-icon-leading -->
-                         <button type="button" class="btn btn-secondary btn-icon btn-icon-leading start-quiz-btn" aria-label="Start Savings Smarts Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Check</button>
+                         <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" aria-label="Start Savings Smarts Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Check</button>
                      </article>
-                    <!-- Added grid-card class -->
-                     <article class="grid-card category-card" data-category-id="3" aria-labelledby="category-3-title">
+                     <article class="category-card" data-category-id="3" aria-labelledby="category-3-title">
                          <i class="fas fa-calculator category-icon" aria-hidden="true"></i>
                          <h4 id="category-3-title">Budgeting Building Blocks</h4>
                          <p>Understand the basics of planning your money.</p>
-                         <!-- Added btn-icon-leading -->
-                         <button type="button" class="btn btn-secondary btn-icon btn-icon-leading start-quiz-btn" aria-label="Start Budgeting Building Blocks Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Check</button>
+                         <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" aria-label="Start Budgeting Building Blocks Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Check</button>
                      </article>
-                    <!-- Added grid-card class -->
-                     <article class="grid-card category-card" data-category-id="4" aria-labelledby="category-4-title">
+                     <article class="category-card" data-category-id="4" aria-labelledby="category-4-title">
                          <i class="fas fa-receipt category-icon" aria-hidden="true"></i>
                          <h4 id="category-4-title">Spending Awareness</h4>
                          <p>Gauge your understanding of tracking expenses.</p>
-                         <!-- Added btn-icon-leading -->
-                         <button type="button" class="btn btn-secondary btn-icon btn-icon-leading start-quiz-btn" aria-label="Start Spending Awareness Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Check</button>
+                         <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" aria-label="Start Spending Awareness Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Check</button>
                      </article>
                  </div>
                  <div class="full-challenge-link">
                      <p class="section-description" style="margin-bottom: var(--pp-space-md);">Want a deeper dive?</p>
-                     <!-- Trailing icon -->
                      <a href="quizzes.html" class="btn btn-outline btn-large btn-icon">
-                         <span>Explore the Full Financial Fitness Challenge</span> <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                         Explore the Full Financial Fitness Challenge <i class="fas fa-arrow-right" aria-hidden="true"></i>
                      </a>
                  </div>
              </div>
@@ -238,17 +222,16 @@
          </aside>
 
         <!-- Free Tools Section -->
-         <section id="free-tools" class="section-padding" aria-labelledby="tools-heading" role="region" data-animate-fade-in> <!-- Added role -->
+         <section id="free-tools" class="section-padding" aria-labelledby="tools-heading" data-animate-fade-in>
             <div class="container">
                 <h2 id="tools-heading" class="section-title">Tools & Templates</h2>
                  <p class="section-description">Download practical, printable PDF templates to start managing your finances effectively today. For interactive calculations like loan payments or investment growth, try our new <a href="#financial-tools-promo" class="link-inline">Interest Calculator</a>!</p>
                 <div class="template-grid">
-                    <!-- Added grid-card class -->
-                     <article class="grid-card template-card" data-template="line-budget" aria-labelledby="template-line-budget-title">
+                     <article class="template-card" data-template="line-budget" aria-labelledby="template-line-budget-title">
                          <div class="template-preview">
                              <img src="../../assets/images/personal/lineitembudget.svg"
                                   alt="Preview of Line-Item Budget template showing income and expense sections"
-                                  loading="lazy" width="300" height="225"
+                                  loading="lazy" width="300" height="225" 
                                   class="template-image template-image-default">
                              <img src="../../assets/images/personal/LineBudget.JPG"
                                   alt="Detailed view of Line-Item Budget template categories"
@@ -259,16 +242,13 @@
                              <h3 id="template-line-budget-title">Line-Item Budget</h3>
                              <p><strong>Problem Solved:</strong> Lack of detail in spending.<br><strong>How it Helps:</strong> Track expense category meticulously. Gain full control.</p>
                              <div class="template-actions">
-                                 <!-- Added btn-icon-leading -->
-                                 <button type="button" class="btn btn-primary btn-icon btn-icon-leading download-pdf-btn" data-template-key="line-budget" aria-label="Download Line-Item Budget PDF (Free)"><i class="fas fa-file-pdf" aria-hidden="true"></i> <span>Download PDF (Free)</span></button>
-                                 <!-- Added btn-icon-leading -->
-                                 <button type="button" class="btn btn-outline btn-icon btn-icon-leading get-spreadsheet-btn" data-price="10000" data-template-name="Line-Item Budget" aria-label="Get Line-Item Budget Interactive Spreadsheet (Paid)"><i class="fas fa-file-spreadsheet" aria-hidden="true"></i> <span>Get Interactive Spreadsheet</span></button>
+                                 <button type="button" class="btn btn-primary btn-icon download-pdf-btn" data-template-key="line-budget" aria-label="Download Line-Item Budget PDF (Free)"><i class="fas fa-file-pdf" aria-hidden="true"></i> <span>Download PDF (Free)</span></button>
+                                 <button type="button" class="btn btn-outline btn-icon get-spreadsheet-btn" data-price="10000" data-template-name="Line-Item Budget" aria-label="Get Line-Item Budget Interactive Spreadsheet (Paid)"><i class="fas fa-file-spreadsheet" aria-hidden="true"></i> <span>Get Interactive Spreadsheet (Paid)</span></button>
                              </div>
                              <p class="template-price-note">Spreadsheet requires a Gmail account. PDF is instantly downloadable.</p>
                          </div>
                     </article>
-                    <!-- Added grid-card class -->
-                    <article class="grid-card template-card" data-template="networth" aria-labelledby="template-networth-title">
+                    <article class="template-card" data-template="networth" aria-labelledby="template-networth-title">
                         <div class="template-preview">
                             <img src="../../assets/images/personal/networth.svg"
                                  alt="Preview of Net Worth Statement showing assets and liabilities columns"
@@ -281,18 +261,15 @@
                         </div>
                          <div class="template-details">
                              <h3 id="template-networth-title">Net Worth Statement</h3>
-                              <p><strong>How it Helps:</strong> See your complete financial picture: Monitor assets, liabilities, and net worth growth in one place.</p>
+                              <p><!--<strong>Problem Solved:</strong> Unsure of overall financial health.<br>--><strong>How it Helps:</strong> See your complete financial picture: Monitor assets, liabilities, and net worth growth in one place.</p>
                               <div class="template-actions">
-                                 <!-- Added btn-icon-leading -->
-                                 <button type="button" class="btn btn-primary btn-icon btn-icon-leading download-pdf-btn" data-template-key="networth" aria-label="Download Net Worth Statement PDF (Free)"><i class="fas fa-file-pdf" aria-hidden="true"></i> <span>Download PDF (Free)</span></button>
-                                 <!-- Added btn-icon-leading -->
-                                 <button type="button" class="btn btn-outline btn-icon btn-icon-leading get-spreadsheet-btn" data-price="10000" data-template-name="Net Worth Statement" aria-label="Get Net Worth Statement Interactive Spreadsheet (Paid)"><i class="fas fa-file-spreadsheet" aria-hidden="true"></i> <span>Get Interactive Spreadsheet</span></button>
+                                 <button type="button" class="btn btn-primary btn-icon download-pdf-btn" data-template-key="networth" aria-label="Download Net Worth Statement PDF (Free)"><i class="fas fa-file-pdf" aria-hidden="true"></i> <span>Download PDF (Free)</span></button>
+                                 <button type="button" class="btn btn-outline btn-icon get-spreadsheet-btn" data-price="10000" data-template-name="Net Worth Statement" aria-label="Get Net Worth Statement Interactive Spreadsheet (Paid)"><i class="fas fa-file-spreadsheet" aria-hidden="true"></i> <span>Get Interactive Spreadsheet (Paid)</span></button>
                               </div>
                              <p class="template-price-note">Spreadsheet requires a Gmail account. PDF is instantly downloadable.</p>
                          </div>
                      </article>
-                    <!-- Added grid-card class -->
-                     <article class="grid-card template-card" data-template="cashflow" aria-labelledby="template-cashflow-title">
+                     <article class="template-card" data-template="cashflow" aria-labelledby="template-cashflow-title">
                          <div class="template-preview">
                              <img src="../../assets/images/personal/personalcashflow.svg"
                                   alt="Preview of Personal Cashflow Statement template showing inflows section"
@@ -307,16 +284,13 @@
                              <h3 id="template-cashflow-title">Personal Cash Flow Statement</h3>
                              <p><strong>Problem Solved:</strong> Not knowing where money goes month-to-month.<br><strong>How it Helps:</strong> Master your money movements: Track exactly where cash flows in and out, and turn deficits into surpluses.</p>
                               <div class="template-actions">
-                                 <!-- Added btn-icon-leading -->
-                                 <button type="button" class="btn btn-primary btn-icon btn-icon-leading download-pdf-btn" data-template-key="cashflow" aria-label="Download Personal Cashflow Statement PDF (Free)"><i class="fas fa-file-pdf" aria-hidden="true"></i> <span>Download PDF (Free)</span></button>
-                                 <!-- Added btn-icon-leading -->
-                                 <button type="button" class="btn btn-outline btn-icon btn-icon-leading get-spreadsheet-btn" data-price="10000" data-template-name="Personal Cashflow Statement" aria-label="Get Personal Cashflow Statement Interactive Spreadsheet (Paid)"><i class="fas fa-file-spreadsheet" aria-hidden="true"></i> <span>Get Interactive Spreadsheet</span></button>
+                                 <button type="button" class="btn btn-primary btn-icon download-pdf-btn" data-template-key="cashflow" aria-label="Download Personal Cashflow Statement PDF (Free)"><i class="fas fa-file-pdf" aria-hidden="true"></i> <span>Download PDF (Free)</span></button>
+                                 <button type="button" class="btn btn-outline btn-icon get-spreadsheet-btn" data-price="10000" data-template-name="Personal Cashflow Statement" aria-label="Get Personal Cashflow Statement Interactive Spreadsheet (Paid)"><i class="fas fa-file-spreadsheet" aria-hidden="true"></i> <span>Get Interactive Spreadsheet (Paid)</span></button>
                               </div>
                              <p class="template-price-note">Spreadsheet requires a Gmail account. PDF is instantly downloadable.</p>
                          </div>
                     </article>
-                    <!-- Added grid-card class -->
-                    <article class="grid-card template-card" data-template="50-30-20" aria-labelledby="template-503020-title">
+                    <article class="template-card" data-template="50-30-20" aria-labelledby="template-503020-title">
                         <div class="template-preview">
                             <img src="../../assets/images/personal/503020.svg"
                                  alt="Preview of 50/30/20 Budget Guide showing category definitions"
@@ -331,16 +305,13 @@
                              <h3 id="template-503020-title">50/30/20 Budget Guide</h3>
                              <p><strong>Problem Solved:</strong> Difficulty allocating income simply.<br><strong>How it Helps:</strong> Financial freedom made simple: Effortlessly balance life's needs (50%), wants (30%), and future goals (20%).</p>
                               <div class="template-actions">
-                                 <!-- Added btn-icon-leading -->
-                                 <button type="button" class="btn btn-primary btn-icon btn-icon-leading download-pdf-btn" data-template-key="50-30-20" aria-label="Download 50/30/20 Budget Guide PDF (Free)"><i class="fas fa-file-pdf" aria-hidden="true"></i> <span>Download PDF (Free)</span></button>
-                                 <!-- Added btn-icon-leading -->
-                                 <button type="button" class="btn btn-outline btn-icon btn-icon-leading get-spreadsheet-btn" data-price="10000" data-template-name="50/30/20 Budget" aria-label="Get 50/30/20 Budget Interactive Spreadsheet (Paid)"><i class="fas fa-file-spreadsheet" aria-hidden="true"></i> <span>Get Interactive Spreadsheet</span></button>
+                                 <button type="button" class="btn btn-primary btn-icon download-pdf-btn" data-template-key="50-30-20" aria-label="Download 50/30/20 Budget Guide PDF (Free)"><i class="fas fa-file-pdf" aria-hidden="true"></i> <span>Download PDF (Free)</span></button>
+                                 <button type="button" class="btn btn-outline btn-icon get-spreadsheet-btn" data-price="10000" data-template-name="50/30/20 Budget" aria-label="Get 50/30/20 Budget Interactive Spreadsheet (Paid)"><i class="fas fa-file-spreadsheet" aria-hidden="true"></i> <span>Get Interactive Spreadsheet (Paid)</span></button>
                               </div>
                              <p class="template-price-note">Spreadsheet requires a Gmail account. PDF is instantly downloadable.</p>
                          </div>
                      </article>
-                    <!-- Added grid-card class -->
-                     <article class="grid-card template-card" data-template="expense-tracker" aria-labelledby="template-expense-title">
+                     <article class="template-card" data-template="expense-tracker" aria-labelledby="template-expense-title">
                          <div class="template-preview">
                              <img src="../../assets/images/personal/budgetexpensetracker.svg"
                                   alt="Preview of Simple Expense Tracker showing daily entry rows"
@@ -355,10 +326,8 @@
                              <h3 id="template-expense-title">Budget & Expense Tracker</h3>
                               <p><strong>Problem Solved:</strong> Forgetting where small cash amounts go.<br><strong>How it Helps:</strong>Eliminate financial surprises: Transform spending chaos into organized financial clarity.</p>
                               <div class="template-actions">
-                                 <!-- Added btn-icon-leading -->
-                                 <button type="button" class="btn btn-primary btn-icon btn-icon-leading download-pdf-btn" data-template-key="expense-tracker" aria-label="Download Simple Expense Tracker PDF (Free)"><i class="fas fa-file-pdf" aria-hidden="true"></i> <span>Download PDF (Free)</span></button>
-                                 <!-- Added btn-icon-leading -->
-                                 <button type="button" class="btn btn-outline btn-icon btn-icon-leading get-spreadsheet-btn" data-price="10000" data-template-name="Simple Expense Tracker" aria-label="Get Simple Expense Tracker Interactive Spreadsheet (Paid)"><i class="fas fa-file-spreadsheet" aria-hidden="true"></i> <span>Get Interactive Spreadsheet</span></button>
+                                 <button type="button" class="btn btn-primary btn-icon download-pdf-btn" data-template-key="expense-tracker" aria-label="Download Simple Expense Tracker PDF (Free)"><i class="fas fa-file-pdf" aria-hidden="true"></i> <span>Download PDF (Free)</span></button>
+                                 <button type="button" class="btn btn-outline btn-icon get-spreadsheet-btn" data-price="10000" data-template-name="Simple Expense Tracker" aria-label="Get Simple Expense Tracker Interactive Spreadsheet (Paid)"><i class="fas fa-file-spreadsheet" aria-hidden="true"></i> <span>Get Interactive Spreadsheet (Paid)</span></button>
                               </div>
                              <p class="template-price-note">Spreadsheet requires a Gmail account. PDF is instantly downloadable.</p>
                          </div>
@@ -368,7 +337,7 @@
         </section>
 
         <!-- Interest Calculator Promo Section -->
-        <section id="financial-tools-promo" class="section-padding bg-light-accent" aria-labelledby="calculator-promo-heading" role="region" data-animate-fade-in> <!-- Added role -->
+        <section id="financial-tools-promo" class="section-padding bg-light-accent" aria-labelledby="calculator-promo-heading" data-animate-fade-in>
             <div class="container calculator-promo-container">
                 <div class="calculator-promo-content">
                     <i class="fas fa-calculator promo-icon" aria-hidden="true"></i>
@@ -382,13 +351,15 @@
                         <li><i class="fas fa-check" aria-hidden="true"></i> Support for multiple currencies including NGN, USD, EUR, GBP, and more.</li>
                     </ul>
                     <div class="calculator-promo-cta">
-                         <!-- Link to the new calculator page - Trailing Icon -->
+                         <!-- Link to the new calculator page -->
                         <a href="calculator.html" class="btn btn-primary btn-large btn-icon">
-                           <span> Use Calculator Now</span> <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i> Use Calculator Now
                         </a>
                         <p class="promo-subtext">Free, easy to use, and powerful for planning.</p>
                     </div>
                 </div>
+                <!-- Optional: Visual element placeholder -->
+                <!-- <div class="calculator-promo-visual"> ... </div> -->
             </div>
         </section>
 
@@ -401,7 +372,7 @@
         </aside>
 
         <!-- Coaching Section -->
-         <section id="personal-coaching" class="section-padding bg-light" aria-labelledby="coaching-heading" role="region" data-animate-fade-in> <!-- Added role -->
+         <section id="personal-coaching" class="section-padding bg-light" aria-labelledby="coaching-heading" data-animate-fade-in>
             <div class="container coaching-container">
                 <h2 id="coaching-heading" class="section-title">Financial Coaching (Coming Soon)</h2>
                 <p class="section-description">Ready for dedicated support? We're developing a one-on-one coaching program to help you create a tailored financial roadmap and build lasting positive habits.</p>
@@ -423,12 +394,12 @@
                          <p>Our personalized coaching program is currently under development. Register your interest below to be notified when spots become available and receive early access information.</p>
                         <form class="coaching-interest-form" id="coachingInterestForm" novalidate>
                             <div class="form-group">
-                                <label for="interest-email">Your Email:</label> <!-- Changed for attribute -->
+                                <!-- Added for attribute -->
+                                <label for="interest-email">Your Email:</label>
                                 <input type="email" id="interest-email" name="email" required placeholder="your.email@example.com" aria-describedby="interest-email-error" autocomplete="email">
                                 <span class="form-error-msg" id="interest-email-error" aria-live="polite"></span>
                             </div>
-                            <!-- Added btn-icon-leading -->
-                            <button type="submit" class="btn btn-secondary btn-icon btn-icon-leading"><i class="fas fa-paper-plane" aria-hidden="true"></i> Notify Me When Available</button>
+                            <button type="submit" class="btn btn-secondary btn-icon"><i class="fas fa-paper-plane" aria-hidden="true"></i> Notify Me When Available</button>
                             <p id="interest-form-response" class="form-response-note" hidden aria-live="polite"></p>
                         </form>
                         <p class="privacy-note">We respect your privacy. Your email will only be used for coaching program updates.</p>
@@ -441,31 +412,28 @@
         </section>
 
         <!-- MMISBALIOR Section -->
-         <section id="mmisbalior-section" class="section-padding section-tight bg-light-accent" aria-labelledby="mmisbalior-heading" role="region" data-animate-fade-in> <!-- Added role -->
+         <section id="mmisbalior-section" class="section-padding section-tight bg-light-accent" aria-labelledby="mmisbalior-heading" data-animate-fade-in>
               <div class="container">
                   <div class="mmisbalior-promo">
                      <div class="promo-content">
-                        <!-- Added btn-icon-leading -->
                          <h3 id="mmisbalior-heading"><i class="fas fa-graduation-cap" aria-hidden="true"></i> MMISBALIOR: Empowering Teens with Money Skills</h3>
                          <p>We're passionate about equipping the next generation! MMISBALIOR is our vision for a dedicated program teaching essential financial concepts to teenagers.</p>
-                          <!-- Added btn-icon-leading -->
-                          <a href="#footer-contact" class="btn btn-outline btn-icon btn-icon-leading"><i class="fas fa-lightbulb" aria-hidden="true"></i> Learn More & Connect</a>
+                          <a href="#footer-contact" class="btn btn-outline btn-icon"><i class="fas fa-lightbulb" aria-hidden="true"></i> Learn More & Connect</a>
                      </div>
                      <div class="promo-visual">
-                          <img src="../../assets/images/personal/mmisbalior1.jpg" alt="Diverse group of teenagers engaging in a discussion about financial concepts" loading="lazy" width="400" height="300">
+                          <img src="../../assets/images/personal/mmisbalior1.jpg" alt="Diverse group of teenagers engaging in a discussion about financial concepts" loading="lazy" width="400" height="300"> <!-- Added dimensions -->
                      </div>
                 </div>
             </div>
         </section>
 
         <!-- Feedback Section -->
-        <section id="feedback-section" class="section-padding" aria-labelledby="feedback-heading" role="region" data-animate-fade-in> <!-- Added role -->
+        <section id="feedback-section" class="section-padding" aria-labelledby="feedback-heading" data-animate-fade-in>
             <div class="container feedback-container">
                 <h2 id="feedback-heading" class="section-title">Your feedback is valuable!</h2>
                 <p class="section-description">Did you find our resources helpful? Got suggestions? Have a success story using our tools? Click below to share!</p>
                 <div class="feedback-action">
-                    <!-- Added btn-icon-leading -->
-                     <button type="button" id="open-feedback-modal-btn" class="btn btn-secondary btn-icon btn-icon-leading" aria-haspopup="dialog" aria-controls="feedback-modal">
+                     <button type="button" id="open-feedback-modal-btn" class="btn btn-secondary btn-icon" aria-haspopup="dialog" aria-controls="feedback-modal">
                          <i class="fas fa-comments" aria-hidden="true"></i> Give Feedback / Testimonial
                      </button>
                 </div>
@@ -475,17 +443,15 @@
     </main>
 
     <!-- Modals -->
-     <!-- Note: Role, aria-modal, aria-labelledby are correctly set -->
      <div id="quiz-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="quiz-modal-title" hidden>
          <div class="modal-content quiz-modal-content">
-            <!-- Close button inside content -->
-            <button type="button" id="quiz-modal-close" class="modal-close-btn" aria-label="Close Quiz"><span class="sr-only">Close Quiz</span><i class="fas fa-times" aria-hidden="true"></i></button>
+            <button type="button" id="quiz-modal-close" class="modal-close-btn" aria-label="Close Quiz"><i class="fas fa-times" aria-hidden="true"></i></button>
             <h3 id="quiz-modal-title" class="modal-title">Financial Concept Check</h3>
             <div class="quiz-modal-progress" aria-live="polite">
                  Question <span id="quiz-modal-q-current">1</span> of <span id="quiz-modal-q-total">5</span>
             </div>
              <div id="quiz-modal-question" class="quiz-modal-question-area" aria-live="polite"></div>
-             <!-- Role radiogroup still appropriate for quiz options acting like radios -->
+             <!-- role="radiogroup" implies options act like radio buttons -->
              <div id="quiz-modal-options" class="quiz-modal-options-area" role="radiogroup" aria-labelledby="quiz-modal-question"></div>
             <div id="quiz-modal-feedback" class="quiz-feedback" hidden aria-live="polite"></div>
             <div id="quiz-modal-results" class="quiz-results" hidden aria-live="polite"></div>
@@ -493,18 +459,17 @@
                  <p>You've completed the introductory checks! Ready for more? Explore all 100 questions in the full <a href="quizzes.html" class="link-inline">ROFILID Financial Fitness Challenge</a>.</p>
              </div>
             <div class="quiz-modal-navigation">
-                <!-- Icons can be leading or trailing - ensure consistency or use specific classes if needed -->
-                <button type="button" id="quiz-modal-next" class="btn btn-secondary small quiz-next-btn" hidden><span>Next Question</span> <i class="fas fa-arrow-right" aria-hidden="true"></i></button>
-                <button type="button" id="quiz-modal-next-quiz" class="btn btn-primary small btn-icon-leading" hidden><i class="fas fa-angle-double-right" aria-hidden="true"></i> <span>Next Check</span></button>
-                <button type="button" id="quiz-modal-restart" class="btn btn-outline small quiz-restart-btn btn-icon-leading" hidden><i class="fas fa-redo" aria-hidden="true"></i> <span>Restart Check</span></button>
-                <button type="button" id="quiz-modal-close-results" class="btn btn-outline small quiz-close-btn btn-icon-leading" hidden><i class="fas fa-times" aria-hidden="true"></i> <span>Close</span></button>
+                 <button type="button" id="quiz-modal-next" class="btn btn-secondary small quiz-next-btn" hidden>Next Question</button>
+                <button type="button" id="quiz-modal-next-quiz" class="btn btn-primary small" hidden><i class="fas fa-angle-double-right" aria-hidden="true"></i> Next Check</button>
+                <button type="button" id="quiz-modal-restart" class="btn btn-outline small quiz-restart-btn" hidden><i class="fas fa-redo" aria-hidden="true"></i> Restart Check</button>
+                <button type="button" id="quiz-modal-close-results" class="btn btn-outline small quiz-close-btn" hidden><i class="fas fa-times" aria-hidden="true"></i> Close</button>
              </div>
         </div>
      </div>
 
      <div id="feedback-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="feedback-modal-title" hidden>
         <div class="modal-content feedback-modal-content">
-             <button type="button" id="feedback-modal-close" class="modal-close-btn" aria-label="Close Feedback Form"><span class="sr-only">Close Feedback Form</span><i class="fas fa-times" aria-hidden="true"></i></button>
+            <button type="button" id="feedback-modal-close" class="modal-close-btn" aria-label="Close Feedback Form"><i class="fas fa-times" aria-hidden="true"></i></button>
             <h3 id="feedback-modal-title" class="modal-title">Share Your Feedback</h3>
             <form id="feedback-testimonial-form" class="feedback-form" novalidate>
                 <p class="feedback-intro">We appreciate you taking the time to help us improve or share your success!</p>
@@ -535,18 +500,17 @@
                 <div class="form-group permission-group" hidden>
                     <label for="feedback-permission" class="checkbox-label">
                        <input type="checkbox" id="feedback-permission" name="permission" value="yes">
+                       <!-- Ensure span wraps text for easier clicking -->
                        <span>I grant permission for ROFILID to potentially use my testimonial (anonymously or with first name/initial) on their website or marketing materials.</span>
                    </label>
                 </div>
-                 <!-- Added btn-icon-leading -->
-                <button type="submit" class="btn btn-primary btn-icon btn-icon-leading"><i class="fas fa-paper-plane" aria-hidden="true"></i> Submit Feedback</button>
+                <button type="submit" class="btn btn-primary btn-icon"><i class="fas fa-paper-plane" aria-hidden="true"></i> Submit Feedback</button>
                 <p id="feedback-form-response" class="form-response-note" hidden aria-live="polite"></p>
             </form>
         </div>
     </div>
 
     <!-- Footer Section -->
-    <!-- Changed role to contentinfo for footer -->
     <footer class="site-footer" id="footer-contact" role="contentinfo">
          <div class="container">
             <div class="page-footer-links">
@@ -559,7 +523,7 @@
                              <li><a href="#free-tools">Tools & Templates</a></li>
                              <li><a href="#financial-tools-promo">Interest Calculator</a></li>
                              <li><a href="blog.html">ROFILID Insights Blog</a></li>
-                             <li><a href="quizzes.html">Fitness Challenge</a></li> <!-- Shortened Name -->
+                             <li><a href="quizzes.html">ROFILID Financial Fitness Challenge</a></li>
                              <li><a href="#personal-coaching">Personal Coaching</a></li>
                              <li><a href="#mmisbalior-section">MMISBALIOR (Teens)</a></li>
                          </ul>
@@ -570,16 +534,17 @@
                              <li><a href="../../index.html">Home</a></li>
                              <li><a href="../corporate/corporate.html">For Businesses</a></li>
                              <li><a href="#our-approach">Our Approach</a></li>
+                             <!-- Added calculator link here for consistency -->
                              <li><a href="calculator.html">Interest Calculator</a></li>
                              <li><a href="#feedback-section">Send Feedback</a></li>
                              <li><a href="#footer-contact">Contact Us</a></li>
-                             <li><a href="sitemap.html">Sitemap</a></li> <!-- Added example -->
+                             <!-- Consider adding link to blog/quizzes pages if they exist -->
                          </ul>
                      </div>
                     <div>
                          <h4>Company</h4>
                          <ul>
-                             <!-- Use placeholder hash for now, replace with actual links -->
+                             <!-- Add actual links when pages exist -->
                              <li><a href="#">About ROFILID</a></li>
                              <li><a href="#">Careers</a></li>
                              <li><a href="#">Privacy Policy</a></li>
@@ -614,7 +579,7 @@
                      <p class="footer-tagline">Empowering Your Financial Future.</p>
                  </div>
                  <div class="footer-right">
-                     <!-- Placeholder for potential future content -->
+                     <!-- Empty, can add content later if needed -->
                  </div>
              </div>
             <div class="copyright">
