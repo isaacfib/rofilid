@@ -1,0 +1,310 @@
+/* ==========================================================================
+   ROFILID Interest Calculator Print Styles - v2.0.0 (Elite)
+   Location: /pages/personal/calculator-print.css
+   Description: Clean, professional print output for calculator results.
+                Hides non-essential elements. Optimized for legibility.
+   ========================================================================== */
+
+@media print {
+    @page {
+        size: A4;
+        margin: 1.5cm; /* Generous margins */
+    }
+
+    html, body {
+        font-family: 'Arial', sans-serif; /* Use a common sans-serif for print */
+        font-size: 9.5pt; /* Base font size */
+        line-height: 1.4;
+        color: #000;
+        background-color: #fff !important;
+        margin: 0;
+        padding: 0;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* --- Hide Non-Essential Elements --- */
+    .site-header,
+    .site-footer,
+    .mode-toggle,
+    .calculator-form, /* Hide the entire form */
+    .form-actions, /* Hide calculate/clear buttons */
+    .advanced-actions, /* Hide add entry button */
+    .remove-entry-btn, /* Hide remove buttons */
+    .results-actions, /* Hide print button within results */
+    .info-btn, /* Hide info buttons */
+    .mobile-menu-toggle,
+    .deco-blur /* Hide decorative blurs */
+    {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    /* --- Ensure Core Content is Visible & Styled --- */
+    main,
+    #interest-calculator,
+    .results-area { /* Target results area directly */
+        display: block !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        background-color: transparent !important;
+        width: 100% !important;
+    }
+
+    .container {
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+    }
+
+    /* --- Calculator Header for Print --- */
+    .calculator-header {
+        display: block !important; /* Stack header items */
+        border-bottom: 1px solid #999 !important; /* Clearer border */
+        padding-bottom: 0.5cm !important;
+        margin-bottom: 0.7cm !important;
+        page-break-after: avoid;
+    }
+    .calculator-header h1 {
+        font-size: 16pt;
+        font-weight: bold;
+        color: #000;
+        margin: 0 0 0.2cm 0; /* Space below title */
+        text-align: left;
+    }
+    .calculator-header .brand-mark { /* Hide logo in print? Optional */
+       display: none !important;
+    }
+    .calculator-section > .section-description { /* Target direct child description */
+        font-size: 9.5pt;
+        margin-bottom: 0.5cm !important;
+        color: #333;
+        max-width: none !important;
+        text-align: left;
+    }
+
+    /* --- Results Area Styling for Print --- */
+    .results-area {
+        margin-top: 0 !important; /* Remove extra top margin */
+        border: none !important; /* Remove outer border */
+        padding: 0 !important;
+        background-color: transparent !important;
+    }
+
+    .results-title {
+        font-size: 14pt;
+        text-align: left;
+        margin-bottom: 0.6cm !important;
+        color: #000;
+        font-weight: bold;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 0.2cm;
+        page-break-after: avoid;
+    }
+
+    /* --- Result Sections/Items Styling --- */
+    .results-section {
+        margin-bottom: 0.8cm !important;
+        page-break-inside: avoid;
+    }
+     .results-section:last-child { margin-bottom: 0 !important; }
+     .results-section[hidden] { display: none !important; }
+
+    .results-display-list { /* Remove list container styling */
+        background-color: transparent !important;
+        border-radius: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    .result-item {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: baseline !important;
+        font-size: 9.5pt !important;
+        border-bottom: 1px dotted #ddd !important; /* Lighter dotted line */
+        padding: 0.15cm 0 !important;
+        color: #000 !important;
+        background-color: transparent !important;
+        page-break-inside: avoid !important;
+        flex-wrap: nowrap !important; /* Prevent wrapping */
+        gap: 0.5cm !important; /* Ensure space */
+    }
+     .result-item[hidden] { display: none !important; }
+     .results-display-list > .result-item:last-child { border-bottom: none !important; }
+
+    .result-item .label {
+        color: #333 !important;
+        font-weight: normal !important;
+        text-align: left;
+        flex-shrink: 0;
+    }
+    .result-item .value {
+        color: #000 !important;
+        font-weight: bold !important;
+        text-align: right;
+        white-space: nowrap; /* Prevent value wrapping */
+    }
+
+    .result-item.total {
+        border-top: 1px solid #000 !important; /* Solid black top border */
+        border-bottom: none !important; /* Remove bottom border */
+        font-weight: bold !important;
+        color: #000 !important;
+        margin-top: 0.3cm !important;
+        padding-top: 0.2cm !important;
+        font-size: 10pt !important; /* Slightly larger total */
+    }
+    .result-item.total .label,
+    .result-item.total .value {
+        font-size: inherit !important;
+        font-weight: bold !important;
+        color: #000 !important;
+    }
+
+    .result-item.ear { font-size: 8.5pt !important; color: #555 !important; }
+    .result-item.ear .value { font-weight: normal !important; }
+
+    /* --- Advanced Mode Print Styles --- */
+    .results-subsection {
+        padding: 0 !important;
+        margin-bottom: 0.8cm !important;
+        background-color: transparent !important;
+        box-shadow: none !important;
+        border: none !important;
+        page-break-inside: avoid;
+    }
+
+    .subsection-title {
+        font-size: 12pt;
+        color: #000;
+        font-weight: bold;
+        border-bottom: 1px solid #ccc !important;
+        padding-bottom: 0.2cm !important;
+        margin-bottom: 0.4cm !important;
+        page-break-after: avoid;
+    }
+
+    .individual-results-grid {
+        display: block !important; /* Stack results */
+        gap: 0 !important;
+    }
+
+    .entry-result {
+        border: 1px solid #eee !important; /* Light border around each entry */
+        padding: 0.4cm !important;
+        margin-bottom: 0.5cm; /* Space between entries */
+        page-break-inside: avoid;
+        background-color: transparent !important;
+        box-shadow: none !important;
+        font-size: 9pt !important; /* Smaller font inside entry result */
+    }
+     .entry-result.has-error {
+         border-color: #aaa !important;
+         background-color: #f9f9f9 !important; /* Subtle background for errors */
+     }
+    .entry-result h4 { /* Entry Title */
+        font-size: 10pt;
+        font-weight: bold;
+        color: #000;
+        border-bottom: 1px dotted #ccc !important;
+        padding-bottom: 0.15cm !important;
+        margin-bottom: 0.2cm !important;
+    }
+     .entry-result .result-item { /* Items within an entry result */
+         font-size: 9pt !important;
+         border-bottom: none !important; /* No borders between items here */
+         padding: 0.1cm 0 !important;
+     }
+     .entry-result .result-item .label { font-weight: normal !important; }
+     .entry-result .result-item .value { font-weight: bold !important; }
+     .entry-result .result-item.total {
+         border-top: 1px solid #ccc !important;
+         margin-top: 0.2cm !important;
+         padding-top: 0.15cm !important;
+         font-size: 9.5pt !important;
+     }
+    .entry-result .error-message {
+        color: #333 !important; /* Muted error text */
+        font-size: 8.5pt;
+        font-style: italic;
+        margin-top: 0.2cm;
+    }
+
+    /* --- Aggregation Status --- */
+    .aggregation-status-message {
+         border: 1px dashed #aaa !important;
+         padding: 0.3cm !important;
+         font-size: 9pt !important;
+         color: #333 !important;
+         background-color: #f9f9f9 !important;
+         text-align: left;
+         margin-bottom: 0.5cm;
+         page-break-inside: avoid;
+    }
+     .aggregation-status-message.error {
+         color: #000 !important;
+         background-color: #eee !important;
+         border-color: #999 !important;
+         border-style: solid !important;
+         font-style: normal;
+         font-weight: bold;
+     }
+     .aggregation-status-message:empty { display: none !important; }
+
+    /* --- Chart Printing --- */
+    .chart-area {
+        display: block !important;
+        page-break-before: always; /* Chart on new page */
+        margin-top: 0 !important; /* Remove margin when on new page */
+        max-width: 100% !important;
+        overflow: visible !important; /* Allow content to show */
+        border: none !important;
+        box-shadow: none !important;
+        background-color: transparent !important;
+        height: auto !important; /* Let height be natural */
+    }
+    .chart-title {
+        font-size: 12pt;
+        text-align: left;
+        margin-bottom: 0.5cm;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 0.2cm;
+    }
+    .chart-container {
+        border: 1px solid #ccc !important;
+        padding: 0.5cm !important;
+        box-shadow: none !important;
+        background-color: #fff !important;
+        height: auto !important; /* Allow height to adjust */
+        width: 100% !important; /* Use full width */
+        max-width: none !important; /* Remove max-width */
+        margin: 0 auto;
+        position: relative; /* Needed for canvas positioning */
+        page-break-inside: avoid !important; /* Try to keep chart together */
+    }
+    /* Try to force canvas rendering */
+    .chart-container canvas {
+        max-width: 100% !important;
+        height: auto !important;
+        display: block !important; /* Ensure block */
+        position: static !important; /* Override absolute positioning if it causes issues */
+        padding: 0 !important; /* Remove internal padding */
+        background-color: #fff !important; /* Ensure white bg */
+        box-sizing: border-box !important;
+    }
+
+    /* --- General Print Cleanup --- */
+    a[href]::after { content: none !important; } /* No URLs */
+    a { color: #000 !important; text-decoration: none !important; } /* Black, no underline */
+    * {
+        box-shadow: none !important;
+        text-shadow: none !important;
+        transition: none !important; /* No transitions */
+        animation: none !important; /* No animations */
+    }
+}
