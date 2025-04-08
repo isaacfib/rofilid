@@ -1,8 +1,9 @@
 /* ==========================================================================
-   ROFILID Interest Calculator Print Styles - v2.0.0 (Elite)
+   ROFILID Interest Calculator Print Styles - v2.1.0 (Elite)
    Location: /pages/personal/calculator-print.css
    Description: Clean, professional print output for calculator results.
-                Hides non-essential elements. Optimized for legibility.
+                Hides non-essential elements. Optimized for legibility
+                and page flow.
    ========================================================================== */
 
 @media print {
@@ -12,20 +13,22 @@
     }
 
     html, body {
-        font-family: 'Arial', sans-serif; /* Use a common sans-serif for print */
+        font-family: Arial, Helvetica, sans-serif; /* Common print-safe sans-serif */
         font-size: 9.5pt; /* Base font size */
         line-height: 1.4;
         color: #000;
-        background-color: #fff !important;
+        background-color: #fff !important; /* Ensure white background */
         margin: 0;
         padding: 0;
-        -webkit-print-color-adjust: exact !important;
+        -webkit-print-color-adjust: exact !important; /* Force color printing if needed (e.g., for chart) */
         print-color-adjust: exact !important;
     }
 
     /* --- Hide Non-Essential Elements --- */
     .site-header,
     .site-footer,
+    nav, /* Generic nav elements */
+    aside, /* Sidebars */
     .mode-toggle,
     .calculator-form, /* Hide the entire form */
     .form-actions, /* Hide calculate/clear buttons */
@@ -34,15 +37,23 @@
     .results-actions, /* Hide print button within results */
     .info-btn, /* Hide info buttons */
     .mobile-menu-toggle,
-    .deco-blur /* Hide decorative blurs */
+    .deco-blur, /* Hide decorative blurs */
+    [data-tooltip]::after /* Hide tooltips */
     {
         display: none !important;
         visibility: hidden !important;
+        width: 0 !important;
+        height: 0 !important;
+        overflow: hidden !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
     }
 
     /* --- Ensure Core Content is Visible & Styled --- */
     main,
-    #interest-calculator,
+    #interest-calculator, /* Assuming this is the main wrapper ID */
+    .calculator-section,
     .results-area { /* Target results area directly */
         display: block !important;
         margin: 0 !important;
@@ -51,9 +62,10 @@
         box-shadow: none !important;
         background-color: transparent !important;
         width: 100% !important;
+        max-width: 100% !important; /* Override screen max-widths */
     }
 
-    .container {
+    .container { /* Make container full width for print */
         max-width: 100% !important;
         padding: 0 !important;
         margin: 0 !important;
@@ -66,24 +78,27 @@
         border-bottom: 1px solid #999 !important; /* Clearer border */
         padding-bottom: 0.5cm !important;
         margin-bottom: 0.7cm !important;
-        page-break-after: avoid;
+        page-break-after: avoid; /* Try not to break after header */
     }
     .calculator-header h1 {
-        font-size: 16pt;
-        font-weight: bold;
-        color: #000;
-        margin: 0 0 0.2cm 0; /* Space below title */
-        text-align: left;
+        font-size: 16pt !important;
+        font-weight: bold !important;
+        color: #000 !important;
+        margin: 0 0 0.2cm 0 !important; /* Space below title */
+        text-align: left !important;
+        padding: 0 !important;
     }
-    .calculator-header .brand-mark { /* Hide logo in print? Optional */
+    .calculator-header .brand-mark { /* Hide logo in print */
        display: none !important;
     }
     .calculator-section > .section-description { /* Target direct child description */
-        font-size: 9.5pt;
+        font-size: 9.5pt !important;
         margin-bottom: 0.5cm !important;
-        color: #333;
+        color: #333 !important;
         max-width: none !important;
-        text-align: left;
+        text-align: left !important;
+        padding: 0 !important;
+        line-height: 1.4 !important;
     }
 
     /* --- Results Area Styling for Print --- */
@@ -95,20 +110,20 @@
     }
 
     .results-title {
-        font-size: 14pt;
-        text-align: left;
+        font-size: 14pt !important;
+        text-align: left !important;
         margin-bottom: 0.6cm !important;
-        color: #000;
-        font-weight: bold;
-        border-bottom: 1px solid #ccc;
-        padding-bottom: 0.2cm;
-        page-break-after: avoid;
+        color: #000 !important;
+        font-weight: bold !important;
+        border-bottom: 1px solid #ccc !important;
+        padding-bottom: 0.2cm !important;
+        page-break-after: avoid; /* Try not to break after title */
     }
 
     /* --- Result Sections/Items Styling --- */
     .results-section {
         margin-bottom: 0.8cm !important;
-        page-break-inside: avoid;
+        page-break-inside: avoid !important; /* Keep section items together */
     }
      .results-section:last-child { margin-bottom: 0 !important; }
      .results-section[hidden] { display: none !important; }
@@ -119,6 +134,7 @@
         padding: 0 !important;
         border: none !important;
         box-shadow: none !important;
+        margin: 0 !important; /* Reset margin */
     }
 
     .result-item {
@@ -133,6 +149,7 @@
         page-break-inside: avoid !important;
         flex-wrap: nowrap !important; /* Prevent wrapping */
         gap: 0.5cm !important; /* Ensure space */
+        margin: 0 !important; /* Reset margin */
     }
      .result-item[hidden] { display: none !important; }
      .results-display-list > .result-item:last-child { border-bottom: none !important; }
@@ -142,12 +159,14 @@
         font-weight: normal !important;
         text-align: left;
         flex-shrink: 0;
+        padding: 0 !important; margin: 0 !important;
     }
     .result-item .value {
         color: #000 !important;
         font-weight: bold !important;
         text-align: right;
         white-space: nowrap; /* Prevent value wrapping */
+        padding: 0 !important; margin: 0 !important;
     }
 
     .result-item.total {
@@ -166,7 +185,7 @@
         color: #000 !important;
     }
 
-    .result-item.ear { font-size: 8.5pt !important; color: #555 !important; }
+    .result-item.ear { font-size: 8.5pt !important; color: #555 !important; margin-top: 0.1cm !important; }
     .result-item.ear .value { font-weight: normal !important; }
 
     /* --- Advanced Mode Print Styles --- */
@@ -176,29 +195,29 @@
         background-color: transparent !important;
         box-shadow: none !important;
         border: none !important;
-        page-break-inside: avoid;
+        page-break-inside: avoid !important; /* Keep subsection together */
     }
 
     .subsection-title {
-        font-size: 12pt;
-        color: #000;
-        font-weight: bold;
+        font-size: 12pt !important;
+        color: #000 !important;
+        font-weight: bold !important;
         border-bottom: 1px solid #ccc !important;
         padding-bottom: 0.2cm !important;
         margin-bottom: 0.4cm !important;
-        page-break-after: avoid;
+        page-break-after: avoid !important;
     }
 
     .individual-results-grid {
-        display: block !important; /* Stack results */
+        display: block !important; /* Stack results, remove grid */
         gap: 0 !important;
     }
 
     .entry-result {
         border: 1px solid #eee !important; /* Light border around each entry */
         padding: 0.4cm !important;
-        margin-bottom: 0.5cm; /* Space between entries */
-        page-break-inside: avoid;
+        margin-bottom: 0.5cm !important; /* Space between entries */
+        page-break-inside: avoid !important;
         background-color: transparent !important;
         box-shadow: none !important;
         font-size: 9pt !important; /* Smaller font inside entry result */
@@ -208,31 +227,38 @@
          background-color: #f9f9f9 !important; /* Subtle background for errors */
      }
     .entry-result h4 { /* Entry Title */
-        font-size: 10pt;
-        font-weight: bold;
-        color: #000;
+        font-size: 10pt !important;
+        font-weight: bold !important;
+        color: #000 !important;
         border-bottom: 1px dotted #ccc !important;
         padding-bottom: 0.15cm !important;
         margin-bottom: 0.2cm !important;
+        margin-top: 0 !important; /* Reset margin */
     }
-     .entry-result .result-item { /* Items within an entry result */
+     /* Items within an entry result */
+     .entry-result .result-item {
          font-size: 9pt !important;
          border-bottom: none !important; /* No borders between items here */
          padding: 0.1cm 0 !important;
+         gap: 0.3cm !important; /* Slightly less gap */
      }
-     .entry-result .result-item .label { font-weight: normal !important; }
-     .entry-result .result-item .value { font-weight: bold !important; }
+     .entry-result .result-item .label { font-weight: normal !important; color: #333 !important; }
+     .entry-result .result-item .value { font-weight: bold !important; color: #000 !important; }
      .entry-result .result-item.total {
          border-top: 1px solid #ccc !important;
          margin-top: 0.2cm !important;
          padding-top: 0.15cm !important;
          font-size: 9.5pt !important;
      }
+     .entry-result .result-item.total .label,
+     .entry-result .result-item.total .value {
+         color: #000 !important; /* Ensure total color is black */
+     }
     .entry-result .error-message {
         color: #333 !important; /* Muted error text */
-        font-size: 8.5pt;
-        font-style: italic;
-        margin-top: 0.2cm;
+        font-size: 8.5pt !important;
+        font-style: italic !important;
+        margin-top: 0.2cm !important;
     }
 
     /* --- Aggregation Status --- */
@@ -242,24 +268,24 @@
          font-size: 9pt !important;
          color: #333 !important;
          background-color: #f9f9f9 !important;
-         text-align: left;
-         margin-bottom: 0.5cm;
-         page-break-inside: avoid;
+         text-align: left !important;
+         margin-bottom: 0.5cm !important;
+         page-break-inside: avoid !important;
     }
      .aggregation-status-message.error {
          color: #000 !important;
          background-color: #eee !important;
          border-color: #999 !important;
          border-style: solid !important;
-         font-style: normal;
-         font-weight: bold;
+         font-style: normal !important;
+         font-weight: bold !important;
      }
      .aggregation-status-message:empty { display: none !important; }
 
     /* --- Chart Printing --- */
     .chart-area {
         display: block !important;
-        page-break-before: always; /* Chart on new page */
+        page-break-before: always !important; /* Chart preferably on new page */
         margin-top: 0 !important; /* Remove margin when on new page */
         max-width: 100% !important;
         overflow: visible !important; /* Allow content to show */
@@ -267,45 +293,53 @@
         box-shadow: none !important;
         background-color: transparent !important;
         height: auto !important; /* Let height be natural */
+        padding: 0 !important;
     }
     .chart-title {
-        font-size: 12pt;
-        text-align: left;
-        margin-bottom: 0.5cm;
-        border-bottom: 1px solid #ccc;
-        padding-bottom: 0.2cm;
+        font-size: 12pt !important;
+        text-align: left !important;
+        margin-bottom: 0.5cm !important;
+        border-bottom: 1px solid #ccc !important;
+        padding-bottom: 0.2cm !important;
+        page-break-after: avoid !important;
     }
     .chart-container {
         border: 1px solid #ccc !important;
         padding: 0.5cm !important;
         box-shadow: none !important;
-        background-color: #fff !important;
+        background-color: #fff !important; /* White background for chart area */
         height: auto !important; /* Allow height to adjust */
         width: 100% !important; /* Use full width */
-        max-width: none !important; /* Remove max-width */
-        margin: 0 auto;
-        position: relative; /* Needed for canvas positioning */
+        max-width: 18cm !important; /* Limit width slightly within margins */
+        margin: 0 auto !important;
+        position: relative !important; /* Needed for canvas positioning */
         page-break-inside: avoid !important; /* Try to keep chart together */
+        box-sizing: border-box !important;
     }
     /* Try to force canvas rendering */
     .chart-container canvas {
         max-width: 100% !important;
+        max-height: 15cm !important; /* Limit max chart height on page */
         height: auto !important;
+        width: auto !important; /* Let chart.js determine */
         display: block !important; /* Ensure block */
-        position: static !important; /* Override absolute positioning if it causes issues */
+        position: static !important; /* Override absolute positioning */
         padding: 0 !important; /* Remove internal padding */
         background-color: #fff !important; /* Ensure white bg */
         box-sizing: border-box !important;
+        /* May need additional browser-specific hacks if rendering fails */
     }
 
     /* --- General Print Cleanup --- */
     a[href]::after { content: none !important; } /* No URLs */
     a { color: #000 !important; text-decoration: none !important; } /* Black, no underline */
-    * {
+    *, *::before, *::after { /* Reset potentially problematic screen styles */
         box-shadow: none !important;
         text-shadow: none !important;
         transition: none !important; /* No transitions */
         animation: none !important; /* No animations */
+        filter: none !important; /* Remove filters */
+        /* Consider removing transforms if they cause issues */
+        /* transform: none !important; */
     }
 }
-
