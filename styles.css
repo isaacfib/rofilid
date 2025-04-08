@@ -330,82 +330,61 @@ nav[aria-label="Main navigation"] {
   #primary-navigation.active { display: flex; /* Show dropdown when active */ }
 }
 
-/* Desktop - This block should be in your global styles.css */
+/* Desktop */
 @media (min-width: 992px) {
   :root { --header-height: 75px; }
   .site-header { height: var(--header-height); }
 
-  /* --- Corrected Header Layout Fix: Centering Nav Between Auto Margins --- */
-  .header-container {
-    display: flex;
-    align-items: center; /* Vertically center items */
-    width: 100%;
-    max-width: var(--container-width);
-    margin: 0 auto;
-    padding: 0 var(--spacing-md);
-  }
-
-  .header-container .logo {
-    /* Push everything else right */
-    margin-right: auto; /* Creates space on the right */
-    flex-shrink: 0;     /* Prevent logo shrinking */
-  }
-
-  nav[aria-label="Main navigation"] {
-    /* Make nav expand to fill the available space */
-    flex-grow: 1;
-    /* Use flex to center its content (the UL) horizontally */
-    display: flex;
-    justify-content: center;
-    align-items: center; /* Keep vertical alignment */
-    /* Explicit margins are not needed when flex-grow is used for centering */
-  }
-
-  /* Desktop Nav list structure (UL inside Nav) */
-  .nav-list {
-    display: flex !important; /* Override mobile display:none */
-    flex-direction: row;
-    gap: var(--spacing-lg); /* Space between nav items */
-    position: static;
-    width: auto; /* Size based on content */
-    background-color: transparent;
-    box-shadow: none;
-    padding: 0;
-    opacity: 1;
-    flex-wrap: nowrap; /* Prevent wrapping */
-    overflow: visible;
-    /* Centering is now handled by the parent <nav>, no justify-content needed here */
-    margin: 0; /* Reset default margins */
-  }
-
-  .connect-button {
-    /* Push button itself to the far right edge of the container */
-    margin-left: auto; /* Creates space on its left */
-    flex-shrink: 0;   /* Prevent button shrinking */
-    display: inline-block; /* Ensure it's displayed */
-  }
-  /* --- End Corrected Header Layout Fix --- */
-
-  /* Other Desktop Styles (Unchanged) */
+  /* --- Common Desktop Styles --- */
   .hero-section, .page-intro { padding-top: calc(var(--header-height) + var(--spacing-xxl)); padding-bottom: var(--spacing-xxl); }
   .hero-section { min-height: 550px; }
   .mobile-menu-toggle { display: none !important; } /* Hide toggle */
+  .connect-button { display: inline-block; } /* Ensure button visible */
 
-  /* Reset mobile .active state styles for nav */
+  /* Reset mobile .active state styles (common) */
   #primary-navigation.active {
-    position: static;
-    box-shadow: none;
-    overflow: visible;
-    padding: 0;
-    background-color: transparent;
-    display: flex;
-    justify-content: center; /* Centering is fine for active dropdown */
-    flex-wrap: nowrap;
-    width: auto;
-    gap: var(--spacing-lg);
+    position: static; box-shadow: none; overflow: visible; padding: 0; background-color: transparent;
+    display: flex; flex-wrap: nowrap; width: auto; gap: var(--spacing-lg);
   }
-  /* Index cards - 3 columns */
-  .cards .card { flex-basis: calc(33.333% - var(--spacing-lg) * 2 / 3); max-width: 360px; }
+
+  /* --- UNIFIED Header Layout (Button OUTSIDE Nav) --- */
+  /* Applies to Index, Corporate, and any page with this HTML structure */
+  .header-container {
+    display: flex;
+    align-items: center;
+    width: 100%; max-width: var(--container-width); margin: 0 auto; padding: 0 var(--spacing-md);
+  }
+  .header-container .logo {
+    margin-right: auto; /* Push nav/button right */
+    flex-shrink: 0;
+  }
+  /* Nav takes space and centers its UL */
+  nav[aria-label="Main navigation"] {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center; /* Center the UL inside */
+    align-items: center;
+  }
+  /* UL specific style when inside the centered Nav */
+   .nav-list {
+      display: flex !important; flex-direction: row; gap: var(--spacing-lg); position: static; width: auto;
+      background-color: transparent; box-shadow: none; padding: 0; opacity: 1; flex-wrap: nowrap; overflow: visible;
+      margin: 0; /* Centered by parent nav */
+   }
+  /* Button outside nav pushed far right */
+  .connect-button { /* This targets the button OUTSIDE nav */
+    margin-left: auto; /* Push button right */
+    flex-shrink: 0;
+  }
+  /* --- End UNIFIED Header Layout --- */
+
+
+  /* Index cards - 3 columns (Keep scoped if only for Index page) */
+  /* If used elsewhere, remove .page-index */
+  .page-index .cards .card {
+      flex-basis: calc(33.333% - var(--spacing-lg) * 2 / 3);
+      max-width: 360px;
+  }
 }
 
 /* Large Desktop */
