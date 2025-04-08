@@ -34,25 +34,31 @@
         <div class="container header-container">
             <div class="logo">
                 <a href="../../index.html" aria-label="Rofilid Home">
-                    <img src="../../assets/images/common/rofilid-logo-teal.svg" alt="Rofilid Logo" width="120" height="40" loading="eager">
+                    <img src="../../assets/images/common/rofilid-logo-teal.svg" alt="Rofilid Logo" width="120" height="30" loading="eager"> <!-- Adjusted height -->
                 </a>
             </div>
-            <nav role="navigation" aria-label="Main navigation">
+            <nav aria-label="Main navigation"> <!-- Removed duplicate role -->
                 <button class="mobile-menu-toggle" aria-expanded="false" aria-controls="primary-navigation" aria-label="Toggle Navigation Menu">
                     <span class="sr-only">Menu</span>
                     <i class="fas fa-bars open-icon" aria-hidden="true"></i>
                     <i class="fas fa-times close-icon" aria-hidden="true"></i>
                 </button>
+                <!-- <<< MODIFIED: Added nav-indicator span & aria-current >>> -->
                 <ul id="primary-navigation" class="nav-list">
                     <li class="nav-item"><a href="../../index.html" class="nav-link">Home</a></li>
-                    <li class="nav-item"><a href="personal.html" class="nav-link active-page" aria-current="page">Personal Finance</a></li>
+                    <li class="nav-item"><a href="personal.html" class="nav-link">Personal Finance</a></li>
                     <li class="nav-item"><a href="personal.html#free-resources" class="nav-link">Resources</a></li>
-                    <li class="nav-item"><a href="quizzes.html" class="nav-link active-subpage" aria-current="location">All Quizzes</a></li>
+                    <li class="nav-item"><a href="quizzes.html" class="nav-link active-page" aria-current="location">All Quizzes</a></li> <!-- Use active-page for styling, aria-current="location" for semantics -->
                     <li class="nav-item"><a href="personal.html#free-tools" class="nav-link">Tools</a></li>
                     <li class="nav-item"><a href="../corporate/corporate.html" class="nav-link">For Businesses</a></li>
+                    <!-- ADD THIS SPAN for scrollspy indicator -->
+                    <span class="nav-indicator" aria-hidden="true"></span>
+                    <!-- END ADDED SPAN -->
                 </ul>
+                 <!-- <<< END MODIFICATION >>> -->
             </nav>
-            <a href="personal.html#free-resources" class="connect-button btn btn-cta-header">Personal Resources</a>
+            <!-- Optional CTA - adjust link/text as needed -->
+            <!-- <a href="personal.html#free-resources" class="connect-button btn btn-cta-header">Personal Resources</a> -->
         </div>
     </header>
 
@@ -99,7 +105,7 @@
                               aria-labelledby="theme-header-1">
                             <div class="accordion-body">
                                 <div class="category-grid">
-                                    <!-- Category IDs match the dummy data keys in quizzes.js -->
+                                    <!-- Category IDs (data-quiz-id) match the data keys in quizzes.js -->
                                     <article class="category-card" data-category-id="income-vitals" aria-labelledby="category-title-1"> <i class="fas fa-piggy-bank category-icon" aria-hidden="true"></i> <h4 id="category-title-1">Income & Financial Vitals</h4> <p>Understanding income & your overall standing.</p> <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" data-quiz-id="income-vitals" aria-label="Start Income & Financial Vitals Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Quiz</button> </article>
                                     <article class="category-card" data-category-id="savings-essentials" aria-labelledby="category-title-2"> <i class="fas fa-sack-dollar category-icon" aria-hidden="true"></i> <h4 id="category-title-2">Savings Essentials</h4> <p>The why and how of building savings.</p> <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" data-quiz-id="savings-essentials" aria-label="Start Savings Essentials Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Quiz</button> </article>
                                     <article class="category-card" data-category-id="budgeting-basics" aria-labelledby="category-title-3"> <i class="fas fa-calculator category-icon" aria-hidden="true"></i> <h4 id="category-title-3">Budgeting Basics</h4> <p>Creating and sticking to a plan.</p> <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" data-quiz-id="budgeting-basics" aria-label="Start Budgeting Basics Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Quiz</button> </article>
@@ -197,7 +203,7 @@
 
     </main>
 
-    <!-- QUIZ MODAL STRUCTURE -->
+    <!-- QUIZ MODAL STRUCTURE (Should be identical to personal.html) -->
     <div id="quiz-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="quiz-modal-title" hidden>
          <div class="modal-content quiz-modal-content">
             <button type="button" id="quiz-modal-close" class="modal-close-btn" aria-label="Close Quiz"><i class="fas fa-times" aria-hidden="true"></i></button>
@@ -208,6 +214,7 @@
              <div id="quiz-modal-question" class="quiz-modal-question-area" aria-live="polite">
                 <!-- Question text injected here -->
              </div>
+             <!-- Changed role to group as options are buttons, not radios -->
              <div id="quiz-modal-options" class="quiz-modal-options-area" role="group" aria-labelledby="quiz-modal-question">
                 <!-- Option buttons injected here -->
              </div>
@@ -225,7 +232,7 @@
         </div>
      </div>
 
-     <!-- Footer Section -->
+     <!-- Footer Section (Consistent with personal.html) -->
       <footer class="site-footer" id="footer-contact" role="contentinfo">
          <div class="container">
             <div class="page-footer-links">
@@ -237,7 +244,7 @@
                              <li><a href="personal.html#learning-hub">Learning Hub Intro</a></li>
                              <li><a href="quizzes.html">All Quizzes</a></li>
                              <li><a href="personal.html#free-tools">Free Tools & Templates</a></li>
-                             <li><a href="blog.html">Rofilid Insights Blog</a></li>
+                             <li><a href="blog.html">ROFILID Insights Blog</a></li>
                              <li><a href="personal.html#personal-coaching">Personal Coaching Info</a></li>
                              <li><a href="personal.html#mmisbalior-section">MMISBALIOR (Teens) Info</a></li>
                          </ul>
@@ -255,7 +262,7 @@
                     <div>
                          <h4>Company</h4>
                          <ul>
-                             <li><a href="#">About Rofilid</a></li>
+                             <li><a href="#">About ROFILID</a></li>
                              <li><a href="#">Careers</a></li>
                              <li><a href="#">Privacy Policy</a></li>
                              <li><a href="#">Terms of Service</a></li>
@@ -283,7 +290,7 @@
                  <div class="footer-left">
                     <div class="logo">
                         <a href="../../index.html" aria-label="Rofilid Home">
-                            <img src="../../assets/images/common/rofilid-logo-white.svg" alt="Rofilid Logo White" width="120" height="40" loading="lazy">
+                            <img src="../../assets/images/common/rofilid-logo-white.svg" alt="Rofilid Logo White" width="120" height="30" loading="lazy"> <!-- Adjusted height -->
                         </a>
                     </div>
                      <p class="footer-tagline">Empowering Your Financial Future.</p>
@@ -291,14 +298,14 @@
                  <div class="footer-right"></div>
              </div>
             <div class="copyright">
-                 <p>© <span id="current-year"></span> ROFILID Services Limited. All rights reserved.</p>
+                 <p>© <span id="current-year">2024</span> ROFILID Services Limited. All rights reserved.</p> <!-- Year updated by JS -->
              </div>
         </div>
     </footer>
 
     <!-- Corrected JS path based on location structure -->
-    <!-- Make sure the file 'quizzes.js' exists at this location and contains the quiz logic -->
-    <script src="../../assets/js/personal/quizzes.js" defer></script> <!-- Ensure this points to the v2.5.0 JS file -->
+    <!-- Make sure the file 'quizzes.js' exists at this location and contains the updated quiz logic -->
+    <script src="../../assets/js/personal/quizzes.js" defer></script>
 
 </body>
 </html>
