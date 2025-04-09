@@ -180,7 +180,7 @@ ul > li:last-child > p {
   --pp-color-overlay-bg: rgba(7, 35, 41, 0.92); /* ELITE: Use primary dark, slightly more opaque */
 
   /* Layout & Spacing */
-  --pp-container-width: 1240px; /* ELITE: Standard container width */
+  --pp-container-width: 1360px; /* ELITE: Standard container width */
   --pp-border-radius-sm: 4px;
   --pp-border-radius: 8px;  /* ELITE: Slightly larger default radius */
   --pp-border-radius-lg: 12px; /* ELITE: Slightly larger large radius */
