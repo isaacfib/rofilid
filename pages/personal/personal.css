@@ -115,7 +115,7 @@ ul > li:last-child > p {
 /* --- Utility Classes --- */
 .container {
   width: 100%;
-  max-width: var(--pp-container-width, 1240px); /* ELITE: Increased max-width */
+  max-width: var(--pp-container-width, 1360px); /* ELITE: Increased max-width */
   margin-left: auto;
   margin-right: auto;
   /* ELITE: Fluid padding */
