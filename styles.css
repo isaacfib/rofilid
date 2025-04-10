@@ -346,30 +346,31 @@ nav[aria-label="Main navigation"] {
     display: flex; flex-wrap: nowrap; width: auto; gap: var(--spacing-lg);
   }
 
-  /* --- UNIFIED Header Layout (Button OUTSIDE Nav) --- */
-  /* Applies to Index, Corporate, and any page with this HTML structure */
+  /* --- UNIFIED Header Layout (space-between approach) --- */
   .header-container {
     display: flex;
     align-items: center;
+    /* ADD THIS LINE - Key Change */
+    justify-content: space-between;
+    /* End Added Line */
     width: 100%; max-width: var(--container-width); margin: 0 auto; padding: 0 var(--spacing-md);
   }
+
   .header-container .logo {
-    /* margin-right: auto; */ /* Removed */
-    flex-shrink: 0;
+    /* No auto margin needed */
+    flex-shrink: 0; /* Keep this */
   }
-  /* Nav is centered using auto margins */
+
+  /* Nav simply acts as a container for the list */
   nav[aria-label="Main navigation"] {
-    /* flex-grow: 1; */           /* Removed */
-    display: flex;
-    /* justify-content: center; */ /* Removed */
-    align-items: center;
-    /* Added auto margins to center the nav block itself */
-    margin-left: auto;
-    margin-right: auto;
+    /* Removed flex-grow, justify-content, and auto margins */
+    display: flex; /* Still useful for aligning the ul if needed */
+    align-items: center; /* Still useful */
   }
-  /* UL specific style when inside the centered Nav */
+
+  /* UL displays the links horizontally */
    .nav-list {
-      display: flex !important; /* Keep important if needed to override mobile styles */
+      display: flex !important; /* Keep if overriding mobile */
       flex-direction: row;
       gap: var(--spacing-lg);
       position: static;
@@ -380,12 +381,13 @@ nav[aria-label="Main navigation"] {
       opacity: 1;
       flex-wrap: nowrap;
       overflow: visible;
-      margin: 0; /* Ensure no extra margin on the list itself */
+      margin: 0; /* Ensure no extra margin */
    }
-  /* Button outside nav */
+
+  /* Button takes its natural place at the end */
   .connect-button { /* This targets the button OUTSIDE nav */
-    /* margin-left: auto; */ /* Removed */
-    flex-shrink: 0;
+    /* No auto margin needed */
+    flex-shrink: 0; /* Keep this */
   }
   /* --- End UNIFIED Header Layout --- */
 
