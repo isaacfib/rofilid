@@ -22,6 +22,7 @@
     <div class="deco-blur blur-2" aria-hidden="true"></div>
     <div class="deco-blur blur-3" aria-hidden="true"></div>
 
+
     <!-- Header Section -->
     <header class="site-header">
         <div class="container header-container">
@@ -37,7 +38,7 @@
                     <i class="fas fa-bars open-icon" aria-hidden="true"></i>
                     <i class="fas fa-times close-icon" aria-hidden="true"></i>
                 </button>
-                <!-- <<< MODIFIED: Added nav-indicator span >>> -->
+                <!-- Navigation List with Indicator Span -->
                 <ul id="primary-navigation" class="nav-list">
                     <li class="nav-item"><a href="../../index.html" class="nav-link">Home</a></li>
                     <li class="nav-item"><a href="personal.html" class="nav-link active-page" aria-current="page">Personal Finance</a></li>
@@ -45,16 +46,14 @@
                     <li class="nav-item"><a href="personal.html#learning-hub" class="nav-link">ROFILID Financial Fitness Hub</a></li>
                     <li class="nav-item"><a href="personal.html#free-tools" class="nav-link">Tools</a></li>
                     <li class="nav-item"><a href="../corporate/corporate.html" class="nav-link">For Businesses</a></li>
-                    <!-- ADD THIS SPAN -->
                     <span class="nav-indicator" aria-hidden="true"></span>
-                    <!-- END ADDED SPAN -->
                 </ul>
-                <!-- <<< END MODIFICATION >>> -->
             </nav>
             <!-- Optional: Add a consistent CTA button if desired on desktop -->
             <!-- <a href="#free-tools" class="btn connect-button btn-cta-header">Get Free Tools</a> -->
         </div>
     </header>
+
 
     <main id="main-content">
         <!-- Hero Section -->
@@ -89,6 +88,7 @@
             </div>
         </section>
 
+
         <!-- Our Approach Section -->
         <section id="our-approach" class="section-padding bg-light-accent" aria-labelledby="approach-heading" data-animate-fade-in>
             <div class="container approach-container">
@@ -102,6 +102,7 @@
                  </div>
             </div>
         </section>
+
 
         <!-- Free Resources Section -->
          <section id="free-resources" class="section-padding" aria-labelledby="resources-heading" data-animate-fade-in>
@@ -170,6 +171,7 @@
             </div>
         </section>
 
+
         <!-- Motivational Quote 1 -->
          <aside class="motivational-quote" role="complementary" data-animate-fade-in>
             <div class="container">
@@ -177,6 +179,7 @@
                  <p>Knowledge is the first step. <span class="highlight">Ready to see where you stand?</span></p>
             </div>
         </aside>
+
 
         <!-- Learning Hub Section -->
         <section id="learning-hub" class="section-padding bg-light" aria-labelledby="learning-heading" data-animate-fade-in>
@@ -218,6 +221,7 @@
              </div>
          </section>
 
+
         <!-- Motivational Quote 2 -->
          <aside class="motivational-quote alt-bg" role="complementary" data-animate-fade-in>
             <div class="container">
@@ -225,6 +229,7 @@
                  <p>Understanding is key. <span class="highlight">Now, grab some tools to take action.</span></p>
             </div>
          </aside>
+
 
         <!-- Free Tools Section -->
          <section id="free-tools" class="section-padding" aria-labelledby="tools-heading" data-animate-fade-in>
@@ -341,6 +346,7 @@
             </div>
         </section>
 
+
         <!-- Interest Calculator Promo Section -->
         <section id="financial-tools-promo" class="section-padding bg-light-accent" aria-labelledby="calculator-promo-heading" data-animate-fade-in>
             <div class="container calculator-promo-container">
@@ -368,6 +374,7 @@
             </div>
         </section>
 
+
         <!-- Motivational Quote 3 -->
          <aside class="motivational-quote" role="complementary" data-animate-fade-in>
             <div class="container">
@@ -375,6 +382,7 @@
                 <p>Tools are powerful. <span class="highlight">Sometimes, personalized guidance makes the difference.</span></p>
              </div>
         </aside>
+
 
         <!-- Coaching Section -->
          <section id="personal-coaching" class="section-padding bg-light" aria-labelledby="coaching-heading" data-animate-fade-in>
@@ -399,7 +407,6 @@
                          <p>Our personalized coaching program is currently under development. Register your interest below to be notified when spots become available and receive early access information.</p>
                         <form class="coaching-interest-form" id="coachingInterestForm" novalidate>
                             <div class="form-group">
-                                <!-- Added for attribute -->
                                 <label for="interest-email">Your Email:</label>
                                 <input type="email" id="interest-email" name="email" required placeholder="your.email@example.com" aria-describedby="interest-email-error interest-form-response" autocomplete="email">
                                 <span class="form-error-msg" id="interest-email-error" aria-live="polite"></span>
@@ -415,6 +422,7 @@
                 </div>
              </div>
         </section>
+
 
         <!-- MMISBALIOR Section -->
          <section id="mmisbalior-section" class="section-padding section-tight bg-light-accent" aria-labelledby="mmisbalior-heading" data-animate-fade-in>
@@ -432,6 +440,7 @@
             </div>
         </section>
 
+
         <!-- Feedback Section -->
         <section id="feedback-section" class="section-padding" aria-labelledby="feedback-heading" data-animate-fade-in>
             <div class="container feedback-container">
@@ -445,7 +454,9 @@
             </div>
         </section>
 
+
     </main>
+
 
     <!-- Modals -->
      <div id="quiz-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="quiz-modal-title" hidden>
@@ -471,6 +482,7 @@
              </div>
         </div>
      </div>
+
 
      <div id="feedback-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="feedback-modal-title" hidden>
         <div class="modal-content feedback-modal-content">
@@ -515,6 +527,7 @@
         </div>
     </div>
 
+
     <!-- Footer Section -->
     <footer class="site-footer" id="footer-contact" role="contentinfo">
          <div class="container">
@@ -539,11 +552,9 @@
                              <li><a href="../../index.html">Home</a></li>
                              <li><a href="../corporate/corporate.html">For Businesses</a></li>
                              <li><a href="#our-approach">Our Approach</a></li>
-                             <!-- Added calculator link here for consistency -->
                              <li><a href="calculator.html">Interest Calculator</a></li>
                              <li><a href="#feedback-section">Send Feedback</a></li>
                              <li><a href="#footer-contact">Contact Us</a></li>
-                             <!-- Consider adding link to blog/quizzes pages if they exist -->
                          </ul>
                      </div>
                     <div>
@@ -592,6 +603,7 @@
              </div>
         </div>
     </footer>
+
 
      <!-- Ensure JS path is correct -->
      <script src="../../assets/js/personal/personal.js" defer></script>
