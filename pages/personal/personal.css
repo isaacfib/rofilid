@@ -1,3 +1,5 @@
+/* START OF FILE personal.css */
+
 /* Root Variables - Core Brand Colors plus Complementary Palette */
 :root {
   --rofilid-teal: #0c343d;
@@ -75,6 +77,7 @@
   /* Layout */
   --container-max-width: 1280px;
   --container-narrow: 1024px;
+  --header-height: 70px; /* Approximate header height */
 
   /* Personal Page Specific Colors */
   --pp-color-primary: var(--rofilid-teal);
@@ -112,7 +115,7 @@
   --backdrop-blur: blur(8px);
 }
 
-/* Utility Classes */
+/* Utility Classes (Keep as is, standard utility pattern) */
 .mt-xs { margin-top: var(--space-xs); }
 .mt-sm { margin-top: var(--space-sm); }
 .mt-md { margin-top: var(--space-md); }
@@ -152,6 +155,7 @@
 .align-items-center { align-items: center; }
 .justify-content-center { justify-content: center; }
 .justify-content-between { justify-content: space-between; }
+.justify-content-end { justify-content: flex-end; }
 .gap-sm { gap: var(--space-sm); }
 .gap-md { gap: var(--space-md); }
 .gap-lg { gap: var(--space-lg); }
@@ -181,6 +185,7 @@
 .border-top { border-top: 1px solid var(--pp-color-border); }
 .rounded { border-radius: var(--radius-md); }
 .rounded-lg { border-radius: var(--radius-lg); }
+.rounded-xl { border-radius: var(--radius-xl); } /* Added for consistency */
 .rounded-pill { border-radius: var(--radius-full); }
 
 /* Screen Reader Only */
@@ -208,7 +213,7 @@
 html {
   font-size: 16px;
   scroll-behavior: smooth;
-  scroll-padding-top: 80px; /* Adjust based on fixed header height */
+  scroll-padding-top: calc(var(--header-height) + 20px); /* Adjust based on fixed header height */
 }
 
 body {
@@ -262,6 +267,12 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.2;
   color: var(--pp-color-primary);
   margin-bottom: var(--space-md); /* Default margin bottom */
+  /* Improve wrapping */
+  overflow-wrap: break-word;
+  word-wrap: break-word; /* Deprecated, but good fallback */
+  -webkit-hyphens: auto; /* Consider hyphenation */
+  -moz-hyphens: auto;
+  hyphens: auto;
 }
 
 h1 { font-size: var(--font-size-3xl); }
@@ -273,6 +284,12 @@ h6 { font-size: var(--font-size-base); }
 
 p {
   margin-bottom: var(--space-md);
+  /* Improve wrapping */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto;
 }
 
 .subheadline {
@@ -455,17 +472,30 @@ p {
   z-index: 999;
   box-shadow: var(--shadow-sm);
   border-bottom: 1px solid var(--pp-color-border-light);
+  height: var(--header-height); /* Set fixed height */
 }
 
 .header-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Pushes items apart */
   align-items: center;
+  height: 100%; /* Make container fill header height */
 }
 
+.logo {
+  flex-shrink: 0; /* Prevent logo from shrinking */
+}
 .logo img {
   height: 35px; /* Adjust logo size */
   width: auto;
+}
+
+/* Navigation positioning */
+.header-container > nav {
+  /* Let nav take available space but allow centering */
+  flex-grow: 1;
+  display: flex; /* Make nav a flex container itself */
+  justify-content: center; /* Center its content (the ul) */
 }
 
 .nav-list {
@@ -473,6 +503,8 @@ p {
   display: flex;
   align-items: center;
   gap: var(--space-lg);
+  padding: 0; /* Reset default ul padding */
+  margin: 0; /* Reset default ul margin */
 }
 
 .nav-link {
@@ -503,6 +535,16 @@ p {
   color: var(--pp-color-primary);
 }
 
+/* Header Tool Button Styling */
+.header-tool-btn {
+  /* Inherits .btn styling */
+  margin-left: auto; /* Pushes it right, if nav list width is not 100% */
+  flex-shrink: 0; /* Prevent shrinking */
+  /* Use smaller button size if desired */
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-size-sm);
+}
+
 /* Mobile Menu - Add styles for toggle, hiding nav list, etc. */
 .mobile-menu-toggle {
   display: none; /* Hidden by default */
@@ -511,6 +553,8 @@ p {
   font-size: 1.5rem;
   color: var(--pp-color-primary);
   cursor: pointer;
+  z-index: 1001; /* Above other header items if needed */
+  padding: 0;
 }
 
 /* Hero Section */
@@ -519,6 +563,7 @@ p {
   background-color: var(--pp-color-bg-light);
   position: relative;
   overflow: hidden; /* Contain decorative elements if added */
+  margin-top: var(--header-height); /* Ensure content starts below sticky header */
 }
 
 /* Optional: Add ::before/::after for background image/gradient/pattern */
@@ -534,14 +579,6 @@ p {
 .hero-content {
   max-width: 700px;
   margin-inline: auto;
-   /* Removed glassmorphism for cleaner look, can be added back */
-  /* background: rgba(255, 255, 255, 0.8); */
-  /* padding: var(--space-xl); */
-  /* border-radius: var(--radius-lg); */
-  /* backdrop-filter: var(--backdrop-blur); */
-  /* -webkit-backdrop-filter: var(--backdrop-blur); */
-  /* border: 1px solid rgba(255, 255, 255, 0.18); */
-  /* box-shadow: 0 8px 32px rgba(12, 52, 61, 0.1); */
 }
 
 .hero-badge {
@@ -776,30 +813,46 @@ p {
 }
 
 
-/* Learning Hub Section */
+/* Learning Hub Section - Enhanced Card Styles */
 .category-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: var(--space-xl);
 }
 
-/* Use the base .card style */
+/* Use the base .card style, add specific category refinements */
 .category-card {
    /* Inherits from .card */
    text-align: center; /* Center card content */
-   padding: var(--space-lg); /* Specific padding */
+   /* background-color: var(--pp-color-bg-light); Slightly different background */
+   border-color: var(--pp-color-border); /* More visible border */
+   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow var(--transition-normal), background-color var(--transition-normal);
+}
+
+.category-card:hover {
+   /* Base card hover applies */
+   background-color: var(--rofilid-white); /* Back to white on hover if bg was light */
+   box-shadow: var(--shadow-xl);
+}
+
+.category-card .card-content { /* Specific padding */
+   padding: var(--space-xl) var(--space-lg);
 }
 
 .category-card .category-icon {
-    font-size: 2rem; /* Adjust icon size if needed */
+    font-size: 2.5rem; /* Slightly larger icon */
     color: var(--pp-color-secondary); /* Color the icon */
-    margin-bottom: var(--space-md);
+    margin-bottom: var(--space-lg); /* Increased space */
+    transition: transform var(--transition-normal);
+}
+.category-card:hover .category-icon {
+    transform: scale(1.1) rotate(-5deg); /* Subtle hover effect on icon */
 }
 
 .category-card h4 {
     font-size: var(--font-size-lg);
     color: var(--pp-color-primary);
-    margin-bottom: var(--space-sm);
+    margin-bottom: var(--space-md); /* Increased space */
 }
 
 .category-card p {
@@ -809,6 +862,7 @@ p {
 }
 .category-card .start-quiz-btn {
     margin-top: auto; /* Pushes button to bottom */
+    /* Button styles already defined */
 }
 .full-challenge-link {
     text-align: center;
@@ -818,13 +872,14 @@ p {
 
 /* Financial Journey Path */
 .journey-path-container {
-    margin-top: var(--space-2xl); /* Was 3rem */
-    padding: var(--space-xl) 0; /* Was 2rem 0 */
+    margin-top: var(--space-2xl);
+    padding: var(--space-xl) 0;
     position: relative;
-    overflow: hidden; /* Clip any pattern bleed */
+    overflow-x: auto; /* Allow horizontal scroll on very small screens if needed */
+    overflow-y: hidden; /* Clip vertical */
 }
 
-/* Optional background pattern (subtle) */
+/* Optional background pattern (subtle) - KEPT */
 .journey-path-container::before {
     content: '';
     position: absolute;
@@ -837,15 +892,17 @@ p {
     z-index: -1;
 }
 
+/* Default: Horizontal Layout for Journey Path */
 .journey-path {
     display: flex;
-    align-items: center;
+    align-items: flex-start; /* Align items to the top */
     justify-content: space-between;
-    margin-bottom: var(--space-xl); /* Was 2rem */
+    margin-bottom: var(--space-xl);
     position: relative;
     max-width: 900px;
     margin-left: auto;
     margin-right: auto;
+    padding-bottom: var(--space-sm); /* Ensure space below for connector overshoot */
 }
 
 .journey-node {
@@ -853,37 +910,45 @@ p {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    width: 110px; /* Keep specific width for layout */
+    width: 110px;
     cursor: pointer;
-    transition: transform var(--transition-fast); /* Simplified transition */
-    border: none; /* Remove default button borders if using button tag */
-    background: none; /* Remove default button background */
-    padding: 0; /* Remove default button padding */
-    font-family: inherit; /* Inherit font */
+    transition: transform var(--transition-fast);
+    border: none;
+    background: none;
+    padding: 0;
+    font-family: inherit;
+    flex-shrink: 0; /* Prevent nodes from shrinking */
+    position: relative; /* For pseudo-elements if needed */
+    z-index: 2; /* Above connectors */
 }
 
 .journey-node h3 {
     font-size: 0.9rem;
-    margin-top: var(--space-sm); /* Was 0.5rem */
-    font-weight: var(--font-weight-semibold); /* Was 600 */
+    margin-top: var(--space-sm);
+    font-weight: var(--font-weight-semibold);
     color: var(--pp-color-text-secondary);
     transition: color var(--transition-fast);
     margin-bottom: 0;
+    min-height: 2.4em; /* Prevent jumpiness due to text wrapping */
+    line-height: 1.2;
+    display: flex; /* To help with centering/alignment */
+    align-items: center;
+    justify-content: center;
 }
 
 .node-icon {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background-color: var(--pp-color-bg-lighter); /* Changed to lighter neutral */
+    background-color: var(--pp-color-bg-lighter);
     display: flex;
     align-items: center;
     justify-content: center;
     border: 3px solid var(--pp-color-border);
     box-shadow: var(--shadow-sm);
-    transition: all var(--transition-normal); /* Was 0.3s ease */
-    position: relative;
-    z-index: 2;
+    transition: all var(--transition-normal);
+    position: relative; /* For z-index */
+    z-index: 1; /* Above node background, below active pop */
 }
 
 .node-icon i {
@@ -899,6 +964,8 @@ p {
     position: relative;
     z-index: 1;
     margin-inline: calc(-1 * var(--space-md)); /* Overlap slightly into node area */
+    /* Add vertical position relative to node center */
+    top: calc(60px / 2 - 4px / 2); /* Center vertically with icon */
 }
 
 .journey-connector::after { /* Progress indicator */
@@ -910,43 +977,45 @@ p {
     height: 100%;
     background: var(--gradient-secondary);
     transition: width 0.5s ease-out;
-    z-index: 1; /* Above base connector */
-    border-radius: var(--radius-full); /* Match node border */
+    z-index: 2; /* Above base connector */
+    border-radius: var(--radius-full);
 }
 
 /* State Styling: Active Node */
 .journey-node.active .node-icon {
-    background-color: var(--pp-color-secondary-light); /* Use defined variable */
+    background-color: var(--pp-color-secondary-light);
     border-color: var(--pp-color-secondary);
-    transform: scale(1.15); /* Slightly larger pop */
+    transform: scale(1.15);
     box-shadow: 0 6px 16px color-mix(in srgb, var(--pp-color-secondary) 20%, transparent);
+    z-index: 3; /* Ensure active node pops above others */
 }
 
 .journey-node.active .node-icon i {
-    color: var(--pp-color-primary-dark); /* Darker icon on light bg */
+    color: var(--pp-color-primary-dark);
 }
 
 .journey-node.active h3 {
     color: var(--pp-color-primary);
-    font-weight: var(--font-weight-bold); /* Was 700 */
+    font-weight: var(--font-weight-bold);
 }
 
-/* Apply progress fill to connectors *before* the active node */
-/* This requires JS to add an 'active-connector' class to connectors preceding the active node, or rethinking the ::after logic */
-/* Simpler approach: Highlight connector between last active and current active */
+/* Apply progress fill to connectors */
 .journey-node.activated + .journey-connector::after {
-    width: 100%; /* Example: assumes JS adds 'activated' to passed nodes */
+    width: 100%;
+    transition-duration: 0.8s; /* Make completion feel solid */
 }
-.journey-node.active + .journey-connector::after { /* Tentative highlight for next segment */
-   width: 50%;
+/* Optional: style for connector leading to active node */
+.journey-node:not(.activated).active ~ .journey-node:not(.activated) + .journey-connector::after {
+    width: 0; /* Reset connectors after active node */
 }
 
 /* State Styling: Hover Node */
-.journey-node:hover .node-icon {
-    transform: scale(1.08); /* Slightly smaller hover scale than active */
+.journey-node:hover:not(.active) .node-icon { /* Avoid double scale */
+    transform: scale(1.08);
     border-color: var(--pp-color-primary-light);
+    box-shadow: var(--shadow-md); /* Less intense shadow on hover */
 }
-.journey-node:hover h3 {
+.journey-node:hover:not(.active) h3 {
    color: var(--pp-color-primary);
 }
 
@@ -955,14 +1024,13 @@ p {
    outline: none; /* Remove default */
 }
 .journey-node:focus-visible .node-icon {
-   box-shadow: 0 0 0 3px color-mix(in srgb, var(--pp-color-secondary) 40%, transparent);
+   box-shadow: var(--shadow-md), 0 0 0 3px color-mix(in srgb, var(--pp-color-secondary) 40%, transparent); /* Combine shadows */
    border-color: var(--pp-color-secondary);
 }
 
 /* Journey Content Area */
 .journey-content-container {
-    /* Use background/shadow from the modal style for consistency */
-    background: rgba(255, 255, 255, 0.95); /* Slightly less transparent */
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: var(--backdrop-blur);
     -webkit-backdrop-filter: var(--backdrop-blur);
     border: 1px solid color-mix(in srgb, var(--rofilid-white) 18%, transparent);
@@ -971,29 +1039,31 @@ p {
     padding: var(--space-xl);
     min-height: 300px;
     position: relative;
-    transition: all 0.4s ease; /* Smooth transition if container changes */
+    transition: all 0.4s ease;
 }
 
 .journey-content {
     display: none;
-    animation: fadeInUp 0.6s ease; /* Using defined fadeInUp */
+    animation: fadeInUp 0.6s ease forwards; /* Ensure final state persists */
+    opacity: 0; /* Start hidden for animation */
 }
 
 .journey-content.active {
     display: block;
+    opacity: 1; /* Ensure visibility */
 }
 
 .journey-content h3 {
     color: var(--pp-color-primary);
-    margin-bottom: var(--space-md); /* Was 1rem */
-    font-size: var(--font-size-xl); /* Was 1.5rem */
+    margin-bottom: var(--space-md);
+    font-size: var(--font-size-xl);
 }
 
 .journey-content h4 {
-    margin-top: var(--space-lg); /* Was 1.5rem */
-    margin-bottom: var(--space-sm); /* Adjusted from 0.75rem */
-    font-size: var(--font-size-md); /* Was 1.1rem */
-    color: var(--pp-color-primary-light); /* Slightly lighter heading color */
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-sm);
+    font-size: var(--font-size-md);
+    color: var(--pp-color-primary-light);
 }
 
 .journey-content ul {
@@ -1002,15 +1072,15 @@ p {
 }
 
 .journey-content ul li {
-    margin-bottom: var(--space-sm); /* Adjusted from 0.75rem */
+    margin-bottom: var(--space-sm);
     display: flex;
     align-items: flex-start;
-    gap: var(--space-sm); /* Added gap */
+    gap: var(--space-sm);
 }
 
-.journey-content ul li i.fa-check-circle { /* Style specific check icon */
+.journey-content ul li i.fa-check-circle {
     color: var(--pp-color-success);
-    margin-top: 0.25rem; /* Align icon nicely */
+    margin-top: 0.25rem;
     flex-shrink: 0;
 }
 .journey-content ul li a {
@@ -1041,26 +1111,38 @@ p {
    /* Inherits from .card */
 }
 
+/* --- Tool Card Image Area --- */
 .template-preview {
   position: relative;
   overflow: hidden;
+  background-color: var(--neutral-200); /* Add background for image contrast */
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0; /* Rounded top corners */
 }
 
 .template-image { /* Shared style for both default and hover */
     display: block;
     width: 100%;
     height: auto;
-    aspect-ratio: 4 / 3; /* Adjust aspect ratio */
+    aspect-ratio: 4 / 3; /* Maintain aspect ratio */
     object-fit: cover; /* Cover the area */
     transition: opacity var(--transition-normal);
+    border-radius: inherit; /* Inherit radius from parent */
 }
 
 .template-image-hover {
   position: absolute;
   top: 0;
   left: 0;
+  width: 100%; /* Cover parent */
+  height: 100%; /* Cover parent */
+  object-fit: contain; /* Contain image within bounds */
+  padding: var(--space-sm); /* Add padding around the hover image */
   opacity: 0;
+  transform: scale(0.9); /* Start slightly smaller */
+  transition: opacity var(--transition-normal), transform var(--transition-normal) ease-out;
   z-index: 1; /* Ensure hover image is above */
+  border-radius: inherit; /* Inherit radius from parent */
+  background-color: rgba(255, 255, 255, 0.8); /* Optional subtle bg */
 }
 
 .template-preview:hover .template-image-default {
@@ -1069,6 +1151,7 @@ p {
 
 .template-preview:hover .template-image-hover {
   opacity: 1;
+  transform: scale(1); /* Scale to full size respecting padding */
 }
 
 /* Styles for the template details */
@@ -1099,6 +1182,7 @@ p {
     padding-left: 0;
     font-size: var(--font-size-sm);
     color: var(--pp-color-text);
+    margin-bottom: var(--space-md); /* Added space below list */
 }
 .template-benefits li {
     display: flex;
@@ -1112,18 +1196,30 @@ p {
     font-size: 0.9em; /* Slightly smaller icon */
 }
 
+/* --- Tool Card Button Layout --- */
 .template-actions {
-    display: grid; /* Changed to grid for easier layout */
+    display: grid;
     grid-template-columns: 1fr; /* Stack buttons by default */
-    gap: var(--space-sm);
+    gap: var(--space-md); /* Increased gap */
     margin-top: auto; /* Pushes actions to the bottom */
     padding-top: var(--space-md);
 }
-/* If we want side-by-side buttons on larger screens */
-@media (min-width: 400px) { /* Adjust breakpoint as needed */
-   .template-actions {
+
+/* On wider viewports for template cards, put buttons side-by-side */
+@media (min-width: 400px) {
+    .template-card .template-actions { /* Be more specific */
         grid-template-columns: 1fr 1fr;
-   }
+    }
+}
+
+/* Ensure buttons inside template cards don't overflow text */
+.template-card .btn span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.template-card .btn i {
+    flex-shrink: 0; /* Prevent icon shrinking */
 }
 
 .template-price-note {
@@ -1164,12 +1260,12 @@ p {
 .calculator-features-list li {
     display: flex;
     align-items: center;
-    /* justify-content: center; removed */
 }
 
 .calculator-features-list i.fa-check {
     color: var(--pp-color-success);
     margin-right: var(--space-md);
+    flex-shrink: 0; /* Prevent icon shrinking */
 }
 
 .calculator-promo-cta {
@@ -1270,17 +1366,19 @@ p {
 
 .form-label { /* Style for floating label effect */
   position: absolute;
-  top: 50%;
-  left: var(--space-md); /* Match input padding */
-  transform: translateY(-50%);
-  font-size: var(--font-size-base);
+  top: 0; /* Start at the top now for non-placeholder case */
+  left: var(--space-xs); /* Small gap from border */
+  transform: translateY(-50%) scale(0.85); /* Shrunk state */
+  font-size: 0.85rem; /* Keep consistent with shrunk size */
   color: var(--pp-color-text-muted);
   pointer-events: none;
   transition: all var(--transition-normal);
   background-color: var(--rofilid-white); /* Match input background */
   padding: 0 var(--space-xs); /* Allows label to sit 'over' the border */
   line-height: 1; /* Prevent inconsistent height */
-  z-index: 1; /* Sit above input */
+  z-index: 2; /* Sit above input border */
+  opacity: 0; /* Hide initially */
+  /* visibility: hidden; */
 }
 
 .form-control,
@@ -1311,6 +1409,7 @@ textarea.form-control {
   resize: vertical; /* Allow vertical resize only */
 }
 
+/* Input/Select Focus Styles */
 .form-control:focus,
 .form-select:focus {
   border-color: var(--pp-color-secondary);
@@ -1318,45 +1417,75 @@ textarea.form-control {
   outline: none;
 }
 
-/* Floating label state changes */
+/* --- Floating Label Enhancements --- */
+/* Show label when input is focused OR has content (including placeholder being shown) */
 .form-control:focus ~ .form-label,
 .form-control:not(:placeholder-shown) ~ .form-label {
-  top: 0; /* Move label to top border */
-  transform: translateY(-50%) scale(0.85); /* Shrink label */
-  color: var(--pp-color-secondary);
-  z-index: 2; /* Ensure it's above focused input */
-}
-/* Hide label if it's visually hidden (accessibility first) */
-.form-label.visually-hidden { display: none; }
-/* Input placeholder (use sparingly with floating labels) */
-.form-control::placeholder {
-    color: var(--neutral-400);
-    opacity: 1; /* Override Firefox default opacity */
+  opacity: 1;
+  /* visibility: visible; */
+  color: var(--pp-color-secondary); /* Highlight color */
 }
 
-/* Radio Buttons & Checkboxes (Bootstrap-like structure) */
+/* Style for when placeholder is hidden (input has value), keep label visible */
+.form-control:not(:placeholder-shown):not(:focus) ~ .form-label {
+  opacity: 1;
+  color: var(--pp-color-text-muted); /* Regular color when not focused but has value */
+}
+
+/* Style specifically for select elements with a value selected */
+.form-select:not(:placeholder-shown) ~ .form-label,
+.form-select:focus ~ .form-label,
+.form-select:valid ~ .form-label { /* Use :valid to detect non-default option selected */
+  opacity: 1;
+}
+.form-select:valid:not(:focus) ~ .form-label {
+    color: var(--pp-color-text-muted);
+}
+.form-select:focus ~ .form-label{
+     color: var(--pp-color-secondary);
+}
+
+
+/* Visually hidden label utility */
+.form-label.visually-hidden { display: none !important; }
+
+/* Input placeholder (used now as main visible text before typing) */
+.form-control::placeholder {
+    color: var(--neutral-500); /* Slightly darker placeholder */
+    opacity: 1; /* Override Firefox default opacity */
+}
+/* Make select placeholder option less prominent */
+.form-select option[disabled] {
+  color: var(--neutral-500);
+}
+
+/* --- Radio Buttons & Checkboxes Improvements --- */
 .form-check {
-    display: flex; /* Align input and label */
-    align-items: center;
+    display: flex; /* Use Flexbox */
+    align-items: center; /* Vertically center input and label */
     gap: var(--space-sm);
     margin-bottom: var(--space-sm); /* Spacing for multiple checks */
+    position: relative; /* Needed for label positioning maybe */
+    min-height: 1.5em; /* Ensure it takes up enough vertical space */
 }
+
 .form-check-input { /* Base style for radio/checkbox */
-    width: 1.1em;
-    height: 1.1em;
-    margin-top: 0.1em; /* Fine-tune vertical alignment */
-    vertical-align: top;
+    width: 1.2em; /* Slightly larger for easier click */
+    height: 1.2em;
+    margin-top: 0; /* Reset margin */
+    vertical-align: middle; /* Better alignment with flex */
     background-color: var(--rofilid-white);
     border: 1px solid var(--pp-color-border);
     appearance: none;
-    transition: background-color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+    transition: background-color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), background-image var(--transition-fast);
     flex-shrink: 0; /* Prevent shrinking */
+    cursor: pointer; /* Indicate clickable input */
 }
 .form-check-input:checked {
     background-color: var(--pp-color-primary);
     border-color: var(--pp-color-primary);
 }
-.form-check-input:focus {
+.form-check-input:focus-visible { /* Use focus-visible */
     border-color: var(--pp-color-secondary);
     outline: 0;
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--pp-color-secondary) 30%, transparent);
@@ -1370,14 +1499,14 @@ textarea.form-control {
 .form-check-input[type="checkbox"]:checked {
     /* SVG checkmark */
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
-    background-size: 60%;
+    background-size: 65%; /* Slightly larger */
     background-position: center;
     background-repeat: no-repeat;
 }
 .form-check-input[type="radio"]:checked {
     /* SVG circle */
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e");
-     background-size: 50%;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2.5' fill='%23fff'/%3e%3c/svg%3e"); /* Larger inner circle */
+     background-size: 60%;
     background-position: center;
     background-repeat: no-repeat;
 }
@@ -1385,28 +1514,66 @@ textarea.form-control {
     color: var(--pp-color-text);
     margin-bottom: 0; /* Remove default margin */
     cursor: pointer; /* Indicate clickable label */
+    /* Allow label to wrap */
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 
+/* Ensure legend in fieldset is styled appropriately */
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+fieldset legend {
+    padding: 0;
+    margin-bottom: var(--space-sm);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-base);
+    color: var(--pp-color-text);
+}
+/* Container for radio buttons in demographics modal */
+.radio-group {
+  display: flex;
+  gap: var(--space-lg);
+  justify-content: center; /* Center radios horizontally */
+  margin-top: var(--space-sm); /* Add some space below legend */
+}
+
+
 /* Error Message Styling */
-.form-error-msg { /* Class used in JS */
+.form-error-msg, .invalid-feedback { /* Common style */
     color: var(--pp-color-danger);
     font-size: var(--font-size-sm);
     margin-top: var(--space-xs);
-    display: block; /* Ensure it takes space */
+    display: none; /* Hide by default */
+    width: 100%; /* Ensure it takes full width */
 }
-/* For Bootstrap-like invalid feedback */
-.invalid-feedback {
-  display: none; /* Hidden by default */
-  width: 100%;
-  margin-top: var(--space-xs);
-  font-size: var(--font-size-sm);
-  color: var(--pp-color-danger);
-}
-/* Show feedback for elements with 'is-invalid' class (if validation adds this class) */
-.was-validated :invalid ~ .invalid-feedback,
-.is-invalid ~ .invalid-feedback {
+/* Show feedback when associated input is invalid (JS adds class) */
+.form-control.is-invalid ~ .invalid-feedback,
+.form-select.is-invalid ~ .invalid-feedback,
+/* Or show when a sibling error message has text (another JS approach) */
+/* .form-error-msg:not(:empty) { display: block; } */
+.form-check-input.is-invalid ~ .invalid-feedback,
+.form-check-input.is-invalid ~ .form-error-msg,
+.form-group .is-invalid + .invalid-feedback, /* Generic approach for radios/selects in group */
+.form-group .invalid-feedback.d-block /* Manually display */
+ {
   display: block;
 }
+/* Highlight invalid fields */
+.form-control.is-invalid,
+.form-select.is-invalid,
+.form-check-input.is-invalid {
+    border-color: var(--pp-color-danger);
+}
+.form-control.is-invalid:focus,
+.form-select.is-invalid:focus,
+.form-check-input.is-invalid:focus-visible {
+   box-shadow: 0 0 0 3px color-mix(in srgb, var(--pp-color-danger) 30%, transparent);
+}
+
 
 /* Form Response/Success Note */
 .form-response-note {
@@ -1454,19 +1621,17 @@ textarea.form-control {
     overflow-y: auto;
     position: relative;
     padding: var(--space-xl);
-    transform: scale(0.95); /* Start slightly scaled down */
-    transition: transform var(--transition-normal);
+    transform: scale(0.95) translateY(10px); /* Start slightly down & scaled */
+    transition: transform var(--transition-normal) ease-out, opacity var(--transition-normal); /* Smoother */
 }
 .modal-overlay:not([hidden]) .modal-content {
-   transform: scale(1); /* Scale in */
+   transform: scale(1) translateY(0); /* Scale in and move up */
 }
 
 /* Specific modal widths */
 .quiz-demographics-content,
 .pdf-download-content {
   max-width: 400px;
-  margin: auto; /* Center if flexbox centering fails */
-  /* Background/Padding inherited from modal-content */
 }
 
 .modal-close-btn {
@@ -1481,6 +1646,7 @@ textarea.form-control {
   line-height: 1; /* Align icon */
   padding: var(--space-xs); /* Increase click target */
   transition: color var(--transition-fast), transform var(--transition-fast);
+  z-index: 10; /* Above modal content */
 }
 
 .modal-close-btn:hover {
@@ -1520,11 +1686,15 @@ textarea.form-control {
     color: var(--pp-color-text);
     margin-bottom: var(--space-xl);
     text-align: center;
+    /* Ensure text wrapping */
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 .quiz-modal-options-area {
     display: grid;
     grid-template-columns: 1fr; /* Stack options by default */
-    gap: var(--space-sm);
+    gap: var(--space-md); /* Increased gap */
     margin-bottom: var(--space-lg);
 }
 @media (min-width: 576px) { /* Two columns on larger screens */
@@ -1541,6 +1711,9 @@ textarea.form-control {
    border-width: 2px; /* Make border slightly thicker */
    font-weight: var(--font-weight-regular);
    padding: var(--space-md); /* Consistent padding */
+   /* Allow text to wrap within buttons */
+   white-space: normal;
+   line-height: 1.4;
 }
 .quiz-option:hover {
     /* Standard hover defined in btn-outline:hover */
@@ -1617,7 +1790,7 @@ textarea.form-control {
 .site-footer {
   background-color: var(--pp-color-primary-dark);
   color: var(--neutral-300);
-  padding: var(--space-3xl) 0;
+  padding: var(--space-3xl) 0 var(--space-xl); /* Adjusted padding */
   font-size: var(--font-size-sm);
 }
 
@@ -1668,6 +1841,7 @@ textarea.form-control {
    width: 1.2em; /* Ensure icons align nicely */
    text-align: center;
    color: var(--pp-color-secondary-light);
+   flex-shrink: 0; /* Prevent shrinking */
 }
 
 .footer-connect-title {
@@ -1679,6 +1853,7 @@ textarea.form-control {
 
 .social-links { /* Used in footer */
   display: flex;
+  flex-wrap: wrap; /* Allow wrapping */
   gap: var(--space-md);
   margin-top: var(--space-sm); /* Space below title */
 }
@@ -1711,7 +1886,7 @@ textarea.form-control {
   position: fixed;
   bottom: var(--space-xl);
   right: var(--space-xl);
-  z-index: 99;
+  z-index: 998; /* Below modals */
 }
 
 .fab-main {
@@ -1748,7 +1923,7 @@ textarea.form-control {
   transform: scale(1);
 }
 .fab-main i {
-  transition: transform var(--transition-normal);
+  transition: transform var(--transition-normal), opacity var(--transition-normal);
   position: absolute; /* Position icons on top */
 }
 .fab-close-icon { /* Initially hidden close icon */
@@ -1783,21 +1958,20 @@ textarea.form-control {
     align-items: flex-end;
     gap: var(--space-md); /* Consistent gap */
     pointer-events: none; /* Prevent interaction when hidden */
-}
-
-.fab-options li { /* Ensure li doesn't block pointer events when hidden */
-   transition: opacity var(--transition-normal), transform var(--transition-normal);
-   opacity: 0;
-   transform: translateY(10px);
+    opacity: 0; /* Hide initially */
+    transform: translateY(10px); /* Start slightly down */
+    transition: opacity var(--transition-normal), transform var(--transition-normal), pointer-events var(--transition-normal) steps(1, end);
 }
 
 .floating-action-btn.active .fab-options {
   pointer-events: auto; /* Enable interaction when active */
-}
-
-.floating-action-btn.active .fab-options li {
   opacity: 1;
   transform: translateY(0);
+  transition: opacity var(--transition-normal), transform var(--transition-normal) ease-out, pointer-events var(--transition-normal) steps(1, start);
+}
+
+.fab-options li { /* Apply animation delay here */
+   transition: transform 0.3s ease-out, opacity 0.3s ease-out;
 }
 
 .fab-option {
@@ -1815,11 +1989,12 @@ textarea.form-control {
 
 .fab-option i {
   color: var(--pp-color-secondary); /* Accent icon color */
+  margin-right: var(--space-sm); /* Added explicit spacing */
 }
 
 .fab-label {
-  margin-left: var(--space-sm); /* Was 8px */
-  font-size: var(--font-size-sm); /* Was 0.9rem */
+  /* margin-left: var(--space-sm); removed margin, using i margin */
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
 }
 
@@ -1836,11 +2011,12 @@ textarea.form-control {
   box-shadow: var(--shadow-lg), 0 0 0 3px color-mix(in srgb, var(--pp-color-secondary) 30%, transparent);
 }
 
-/* Staggered animation delays for FAB options */
-.floating-action-btn.active .fab-options li:nth-child(1) { transition-delay: 0.05s; }
-.floating-action-btn.active .fab-options li:nth-child(2) { transition-delay: 0.1s; }
-.floating-action-btn.active .fab-options li:nth-child(3) { transition-delay: 0.15s; }
-.floating-action-btn.active .fab-options li:nth-child(4) { transition-delay: 0.2s; } /* Added delay for more options */
+/* Staggered animation delays for FAB options when becoming active */
+.floating-action-btn.active .fab-options li { transition-delay: 0s; } /* Reset base delay */
+.floating-action-btn.active .fab-options li:nth-child(1) { transition-delay: calc(0.1s * 1); }
+.floating-action-btn.active .fab-options li:nth-child(2) { transition-delay: calc(0.1s * 2); }
+.floating-action-btn.active .fab-options li:nth-child(3) { transition-delay: calc(0.1s * 3); }
+/* Add more if needed, ensures they appear sequentially */
 
 
 /* Motivational Quotes */
@@ -1869,6 +2045,8 @@ textarea.form-control {
   color: color-mix(in srgb, var(--pp-color-primary) 8%, transparent);
   line-height: 1;
   z-index: 1;
+  user-select: none; /* Prevent selection */
+  pointer-events: none;
 }
 .motivational-quote::after { /* Closing quote mark */
    content: '"';
@@ -1881,6 +2059,8 @@ textarea.form-control {
    line-height: 1;
    z-index: 1;
    transform: rotate(180deg); /* Flip the quote */
+   user-select: none;
+   pointer-events: none;
  }
 
 .motivational-quote p {
@@ -1896,23 +2076,14 @@ textarea.form-control {
 }
 
 /* Optional: Author styling if added back */
-/* .quote-author {
-  display: block;
-  text-align: center;
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-semibold);
-  color: var(--pp-color-secondary-dark);
-  margin-top: var(--space-md);
-  position: relative;
-  z-index: 2;
-} */
+/* .quote-author { ... } */
 
 
 /* Scroll Animations */
 .reveal-on-scroll {
   opacity: 0;
-  transform: translateY(40px); /* Increase travel distance */
-  transition: opacity 0.8s cubic-bezier(0.175, 0.885, 0.32, 1), transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1); /* Slower, eased transition */
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.175, 0.885, 0.32, 1), transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1);
 }
 .reveal-on-scroll.revealed {
   opacity: 1;
@@ -1930,23 +2101,27 @@ textarea.form-control {
   transition: opacity 0.8s cubic-bezier(0.175, 0.885, 0.32, 1), transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1);
 }
 
-/* Apply individual delays for stagger effect */
-.reveal-stagger > *:nth-child(1) { transition-delay: 0.1s; }
-.reveal-stagger > *:nth-child(2) { transition-delay: 0.2s; }
-.reveal-stagger > *:nth-child(3) { transition-delay: 0.3s; }
-.reveal-stagger > *:nth-child(4) { transition-delay: 0.4s; }
-.reveal-stagger > *:nth-child(5) { transition-delay: 0.5s; }
-.reveal-stagger > *:nth-child(6) { transition-delay: 0.6s; } /* Add more if needed */
+/* Apply individual delays for stagger effect (Adjust index if elements change) */
+.reveal-stagger > *:nth-child(1).revealed { transition-delay: 0.1s; }
+.reveal-stagger > *:nth-child(2).revealed { transition-delay: 0.2s; }
+.reveal-stagger > *:nth-child(3).revealed { transition-delay: 0.3s; }
+.reveal-stagger > *:nth-child(4).revealed { transition-delay: 0.4s; }
+.reveal-stagger > *:nth-child(5).revealed { transition-delay: 0.5s; }
+.reveal-stagger > *:nth-child(6).revealed { transition-delay: 0.6s; } /* Add more if needed */
 
 
 /* Responsiveness */
 @media (max-width: 1024px) {
-  /* Content/Layout adjustments */
+  /* Reduce gap between header nav items */
+  .nav-list {
+    gap: var(--space-md);
+  }
 }
 
 @media (max-width: 768px) {
   html {
     font-size: 15px; /* Slightly smaller base font on medium screens */
+    scroll-padding-top: calc(var(--header-height) + 10px); /* Adjust for smaller screens */
   }
   .section-padding { padding-block: var(--space-xl); } /* Reduce section padding */
   .section-padding--large { padding-block: var(--space-2xl); }
@@ -1954,25 +2129,42 @@ textarea.form-control {
   h1 { font-size: 2.2rem; }
   h2 { font-size: 1.8rem; }
 
-  .nav-list { /* Basic mobile nav setup */
-    position: absolute;
-    top: 100%; /* Position below header */
-    left: 0;
-    right: 0;
-    background-color: var(--rofilid-white);
+  /* Header - Mobile Nav Styling */
+  .header-container > nav {
+      /* Hide desktop nav list */
+      display: none;
+  }
+  .header-container .header-tool-btn {
+      display: none; /* Hide desktop tool button */
+  }
+  .mobile-menu-toggle {
+      display: block; /* Show hamburger */
+      order: 3; /* Place it after logo */
+      margin-left: auto; /* Push to right */
+  }
+
+  #primary-navigation.nav-list { /* Targeting the UL when it's used for mobile */
+    display: block; /* Change display type */
+    position: fixed; /* Fixed position */
+    inset: var(--header-height) 0 0 0; /* Position below header, cover screen */
+    background-color: color-mix(in srgb, var(--rofilid-white) 95%, transparent); /* Slightly transparent white */
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
     flex-direction: column;
     align-items: stretch; /* Stretch items */
-    padding: var(--space-md) 0;
-    box-shadow: var(--shadow-md);
+    padding: var(--space-lg) 0 0; /* Padding top */
+    box-shadow: none; /* Remove shadow */
     border-top: 1px solid var(--pp-color-border-light);
-    transform: translateY(-10px);
+    transform: translateX(100%); /* Start off-screen */
     opacity: 0;
     visibility: hidden;
-    transition: transform var(--transition-normal), opacity var(--transition-normal), visibility var(--transition-normal);
+    transition: transform 0.4s ease-out, opacity 0.4s ease-out, visibility 0.4s;
     gap: 0; /* Reset gap */
+    overflow-y: auto; /* Allow scrolling if content overflows */
+    z-index: 1000; /* Below toggle button */
   }
-  .nav-list.active { /* State when menu is open */
-    transform: translateY(0);
+  #primary-navigation.nav-list.active { /* State when menu is open */
+    transform: translateX(0);
     opacity: 1;
     visibility: visible;
   }
@@ -1982,69 +2174,123 @@ textarea.form-control {
       padding: var(--space-md) var(--space-lg);
       text-align: left;
       border-bottom: 1px solid var(--pp-color-border-light);
+      font-size: var(--font-size-md); /* Larger font for mobile nav */
   }
    .nav-item:last-child .nav-link { border-bottom: none; }
-   .nav-link::after { /* Mobile nav indicator */
-      left: var(--space-lg);
-      bottom: 10px;
-      height: 3px;
-      background-color: var(--pp-color-primary);
+
+   .nav-link::after { /* Remove underline effect on mobile */
+      display: none;
+   }
+   /* Optional: Add an active indicator */
+   .nav-link.active-page {
+       background-color: var(--pp-color-bg-light-accent);
    }
 
-  .mobile-menu-toggle { display: block; }
+
   /* Hide/show toggle icons based on nav state - requires JS to toggle 'active' on header/button */
-  .mobile-menu-toggle .close-icon { display: none; }
-  .mobile-menu-toggle.active .open-icon { display: none; }
-  .mobile-menu-toggle.active .close-icon { display: block; }
+  .mobile-menu-toggle .open-icon { display: inline-block; } /* Show bars by default */
+  .mobile-menu-toggle .close-icon { display: none; } /* Hide X by default */
+  .mobile-menu-toggle.active .open-icon { display: none; } /* Hide bars when active */
+  .mobile-menu-toggle.active .close-icon { display: inline-block; } /* Show X when active */
 
   .hero-stats-grid { grid-template-columns: 1fr; } /* Stack stats */
 
-  /* Financial Journey Path - Responsive */
+  /* --- Financial Journey Path - Mobile (Vertical) --- */
+  .journey-path-container {
+      /* Background pattern remains */
+      overflow-x: hidden; /* Prevent horizontal scroll */
+  }
   .journey-path {
-    flex-direction: column;
-    align-items: flex-start; /* Align nodes to left */
-    gap: var(--space-sm); /* Add small gap between items */
+      flex-direction: column;
+      align-items: flex-start; /* Align items to the left */
+      max-width: 100%; /* Use full width */
+      margin-left: var(--space-md); /* Add some left margin for the connector line */
+      gap: 0; /* Reset gap, managed by connector height */
+      margin-bottom: 0; /* Reset margin */
   }
-  .journey-node {
-    flex-direction: row; /* Icon and text side-by-side */
-    width: 100%; /* Take full width */
-    margin-bottom: 0; /* Remove node bottom margin */
-    text-align: left; /* Align text left */
-    align-items: center; /* Center icon and text vertically */
-    gap: var(--space-md); /* Space between icon and text */
-    padding: var(--space-sm) 0; /* Padding for spacing */
-  }
-  .journey-node h3 {
-    margin-top: 0; /* Reset margin */
-    margin-left: 0; /* Reset margin */
-    font-size: 1rem; /* Slightly larger text */
-  }
-  .journey-connector { /* Style connector as vertical line */
-    width: 4px;
-    height: 40px; /* Length of connector */
-    margin-left: calc(60px / 2 - 4px / 2 + 3px); /* Position relative to icon (width 60, border 3) */
-    margin-block: calc(-1 * var(--space-sm)); /* Overlap nodes slightly */
-    order: -1; /* Visually position before icon/text (not really needed if align-items: flex-start) */
-  }
-   .journey-node:not(:last-child) .journey-connector { display: block; } /* Show connector except for last */
-   .journey-node:last-child .journey-connector { display: none; }
 
-   /* Responsive progress indicator for vertical */
-   .journey-connector::after {
-        /* Adjust animation/trigger based on vertical layout */
-        width: 100%; /* Cover width of vertical bar */
-        height: 0%; /* Animate height */
-        transition: height 0.5s ease-out;
+  .journey-node {
+      flex-direction: row; /* Icon and text side-by-side */
+      width: calc(100% - var(--space-md)); /* Account for container padding */
+      text-align: left;
+      align-items: center; /* Vertically center icon and text */
+      gap: var(--space-lg); /* Increased space between icon and text */
+      padding: var(--space-sm) 0; /* Padding for spacing */
+      z-index: 2; /* Keep node above connector */
+  }
+  .journey-node:not(:last-child) {
+      padding-bottom: var(--space-xl); /* Space below node content for connector */
+  }
+
+  .journey-node h3 {
+      margin-top: 0;
+      margin-left: 0;
+      font-size: 1rem; /* Slightly larger text */
+      flex-grow: 1; /* Allow text to take space */
+      min-height: auto; /* Reset min-height */
+      display: block; /* Regular block display */
+  }
+
+  .journey-node .node-icon {
+      flex-shrink: 0; /* Prevent icon shrinking */
+      z-index: 1; /* Below node content */
+  }
+
+  .journey-connector {
+      /* Position as a vertical line to the left of the icon */
+      position: absolute; /* Position relative to journey-path */
+      width: 4px;
+      /* Adjust height based on node spacing */
+      height: calc(100% - 60px); /* Span between center of icons (approx) */
+      left: calc(60px / 2 - 4px / 2); /* Center align with icon */
+      top: calc(60px / 2); /* Start below first icon center */
+      margin: 0; /* Reset margin */
+      z-index: 1; /* Behind nodes */
+      background-color: var(--pp-color-border); /* Ensure visibility */
+  }
+
+   /* Specific placement for each connector using order */
+  .journey-node + .journey-connector {
+      /* This selector works but positioning requires JS or complex nth-child */
+      display: none; /* Hide horizontal connectors */
+  }
+
+  /* Create vertical connectors using pseudo-elements on nodes (easier positioning) */
+  .journey-node:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      width: 4px;
+      height: calc(100% - 60px + var(--space-xl) + var(--space-sm)); /* Height between icons based on padding */
+      background-color: var(--pp-color-border);
+      left: calc(60px / 2 - 4px / 2); /* Position under icon */
+      top: calc(60px + var(--space-sm)/2); /* Start below icon bottom */
+      z-index: 1; /* Behind nodes */
+  }
+  /* Progress fill for vertical */
+  .journey-node:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      width: 4px;
+      height: 0; /* Animated height */
+      background: var(--gradient-secondary);
+      left: calc(60px / 2 - 4px / 2);
+      top: calc(60px + var(--space-sm)/2);
+      z-index: 2; /* Above base line */
+      transition: height 0.5s ease-out;
+  }
+
+  /* Style connectors for passed nodes (activated class on the node) */
+   .journey-node.activated:not(:last-child)::before {
+       height: calc(100% - 60px + var(--space-xl) + var(--space-sm)); /* Full height */
    }
-   .journey-node.activated + .journey-connector::after { /* Style connectors for passed nodes */
-       height: 100%;
-   }
-   .journey-node.active + .journey-connector::after { /* Highlight connector below active node */
-        height: 50%;
-   }
+
+   /* Focus stays on the node itself */
+   .journey-node:focus-visible { /* No change needed here */ }
+
+  /* --- End Financial Journey Path - Mobile --- */
 
   /* Coaching responsive grid already handled */
-  .footer-content { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); } /* More flexible columns */
+  .footer-content { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-lg); } /* Adjust columns */
   .footer-column { text-align: left; } /* Left align text in footer */
   .social-links { justify-content: flex-start; } /* Align social icons left */
 
@@ -2064,51 +2310,122 @@ textarea.form-control {
         font-size: var(--font-size-base);
     }
    .hero-actions { gap: var(--space-md); } /* Reduce gap between hero buttons */
-   .modal-content { padding: var(--space-lg); /* Reduce modal padding */ }
-   .template-actions { grid-template-columns: 1fr; } /* Ensure template buttons always stack */
+
+   /* Ensure hero headline wraps reasonably */
+   h1 { font-size: 1.9rem; }
+
+   /* Modal Adjustments */
+   .modal-content {
+        padding: var(--space-lg) var(--space-md); /* Reduce modal padding */
+        max-height: 95vh; /* Allow slightly more height */
+    }
+   .modal-title { font-size: var(--font-size-lg); } /* Smaller modal title */
+
+   /* Template Cards on Small Screens */
+   .template-grid { grid-template-columns: 1fr; } /* Force single column */
+   .template-actions {
+        grid-template-columns: 1fr; /* Ensure template buttons always stack */
+        gap: var(--space-sm); /* Reduce gap slightly */
+    }
+    .template-card .btn { font-size: var(--font-size-sm); } /* Smaller button text */
 
    .quiz-modal-question-area { font-size: var(--font-size-md); }
-   .quiz-modal-options-area { grid-template-columns: 1fr; } /* Always stack quiz options */
+   .quiz-modal-options-area { grid-template-columns: 1fr; gap: var(--space-sm); } /* Always stack quiz options, smaller gap */
+   .quiz-option { padding: var(--space-sm) var(--space-md); } /* Smaller padding for options */
+
+   /* Footer adjustments */
+   .footer-content { grid-template-columns: 1fr; } /* Stack columns */
 
 }
 
 /* Print Styles */
 @media print {
   body {
-    background: none;
+    background: none !important; /* Ensure no bg color */
     color: #000; /* Black text */
-    font-size: 12pt;
+    font-size: 11pt; /* Adjust print font size */
+    font-family: 'Times New Roman', Times, serif; /* Use serif for print */
+  }
+  :root {
+    /* Override colors for print */
+    --pp-color-primary: #000;
+    --pp-color-secondary: #333;
+    --pp-color-accent: #555;
+    --pp-color-text: #000;
+    --pp-color-text-secondary: #222;
+    --pp-color-bg-light: none;
+    --pp-color-bg-lighter: none;
+    --pp-color-bg-light-accent: none;
+    --rofilid-white: #fff; /* Keep white for card backgrounds? Or remove too? */
+    --pp-color-border: #ccc;
+    --pp-color-border-light: #ddd;
   }
   .site-header,
   .site-footer,
   .modal-overlay,
   .floating-action-btn,
   .motivational-quote,
+  .mobile-menu-toggle,
+  .header-tool-btn,
   .reveal-on-scroll,
-  .reveal-stagger > * {
+  .reveal-stagger > *,
+  .hero-badge,
+  .deco-blur,
+  .social-integration .card-header,
+  .social-feed-preview,
+  .social-icons-inline,
+  .fab-main,
+  .fab-options {
     display: none !important; /* Hide non-essential elements */
   }
+  html { scroll-padding-top: 0; }
+  body { padding-top: 0 !important; } /* No padding needed */
+  .hero-section { margin-top: 0 !important; } /* No offset needed */
   .container {
     width: 100%;
     max-width: 100%;
-    padding: 0;
-    margin: 0;
+    padding: 0 !important;
+    margin: 0 !important;
   }
   h1, h2, h3, h4, h5, h6 {
-      color: #000;
+      color: #000 !important; /* Ensure black headings */
       page-break-after: avoid;
+      font-family: inherit; /* Use body font */
   }
+  p, ul, li { color: #000 !important; }
   a {
-      color: #000;
-      text-decoration: none;
+      color: #000 !important;
+      text-decoration: none !important; /* Remove underlines */
   }
-  .section-padding, .section-padding--large { padding-block: 1cm; }
+  /* Print URL for links */
+  a[href^="http"]::after {
+      /* content: " (" attr(href) ")"; */ /* Option to show full URL */
+      content: ""; /* Or hide it */
+      font-size: 9pt;
+      color: #555;
+  }
+  .section-padding, .section-padding--large { padding-block: 1cm !important; }
+  .section-title::after { display: none; } /* Hide decorative underline */
+
   .card, .resource-card, .template-card, .category-card {
-      box-shadow: none;
-      border: 1px solid #ccc;
-      page-break-inside: avoid;
+      box-shadow: none !important;
+      border: 1px solid #ccc !important;
+      page-break-inside: avoid !important;
+      background: #fff !important; /* Ensure white bg for cards */
   }
-  .bg-light, .bg-lighter, .bg-light-accent {
-      background: none;
-  }
+  .card-image img, .template-preview img { display: none; } /* Hide images */
+  .card-cta, .template-actions { display: none; } /* Hide CTAs */
+  .stat-card i { display: none; } /* Hide icons */
+  .category-card .category-icon { display: none; }
+  .template-value-prop, .template-price-note { display: block; } /* Ensure details print */
+
+  /* Journey path simplify for print */
+  .journey-path, .journey-content-container { display: block; }
+  .journey-node { display: block; page-break-inside: avoid; margin-bottom: 0.5cm; }
+  .journey-node .node-icon, .journey-connector { display: none; }
+  .journey-content { display: block !important; animation: none; opacity: 1; border-top: 1px solid #ccc; padding-top: 0.5cm;}
+  .journey-content-container { padding: 0; border: none; box-shadow: none; background: none; backdrop-filter: none; }
+
+  .form-group, form { display: none; } /* Hide forms generally */
 }
+/* END OF FILE csspersonal.css */
