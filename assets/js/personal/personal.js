@@ -39,6 +39,8 @@ let quizModal, demographicsModal, pdfModal, feedbackModal;
 let fabContainer, fabButton, fabOptions;
 let journeyPath, journeyNodes, journeyContents, journeyContentContainer;
 let menuToggle, primaryNav; // Mobile Nav elements
+let isJourneyObserverActive = false; // Flag to prevent multiple setups
+let journeyNodeList = []; // Store node elements as an array
 
 // --- Utility Function to Reset Form Errors ---
 function resetFormErrors(formId) {
@@ -75,34 +77,43 @@ function closeModal(modalElement) {
 
 // --- Show/Hide Feedback Helper ---
 function showFeedback(inputElement, message, isError = true) {
-    // Find the sibling or container-based feedback element
-    const feedbackElement = inputElement.closest('.form-group, fieldset')?.querySelector('.invalid-feedback, .form-error-msg') || inputElement.nextElementSibling;
+    // Find the sibling or container-based feedback element more robustly
+    let feedbackElement = null;
+    if (inputElement) {
+        feedbackElement = inputElement.closest('.form-group, fieldset')?.querySelector('.invalid-feedback, .form-error-msg') || inputElement.nextElementSibling;
+        // Special case for radio group where error msg might be direct child of fieldset
+        if (!feedbackElement && inputElement.type === 'radio' && inputElement.closest('fieldset')) {
+            feedbackElement = inputElement.closest('fieldset').querySelector('.invalid-feedback, .form-error-msg');
+        }
+    }
+
 
     if (feedbackElement && (feedbackElement.classList.contains('invalid-feedback') || feedbackElement.classList.contains('form-error-msg'))) {
         feedbackElement.textContent = message;
-        feedbackElement.style.display = 'block'; // Make sure it's visible
-        feedbackElement.classList.add('d-block'); // Add Bootstrap class if used
+        feedbackElement.style.display = message ? 'block' : 'none'; // Show only if message exists
+        feedbackElement.classList.toggle('d-block', !!message); // Use Bootstrap class if needed
     }
 
-    if (isError) {
-        inputElement.classList.add('is-invalid');
-        // For radio/checkbox, maybe add error state to the label or parent group
-        if (inputElement.type === 'radio' || inputElement.type === 'checkbox') {
-           // Example: Add error state to label
-            inputElement.closest('.form-check')?.querySelector('.form-check-label')?.classList.add('text-danger');
-            // Or add to parent fieldset/div if grouped
-            inputElement.closest('fieldset, .radio-group')?.classList.add('is-invalid-check-group');
-        }
-    } else {
-        inputElement.classList.remove('is-invalid');
-        if (inputElement.type === 'radio' || inputElement.type === 'checkbox') {
-           inputElement.closest('.form-check')?.querySelector('.form-check-label')?.classList.remove('text-danger');
-           inputElement.closest('fieldset, .radio-group')?.classList.remove('is-invalid-check-group');
-        }
-        if (feedbackElement && (feedbackElement.classList.contains('invalid-feedback') || feedbackElement.classList.contains('form-error-msg'))) {
-            feedbackElement.textContent = '';
-            feedbackElement.style.display = 'none';
-            feedbackElement.classList.remove('d-block');
+    if (inputElement) { // Check if inputElement exists before modifying
+        if (isError) {
+            inputElement.classList.add('is-invalid');
+            // For radio/checkbox, maybe add error state to the label or parent group
+            if (inputElement.type === 'radio' || inputElement.type === 'checkbox') {
+                inputElement.closest('.form-check')?.querySelector('.form-check-label')?.classList.add('text-danger');
+                // Or add to parent fieldset/div if grouped
+                inputElement.closest('fieldset, .radio-group')?.classList.add('is-invalid-check-group'); // Use specific class
+            }
+        } else {
+            inputElement.classList.remove('is-invalid');
+            if (inputElement.type === 'radio' || inputElement.type === 'checkbox') {
+               inputElement.closest('.form-check')?.querySelector('.form-check-label')?.classList.remove('text-danger');
+               inputElement.closest('fieldset, .radio-group')?.classList.remove('is-invalid-check-group');
+            }
+            // Keep feedback hidden if no error
+             if (feedbackElement && !message) {
+                feedbackElement.style.display = 'none';
+                feedbackElement.classList.remove('d-block');
+             }
         }
     }
 }
@@ -142,7 +153,7 @@ function startQuiz(categoryId) {
     const closeResultsBtn = document.getElementById('quiz-modal-close-results');
     const feedbackAreaEl = document.getElementById('quiz-modal-feedback');
     const nextBtnEl = document.getElementById('quiz-modal-next');
-    const questionArea = document.getElementById('quiz-modal-question') || document.getElementById('quiz-modal-question-area');
+    const questionArea = document.getElementById('quiz-modal-question') || document.getElementById('quiz-modal-question-area'); // Preferred ID first
     const optionsArea = document.getElementById('quiz-modal-options');
 
     // Check required elements before proceeding
@@ -163,6 +174,7 @@ function startQuiz(categoryId) {
     nextBtnEl.hidden = true;
     questionArea.hidden = false;
     optionsArea.hidden = false;
+    optionsArea.innerHTML = ''; // Clear any previous options
 
     displayQuestion();
 }
@@ -194,8 +206,9 @@ function displayQuestion() {
     questionElement.hidden = false;
 
     // ARIA setup for the group
+    questionElement.id = questionElement.id || 'quiz-modal-question'; // Ensure ID exists
     optionsElement.setAttribute('role', 'radiogroup');
-    optionsElement.setAttribute('aria-labelledby', questionElement.id || 'quiz-modal-question');
+    optionsElement.setAttribute('aria-labelledby', questionElement.id);
 
     question.options.forEach((option, index) => {
         const optionButton = document.createElement('button');
@@ -229,7 +242,7 @@ function handleAnswerSelection(event) {
     const optionButtons = document.querySelectorAll('#quiz-modal-options .quiz-option');
 
     if (feedbackElement) {
-        feedbackElement.textContent = isCorrect ? `Correct! ${question.explanation}` : `Incorrect. ${question.explanation}`;
+        feedbackElement.innerHTML = isCorrect ? `<strong>Correct!</strong> ${question.explanation}` : `<strong>Incorrect.</strong> ${question.explanation}`; // Use innerHTML for bold tag
         feedbackElement.className = 'quiz-feedback p-md border rounded mb-lg'; // Reset classes
         feedbackElement.classList.add(isCorrect ? 'correct' : 'incorrect');
         feedbackElement.hidden = false;
@@ -292,14 +305,18 @@ function showQuizResults() {
     `;
 
     const nextCategoryId = currentCategoryId + 1; // Find next category ID
-    const nextCategory = introQuizQuestions.find(q => q.categoryId === nextCategoryId);
+    // Check if next category actually exists in the list
+    const nextCategoryExists = introQuizQuestions.some(q => q.categoryId === nextCategoryId);
 
     // Remove previous "next quiz" button if it exists
     const oldNextQuizButton = resultsElement.querySelector('.next-quiz-button');
     if(oldNextQuizButton) oldNextQuizButton.remove();
 
-    if (nextCategory) {
-        const nextCategoryName = nextCategory.category;
+    if (nextCategoryExists) {
+        // Find category name safely
+        const nextCategory = introQuizQuestions.find(q => q.categoryId === nextCategoryId);
+        const nextCategoryName = nextCategory?.category || `Check ${nextCategoryId}`;
+
         // Create and add button for next quiz
         const nextQuizButton = document.createElement('button');
         nextQuizButton.type = 'button';
@@ -320,6 +337,9 @@ function showQuizResults() {
     resultsElement.hidden = false;
     restartButton.hidden = false;
     closeResultsButton.hidden = false;
+
+    // Focus restart button for easier flow
+    restartButton.focus();
 }
 
 function handleQuizStart(categoryId) {
@@ -348,135 +368,172 @@ function handleQuizStart(categoryId) {
 // --- Financial Journey Path Functions ---
 
 function activateJourneyStep(step) {
-    if (!journeyNodes || journeyNodes.length === 0 || !journeyContents || journeyContents.length === 0) {
-         console.warn("Journey path nodes or contents not available for activation.");
+    // Use cached nodeList, or query if not available
+    const currentNodes = journeyNodeList.length > 0 ? journeyNodeList : document.querySelectorAll('.journey-node');
+    const currentContents = journeyContents || document.querySelectorAll('.journey-content'); // Cache contents if not done
+    journeyContents = currentContents; // Update global cache
+
+    if (currentNodes.length === 0 || !currentContents || currentContents.length === 0 || !journeyPath) {
+         console.warn("Journey path nodes, contents or main path element not available for activation.");
          return;
     }
+
+    let activeIndex = -1;
     let foundActive = false;
 
     // Update nodes (visual state and accessibility)
-    journeyNodes.forEach((node, index) => {
+    currentNodes.forEach((node, index) => {
         const nodeStep = node.dataset.step;
         const isCurrent = nodeStep === step;
         node.classList.toggle('active', isCurrent);
         node.setAttribute('aria-selected', isCurrent ? 'true' : 'false');
         node.setAttribute('tabindex', isCurrent ? '0' : '-1');
 
-        // Logic for 'activated' (past steps) - applies to the node itself
-        const currentIndex = Array.from(journeyNodes).findIndex(n => n.dataset.step === step);
-        if (index <= currentIndex && currentIndex !== -1) { // Check if current index is valid
-            node.classList.add('activated');
-            // If vertical, potentially update progress line based on the last activated
-            if (journeyPath && window.innerWidth <= 768) { // Check if vertical layout likely
-                 journeyPath.dataset.lastActivated = nodeStep; // Set data attribute for CSS progress
-            }
-        } else {
-            node.classList.remove('activated');
-            if (journeyPath && window.innerWidth <= 768 && nodeStep === journeyPath.dataset.lastActivated) {
-                // If deactivating the last one, reset progress attribute? Maybe not necessary.
-            }
+        if (isCurrent) {
+            activeIndex = index;
+            foundActive = true;
+            // Focus the newly active node (useful for keyboard nav / clicks)
+            // Use setTimeout to ensure styles applied before focus attempt
+             setTimeout(() => node.focus({ preventScroll: true }), 50); // preventScroll useful for auto-advance
         }
-        if (isCurrent) foundActive = true;
+
+        // Set 'activated' class for current and preceding nodes
+        node.classList.toggle('activated', index <= activeIndex);
     });
 
      // If no specific step matched (e.g., during initial load or error), maybe default to first?
-     if (!foundActive && journeyNodes.length > 0) {
-        // console.log(`Step "${step}" not found, defaulting to first node.`);
-        // activateJourneyStep(journeyNodes[0].dataset.step); // Avoid recursion, handle default outside maybe
+     if (!foundActive && currentNodes.length > 0) {
+         console.warn(`Step "${step}" not found or invalid.`);
+         // Avoid recursive activation or unexpected defaults. Log warning is enough.
+         return;
      }
+
+    // Update progress bar (both horizontal and vertical via CSS variable)
+    const totalNodes = currentNodes.length;
+    const progressPercent = totalNodes > 1 ? (activeIndex / (totalNodes - 1)) * 100 : (activeIndex >= 0 ? 100 : 0); // Handle edge case of 1 node
+
+    // Apply progress to horizontal connectors (already handled by 'activated' class and CSS)
+
+    // Apply progress to vertical connector via CSS variable
+     if (journeyPath) {
+        journeyPath.style.setProperty('--journey-progress-height', `${progressPercent}%`);
+    }
 
 
     // Activate corresponding content panel
     let contentFound = false;
-    journeyContents.forEach(content => {
-        const contentId = `journey-${step}`;
+    currentContents.forEach(content => {
+        const contentId = `journey-${step}`; // Construct the target content ID
         const isActive = content.id === contentId;
         content.hidden = !isActive; // Use hidden attribute
-        //content.classList.toggle('active', isActive); // This class primarily controlled fade animation
-         if (isActive) contentFound = true;
+        if (isActive) {
+            contentFound = true;
+            // Announce the change to screen readers if the content changes
+             // This requires a live region element in the HTML (e.g., <div aria-live="polite" id="journey-announce"></div>)
+             // const announcer = document.getElementById('journey-announce');
+             // if (announcer) announcer.textContent = `Showing content for ${step}`;
+        }
     });
      if (!contentFound) {
          console.warn(`Journey content panel with ID "journey-${step}" not found.`);
-         // Optionally hide all panels if none match
-         journeyContents.forEach(content => content.hidden = true);
+         // Hide all panels if none match
+         currentContents.forEach(content => content.hidden = true);
      }
 
 }
 
-// Function to handle Journey node click
-function handleJourneyNodeClick(event) {
-    const targetNode = event.currentTarget;
-    const step = targetNode.dataset.step;
-    if (step) {
-        activateJourneyStep(step);
-        // Scroll content into view slightly above the container
-        journeyContentContainer?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+// Function to handle Journey node click/keydown
+function handleJourneyInteraction(event) {
+    // Only proceed if click or Enter/Space keydown
+    if (event.type === 'click' || (event.type === 'keydown' && (event.key === 'Enter' || event.key === ' '))) {
+        if(event.type === 'keydown') event.preventDefault(); // Prevent spacebar scrolling
+
+        const targetNode = event.currentTarget;
+        const step = targetNode.dataset.step;
+        if (step) {
+            activateJourneyStep(step);
+            // Smoothly scroll content into view if activated manually
+            journeyContentContainer?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     }
 }
 
 // Intersection Observer for Journey Auto-Advance
 function setupJourneyObserver() {
-    // Ensure key elements are cached
+    // Ensure elements are cached or selected
     journeyPath = journeyPath || document.querySelector('.journey-path');
-    journeyNodes = journeyNodes || document.querySelectorAll('.journey-node'); // Make sure nodes are selected
-
-    if (!journeyPath || !journeyNodes || journeyNodes.length === 0 || typeof IntersectionObserver !== 'function') {
-         console.warn("Journey observer setup failed: Path or nodes missing, or IntersectionObserver not supported.");
-         return; // Requires observer support and path elements
+    // Populate journeyNodeList if empty
+    if (journeyNodeList.length === 0) {
+        journeyNodes = document.querySelectorAll('.journey-node'); // NodeList
+        journeyNodeList = Array.from(journeyNodes); // Convert to Array
     }
-     console.log("Setting up journey observer..."); // Confirmation log
+    journeyContents = journeyContents || document.querySelectorAll('.journey-content'); // Cache contents
+    journeyContentContainer = journeyContentContainer || document.querySelector('.journey-content-container');
+
+
+    if (isJourneyObserverActive || !journeyPath || journeyNodeList.length === 0 || typeof IntersectionObserver !== 'function') {
+         if (!isJourneyObserverActive) { // Only warn if setup hasn't run successfully before
+             console.warn("Journey observer setup prerequisites not met or IntersectionObserver not supported.");
+         }
+         return;
+    }
+     console.log("Setting up journey observer...");
+     isJourneyObserverActive = true; // Set flag
 
      const sectionsToObserve = [
-         { id: 'financial-journey', step: 'awareness' }, // Default start
-         { id: 'free-resources', step: 'understanding' },
+         { id: 'hero', step: 'awareness' }, // Start explicitly at hero
+         { id: 'free-resources', step: 'understanding' }, // Moved understanding trigger up
          { id: 'learning-hub', step: 'understanding' }, // Linked to quizzes
+         { id: 'financial-journey', step: 'understanding'}, // Section itself might trigger Understanding
          { id: 'free-tools', step: 'organization' },
          { id: 'financial-tools-promo', step: 'action' }, // Calculator promo
          { id: 'personal-coaching', step: 'growth' }
+         // Add more section IDs if needed
      ];
 
      const observerOptions = {
          root: null,
-         rootMargin: "-40% 0px -50% 0px", // Adjust margins as needed
-         threshold: 0.01
+         rootMargin: "-30% 0px -60% 0px", // Trigger when section is more centered vertically
+         threshold: 0.01 // Needs only a tiny bit visible within margins
      };
 
      const journeyObserver = new IntersectionObserver((entries) => {
-        // Find the highest-priority intersecting section *currently* in view
+        let highestVisibleIndex = -1;
         let stepToActivate = null;
-        let maxIndex = -1;
 
          entries.forEach(entry => {
              if (entry.isIntersecting) {
                  const targetSectionId = entry.target.id;
                  const mapping = sectionsToObserve.find(s => s.id === targetSectionId);
                  if (mapping && mapping.step) {
-                    const targetNode = journeyPath.querySelector(`.journey-node[data-step="${mapping.step}"]`);
-                    const targetIndex = targetNode ? Array.from(journeyNodes).indexOf(targetNode) : -1;
+                    // Find the index of the node corresponding to this section's step
+                     const targetNodeIndex = journeyNodeList.findIndex(node => node.dataset.step === mapping.step);
 
-                    if (targetIndex > maxIndex) {
-                        maxIndex = targetIndex;
+                    if (targetNodeIndex > highestVisibleIndex) {
+                        highestVisibleIndex = targetNodeIndex;
                         stepToActivate = mapping.step;
                     }
                  }
              }
          });
 
-         // Now, determine if we should activate based on the highest visible section
-         if (stepToActivate) {
-             const currentActiveNode = journeyPath.querySelector('.journey-node.active');
-             const currentActiveIndex = currentActiveNode ? Array.from(journeyNodes).indexOf(currentActiveNode) : -1;
-             const targetNode = journeyPath.querySelector(`.journey-node[data-step="${stepToActivate}"]`);
-             const targetIndex = targetNode ? Array.from(journeyNodes).indexOf(targetNode) : -1;
+        // Find the currently active node's index
+        const currentActiveNode = journeyPath.querySelector('.journey-node.active');
+        const currentActiveIndex = currentActiveNode ? journeyNodeList.findIndex(node => node === currentActiveNode) : -1;
 
-             // Activate if:
-             // 1. Target step exists
-             // 2. Target step is further along than current OR nothing is active yet
-             if (targetIndex >= 0 && (targetIndex > currentActiveIndex || currentActiveIndex < 0) ) {
-                // console.log(`Journey Observer: Activating step "${stepToActivate}" based on section intersection.`);
-                activateJourneyStep(stepToActivate);
-             }
+
+         // Activate the step ONLY if it's *ahead* of the current active step.
+         // This prevents the journey from automatically going backward when scrolling up.
+         if (stepToActivate && highestVisibleIndex > currentActiveIndex) {
+             // console.log(`Journey Observer: Activating step "${stepToActivate}" (index ${highestVisibleIndex}) based on section intersection.`);
+             activateJourneyStep(stepToActivate);
          }
+        // Optional: If nothing is active and the first section intersects, activate the first step
+        else if (currentActiveIndex < 0 && stepToActivate && highestVisibleIndex === 0) {
+            // console.log(`Journey Observer: Activating initial step "${stepToActivate}" (index 0).`);
+             activateJourneyStep(stepToActivate);
+        }
+
 
      }, observerOptions);
 
@@ -495,6 +552,7 @@ function setupJourneyObserver() {
          console.log(`Journey observer watching ${observedCount} sections.`);
      } else {
           console.error("Journey observer: No target sections found to observe.");
+          isJourneyObserverActive = false; // Reset flag if failed
      }
 }
 
@@ -511,6 +569,9 @@ function openFeedbackModal() {
         feedbackForm.reset(); // Reset form fields
         const permissionGroup = feedbackModal.querySelector('.permission-group');
         if (permissionGroup) permissionGroup.hidden = true; // Hide permission by default
+         const feedbackTypeSelect = document.getElementById('feedback-type'); // Also reset select
+         if (feedbackTypeSelect) feedbackTypeSelect.value = ""; // Reset select value
+
 
         feedbackModal.hidden = false;
         document.body.classList.add('modal-open');
@@ -536,9 +597,12 @@ document.addEventListener('DOMContentLoaded', function() {
     menuToggle = document.querySelector('.mobile-menu-toggle');
     primaryNav = document.getElementById('primary-navigation');
     journeyPath = document.querySelector('.journey-path');
-    journeyNodes = document.querySelectorAll('.journey-node');
-    journeyContents = document.querySelectorAll('.journey-content');
-    journeyContentContainer = document.querySelector('.journey-content-container');
+    // Use querySelectorAll and convert to array for easier index finding
+    journeyNodes = document.querySelectorAll('.journey-node'); // NodeList
+    journeyNodeList = Array.from(journeyNodes); // Convert to Array for easier index finding
+    journeyContents = document.querySelectorAll('.journey-content'); // Cache contents
+    journeyContentContainer = document.querySelector('.journey-content-container'); // Cache content container
+
 
     // Check essential elements
     if (!quizModal) console.warn("Quiz Modal not found.");
@@ -547,7 +611,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!feedbackModal) console.warn("Feedback Modal not found.");
     if (!fabContainer || !fabButton || !fabOptions) console.warn("FAB elements incomplete.");
     if (!menuToggle || !primaryNav) console.warn("Mobile nav elements incomplete.");
-    if (!journeyPath || !journeyNodes || journeyNodes.length === 0 || !journeyContents || journeyContents.length === 0 || !journeyContentContainer) console.warn("Journey path elements incomplete.");
+    if (!journeyPath || journeyNodeList.length === 0 || !journeyContents || journeyContents.length === 0 || !journeyContentContainer) console.warn("Journey path elements incomplete.");
 
 
     // --- General UI Enhancements ---
@@ -564,17 +628,32 @@ document.addEventListener('DOMContentLoaded', function() {
     const revealElements = document.querySelectorAll('.reveal-on-scroll, .reveal-stagger > *');
     if (revealElements.length > 0 && 'IntersectionObserver' in window) {
          console.log(`Initializing IntersectionObserver for ${revealElements.length} reveal elements.`); // Log
+         const scrollObserverOptions = {
+            root: null, // Use viewport as root
+            rootMargin: '0px 0px -10% 0px', // Trigger 10% from bottom
+            threshold: 0.01 // Element needs to be just slightly visible
+         };
         const scrollObserver = new IntersectionObserver((entries, observer) => { // Pass observer
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('revealed');
+                     // Staggered children: Set delay here if needed based on parent class
+                     if (entry.target.parentElement.classList.contains('reveal-stagger')) {
+                         const children = Array.from(entry.target.parentElement.children);
+                         const index = children.indexOf(entry.target);
+                         entry.target.style.transitionDelay = `${index * 0.1}s`; // Example stagger
+                     }
                      // console.log('Revealed:', entry.target.id || entry.target.tagName); // Log revealed element
                     observer.unobserve(entry.target); // IMPORTANT: Stop observing after revealed
                 }
             });
-        }, { rootMargin: '0px 0px -10% 0px' }); // Trigger slightly before fully visible
+        }, scrollObserverOptions);
 
-        revealElements.forEach(el => scrollObserver.observe(el));
+        revealElements.forEach(el => {
+            // Add the 'not-revealed' class initially if you prefer that CSS approach
+            // el.classList.add('not-revealed');
+            scrollObserver.observe(el);
+        });
     } else if (revealElements.length === 0) {
          console.warn("No elements found for reveal-on-scroll animation.");
     } else {
@@ -582,6 +661,9 @@ document.addEventListener('DOMContentLoaded', function() {
           // Fallback: remove reveal classes so elements are visible
           revealElements.forEach(el => {
                 el.classList.remove('reveal-on-scroll');
+                if (el.parentElement.classList.contains('reveal-stagger')) {
+                    el.classList.remove('revealed'); // Clean up any potentially added class
+                }
                 el.style.opacity = 1; // Make visible
                 el.style.transform = 'translateY(0)';
           });
@@ -731,23 +813,11 @@ document.addEventListener('DOMContentLoaded', function() {
              const takenErrorElement = document.getElementById('quiz-taken-error'); // The error span
              const radioGroupFieldset = takenBeforeRadios[0]?.closest('fieldset'); // Get parent fieldset for error feedback
 
-
              if (!takenBeforeChecked) {
-                if (takenErrorElement) {
-                    takenErrorElement.textContent = 'Please select an option';
-                    takenErrorElement.style.display = 'block';
-                    takenErrorElement.classList.add('d-block'); // Add display class if using
-                 }
-                // Show feedback on the fieldset/group itself
-                 if (radioGroupFieldset) showFeedback(radioGroupFieldset, 'Please select an option', true); // Target fieldset for visual cue
+                showFeedback(radioGroupFieldset, 'Please select an option', true); // Use helper for fieldset
                 isValid = false;
              } else {
-                 if (takenErrorElement) {
-                    takenErrorElement.textContent = '';
-                    takenErrorElement.style.display = 'none';
-                     takenErrorElement.classList.remove('d-block');
-                 }
-                 if (radioGroupFieldset) showFeedback(radioGroupFieldset, '', false); // Clear feedback on fieldset
+                 showFeedback(radioGroupFieldset, '', false); // Clear feedback on fieldset
              }
 
             if (isValid) {
@@ -771,7 +841,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             } else {
                  // Focus the first field with an error
-                demographicsForm.querySelector('.is-invalid, .is-invalid-check-group')?.focus();
+                 // Ensure the element exists before focusing
+                const firstErrorField = demographicsForm.querySelector('.is-invalid') || demographicsForm.querySelector('.is-invalid-check-group input[type="radio"]');
+                 firstErrorField?.focus();
             }
         });
     } else {
@@ -848,9 +920,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('PDF Download Data:', formData); // Placeholder
 
                 // --- Trigger PDF download ---
-                 const pdfDirectory = '../../assets/pdfs/'; // Relative path from HTML file
+                 // CHANGE: Assume assets are in the correct place relative to the domain root or use absolute paths if needed
+                 const pdfBaseUrl = '/assets/pdfs/'; // Path from domain root
                  const pdfFilename = `${templateKey}.pdf`;
-                 const pdfUrl = `${pdfDirectory}${pdfFilename}`;
+                 const pdfUrl = `${pdfBaseUrl}${pdfFilename}`;
 
                  console.log(`Attempting to download: ${pdfUrl}`); // Debugging path
 
@@ -860,9 +933,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 link.href = pdfUrl;
                 link.download = `${templateKey}_template.pdf`; // Desired download filename
 
+                // Append, click, remove pattern for download initiation
                 document.body.appendChild(link);
                 link.click();
-                document.body.removeChild(link);
+                 setTimeout(() => { // Delay removal slightly
+                    document.body.removeChild(link);
+                 }, 100);
                 // --- End PDF download ---
 
                 closeModal(pdfModal);
@@ -988,6 +1064,8 @@ document.addEventListener('DOMContentLoaded', function() {
                      currentResponseElement.textContent = 'Thank you for your feedback!';
                      currentResponseElement.className = 'form-response-note mt-md text-center';
                      currentResponseElement.hidden = false;
+                     // Ensure screen readers announce the change
+                     currentResponseElement.setAttribute('aria-live', 'assertive');
                 }
 
                 this.reset(); // Reset the form
@@ -1001,15 +1079,22 @@ document.addEventListener('DOMContentLoaded', function() {
                      const currentFeedbackModal = document.getElementById('feedback-modal');
                      if (currentFeedbackModal && !currentFeedbackModal.hidden) {
                          closeModal(currentFeedbackModal);
-                         if(currentResponseElement) currentResponseElement.hidden = true; // Hide message on close
+                         if(currentResponseElement) {
+                             currentResponseElement.hidden = true; // Hide message on close
+                             currentResponseElement.removeAttribute('aria-live'); // Remove assertive nature
+                         }
                      }
                  }, 3000);
 
             } else {
                  // Ensure response element is hidden on validation failure
-                 if (currentResponseElement) currentResponseElement.hidden = true;
+                 if (currentResponseElement) {
+                     currentResponseElement.hidden = true;
+                      currentResponseElement.removeAttribute('aria-live');
+                 }
                  // Focus first invalid element
-                 feedbackForm.querySelector('.is-invalid, .is-invalid-check-group')?.focus();
+                  const firstErrorField = feedbackForm.querySelector('.is-invalid') || feedbackForm.querySelector('fieldset.is-invalid-check-group input[type="radio"]'); // Adjust selector if needed
+                  firstErrorField?.focus();
             }
         });
     } else {
@@ -1036,6 +1121,7 @@ document.addEventListener('DOMContentLoaded', function() {
              if (!email || !emailRegex.test(email)) {
                  showFeedback(emailInput, 'Please enter a valid email address');
                  responseElement.hidden = true;
+                 responseElement.removeAttribute('aria-live');
             } else {
                 showFeedback(emailInput, '', false); // Clear any previous error
                 console.log('Submitting Coaching Interest:', { email: email });
@@ -1044,8 +1130,15 @@ document.addEventListener('DOMContentLoaded', function() {
                  responseElement.textContent = 'Thank you! We’ll notify you when coaching is available.';
                  responseElement.className = 'form-response-note mt-md'; // Set classes
                  responseElement.hidden = false;
+                 responseElement.setAttribute('aria-live', 'assertive');
 
                 this.reset();
+
+                // Optionally hide response message after a delay
+                setTimeout(() => {
+                    responseElement.hidden = true;
+                    responseElement.removeAttribute('aria-live');
+                }, 5000);
             }
         });
     } else {
@@ -1054,22 +1147,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // --- Financial Journey Path Initialization ---
-    if (journeyPath && journeyNodes && journeyNodes.length > 0 && journeyContents && journeyContents.length > 0) {
+    if (journeyPath && journeyNodeList.length > 0 && journeyContents && journeyContents.length > 0) {
         console.log("Initializing Financial Journey Path interactions.");
-        // Add click listeners to nodes
-        journeyNodes.forEach(node => {
-            node.addEventListener('click', handleJourneyNodeClick);
-             node.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    handleJourneyNodeClick(e);
-                }
-             });
+        // Add click and keydown listeners to nodes
+        journeyNodeList.forEach(node => {
+            node.addEventListener('click', handleJourneyInteraction);
+            node.addEventListener('keydown', handleJourneyInteraction);
         });
 
          // Activate the first step initially only if no other step is somehow already active
-         const initialActiveStep = journeyNodes[0]?.dataset.step;
-         if (initialActiveStep && !journeyPath.querySelector('.journey-node.active')) {
+         const initialActiveStep = journeyNodeList[0]?.dataset.step;
+         const alreadyActive = journeyPath.querySelector('.journey-node.active');
+         if (initialActiveStep && !alreadyActive) {
              console.log("Activating initial journey step:", initialActiveStep);
              activateJourneyStep(initialActiveStep);
          }
@@ -1091,30 +1180,31 @@ document.addEventListener('DOMContentLoaded', function() {
              // Toggle visibility using hidden attribute for better accessibility/control
              fabOptions.hidden = !isExpanded;
 
-             // Add staggered animation delay if expanding
+             // Apply staggered animation delay using CSS variables set in JS
             if (isExpanded) {
-                 // Apply staggered delays - Use JS to set custom properties or style directly
                  const fabListItems = fabOptions.querySelectorAll('li');
                  fabListItems.forEach((item, index) => {
-                    item.style.transitionDelay = `${0.05 * (index + 1)}s`; // Stagger delay
+                    // Set custom property '--delay' for each item
+                    item.style.setProperty('--delay', `${0.05 * (index + 1)}s`);
                  });
-                fabOptions.querySelector('a, button')?.focus(); // Focus first item
+                 // Focus first interactive element (button or link) within the list
+                 fabOptions.querySelector('a, button')?.focus();
              } else {
-                // Optional: Reset delays if needed, though hiding should suffice
+                // Optional: Clear custom properties if needed, though hiding might be sufficient
                  const fabListItems = fabOptions.querySelectorAll('li');
                  fabListItems.forEach(item => {
-                     item.style.transitionDelay = '0s';
+                    item.style.removeProperty('--delay'); // Remove custom property
                  });
              }
         });
 
         // Close FAB if an option is clicked
         fabOptions.addEventListener('click', function(e) {
-             // Check if the click target OR its ancestor is a fab option item or button within it
+             // Check if the click target OR its ancestor is a fab option item (link or button)
             if (e.target.closest('.fab-option')) {
-                // Close the FAB by simulating a click on the main button
-                 fabButton.click(); // This handles toggling classes, aria, hidden attr
-                 fabButton.focus(); // Return focus to main button
+                 fabButton.click(); // Simulate a click on the main button
+                 // Optional: Delay focus slightly to allow menu to close
+                 setTimeout(() => fabButton.focus(), 50);
             }
         });
 
@@ -1123,7 +1213,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // If FAB is active and the click target is NOT the FAB container or inside it
              if (fabContainer.classList.contains('active') && !fabContainer.contains(e.target)) {
                  fabButton.click(); // Close the FAB
-                 // Focus remains where the user clicked outside
              }
         });
 
@@ -1152,19 +1241,23 @@ document.addEventListener('DOMContentLoaded', function() {
             if (openModal) {
                 console.log("Escape key pressed - closing modal:", openModal.id);
                 closeModal(openModal);
-                // Try to return focus to the element that opened the modal if tracked
+                // Find trigger if possible and return focus? Complex. Focus body fallback?
+                // document.body.focus(); // Simple focus return
+                return; // Stop further checks if modal closed
             }
             // Check for active FAB
-            else if (fabContainer && fabContainer.classList.contains('active')) {
+            if (fabContainer && fabContainer.classList.contains('active')) {
                  console.log("Escape key pressed - closing FAB");
                  fabButton.click(); // Use click to ensure proper state update
                  fabButton.focus();
+                 return; // Stop further checks if FAB closed
             }
             // Check for active mobile nav
-            else if (primaryNav && primaryNav.classList.contains('active')) {
+            if (primaryNav && primaryNav.classList.contains('active')) {
                  console.log("Escape key pressed - closing mobile nav");
                  menuToggle.click(); // Use click to ensure proper state update
                  menuToggle.focus();
+                 return; // Stop further checks if Nav closed
             }
         }
     });
