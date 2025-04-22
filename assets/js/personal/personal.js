@@ -3,6 +3,7 @@
 
 // --- Quiz Data (Unchanged) ---
 const introQuizQuestions = [
+    // ... (Quiz questions data remains the same) ...
     { id: 1, categoryId: 1, category: "Income & Vitals Check", question: "What is the first essential step when starting to create a budget?", options: ["Calculate total monthly income", "List all fixed expenses", "Set long-term financial goals", "Track spending habits for a month"], correctAnswerIndex: 0, explanation: "Knowing your total income is fundamental; it's the basis upon which all budget allocations are planned." },
     { id: 2, categoryId: 1, category: "Income & Vitals Check", question: "You earn ₦150,000 per month after tax and manage to save ₦22,500. What is your savings rate?", options: ["10%", "15%", "20%", "22.5%"], correctAnswerIndex: 1, explanation: "Savings Rate = (Amount Saved / Total Income) × 100. So, (₦22,500 / ₦150,000) × 100 = 15%." },
     { id: 3, categoryId: 1, category: "Income & Vitals Check", question: "What does 'Pay Yourself First' mean?", options: ["Spend on wants before needs", "Allocate income to savings/investments *before* other spending", "Pay off all debts before saving", "Treat yourself each payday"], correctAnswerIndex: 1, explanation: "'Pay Yourself First' prioritizes saving by treating it like a mandatory bill, ensuring progress towards goals." },
@@ -31,41 +32,70 @@ let currentQuestions = [];
 let currentQuestionIndex = 0;
 let userAnswers = [];
 let score = 0;
-let quizDemographicsSubmitted = sessionStorage.getItem('quizDemographicsSubmitted') === 'true'; // Initialize from sessionStorage
+let quizDemographicsSubmitted = sessionStorage.getItem('quizDemographicsSubmitted') === 'true';
 
-// --- DOM Element References (Optional, but good practice) ---
+// --- DOM Element References (Cached) ---
 let quizModal, demographicsModal, pdfModal, feedbackModal;
 let fabContainer, fabButton, fabOptions;
-// Add others as needed
+let journeyPath, journeyNodes, journeyContents, journeyContentContainer;
+let menuToggle, primaryNav; // Mobile Nav elements
 
 // --- Utility Function to Reset Form Errors ---
 function resetFormErrors(formId) {
     const form = document.getElementById(formId);
     if (!form) return;
-    const errorElements = form.querySelectorAll('.form-error-msg, .invalid-feedback'); // Include both types
+
+    // Clear text content of error messages
+    const errorElements = form.querySelectorAll('.form-error-msg, .invalid-feedback');
     errorElements.forEach(el => {
         el.textContent = '';
-        el.style.display = 'none'; // Hide feedback elements
+        el.style.display = 'none'; // Hide specifically if using manual display logic
+        el.classList.remove('d-block'); // Remove manual display class if used
     });
+
+    // Remove is-invalid class from inputs/selects
     const invalidInputs = form.querySelectorAll('.is-invalid');
     invalidInputs.forEach(el => el.classList.remove('is-invalid'));
+
+    // Also potentially reset visual state for fieldsets/radiogroups if needed
+    const invalidFieldsets = form.querySelectorAll('.is-invalid-fieldset'); // Example class
+    invalidFieldsets.forEach(el => el.classList.remove('is-invalid-fieldset'));
 }
 
 // --- Utility to Close Modals ---
 function closeModal(modalElement) {
-    if (modalElement) {
+    if (modalElement && !modalElement.hidden) {
         modalElement.hidden = true;
+        // Check if any other modals are open before removing the class
+        const anyModalOpen = document.querySelector('.modal-overlay:not([hidden])');
+        if (!anyModalOpen) {
+            document.body.classList.remove('modal-open');
+        }
+        // Optional: Return focus to the button that opened the modal if stored
     }
-    // Check if any other modals are open before removing the class
-    const anyModalOpen = document.querySelector('.modal-overlay:not([hidden])');
-    if (!anyModalOpen) {
-        document.body.classList.remove('modal-open');
+}
+
+// --- Show/Hide Feedback Helper ---
+function showFeedback(inputElement, message, isError = true) {
+    const feedbackElement = inputElement.closest('.form-group, fieldset')?.querySelector('.invalid-feedback, .form-error-msg');
+    if (feedbackElement) {
+        feedbackElement.textContent = message;
+        feedbackElement.style.display = 'block'; // Make sure it's visible
+        // Optionally add a class for direct display control: feedbackElement.classList.add('d-block');
+    }
+    if (isError) {
+        inputElement.classList.add('is-invalid');
+        // For radio groups, maybe add to fieldset too?
+        // inputElement.closest('fieldset')?.classList.add('is-invalid-fieldset');
+    } else {
+         inputElement.classList.remove('is-invalid');
+        // inputElement.closest('fieldset')?.classList.remove('is-invalid-fieldset');
     }
 }
 
 // --- Quiz Functions ---
 function startQuiz(categoryId) {
-    // Find the quiz modal element
+    // Ensure quizModal is defined
     quizModal = quizModal || document.getElementById('quiz-modal');
     if (!quizModal) {
         console.error("Quiz modal not found!");
@@ -75,7 +105,7 @@ function startQuiz(categoryId) {
     currentQuestions = introQuizQuestions.filter(q => q.categoryId === parseInt(categoryId));
     if (currentQuestions.length === 0) {
         console.error('No questions found for category:', categoryId);
-        // Optionally display an error message to the user
+        alert('Sorry, couldn\'t find questions for this category.'); // User feedback
         return;
     }
 
@@ -93,27 +123,43 @@ function startQuiz(categoryId) {
     document.getElementById('quiz-modal-title').textContent = currentQuestions[0].category;
     document.getElementById('quiz-modal-q-total').textContent = currentQuestions.length;
 
-    // Hide results/prompts and show question area
+    // Reset visibility of result/prompt sections
     document.getElementById('quiz-modal-results').hidden = true;
     document.getElementById('quiz-modal-full-challenge-prompt').hidden = true;
     document.getElementById('quiz-modal-restart').hidden = true;
     document.getElementById('quiz-modal-close-results').hidden = true;
-    document.getElementById('quiz-modal-question').hidden = false;
-    document.getElementById('quiz-modal-options').hidden = false;
-    document.getElementById('quiz-modal-feedback').hidden = true;
+    document.getElementById('quiz-modal-feedback').hidden = true; // Hide feedback initially
     document.getElementById('quiz-modal-next').hidden = true; // Hide next button initially
+
+    // Ensure question area is visible
+    const questionArea = document.getElementById('quiz-modal-question-area') || document.getElementById('quiz-modal-question');
+    if (questionArea) questionArea.hidden = false;
+    const optionsArea = document.getElementById('quiz-modal-options');
+    if (optionsArea) optionsArea.hidden = false;
+
 
     // Display the first question
     displayQuestion();
 }
 
 function displayQuestion() {
+    if (currentQuestionIndex >= currentQuestions.length) {
+        showQuizResults();
+        return;
+    }
+
     const question = currentQuestions[currentQuestionIndex];
-    const questionElement = document.getElementById('quiz-modal-question');
+    // Try preferred ID first, fallback to old ID
+    const questionElement = document.getElementById('quiz-modal-question') || document.getElementById('quiz-modal-question-area');
     const optionsElement = document.getElementById('quiz-modal-options');
     const feedbackElement = document.getElementById('quiz-modal-feedback');
     const nextButton = document.getElementById('quiz-modal-next');
     const progressElement = document.getElementById('quiz-modal-q-current');
+
+    if (!questionElement || !optionsElement || !feedbackElement || !nextButton || !progressElement) {
+        console.error("Required quiz elements not found for displaying question.");
+        return;
+    }
 
     progressElement.textContent = currentQuestionIndex + 1;
     questionElement.textContent = question.question;
@@ -126,20 +172,24 @@ function displayQuestion() {
     question.options.forEach((option, index) => {
         const optionButton = document.createElement('button');
         optionButton.type = 'button';
-        // Add base classes plus specific quiz option class
         optionButton.classList.add('btn', 'btn-outline', 'quiz-option');
         optionButton.textContent = option;
         optionButton.setAttribute('data-index', index);
-        // Set appropriate ARIA role and label for accessibility
-        // optionButton.setAttribute('role', 'radio'); // Part of radiogroup role on options container
+        // ARIA roles handled by container role='radiogroup' if set, label is good
         optionButton.setAttribute('aria-label', `Option ${index + 1}: ${option}`);
         optionButton.addEventListener('click', handleAnswerSelection);
         optionsElement.appendChild(optionButton);
     });
+
+     // Ensure question area is visible if it was hidden
+    questionElement.hidden = false;
 }
 
 function handleAnswerSelection(event) {
-    const selectedIndex = parseInt(event.target.dataset.index);
+    const selectedButton = event.target.closest('.quiz-option');
+    if (!selectedButton) return; // Click wasn't on a button
+
+    const selectedIndex = parseInt(selectedButton.dataset.index);
     const question = currentQuestions[currentQuestionIndex];
     const isCorrect = selectedIndex === question.correctAnswerIndex;
 
@@ -151,14 +201,21 @@ function handleAnswerSelection(event) {
 
     // Display feedback
     const feedbackElement = document.getElementById('quiz-modal-feedback');
-    feedbackElement.hidden = false;
-    feedbackElement.textContent = isCorrect ? `Correct! ${question.explanation}` : `Incorrect. ${question.explanation}`;
-    // Toggle classes for visual styling (uses CSS definitions)
-    feedbackElement.classList.toggle('correct', isCorrect);
-    feedbackElement.classList.toggle('incorrect', !isCorrect);
+    if (feedbackElement) {
+        feedbackElement.textContent = isCorrect ? `Correct! ${question.explanation}` : `Incorrect. ${question.explanation}`;
+        feedbackElement.classList.toggle('correct', isCorrect);
+        feedbackElement.classList.toggle('incorrect', !isCorrect);
+        feedbackElement.hidden = false;
+    }
 
-    // Show the 'Next Question' button
-    document.getElementById('quiz-modal-next').hidden = false;
+    // Show the 'Next Question' or 'Show Results' button
+    const nextButton = document.getElementById('quiz-modal-next');
+    if (nextButton) {
+        nextButton.hidden = false;
+         nextButton.textContent = (currentQuestionIndex === currentQuestions.length - 1) ? "Show Results" : "Next Question";
+         nextButton.focus(); // Focus the next button
+    }
+
 
     // Disable all option buttons and highlight correct/incorrect
     const optionButtons = document.querySelectorAll('#quiz-modal-options .quiz-option');
@@ -167,22 +224,31 @@ function handleAnswerSelection(event) {
         const buttonIndex = parseInt(btn.dataset.index);
         if (buttonIndex === question.correctAnswerIndex) {
             btn.classList.add('correct'); // Highlight correct answer
-        } else if (buttonIndex === selectedIndex) {
+        } else if (buttonIndex === selectedIndex && !isCorrect) {
             btn.classList.add('incorrect'); // Highlight selected incorrect answer
         }
-        // btn.setAttribute('aria-checked', buttonIndex === selectedIndex); // Update ARIA state
+        // Consider ARIA states like aria-pressed or aria-checked if using role=radio
+        // selectedButton.setAttribute('aria-pressed', 'true'); // Indicate selection
     });
 }
 
 function showQuizResults() {
     const resultsElement = document.getElementById('quiz-modal-results');
-    const questionArea = document.getElementById('quiz-modal-question');
+    // Try preferred ID first, fallback to old ID for question area
+    const questionArea = document.getElementById('quiz-modal-question') || document.getElementById('quiz-modal-question-area');
     const optionsArea = document.getElementById('quiz-modal-options');
     const feedbackArea = document.getElementById('quiz-modal-feedback');
     const nextButton = document.getElementById('quiz-modal-next');
     const restartButton = document.getElementById('quiz-modal-restart');
     const closeResultsButton = document.getElementById('quiz-modal-close-results');
     const fullChallengePrompt = document.getElementById('quiz-modal-full-challenge-prompt');
+
+    // Ensure elements exist before manipulating
+    if (!resultsElement || !questionArea || !optionsArea || !feedbackArea || !nextButton || !restartButton || !closeResultsButton || !fullChallengePrompt) {
+        console.error("Required quiz elements not found for displaying results.");
+        closeModal(quizModal); // Attempt to close modal if elements are missing
+        return;
+    }
 
     // Hide quiz elements
     questionArea.hidden = true;
@@ -192,7 +258,7 @@ function showQuizResults() {
 
     // Calculate results
     const totalQuestions = currentQuestions.length;
-    const percentage = totalQuestions > 0 ? (score / totalQuestions) * 100 : 0;
+    const percentage = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
     let message;
     if (percentage >= 80) {
         message = 'Excellent! You have a strong understanding.';
@@ -205,9 +271,9 @@ function showQuizResults() {
     // Display results message
     resultsElement.innerHTML = `
         <h4>Quiz Complete!</h4>
-        <p>You scored ${score} out of ${totalQuestions} (${percentage.toFixed(0)}%).</p>
+        <p>You scored ${score} out of ${totalQuestions} (${percentage}%).</p>
         <p>${message}</p>
-    `;
+    `; // Using textContent might be safer if results included dynamic/unsafe HTML
 
     // Determine next steps
     const nextCategoryId = parseInt(currentCategoryId) + 1;
@@ -218,7 +284,7 @@ function showQuizResults() {
         // Add button to start next quiz
         resultsElement.innerHTML += `
             <p class="mt-lg">Continue your learning journey with the next check:</p>
-            <button type="button" class="btn btn-primary btn-icon" onclick="handleQuizStart(${nextCategoryId})">
+            <button type="button" class="btn btn-primary btn-small btn-icon" onclick="handleQuizStart(${nextCategoryId})">
                 <i class="fas fa-arrow-right" aria-hidden="true"></i> Take ${nextCategoryName} Check
             </button>
         `;
@@ -240,39 +306,163 @@ function handleQuizStart(categoryId) {
     // Store category ID for later use if demographics are needed
     sessionStorage.setItem('selectedQuizCategory', categoryId);
 
-    // Find demographics modal element
+    // Ensure demographics modal is defined
     demographicsModal = demographicsModal || document.getElementById('quiz-demographics-modal');
     if (!demographicsModal) {
         console.error("Demographics modal not found!");
-        // Optionally start quiz anyway or show an error
-        startQuiz(categoryId);
+        startQuiz(categoryId); // Start quiz directly if modal missing
         return;
     }
 
     if (!quizDemographicsSubmitted) {
         // Show demographics modal
         resetFormErrors('quiz-demographics-form'); // Reset errors before showing
+        document.getElementById('quiz-demographics-form').reset(); // Reset form fields
         demographicsModal.hidden = false;
         document.body.classList.add('modal-open');
+        // Focus the first input for accessibility
+        demographicsModal.querySelector('input, select, textarea')?.focus();
     } else {
         // Demographics already submitted, start quiz directly
         startQuiz(categoryId);
     }
 }
 
-// --- Event Listeners ---
+// --- Financial Journey Path Functions ---
+
+function activateJourneyStep(step) {
+    if (!journeyNodes || !journeyContents) return; // Exit if elements aren't ready
+
+    journeyNodes.forEach((node, index) => {
+        const isCurrent = node.dataset.step === step;
+        node.classList.toggle('active', isCurrent);
+        node.setAttribute('aria-selected', isCurrent ? 'true' : 'false');
+        node.setAttribute('tabindex', isCurrent ? '0' : '-1');
+
+        // Logic for 'activated' (past steps) - applies to the node itself
+        // Assumes nodes are in order in the DOM
+        const currentIndex = Array.from(journeyNodes).findIndex(n => n.dataset.step === step);
+        if (index <= currentIndex) {
+            node.classList.add('activated');
+        } else {
+            node.classList.remove('activated');
+        }
+    });
+
+    // Activate corresponding content panel
+    journeyContents.forEach(content => {
+        const contentId = `journey-${step}`;
+        const isActive = content.id === contentId;
+        content.hidden = !isActive; // Use hidden attribute
+        content.classList.toggle('active', isActive);
+    });
+}
+
+// Function to handle Journey node click
+function handleJourneyNodeClick(event) {
+    const targetNode = event.currentTarget; // The clicked journey-node
+    const step = targetNode.dataset.step;
+    if (step) {
+        activateJourneyStep(step);
+        // Optional: Scroll content into view if needed
+        journeyContentContainer?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+}
+
+// Intersection Observer for Journey Auto-Advance
+function setupJourneyObserver() {
+    journeyPath = journeyPath || document.querySelector('.journey-path'); // Make sure this exists
+    if (!journeyPath || typeof IntersectionObserver !== 'function') return; // Requires observer support
+
+     const sectionsToObserve = [
+         { id: 'financial-journey', step: 'awareness' }, // Default start or map to actual first section
+         { id: 'free-resources', step: 'understanding' }, // Example mapping
+         { id: 'learning-hub', step: 'understanding' }, // Map to relevant step
+         { id: 'free-tools', step: 'organization' },
+         { id: 'financial-tools-promo', step: 'action'}, // Map calculator promo
+         { id: 'personal-coaching', step: 'growth' }
+         // Add other relevant section IDs and map them to journey steps
+     ];
+
+     const observerOptions = {
+         root: null, // Observe relative to viewport
+         rootMargin: "-40% 0px -50% 0px", // Trigger when section is near center
+         threshold: 0.01 // Needs to be slightly visible
+     };
+
+     const journeyObserver = new IntersectionObserver((entries) => {
+         entries.forEach(entry => {
+             if (entry.isIntersecting) {
+                 const targetSectionId = entry.target.id;
+                 const mapping = sectionsToObserve.find(s => s.id === targetSectionId);
+                 if (mapping && mapping.step) {
+                      // Only activate if the current node isn't already the target or further along
+                      const currentActiveNode = journeyPath.querySelector('.journey-node.active');
+                      const currentActiveIndex = currentActiveNode ? Array.from(journeyNodes).indexOf(currentActiveNode) : -1;
+                      const targetNode = journeyPath.querySelector(`.journey-node[data-step="${mapping.step}"]`);
+                      const targetIndex = targetNode ? Array.from(journeyNodes).indexOf(targetNode) : -1;
+
+                      // Check if the new target is further ahead than current activation
+                      // Prevents scrolling up from de-activating later stages
+                      if (targetIndex >= 0 && targetIndex > currentActiveIndex) {
+                         activateJourneyStep(mapping.step);
+                      }
+                      // Handle activating the *first* step if nothing is active yet
+                       else if (targetIndex >=0 && currentActiveIndex < 0) {
+                            activateJourneyStep(mapping.step);
+                       }
+                 }
+             }
+         });
+     }, observerOptions);
+
+    // Observe the target sections
+    sectionsToObserve.forEach(sectionInfo => {
+        const sectionElement = document.getElementById(sectionInfo.id);
+        if (sectionElement) {
+            journeyObserver.observe(sectionElement);
+        }
+    });
+}
+
+// --- Helper to open feedback modal (reusable) ---
+function openFeedbackModal() {
+    feedbackModal = feedbackModal || document.getElementById('feedback-modal');
+    if (feedbackModal) {
+        resetFormErrors('feedback-testimonial-form');
+        document.getElementById('feedback-form-response').hidden = true;
+        feedbackForm.reset(); // Reset form fields
+        const permissionGroup = feedbackModal.querySelector('.permission-group');
+        if (permissionGroup) permissionGroup.hidden = true; // Hide permission by default
+        feedbackModal.hidden = false;
+        document.body.classList.add('modal-open');
+        feedbackModal.querySelector('select, input, textarea')?.focus();
+    } else {
+        console.error("Feedback modal not found.");
+    }
+}
+
+
+// --- DOMContentLoaded Event Listener ---
 document.addEventListener('DOMContentLoaded', function() {
 
-    // Cache frequently used modal elements
+    // --- Cache Global DOM Elements ---
     quizModal = document.getElementById('quiz-modal');
     demographicsModal = document.getElementById('quiz-demographics-modal');
     pdfModal = document.getElementById('pdf-download-modal');
     feedbackModal = document.getElementById('feedback-modal');
     fabContainer = document.querySelector('.floating-action-btn');
     fabButton = document.querySelector('.fab-main');
-    fabOptions = document.querySelector('.fab-options'); // Might be ul#fab-options-list
+    fabOptions = document.getElementById('fab-options-list'); // Use ID
+    menuToggle = document.querySelector('.mobile-menu-toggle');
+    primaryNav = document.getElementById('primary-navigation');
+    // Journey Path Elements
+    journeyPath = document.querySelector('.journey-path');
+    journeyNodes = document.querySelectorAll('.journey-node');
+    journeyContents = document.querySelectorAll('.journey-content');
+    journeyContentContainer = document.querySelector('.journey-content-container');
 
-    // -- General UI Enhancements --
+    // --- General UI Enhancements ---
 
     // Update Current Year in Footer
     const currentYearElement = document.getElementById('current-year');
@@ -280,68 +470,63 @@ document.addEventListener('DOMContentLoaded', function() {
         currentYearElement.textContent = new Date().getFullYear();
     }
 
-    // Scroll Animations
+    // Scroll Animations Setup (using IntersectionObserver)
     const revealElements = document.querySelectorAll('.reveal-on-scroll, .reveal-stagger > *');
     if (revealElements.length > 0 && 'IntersectionObserver' in window) {
-        const observer = new IntersectionObserver((entries) => {
+        const scrollObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('revealed');
-                    observer.unobserve(entry.target); // Optional: stop observing once revealed
+                    scrollObserver.unobserve(entry.target); // Optional: stop observing
                 }
             });
-        }, { threshold: 0.1 }); // Trigger when 10% visible
+        }, { rootMargin: '0px 0px -10% 0px' }); // Trigger slightly before fully visible
 
-        revealElements.forEach(el => observer.observe(el));
+        revealElements.forEach(el => scrollObserver.observe(el));
     }
 
-    // Form Submit Ripple Effect
+    // Form Submit Ripple Effect (Unchanged)
     const submitButtons = document.querySelectorAll('.form-submit-btn');
     submitButtons.forEach(button => {
         button.addEventListener('click', function(e) {
-            // Remove any existing ripple
             const existingRipple = button.querySelector('.btn-ripple');
-            if(existingRipple) {
-                existingRipple.remove();
-            }
-
-            // Create and append ripple
+            if(existingRipple) existingRipple.remove();
             const ripple = document.createElement('span');
             ripple.classList.add('btn-ripple');
             const rect = this.getBoundingClientRect();
             const size = Math.max(rect.width, rect.height);
-            const x = e.clientX - rect.left - size / 2; // Center ripple on click
+            const x = e.clientX - rect.left - size / 2;
             const y = e.clientY - rect.top - size / 2;
-
             ripple.style.width = ripple.style.height = `${size}px`;
             ripple.style.left = `${x}px`;
             ripple.style.top = `${y}px`;
-
             this.appendChild(ripple);
-
-            // Clean up ripple after animation
-            ripple.addEventListener('animationend', () => {
-                ripple.remove();
-            });
+            ripple.addEventListener('animationend', () => ripple.remove());
         });
     });
 
-    // Basic Mobile Navigation Toggle
-    const menuToggle = document.querySelector('.mobile-menu-toggle');
-    const primaryNav = document.getElementById('primary-navigation');
+    // --- Mobile Navigation ---
     if (menuToggle && primaryNav) {
         menuToggle.addEventListener('click', () => {
             const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
             menuToggle.setAttribute('aria-expanded', !isExpanded);
             primaryNav.classList.toggle('active');
-            menuToggle.classList.toggle('active'); // For styling the button itself (e.g., hide/show icons)
+            menuToggle.classList.toggle('active');
+            document.body.classList.toggle('modal-open', !isExpanded); // Toggle body scroll lock
+             // Focus management for mobile nav (optional)
+             if (!isExpanded) {
+                primaryNav.querySelector('a')?.focus(); // Focus first link when opened
+             } else {
+                menuToggle.focus(); // Return focus to toggle button when closed
+             }
         });
-        // Optional: Close menu when a link is clicked
+        // Close menu when a link is clicked
         primaryNav.addEventListener('click', (e) => {
-           if (e.target.matches('a')) {
+           if (e.target.matches('a') && primaryNav.classList.contains('active')) { // Check if nav is active
                menuToggle.setAttribute('aria-expanded', 'false');
                primaryNav.classList.remove('active');
                menuToggle.classList.remove('active');
+               document.body.classList.remove('modal-open');
            }
         });
     }
@@ -349,7 +534,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Quiz Related Listeners ---
 
-    // Start Quiz Buttons (delegation could be used if cards were added dynamically)
+    // Start Quiz Buttons (Category Cards)
     document.querySelectorAll('.start-quiz-btn').forEach(button => {
         button.addEventListener('click', function() {
             const categoryId = this.closest('.category-card')?.dataset.categoryId;
@@ -369,13 +554,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (nextButton) {
         nextButton.addEventListener('click', () => {
-            currentQuestionIndex++;
-            if (currentQuestionIndex < currentQuestions.length) {
-                displayQuestion();
-            } else {
-                showQuizResults();
-            }
-        });
+             if (currentQuestionIndex < currentQuestions.length - 1) {
+                currentQuestionIndex++;
+                 displayQuestion();
+             } else {
+                 // If it's the last question, the button text is "Show Results"
+                 // and clicking it now shows the results
+                 showQuizResults();
+             }
+         });
     }
 
     if (restartButton) {
@@ -389,60 +576,62 @@ document.addEventListener('DOMContentLoaded', function() {
     if (closeQuizButton) {
         closeQuizButton.addEventListener('click', () => closeModal(quizModal));
     }
-
     if (closeResultsButton) {
         closeResultsButton.addEventListener('click', () => closeModal(quizModal));
     }
 
-    // --- Quiz Demographics Form ---
+    // --- Quiz Demographics Form Validation ---
     const demographicsForm = document.getElementById('quiz-demographics-form');
-    const closeDemographicsButton = document.getElementById('quiz-demographics-close');
-
     if (demographicsForm) {
         demographicsForm.addEventListener('submit', function(e) {
             e.preventDefault();
             resetFormErrors('quiz-demographics-form');
             let isValid = true;
 
-            // Validate Country
+            // Validate Country (Text Input)
             const countryInput = document.getElementById('quiz-country');
-            const countryError = document.getElementById('quiz-country-error');
             if (!countryInput.value.trim()) {
-                countryError.textContent = 'Please enter your country';
-                countryError.style.display = 'block';
-                countryInput.classList.add('is-invalid');
-                isValid = false;
+                 showFeedback(countryInput, 'Please enter your country');
+                 isValid = false;
+             } else {
+                 countryInput.classList.remove('is-invalid');
             }
 
-            // Validate City
+            // Validate City (Text Input)
             const cityInput = document.getElementById('quiz-city');
-            const cityError = document.getElementById('quiz-city-error');
-            if (!cityInput.value.trim()) {
-                cityError.textContent = 'Please enter your city';
-                cityError.style.display = 'block';
-                cityInput.classList.add('is-invalid');
-                isValid = false;
+             if (!cityInput.value.trim()) {
+                 showFeedback(cityInput, 'Please enter your city');
+                 isValid = false;
+             } else {
+                cityInput.classList.remove('is-invalid');
             }
 
-            // Validate Radio Button Selection
-            const takenBeforeRadio = document.querySelector('input[name="taken_before"]:checked');
-            const takenError = document.getElementById('quiz-taken-error');
-            if (!takenBeforeRadio) {
-                takenError.textContent = 'Please select an option';
-                takenError.style.display = 'block';
-                // Maybe add is-invalid to the fieldset? Or just show the message.
-                isValid = false;
+             // Validate Radio Button Selection
+             const takenBeforeRadios = demographicsForm.querySelectorAll('input[name="taken_before"]');
+             const takenBeforeChecked = demographicsForm.querySelector('input[name="taken_before"]:checked');
+             const takenErrorElement = document.getElementById('quiz-taken-error'); // The error span
+
+             if (!takenBeforeChecked) {
+                 takenErrorElement.textContent = 'Please select an option';
+                 takenErrorElement.style.display = 'block';
+                 // Add invalid class to radios/fieldset for visual cue if desired
+                 takenBeforeRadios.forEach(radio => radio.classList.add('is-invalid'));
+                 isValid = false;
+             } else {
+                 takenErrorElement.textContent = ''; // Clear error message
+                 takenErrorElement.style.display = 'none';
+                 takenBeforeRadios.forEach(radio => radio.classList.remove('is-invalid'));
             }
+
 
             if (isValid) {
                 quizDemographicsSubmitted = true;
                 sessionStorage.setItem('quizDemographicsSubmitted', 'true');
 
-                // Prepare and "send" data (replace console.log with fetch/axios)
                 const formData = {
                     country: countryInput.value.trim(),
                     city: cityInput.value.trim(),
-                    taken_before: takenBeforeRadio.value
+                    taken_before: takenBeforeChecked.value
                 };
                 console.log('Submitting Demographics:', formData); // Placeholder
 
@@ -454,10 +643,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     console.error("No quiz category selected after demographics.");
                 }
+            } else {
+                // Focus the first invalid field for accessibility
+                demographicsForm.querySelector('.is-invalid')?.focus();
             }
         });
     }
 
+    // Close Demographics Button Listener
+    const closeDemographicsButton = document.getElementById('quiz-demographics-close');
     if (closeDemographicsButton) {
         closeDemographicsButton.addEventListener('click', () => closeModal(demographicsModal));
     }
@@ -465,25 +659,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- PDF Download Functionality ---
     const pdfDownloadForm = document.getElementById('pdf-download-form');
-    const closePdfButton = document.getElementById('pdf-download-close');
-
-    // Attach listener to all 'Get PDF' buttons
-    document.querySelectorAll('.get-pdf-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const templateKey = this.dataset.templateKey;
-            const templateKeyInput = document.getElementById('pdf-template-key');
-            if (templateKey && templateKeyInput && pdfModal) {
-                templateKeyInput.value = templateKey;
-                resetFormErrors('pdf-download-form'); // Reset before showing
-                pdfModal.hidden = false;
-                document.body.classList.add('modal-open');
-            } else {
-                console.error("PDF download setup error: Missing elements or key.");
-            }
-        });
-    });
-
     if (pdfDownloadForm) {
+         const closePdfButton = document.getElementById('pdf-download-close');
+
+         // Open Modal Listener (using event delegation on main content)
+         document.getElementById('main-content').addEventListener('click', function(e){
+             const pdfButton = e.target.closest('.get-pdf-btn');
+             if(pdfButton){
+                const templateKey = pdfButton.dataset.templateKey;
+                const templateKeyInput = document.getElementById('pdf-template-key');
+                if (templateKey && templateKeyInput && pdfModal) {
+                    templateKeyInput.value = templateKey;
+                    resetFormErrors('pdf-download-form'); // Reset before showing
+                    pdfDownloadForm.reset();
+                    pdfModal.hidden = false;
+                    document.body.classList.add('modal-open');
+                     pdfModal.querySelector('input, select, textarea')?.focus();
+                } else {
+                    console.error("PDF download setup error: Missing elements or key.");
+                }
+            }
+         });
+
+         // Form Submission Listener
         pdfDownloadForm.addEventListener('submit', function(e) {
             e.preventDefault();
             resetFormErrors('pdf-download-form');
@@ -491,158 +689,170 @@ document.addEventListener('DOMContentLoaded', function() {
             const templateKeyInput = document.getElementById('pdf-template-key');
             const countryInput = document.getElementById('pdf-country');
             const cityInput = document.getElementById('pdf-city');
-            const countryError = document.getElementById('pdf-country-error');
-            const cityError = document.getElementById('pdf-city-error');
 
             // Validate Country
             if (!countryInput.value.trim()) {
-                countryError.textContent = 'Please enter your country';
-                countryError.style.display = 'block';
-                countryInput.classList.add('is-invalid');
-                isValid = false;
+                 showFeedback(countryInput, 'Please enter your country');
+                 isValid = false;
+            } else {
+                countryInput.classList.remove('is-invalid');
             }
              // Validate City
              if (!cityInput.value.trim()) {
-                cityError.textContent = 'Please enter your city';
-                cityError.style.display = 'block';
-                cityInput.classList.add('is-invalid');
-                isValid = false;
+                showFeedback(cityInput, 'Please enter your city');
+                 isValid = false;
+             } else {
+                cityInput.classList.remove('is-invalid');
             }
 
             if (isValid) {
                 const templateKey = templateKeyInput.value;
-                // Prepare and "send" data (replace console.log)
                 const formData = {
                     country: countryInput.value.trim(),
                     city: cityInput.value.trim(),
                     template: templateKey
                 };
-                console.log('PDF Download Data:', formData); // Placeholder
+                console.log('PDF Download Data:', formData); // Placeholder for sending data
 
-                // Trigger PDF download
-                const pdfUrl = `../../assets/pdfs/${templateKey}.pdf`; // Ensure path is correct
+                // --- Trigger PDF download ---
+                // IMPORTANT: Adjust the path relative to the *HTML file location*
+                const pdfUrl = `../../assets/pdfs/${templateKey}.pdf`;
                 const link = document.createElement('a');
                 link.href = pdfUrl;
-                link.download = `${templateKey}.pdf`; // Sets the download filename
-                document.body.appendChild(link); // Required for Firefox
+                link.download = `${templateKey}_template.pdf`; // Set a default download filename
+
+                // Append, click, and remove the link
+                document.body.appendChild(link);
                 link.click();
-                document.body.removeChild(link); // Clean up
+                document.body.removeChild(link);
+                // --- End PDF download ---
 
                 // Close modal
                 closeModal(pdfModal);
                 pdfDownloadForm.reset(); // Reset form fields
+            } else {
+                pdfDownloadForm.querySelector('.is-invalid')?.focus();
             }
         });
-    }
 
-    if (closePdfButton) {
-        closePdfButton.addEventListener('click', () => closeModal(pdfModal));
-    }
+         // Close Modal Button
+        if (closePdfButton) {
+            closePdfButton.addEventListener('click', () => closeModal(pdfModal));
+        }
+    } // End PDF Download Form logic
+
 
     // --- Spreadsheet Button Placeholder ---
-    document.querySelectorAll('.get-spreadsheet-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const templateName = this.dataset.templateName;
-            const price = this.dataset.price; // Could be used for payment integration
+    document.getElementById('main-content').addEventListener('click', function(e){
+        const spreadsheetButton = e.target.closest('.get-spreadsheet-btn');
+        if(spreadsheetButton){
+            const templateName = spreadsheetButton.dataset.templateName;
+            const price = spreadsheetButton.dataset.price;
             console.log(`Spreadsheet requested: ${templateName}, Price: ${price}`);
             // Placeholder for potential payment gateway integration or redirection
-            alert(`Interactive Spreadsheet (${templateName}) coming soon! (Placeholder: Price ${price} NGN)`);
-        });
+            alert(`Interactive Spreadsheet (${templateName}) coming soon! (Placeholder: Price ${price || 'N/A'} NGN)`);
+        }
     });
 
 
     // --- Feedback Modal ---
-    const openFeedbackButton = document.getElementById('open-feedback-modal-btn');
-    const closeFeedbackButton = document.getElementById('feedback-modal-close');
     const feedbackForm = document.getElementById('feedback-testimonial-form');
-    const feedbackTypeSelect = document.getElementById('feedback-type');
-    const permissionGroup = document.querySelector('.permission-group'); // Specific class for the permission checkbox
-
-    if (openFeedbackButton) {
-        openFeedbackButton.addEventListener('click', () => {
-            if (feedbackModal) {
-                resetFormErrors('feedback-testimonial-form');
-                document.getElementById('feedback-form-response').hidden = true; // Hide previous response
-                feedbackForm.reset(); // Reset form fields
-                if(permissionGroup) permissionGroup.hidden = true; // Hide permission by default
-                feedbackModal.hidden = false;
-                document.body.classList.add('modal-open');
-            }
-        });
-    }
-
-    if (closeFeedbackButton) {
-        closeFeedbackButton.addEventListener('click', () => closeModal(feedbackModal));
-    }
-
-    // Show/hide permission checkbox based on feedback type
-    if (feedbackTypeSelect && permissionGroup) {
-        feedbackTypeSelect.addEventListener('change', function() {
-            permissionGroup.hidden = this.value !== 'testimonial';
-        });
-    }
-
-    // Handle feedback form submission
     if (feedbackForm) {
+        const openFeedbackButton = document.getElementById('open-feedback-modal-btn');
+        const fabOpenFeedbackButton = document.getElementById('fab-open-feedback-btn'); // Button in FAB
+        const footerOpenFeedbackButton = document.getElementById('footer-open-feedback-btn'); // Button in footer
+        const closeFeedbackButton = document.getElementById('feedback-modal-close');
+        const feedbackTypeSelect = document.getElementById('feedback-type');
+        const permissionGroup = feedbackForm.querySelector('.permission-group');
+        const responseElement = document.getElementById('feedback-form-response');
+
+        // Open Modal Listeners
+        if (openFeedbackButton) openFeedbackButton.addEventListener('click', openFeedbackModal);
+        if (fabOpenFeedbackButton) fabOpenFeedbackButton.addEventListener('click', openFeedbackModal);
+        if (footerOpenFeedbackButton) footerOpenFeedbackButton.addEventListener('click', openFeedbackModal);
+
+        // Close Modal Listener
+        if (closeFeedbackButton) {
+            closeFeedbackButton.addEventListener('click', () => closeModal(feedbackModal));
+        }
+
+        // Show/hide permission checkbox based on feedback type
+        if (feedbackTypeSelect && permissionGroup) {
+            feedbackTypeSelect.addEventListener('change', function() {
+                permissionGroup.hidden = this.value !== 'testimonial';
+            });
+        }
+
+        // Handle feedback form submission
         feedbackForm.addEventListener('submit', function(e) {
             e.preventDefault();
             resetFormErrors('feedback-testimonial-form');
             let isValid = true;
 
             // Validate Type
-            const typeSelect = document.getElementById('feedback-type');
-            const typeError = document.getElementById('feedback-type-error');
-            if (!typeSelect.value) {
-                typeError.textContent = 'Please select a type';
-                typeError.style.display = 'block';
-                typeSelect.classList.add('is-invalid');
-                isValid = false;
+            if (!feedbackTypeSelect.value) {
+                showFeedback(feedbackTypeSelect, 'Please select a type');
+                 isValid = false;
+            } else {
+                 feedbackTypeSelect.classList.remove('is-invalid');
             }
 
             // Validate Message
             const messageTextarea = document.getElementById('feedback-message');
-            const messageError = document.getElementById('feedback-message-error');
-            if (!messageTextarea.value.trim()) {
-                messageError.textContent = 'Please enter your message';
-                messageError.style.display = 'block';
-                messageTextarea.classList.add('is-invalid');
-                isValid = false;
+             if (!messageTextarea.value.trim()) {
+                 showFeedback(messageTextarea, 'Please enter your message');
+                 isValid = false;
+             } else {
+                messageTextarea.classList.remove('is-invalid');
             }
+
+             // Validate Email (Optional - simple check if provided)
+             const emailInput = document.getElementById('feedback-email');
+             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+             if (emailInput.value.trim() && !emailRegex.test(emailInput.value.trim())) {
+                 showFeedback(emailInput, 'Please enter a valid email address');
+                 isValid = false;
+             } else {
+                 emailInput.classList.remove('is-invalid');
+             }
+
 
             if (isValid) {
                 const name = document.getElementById('feedback-name').value.trim();
-                const email = document.getElementById('feedback-email').value.trim();
-                const permissionChecked = document.getElementById('feedback-permission')?.checked || false; // Safely check if element exists
+                const permissionChecked = document.getElementById('feedback-permission')?.checked || false;
 
-                // Prepare and "send" data
                 const formData = {
-                    name: name,
-                    email: email,
-                    type: typeSelect.value,
+                    name: name || 'Anonymous',
+                    email: emailInput.value.trim() || null,
+                    type: feedbackTypeSelect.value,
                     message: messageTextarea.value.trim(),
-                    permission: typeSelect.value === 'testimonial' ? permissionChecked : null // Only relevant for testimonials
+                    permission: feedbackTypeSelect.value === 'testimonial' ? permissionChecked : null
                 };
-                console.log('Submitting Feedback:', formData); // Placeholder
+                console.log('Submitting Feedback:', formData); // Placeholder for sending data
 
                 // Show success message
-                const responseElement = document.getElementById('feedback-form-response');
                 responseElement.textContent = 'Thank you for your feedback!';
-                responseElement.classList.remove('form-error-msg'); // Ensure correct styling
-                responseElement.classList.add('form-response-note');
+                responseElement.className = 'form-response-note mt-md text-center'; // Set success classes
                 responseElement.hidden = false;
 
-                // Reset form and hide permission group again
                 this.reset();
-                if(permissionGroup) permissionGroup.hidden = true;
+                if (permissionGroup) permissionGroup.hidden = true;
                 feedbackTypeSelect.value = ""; // Explicitly reset select
 
-                // Optional: Auto-close modal after a delay
-                // setTimeout(() => {
-                //     closeModal(feedbackModal);
-                // }, 3000);
+                 // Optional: Auto-close modal after a delay
+                 setTimeout(() => {
+                     if (feedbackModal && !feedbackModal.hidden) { // Check if modal is still open
+                         closeModal(feedbackModal);
+                         responseElement.hidden = true; // Hide message on close
+                     }
+                 }, 3000);
+
+            } else {
+                responseElement.hidden = true; // Hide response note if validation fails
+                feedbackForm.querySelector('.is-invalid')?.focus();
             }
         });
-    }
+    } // End Feedback Form logic
 
     // --- Coaching Interest Form ---
     const coachingForm = document.getElementById('coachingInterestForm');
@@ -651,127 +861,96 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             resetFormErrors('coachingInterestForm');
             const emailInput = document.getElementById('interest-email');
-            const emailError = document.getElementById('interest-email-error');
             const responseElement = document.getElementById('interest-form-response');
             const email = emailInput.value.trim();
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email regex
 
-            if (email && emailRegex.test(email)) {
-                // Prepare and "send" data
-                console.log('Submitting Coaching Interest:', { email: email }); // Placeholder
+             if (!email || !emailRegex.test(email)) {
+                 showFeedback(emailInput, 'Please enter a valid email address');
+                 responseElement.hidden = true;
+            } else {
+                emailInput.classList.remove('is-invalid');
+                console.log('Submitting Coaching Interest:', { email: email }); // Placeholder for sending data
 
                 // Show success message
                 responseElement.textContent = 'Thank you! We’ll notify you when coaching is available.';
-                responseElement.classList.remove('form-error-msg');
-                responseElement.classList.add('form-response-note');
-                responseElement.hidden = false;
+                 responseElement.className = 'form-response-note mt-md'; // Reset classes
+                 responseElement.hidden = false;
 
-                // Reset form
                 this.reset();
-            } else {
-                emailError.textContent = 'Please enter a valid email address';
-                emailError.style.display = 'block';
-                emailInput.classList.add('is-invalid');
-                responseElement.hidden = true; // Hide response note if error occurs
             }
         });
     }
 
 
-    // --- Financial Journey Path ---
-    const journeyNodes = document.querySelectorAll('.journey-node');
-    const journeyContents = document.querySelectorAll('.journey-content');
-    if (journeyNodes.length > 0 && journeyContents.length > 0) {
+    // --- Financial Journey Path Initialization ---
+    if (journeyNodes && journeyNodes.length > 0 && journeyContents.length > 0) {
+        // Add click listeners to nodes
         journeyNodes.forEach(node => {
-            node.addEventListener('click', function() {
-                const step = this.dataset.step;
-                if (!step) return;
-
-                // Update node active state
-                journeyNodes.forEach(n => {
-                    n.classList.remove('active');
-                    n.setAttribute('aria-pressed', 'false'); // Update ARIA state
-                });
-                this.classList.add('active');
-                this.setAttribute('aria-pressed', 'true'); // Update ARIA state
-
-                 // Highlight connectors based on active node (example logic)
-                const activeIndex = Array.from(journeyNodes).indexOf(this);
-                document.querySelectorAll('.journey-connector').forEach((connector, index) => {
-                    // Clear previous activation classes
-                    connector.classList.remove('activated', 'activating');
-                    if (index < activeIndex) {
-                        connector.previousElementSibling?.classList.add('activated'); // Mark node before connector
-                        connector.classList.add('activated'); // Highlight passed connectors
-                    } else if (index === activeIndex) {
-                        connector.previousElementSibling?.classList.add('activated'); // Mark node before connector
-                       // connector.classList.add('activating'); // Maybe style the current connector differently
-                    }
-                });
-                 // Ensure last node also gets activated mark if selected
-                if (activeIndex === journeyNodes.length - 1) {
-                   this.classList.add('activated');
-                }
-
-
-                // Update content display
-                journeyContents.forEach(content => {
-                    content.classList.remove('active'); // Hide all
-                    if (content.id === `journey-${step}`) {
-                        content.classList.add('active'); // Show matching content
-                    }
-                });
-            });
-
+            node.addEventListener('click', handleJourneyNodeClick);
             // Add keyboard accessibility (Enter or Space to activate)
-            node.addEventListener('keydown', function(e) {
+             node.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault(); // Prevent page scroll on space
-                    this.click(); // Simulate click
+                    handleJourneyNodeClick(e); // Trigger the activation
                 }
-            });
+             });
         });
 
-        // Initialize by activating the first node if needed
-         if (!document.querySelector('.journey-node.active')) {
-            journeyNodes[0]?.click(); // Activate the first one on load
+         // Activate the first step initially if needed
+         const initialActiveStep = journeyNodes[0]?.dataset.step;
+         if (initialActiveStep && !journeyPath.querySelector('.journey-node.active')) {
+             activateJourneyStep(initialActiveStep);
          }
-    }
+
+         // Set up the IntersectionObserver for auto-advancing
+         setupJourneyObserver();
+
+    } // End Journey Path Initialization
 
 
     // --- Floating Action Button (FAB) ---
     if (fabContainer && fabButton && fabOptions) {
         fabButton.addEventListener('click', function() {
             const isExpanded = fabContainer.classList.toggle('active');
-            this.setAttribute('aria-expanded', isExpanded);
-            fabOptions.hidden = !isExpanded;
-            // Optional: Focus management - move focus to first option when opened
-            // if (isExpanded) {
-            //    fabOptions.querySelector('a, button')?.focus();
-            // }
+            fabButton.setAttribute('aria-expanded', isExpanded);
+            // CSS handles visibility/pointer-events with the .active class now
+            if (isExpanded) {
+               fabOptions.querySelector('a, button')?.focus(); // Focus first item
+            }
         });
 
-        // Close FAB if clicked outside (optional)
-        document.addEventListener('click', function(e) {
-            if (fabContainer.classList.contains('active') && !fabContainer.contains(e.target)) {
+        // Close FAB if an option is clicked or Esc key pressed
+        fabOptions.addEventListener('click', function(e) {
+            if (e.target.closest('.fab-option, .fab-option button')) {
                 fabContainer.classList.remove('active');
                 fabButton.setAttribute('aria-expanded', 'false');
-                fabOptions.hidden = true;
+                 fabButton.focus(); // Return focus to main button
             }
         });
-         // Close FAB if an option is clicked (optional)
-         fabOptions.addEventListener('click', function(e) {
-            if (e.target.closest('.fab-option')) {
+
+        document.addEventListener('keydown', function(e) {
+           if (e.key === 'Escape' && fabContainer.classList.contains('active')) {
+               fabContainer.classList.remove('active');
+               fabButton.setAttribute('aria-expanded', 'false');
+               fabButton.focus();
+           }
+        });
+
+        // Close FAB if clicked outside (careful with event bubbling)
+         document.addEventListener('click', function(e) {
+             if (fabContainer.classList.contains('active') && !fabContainer.contains(e.target)) {
                  fabContainer.classList.remove('active');
                  fabButton.setAttribute('aria-expanded', 'false');
-                 fabOptions.hidden = true;
+                 // No focus change needed here, keep focus where the user clicked
             }
-         });
-    }
+        });
+    } // End FAB logic
+
 
     // --- Modal Global Close Handlers ---
     document.querySelectorAll('.modal-overlay').forEach(modal => {
-        // Close on click outside the modal content
+        // Close on click OUTSIDE the modal content (on the overlay itself)
         modal.addEventListener('click', function(e) {
             if (e.target === modal) { // Check if the click was directly on the overlay
                 closeModal(modal);
@@ -785,8 +964,25 @@ document.addEventListener('DOMContentLoaded', function() {
             const openModal = document.querySelector('.modal-overlay:not([hidden])');
             if (openModal) {
                 closeModal(openModal);
+                 // Optional: Return focus to the trigger element if known
+                 // const trigger = document.querySelector(`[aria-controls="${openModal.id}"][aria-expanded="true"]`); // Example finder
+                 // if (trigger) trigger.focus();
+            }
+            // Also close FAB if escape is pressed
+            else if (fabContainer && fabContainer.classList.contains('active')) {
+                 fabContainer.classList.remove('active');
+                 fabButton.setAttribute('aria-expanded', 'false');
+                 fabButton.focus();
+            }
+             // Also close mobile nav if open
+             else if (primaryNav && primaryNav.classList.contains('active')) {
+                menuToggle.setAttribute('aria-expanded', 'false');
+                primaryNav.classList.remove('active');
+                menuToggle.classList.remove('active');
+                document.body.classList.remove('modal-open');
+                menuToggle.focus();
             }
         }
     });
 
-}); // End DOMContentLoaded
+}); // --- End DOMContentLoaded ---
