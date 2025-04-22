@@ -113,6 +113,11 @@
 
   /* Effects */
   --backdrop-blur: blur(8px);
+
+   /* Decorative Blur - NEW */
+   --blur-color-1: color-mix(in srgb, var(--pp-color-secondary) 40%, transparent);
+   --blur-color-2: color-mix(in srgb, var(--pp-color-primary) 20%, transparent);
+   --blur-color-3: color-mix(in srgb, var(--pp-color-accent) 30%, transparent);
 }
 
 /* Utility Classes (Keep as is, standard utility pattern) */
@@ -214,6 +219,7 @@ html {
   font-size: 16px;
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--header-height) + 20px); /* Adjust based on fixed header height */
+  height: 100%; /* Ensure HTML takes full height */
 }
 
 body {
@@ -225,11 +231,22 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden; /* Prevent horizontal scroll */
+  min-height: 100vh; /* CHANGE: Ensure body is at least viewport height */
+  display: flex; /* CHANGE: Use flexbox */
+  flex-direction: column; /* CHANGE: Stack children vertically */
+  position: relative; /* Add for deco blur positioning */
 }
 
 /* Specific styles for when a modal is open */
 body.modal-open {
   overflow: hidden;
+}
+
+/* Make main content area fill available space */
+main#main-content { /* Targeting the main element */
+  flex-grow: 1; /* CHANGE: Allow main content to grow */
+  width: 100%; /* Ensure it takes full width */
+  /* Removed hero-specific margin-top from here - keep it on the hero section */
 }
 
 img {
@@ -257,6 +274,26 @@ a.link-inline {
 }
 a.link-inline:hover {
    color: var(--pp-color-secondary-dark);
+}
+/* Simple styling for buttons used as links (e.g., in footer) */
+.link-button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: var(--neutral-300); /* Match footer link color */
+    cursor: pointer;
+    text-align: left;
+    display: inline-block;
+    transition: color var(--transition-fast), padding-left var(--transition-fast);
+}
+.link-button:hover,
+.link-button:focus-visible {
+    color: var(--rofilid-white); /* Match footer link hover */
+    text-decoration: none;
+    padding-left: var(--space-xs); /* Slight indent on hover */
+    outline: none;
 }
 
 
@@ -473,6 +510,7 @@ p {
   box-shadow: var(--shadow-sm);
   border-bottom: 1px solid var(--pp-color-border-light);
   height: var(--header-height); /* Set fixed height */
+  width: 100%; /* Ensure header takes full width */
 }
 
 .header-container {
@@ -557,13 +595,18 @@ p {
   padding: 0;
 }
 
+/* Mobile Nav List Items */
+.nav-item.mobile-only { display: none; } /* Hide by default */
+
+
 /* Hero Section */
 .hero-section {
   padding-block: var(--space-3xl); /* Extra padding for hero */
   background-color: var(--pp-color-bg-light);
   position: relative;
   overflow: hidden; /* Contain decorative elements if added */
-  margin-top: var(--header-height); /* Ensure content starts below sticky header */
+  /* CHANGE: Removed margin-top. Body flex handles layout, hero is first inside main */
+  width: 100%; /* Ensure section takes full width */
 }
 
 /* Optional: Add ::before/::after for background image/gradient/pattern */
@@ -957,16 +1000,19 @@ p {
     transition: color var(--transition-fast);
 }
 
+/* NEW: Connector element added between nodes */
 .journey-connector {
     flex-grow: 1;
     height: 4px; /* Slightly thicker */
     background-color: var(--pp-color-border);
     position: relative;
     z-index: 1;
-    margin-inline: calc(-1 * var(--space-md)); /* Overlap slightly into node area */
-    /* Add vertical position relative to node center */
-    top: calc(60px / 2 - 4px / 2); /* Center vertically with icon */
+    /* Aligns the line with the middle of the icon */
+    align-self: center;
+    margin-top: calc(60px / 2 - 4px / 2 - (1.2em * 0.9 * 1.5) / 2 ); /* Complex, align to icon mid point, approx */
+    margin-inline: var(--space-sm); /* Space from node text area */
 }
+
 
 .journey-connector::after { /* Progress indicator */
     content: '';
@@ -999,15 +1045,21 @@ p {
     font-weight: var(--font-weight-bold);
 }
 
-/* Apply progress fill to connectors */
+/* Apply progress fill to connectors *preceding* an activated node */
+/* UPDATE: Now targets connector specifically based on previous node */
 .journey-node.activated + .journey-connector::after {
     width: 100%;
     transition-duration: 0.8s; /* Make completion feel solid */
 }
-/* Optional: style for connector leading to active node */
-.journey-node:not(.activated).active ~ .journey-node:not(.activated) + .journey-connector::after {
-    width: 0; /* Reset connectors after active node */
+/* UPDATE: Reset width for connectors AFTER the active node */
+.journey-node.active + .journey-connector::after {
+    width: 0; /* Reset connectors following active node */
 }
+/* Make sure initial connectors are zero width if first node is active */
+.journey-path .journey-node:first-child.active + .journey-connector::after {
+   width: 0;
+}
+
 
 /* State Styling: Hover Node */
 .journey-node:hover:not(.active) .node-icon { /* Avoid double scale */
@@ -1040,17 +1092,17 @@ p {
     min-height: 300px;
     position: relative;
     transition: all 0.4s ease;
+    margin-top: var(--space-xl); /* Add space between path and content */
 }
 
 .journey-content {
-    display: none;
+    display: none; /* Use hidden attribute managed by JS now */
     animation: fadeInUp 0.6s ease forwards; /* Ensure final state persists */
     opacity: 0; /* Start hidden for animation */
 }
-
-.journey-content.active {
-    display: block;
-    opacity: 1; /* Ensure visibility */
+.journey-content:not([hidden]) {
+     display: block;
+     opacity: 1; /* Ensure visibility when not hidden */
 }
 
 .journey-content h3 {
@@ -1293,6 +1345,7 @@ p {
 @media (min-width: 768px) { /* Switch to two columns on medium screens */
     .coaching-content-redesigned {
         grid-template-columns: 1fr 1fr;
+        align-items: start; /* Align grid items to the top */
     }
 }
 
@@ -1364,21 +1417,16 @@ p {
   margin-bottom: var(--space-lg);
 }
 
-.form-label { /* Style for floating label effect */
-  position: absolute;
-  top: 0; /* Start at the top now for non-placeholder case */
-  left: var(--space-xs); /* Small gap from border */
-  transform: translateY(-50%) scale(0.85); /* Shrunk state */
-  font-size: 0.85rem; /* Keep consistent with shrunk size */
-  color: var(--pp-color-text-muted);
-  pointer-events: none;
-  transition: all var(--transition-normal);
-  background-color: var(--rofilid-white); /* Match input background */
-  padding: 0 var(--space-xs); /* Allows label to sit 'over' the border */
-  line-height: 1; /* Prevent inconsistent height */
-  z-index: 2; /* Sit above input border */
-  opacity: 0; /* Hide initially */
-  /* visibility: hidden; */
+/* Hide label initially for placeholder-only approach, keep for screen readers */
+.form-label {
+  /* visually-hidden still accessible, we don't need explicit positioning now */
+}
+.form-label:not(.visually-hidden) { /* Explicit label */
+    display: block;
+    margin-bottom: var(--space-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--pp-color-text);
+    font-size: var(--font-size-sm);
 }
 
 .form-control,
@@ -1417,37 +1465,18 @@ textarea.form-control {
   outline: none;
 }
 
-/* --- Floating Label Enhancements --- */
-/* Show label when input is focused OR has content (including placeholder being shown) */
-.form-control:focus ~ .form-label,
-.form-control:not(:placeholder-shown) ~ .form-label {
-  opacity: 1;
-  /* visibility: visible; */
-  color: var(--pp-color-secondary); /* Highlight color */
-}
-
-/* Style for when placeholder is hidden (input has value), keep label visible */
-.form-control:not(:placeholder-shown):not(:focus) ~ .form-label {
-  opacity: 1;
-  color: var(--pp-color-text-muted); /* Regular color when not focused but has value */
-}
-
-/* Style specifically for select elements with a value selected */
-.form-select:not(:placeholder-shown) ~ .form-label,
-.form-select:focus ~ .form-label,
-.form-select:valid ~ .form-label { /* Use :valid to detect non-default option selected */
-  opacity: 1;
-}
-.form-select:valid:not(:focus) ~ .form-label {
-    color: var(--pp-color-text-muted);
-}
-.form-select:focus ~ .form-label{
-     color: var(--pp-color-secondary);
-}
-
-
 /* Visually hidden label utility */
-.form-label.visually-hidden { display: none !important; }
+.form-label.visually-hidden { /* This rule already exists and is correct */
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
 
 /* Input placeholder (used now as main visible text before typing) */
 .form-control::placeholder {
@@ -1455,9 +1484,14 @@ textarea.form-control {
     opacity: 1; /* Override Firefox default opacity */
 }
 /* Make select placeholder option less prominent */
-.form-select option[disabled] {
+.form-select option[value=""][disabled] { /* Target default option specifically */
   color: var(--neutral-500);
+  display: none; /* Hide it from dropdown, but selectable programmatically */
 }
+.form-select:required:invalid { /* Style select when no value chosen */
+    color: var(--neutral-500); /* Show placeholder text color */
+}
+
 
 /* --- Radio Buttons & Checkboxes Improvements --- */
 .form-check {
@@ -1480,6 +1514,8 @@ textarea.form-control {
     transition: background-color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), background-image var(--transition-fast);
     flex-shrink: 0; /* Prevent shrinking */
     cursor: pointer; /* Indicate clickable input */
+    position: relative; /* Needed for ::before check styles */
+    top: -0.1em; /* Slight adjustment for vertical centering */
 }
 .form-check-input:checked {
     background-color: var(--pp-color-primary);
@@ -1518,6 +1554,7 @@ textarea.form-control {
     white-space: normal;
     overflow-wrap: break-word;
     word-wrap: break-word;
+    line-height: 1.5; /* Ensure label aligns well */
 }
 
 /* Ensure legend in fieldset is styled appropriately */
@@ -1525,6 +1562,7 @@ fieldset {
   border: none;
   padding: 0;
   margin: 0;
+  margin-bottom: var(--space-lg); /* Add consistent margin */
 }
 fieldset legend {
     padding: 0;
@@ -1532,6 +1570,8 @@ fieldset legend {
     font-weight: var(--font-weight-medium);
     font-size: var(--font-size-base);
     color: var(--pp-color-text);
+    display: block; /* Ensure it takes block layout */
+    width: 100%; /* Take full width */
 }
 /* Container for radio buttons in demographics modal */
 .radio-group {
@@ -1553,12 +1593,11 @@ fieldset legend {
 /* Show feedback when associated input is invalid (JS adds class) */
 .form-control.is-invalid ~ .invalid-feedback,
 .form-select.is-invalid ~ .invalid-feedback,
-/* Or show when a sibling error message has text (another JS approach) */
-/* .form-error-msg:not(:empty) { display: block; } */
-.form-check-input.is-invalid ~ .invalid-feedback,
-.form-check-input.is-invalid ~ .form-error-msg,
-.form-group .is-invalid + .invalid-feedback, /* Generic approach for radios/selects in group */
-.form-group .invalid-feedback.d-block /* Manually display */
+.is-invalid + .invalid-feedback, /* General adjacent sibling */
+/* Show error associated with radio/checkbox group via aria-describedby or ID */
+.form-check-input.is-invalid ~ .form-check-label + .invalid-feedback, /* Adjacent feedback after label */
+.form-check-input.is-invalid + .form-error-msg, /* If error msg follows input */
+fieldset .invalid-feedback.d-block /* Show error within fieldset manually */
  {
   display: block;
 }
@@ -1568,6 +1607,11 @@ fieldset legend {
 .form-check-input.is-invalid {
     border-color: var(--pp-color-danger);
 }
+/* Add specific styling for invalid check label */
+.form-check-input.is-invalid ~ .form-check-label {
+    color: var(--pp-color-danger);
+}
+
 .form-control.is-invalid:focus,
 .form-select.is-invalid:focus,
 .form-check-input.is-invalid:focus-visible {
@@ -1589,10 +1633,7 @@ fieldset legend {
 /* Modal Styles */
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0; /* Replaces top/left/right/bottom */
   background-color: rgba(12, 52, 61, 0.7); /* Use teal base, semi-transparent */
   display: flex;
   align-items: center;
@@ -1609,10 +1650,10 @@ fieldset legend {
 }
 
 .modal-content {
-    background: rgba(255, 255, 255, 0.95); /* Higher opacity white */
-    backdrop-filter: var(--backdrop-blur);
-    -webkit-backdrop-filter: var(--backdrop-blur);
-    border: 1px solid rgba(255, 255, 255, 0.2); /* Lighter border */
+    background: var(--rofilid-white); /* Use solid white by default now */
+    /* backdrop-filter: var(--backdrop-blur); removed for performance/consistency */
+    /* -webkit-backdrop-filter: var(--backdrop-blur); */
+    border: none; /* Remove border */
     box-shadow: var(--shadow-xl);
     border-radius: var(--radius-lg);
     width: 100%;
@@ -1680,6 +1721,8 @@ fieldset legend {
     margin-bottom: var(--space-lg);
     font-weight: var(--font-weight-medium);
 }
+/* Ensure unique ID matches HTML if using for direct targeting */
+#quiz-modal-question, /* Or a shared class if preferred */
 .quiz-modal-question-area {
     font-size: var(--font-size-lg);
     font-weight: var(--font-weight-semibold);
@@ -1690,7 +1733,9 @@ fieldset legend {
     white-space: normal;
     overflow-wrap: break-word;
     word-wrap: break-word;
+    line-height: 1.4; /* Improve readability */
 }
+#quiz-modal-options, /* Target by ID */
 .quiz-modal-options-area {
     display: grid;
     grid-template-columns: 1fr; /* Stack options by default */
@@ -1698,6 +1743,7 @@ fieldset legend {
     margin-bottom: var(--space-lg);
 }
 @media (min-width: 576px) { /* Two columns on larger screens */
+   #quiz-modal-options,
    .quiz-modal-options-area {
       grid-template-columns: 1fr 1fr;
    }
@@ -1724,7 +1770,8 @@ fieldset legend {
     opacity: 0.7;
     cursor: default;
     background-color: transparent !important; /* Override hover state */
-    color: var(--pp-color-text) !important; /* Override hover state */
+    color: var(--pp-color-text-secondary) !important; /* Mute text when disabled */
+    border-color: var(--pp-color-border) !important; /* Keep border consistent */
     box-shadow: none !important;
 }
 .quiz-option.correct { /* Style for correct answer */
@@ -1734,6 +1781,9 @@ fieldset legend {
     font-weight: var(--font-weight-semibold);
     box-shadow: var(--shadow-sm);
 }
+.quiz-option.correct[disabled] { /* Specific disabled style for correct */
+   opacity: 0.8; /* Make slightly more visible */
+}
 .quiz-option.incorrect { /* Style for incorrect answer */
     background: color-mix(in srgb, var(--pp-color-danger) 15%, transparent) !important;
     border-color: var(--pp-color-danger) !important;
@@ -1741,37 +1791,42 @@ fieldset legend {
     box-shadow: var(--shadow-sm);
     /* Keep weight regular for incorrect selection */
 }
+.quiz-option.incorrect[disabled] {
+     opacity: 0.8;
+}
 
-.quiz-feedback {
+
+/* Quiz feedback should be feedback */
+#quiz-modal-feedback {
     padding: var(--space-md);
     border-radius: var(--radius-md);
     margin-bottom: var(--space-lg);
     border: 1px solid;
     font-weight: var(--font-weight-medium);
 }
-.quiz-feedback.correct {
+#quiz-modal-feedback.correct {
     background-color: color-mix(in srgb, var(--pp-color-success) 10%, transparent);
     border-color: color-mix(in srgb, var(--pp-color-success) 30%, transparent);
     color: var(--pp-color-success); /* Darker success text */
 }
-.quiz-feedback.incorrect {
+#quiz-modal-feedback.incorrect {
     background-color: color-mix(in srgb, var(--pp-color-danger) 10%, transparent);
     border-color: color-mix(in srgb, var(--pp-color-danger) 30%, transparent);
     color: var(--pp-color-danger); /* Darker danger text */
 }
 
-.quiz-results {
+#quiz-modal-results { /* Target by ID */
     text-align: center;
 }
-.quiz-results h4 {
+#quiz-modal-results h4 {
    color: var(--pp-color-primary);
    margin-bottom: var(--space-md);
 }
-.quiz-results p {
+#quiz-modal-results p {
    margin-bottom: var(--space-lg);
    font-size: var(--font-size-md);
 }
-.quiz-results .btn {
+#quiz-modal-results .btn {
    margin-top: var(--space-md); /* Space between message and button */
 }
 
@@ -1792,6 +1847,8 @@ fieldset legend {
   color: var(--neutral-300);
   padding: var(--space-3xl) 0 var(--space-xl); /* Adjusted padding */
   font-size: var(--font-size-sm);
+  width: 100%; /* Ensure footer takes full width */
+  /* Removed flex-shrink as body handles flex now */
 }
 
 .footer-content {
@@ -1962,6 +2019,16 @@ fieldset legend {
     transform: translateY(10px); /* Start slightly down */
     transition: opacity var(--transition-normal), transform var(--transition-normal), pointer-events var(--transition-normal) steps(1, end);
 }
+/* Target UL element directly by ID for visibility toggle */
+#fab-options-list[hidden] { /* Handles initial hidden state via HTML attribute */
+    display: none;
+}
+#fab-options-list:not([hidden]) { /* Show when attribute removed by JS */
+    display: flex;
+    flex-direction: column;
+    /* Other active styles */
+}
+
 
 .floating-action-btn.active .fab-options {
   pointer-events: auto; /* Enable interaction when active */
@@ -1971,8 +2038,18 @@ fieldset legend {
 }
 
 .fab-options li { /* Apply animation delay here */
-   transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+   /* Animation logic is usually handled by JS adding/removing classes */
+   /* Staggering kept in JS logic, but ensure initial hidden state handled */
+   opacity: 0; /* Initially hide list items */
+   transform: translateY(10px);
 }
+
+.floating-action-btn.active .fab-options li { /* Animate in when parent is active */
+   opacity: 1;
+   transform: translateY(0);
+   transition: opacity 0.3s ease-out var(--delay), transform 0.3s ease-out var(--delay); /* Use custom property or JS set style */
+}
+
 
 .fab-option {
   display: flex;
@@ -2010,13 +2087,6 @@ fieldset legend {
 .fab-option:focus-visible {
   box-shadow: var(--shadow-lg), 0 0 0 3px color-mix(in srgb, var(--pp-color-secondary) 30%, transparent);
 }
-
-/* Staggered animation delays for FAB options when becoming active */
-.floating-action-btn.active .fab-options li { transition-delay: 0s; } /* Reset base delay */
-.floating-action-btn.active .fab-options li:nth-child(1) { transition-delay: calc(0.1s * 1); }
-.floating-action-btn.active .fab-options li:nth-child(2) { transition-delay: calc(0.1s * 2); }
-.floating-action-btn.active .fab-options li:nth-child(3) { transition-delay: calc(0.1s * 3); }
-/* Add more if needed, ensures they appear sequentially */
 
 
 /* Motivational Quotes */
@@ -2078,18 +2148,51 @@ fieldset legend {
 /* Optional: Author styling if added back */
 /* .quote-author { ... } */
 
+/* Decorative Blur Styles */
+.deco-blur {
+  position: absolute;
+  width: 30vw; /* Responsive width */
+  height: 30vw;
+  filter: blur(150px); /* Heavy blur */
+  border-radius: 50%;
+  z-index: -1; /* Behind content */
+  pointer-events: none; /* No interaction */
+  opacity: 0.6; /* Semi-transparent */
+}
+
+.deco-blur.blur-1 {
+  background: var(--blur-color-1);
+  top: -5%; /* Adjust positioning */
+  left: -10%;
+}
+
+.deco-blur.blur-2 {
+  background: var(--blur-color-2);
+  top: 40%;
+  right: -5%;
+}
+
+.deco-blur.blur-3 {
+  background: var(--blur-color-3);
+  bottom: 5%;
+  left: 20%;
+}
+
 
 /* Scroll Animations */
+/* Correct approach: Elements start visible, class adds hidden state */
 .reveal-on-scroll {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.8s cubic-bezier(0.175, 0.885, 0.32, 1), transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1);
+    opacity: 1; /* Start visible */
+    transform: translateY(0);
+    transition: opacity 0.8s cubic-bezier(0.175, 0.885, 0.32, 1), transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1);
 }
-.reveal-on-scroll.revealed {
-  opacity: 1;
-  transform: translateY(0);
+.reveal-on-scroll:not(.revealed) { /* Hide elements until revealed by JS */
+    opacity: 0;
+    transform: translateY(40px);
+    pointer-events: none; /* Prevent interaction before revealed */
 }
 
+/* Ensure stagger children are initially hidden */
 .reveal-stagger > * {
   opacity: 0;
   transform: translateY(40px);
@@ -2186,6 +2289,8 @@ fieldset legend {
        background-color: var(--pp-color-bg-light-accent);
    }
 
+  /* Show mobile-only nav items */
+  .nav-item.mobile-only { display: block; }
 
   /* Hide/show toggle icons based on nav state - requires JS to toggle 'active' on header/button */
   .mobile-menu-toggle .open-icon { display: inline-block; } /* Show bars by default */
@@ -2199,6 +2304,8 @@ fieldset legend {
   .journey-path-container {
       /* Background pattern remains */
       overflow-x: hidden; /* Prevent horizontal scroll */
+      margin-left: auto; /* Center the container if needed */
+      margin-right: auto;
   }
   .journey-path {
       flex-direction: column;
@@ -2207,7 +2314,41 @@ fieldset legend {
       margin-left: var(--space-md); /* Add some left margin for the connector line */
       gap: 0; /* Reset gap, managed by connector height */
       margin-bottom: 0; /* Reset margin */
+       position: relative; /* Ensure connector positioning works */
   }
+   /* Create a single vertical line behind all nodes */
+    .journey-path::before {
+        content: '';
+        position: absolute;
+        width: 4px;
+        height: calc(100% - 60px); /* Approx height, start below first icon, end above last */
+        background-color: var(--pp-color-border);
+        left: calc(60px / 2 - 4px / 2); /* Position under icon center */
+        top: calc(60px / 2); /* Start at the first icon's vertical center */
+        z-index: 1; /* Behind nodes */
+    }
+
+    /* Create the progress line overlay */
+    .journey-path::after {
+        content: '';
+        position: absolute;
+        width: 4px;
+        height: 0; /* Controlled by active/activated states */
+        background: var(--gradient-secondary);
+        left: calc(60px / 2 - 4px / 2);
+        top: calc(60px / 2);
+        z-index: 2; /* Above base line */
+        transition: height 0.5s ease-out;
+    }
+
+     /* Adjust height of progress line based on last activated node */
+    .journey-path[data-last-activated="awareness"]::after { height: calc((100% - 60px) * 0.1); } /* Approx percentage for first step */
+    .journey-path[data-last-activated="understanding"]::after { height: calc((100% - 60px) * 0.25); } /* Approx 25% */
+    .journey-path[data-last-activated="organization"]::after { height: calc((100% - 60px) * 0.5); }  /* Approx 50% */
+    .journey-path[data-last-activated="action"]::after { height: calc((100% - 60px) * 0.75); }  /* Approx 75% */
+    .journey-path[data-last-activated="growth"]::after { height: calc(100% - 60px); }  /* Approx 100% */
+    /* Note: These percentages depend heavily on equal node spacing. Needs JS to be more accurate if spacing varies */
+
 
   .journey-node {
       flex-direction: row; /* Icon and text side-by-side */
@@ -2216,10 +2357,11 @@ fieldset legend {
       align-items: center; /* Vertically center icon and text */
       gap: var(--space-lg); /* Increased space between icon and text */
       padding: var(--space-sm) 0; /* Padding for spacing */
-      z-index: 2; /* Keep node above connector */
+      z-index: 3; /* Node itself must be above the lines */
+      position: relative; /* Needed for z-index */
   }
   .journey-node:not(:last-child) {
-      padding-bottom: var(--space-xl); /* Space below node content for connector */
+       margin-bottom: var(--space-lg); /* Add vertical space between nodes */
   }
 
   .journey-node h3 {
@@ -2233,59 +2375,19 @@ fieldset legend {
 
   .journey-node .node-icon {
       flex-shrink: 0; /* Prevent icon shrinking */
-      z-index: 1; /* Below node content */
+      /* z-index is already relative to the node */
   }
 
+   /* Hide horizontal connectors specifically on mobile */
   .journey-connector {
-      /* Position as a vertical line to the left of the icon */
-      position: absolute; /* Position relative to journey-path */
-      width: 4px;
-      /* Adjust height based on node spacing */
-      height: calc(100% - 60px); /* Span between center of icons (approx) */
-      left: calc(60px / 2 - 4px / 2); /* Center align with icon */
-      top: calc(60px / 2); /* Start below first icon center */
-      margin: 0; /* Reset margin */
-      z-index: 1; /* Behind nodes */
-      background-color: var(--pp-color-border); /* Ensure visibility */
+     display: none;
   }
 
-   /* Specific placement for each connector using order */
-  .journey-node + .journey-connector {
-      /* This selector works but positioning requires JS or complex nth-child */
-      display: none; /* Hide horizontal connectors */
-  }
-
-  /* Create vertical connectors using pseudo-elements on nodes (easier positioning) */
-  .journey-node:not(:last-child)::after {
-      content: '';
-      position: absolute;
-      width: 4px;
-      height: calc(100% - 60px + var(--space-xl) + var(--space-sm)); /* Height between icons based on padding */
-      background-color: var(--pp-color-border);
-      left: calc(60px / 2 - 4px / 2); /* Position under icon */
-      top: calc(60px + var(--space-sm)/2); /* Start below icon bottom */
-      z-index: 1; /* Behind nodes */
-  }
-  /* Progress fill for vertical */
-  .journey-node:not(:last-child)::before {
-      content: '';
-      position: absolute;
-      width: 4px;
-      height: 0; /* Animated height */
-      background: var(--gradient-secondary);
-      left: calc(60px / 2 - 4px / 2);
-      top: calc(60px + var(--space-sm)/2);
-      z-index: 2; /* Above base line */
-      transition: height 0.5s ease-out;
-  }
-
-  /* Style connectors for passed nodes (activated class on the node) */
-   .journey-node.activated:not(:last-child)::before {
-       height: calc(100% - 60px + var(--space-xl) + var(--space-sm)); /* Full height */
-   }
 
    /* Focus stays on the node itself */
    .journey-node:focus-visible { /* No change needed here */ }
+
+   .journey-content-container { margin-top: var(--space-lg); }
 
   /* --- End Financial Journey Path - Mobile --- */
 
@@ -2293,6 +2395,11 @@ fieldset legend {
   .footer-content { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-lg); } /* Adjust columns */
   .footer-column { text-align: left; } /* Left align text in footer */
   .social-links { justify-content: flex-start; } /* Align social icons left */
+
+  .deco-blur { width: 40vw; height: 40vw; filter: blur(100px); } /* Adjust blur elements */
+  .deco-blur.blur-1 { top: 0%; left: -15%; }
+  .deco-blur.blur-2 { top: 50%; right: -10%; }
+  .deco-blur.blur-3 { display: none; } /* Hide one on smaller screens */
 
 }
 
@@ -2330,11 +2437,29 @@ fieldset legend {
     .template-card .btn { font-size: var(--font-size-sm); } /* Smaller button text */
 
    .quiz-modal-question-area { font-size: var(--font-size-md); }
-   .quiz-modal-options-area { grid-template-columns: 1fr; gap: var(--space-sm); } /* Always stack quiz options, smaller gap */
+   #quiz-modal-options,
+   .quiz-modal-options-area {
+       grid-template-columns: 1fr;
+       gap: var(--space-sm);
+    } /* Always stack quiz options, smaller gap */
    .quiz-option { padding: var(--space-sm) var(--space-md); } /* Smaller padding for options */
 
    /* Footer adjustments */
    .footer-content { grid-template-columns: 1fr; } /* Stack columns */
+
+  /* Adjust blur size and position further */
+   .deco-blur { width: 50vw; height: 50vw; filter: blur(80px); }
+   .deco-blur.blur-1 { top: 5%; left: -20%; }
+   .deco-blur.blur-2 { top: 60%; right: -15%; }
+
+   /* Journey Path Vertical Adjustments */
+   .journey-path { margin-left: var(--space-sm); } /* Less margin */
+    .journey-node { gap: var(--space-md); } /* Less gap */
+     .journey-node h3 { font-size: 0.9rem; }
+     .journey-path::before, .journey-path::after {
+        left: calc(60px / 2 - 4px / 2 - var(--space-sm)); /* Adjust line position based on path margin */
+     }
+
 
 }
 
@@ -2345,6 +2470,9 @@ fieldset legend {
     color: #000; /* Black text */
     font-size: 11pt; /* Adjust print font size */
     font-family: 'Times New Roman', Times, serif; /* Use serif for print */
+    display: block !important; /* Override flex display */
+    min-height: auto !important; /* Override min height */
+    padding-top: 0 !important;
   }
   :root {
     /* Override colors for print */
@@ -2359,6 +2487,11 @@ fieldset legend {
     --rofilid-white: #fff; /* Keep white for card backgrounds? Or remove too? */
     --pp-color-border: #ccc;
     --pp-color-border-light: #ddd;
+    --shadow-sm: none !important;
+    --shadow-md: none !important;
+    --shadow-lg: none !important;
+    --shadow-xl: none !important;
+    --header-height: 0px; /* No header space needed */
   }
   .site-header,
   .site-footer,
@@ -2367,7 +2500,7 @@ fieldset legend {
   .motivational-quote,
   .mobile-menu-toggle,
   .header-tool-btn,
-  .reveal-on-scroll,
+  .reveal-on-scroll, /* Hide animation elements */
   .reveal-stagger > *,
   .hero-badge,
   .deco-blur,
@@ -2379,20 +2512,20 @@ fieldset legend {
     display: none !important; /* Hide non-essential elements */
   }
   html { scroll-padding-top: 0; }
-  body { padding-top: 0 !important; } /* No padding needed */
+  main#main-content { flex-grow: 0 !important; } /* Remove flex grow */
   .hero-section { margin-top: 0 !important; } /* No offset needed */
   .container {
-    width: 100%;
-    max-width: 100%;
+    width: 100% !important;
+    max-width: 100% !important;
     padding: 0 !important;
     margin: 0 !important;
   }
   h1, h2, h3, h4, h5, h6 {
       color: #000 !important; /* Ensure black headings */
       page-break-after: avoid;
-      font-family: inherit; /* Use body font */
+      font-family: inherit !important; /* Use body font */
   }
-  p, ul, li { color: #000 !important; }
+  p, ul, li { color: #000 !important; page-break-inside: avoid; }
   a {
       color: #000 !important;
       text-decoration: none !important; /* Remove underlines */
@@ -2421,11 +2554,12 @@ fieldset legend {
 
   /* Journey path simplify for print */
   .journey-path, .journey-content-container { display: block; }
-  .journey-node { display: block; page-break-inside: avoid; margin-bottom: 0.5cm; }
-  .journey-node .node-icon, .journey-connector { display: none; }
-  .journey-content { display: block !important; animation: none; opacity: 1; border-top: 1px solid #ccc; padding-top: 0.5cm;}
+  .journey-path::before, .journey-path::after, .journey-connector { display: none !important; } /* Hide all lines */
+  .journey-node { display: block !important; page-break-inside: avoid; margin-bottom: 0.5cm; flex-direction: column !important; align-items: flex-start !important; }
+  .journey-node .node-icon { display: none; } /* Hide icon */
+   .journey-node h3 { margin: 0; font-size: 1rem; } /* Just print the title */
+  .journey-content { display: block !important; animation: none; opacity: 1; border-top: 1px solid #ccc; padding-top: 0.5cm; page-break-before: avoid; }
   .journey-content-container { padding: 0; border: none; box-shadow: none; background: none; backdrop-filter: none; }
 
-  .form-group, form { display: none; } /* Hide forms generally */
+  .form-group, form { display: none !important; } /* Hide forms generally */
 }
-/* END OF FILE csspersonal.css */
