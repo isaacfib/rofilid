@@ -118,6 +118,9 @@
    --blur-color-1: color-mix(in srgb, var(--pp-color-secondary) 40%, transparent);
    --blur-color-2: color-mix(in srgb, var(--pp-color-primary) 20%, transparent);
    --blur-color-3: color-mix(in srgb, var(--pp-color-accent) 30%, transparent);
+
+  /* Journey Path Vertical Progress */
+  --journey-progress-height: 0%; /* Added CSS variable for JS control */
 }
 
 /* Utility Classes (Keep as is, standard utility pattern) */
@@ -257,23 +260,25 @@ img {
 
 a {
   color: var(--pp-color-primary);
-  text-decoration: none;
+  text-decoration: none; /* CHANGE: Remove default underline */
   transition: color var(--transition-fast);
 }
 
 a:hover,
 a:focus {
   color: var(--pp-color-secondary);
-  text-decoration: underline;
+  text-decoration: none; /* CHANGE: Ensure no underline on hover/focus */
   outline: none;
 }
 
 a.link-inline {
-  text-decoration: underline;
+  text-decoration: none; /* CHANGE: Remove underline */
   font-weight: var(--font-weight-medium);
 }
 a.link-inline:hover {
    color: var(--pp-color-secondary-dark);
+   /* Optional: Add alternative hover effect, like slight brightness or keeping just color change */
+   filter: brightness(1.1);
 }
 /* Simple styling for buttons used as links (e.g., in footer) */
 .link-button {
@@ -403,14 +408,14 @@ p {
   border: 1px solid transparent; /* Base border for consistent size */
   font-size: var(--font-size-base);
   line-height: 1.5;
-  text-decoration: none;
+  text-decoration: none; /* CHANGE: Ensure no default underline */
   white-space: nowrap; /* Prevent wrapping */
 }
 
 .btn:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
-  text-decoration: none;
+  text-decoration: none; /* CHANGE: Ensure no underline on hover */
 }
 
 .btn:focus-visible { /* More specific focus style */
@@ -550,7 +555,11 @@ p {
   font-weight: var(--font-weight-medium);
   padding-block: var(--space-sm);
   position: relative;
-  text-decoration: none;
+  text-decoration: none; /* CHANGE: Explicitly none */
+}
+.nav-link:hover,
+.nav-link:focus {
+    text-decoration: none; /* CHANGE: Explicitly none */
 }
 
 .nav-link::after { /* Underline effect */
@@ -564,7 +573,7 @@ p {
   transition: width var(--transition-normal);
 }
 
-.nav-link:hover::after,
+.nav-link:hover::after, /* Keep hover for underline effect */
 .nav-link.active-page::after {
   width: 100%;
 }
@@ -848,6 +857,7 @@ p {
     font-size: 1.5rem;
     color: var(--pp-color-text-secondary);
     transition: color var(--transition-fast), transform var(--transition-fast);
+    text-decoration: none; /* CHANGE: Ensure no underline */
 }
 .social-icons-inline a:hover {
     color: var(--pp-color-primary);
@@ -989,7 +999,7 @@ p {
     justify-content: center;
     border: 3px solid var(--pp-color-border);
     box-shadow: var(--shadow-sm);
-    transition: all var(--transition-normal);
+    transition: background-color var(--transition-normal), border-color var(--transition-normal), transform var(--transition-normal), box-shadow var(--transition-normal); /* More specific transitions */
     position: relative; /* For z-index */
     z-index: 1; /* Above node background, below active pop */
 }
@@ -1022,7 +1032,7 @@ p {
     width: 0%; /* Animated width */
     height: 100%;
     background: var(--gradient-secondary);
-    transition: width 0.5s ease-out;
+    transition: width 0.6s ease-out; /* Make transition smoother */
     z-index: 2; /* Above base connector */
     border-radius: var(--radius-full);
 }
@@ -1046,18 +1056,18 @@ p {
 }
 
 /* Apply progress fill to connectors *preceding* an activated node */
-/* UPDATE: Now targets connector specifically based on previous node */
 .journey-node.activated + .journey-connector::after {
     width: 100%;
     transition-duration: 0.8s; /* Make completion feel solid */
 }
-/* UPDATE: Reset width for connectors AFTER the active node */
+/* Reset width for connectors AFTER the active node */
 .journey-node.active + .journey-connector::after {
-    width: 0; /* Reset connectors following active node */
+    width: 0%; /* Use percentage for consistency */
+    transition: none; /* Reset instantly */
 }
 /* Make sure initial connectors are zero width if first node is active */
 .journey-path .journey-node:first-child.active + .journey-connector::after {
-   width: 0;
+   width: 0%;
 }
 
 
@@ -1137,6 +1147,7 @@ p {
 }
 .journey-content ul li a {
     font-weight: var(--font-weight-medium);
+    /* Link styling (underline removal) handled globally */
 }
 
 
@@ -1252,14 +1263,14 @@ p {
 .template-actions {
     display: grid;
     grid-template-columns: 1fr; /* Stack buttons by default */
-    gap: var(--space-md); /* Increased gap */
+    gap: var(--space-md); /* Keep gap */
     margin-top: auto; /* Pushes actions to the bottom */
     padding-top: var(--space-md);
 }
 
-/* On wider viewports for template cards, put buttons side-by-side */
-@media (min-width: 400px) {
-    .template-card .template-actions { /* Be more specific */
+/* CHANGE: Increased breakpoint for side-by-side template card buttons */
+@media (min-width: 500px) { /* Adjusted breakpoint from 400px */
+    .template-card .template-actions { /* Specificity remains good */
         grid-template-columns: 1fr 1fr;
     }
 }
@@ -1760,11 +1771,13 @@ fieldset .invalid-feedback.d-block /* Show error within fieldset manually */
    /* Allow text to wrap within buttons */
    white-space: normal;
    line-height: 1.4;
+   text-decoration: none; /* Override link styling if 'a' tag is used */
 }
 .quiz-option:hover {
     /* Standard hover defined in btn-outline:hover */
     transform: none; /* Don't lift quiz options on hover */
     box-shadow: var(--shadow-sm); /* Less pronounced shadow */
+    text-decoration: none; /* Ensure no underline on hover */
 }
 .quiz-option[disabled] { /* Style for disabled options after answer */
     opacity: 0.7;
@@ -1878,7 +1891,7 @@ fieldset .invalid-feedback.d-block /* Show error within fieldset manually */
   color: var(--neutral-300);
   transition: color var(--transition-fast), padding-left var(--transition-fast);
   display: inline-block; /* Allows padding animation */
-  text-decoration: none;
+  text-decoration: none; /* CHANGE: Ensure no underline */
 }
 
 .footer-column a:hover,
@@ -1920,6 +1933,7 @@ fieldset .invalid-feedback.d-block /* Show error within fieldset manually */
   font-size: 1.3rem; /* Adjust size as needed */
   transition: color var(--transition-fast), transform var(--transition-fast);
   line-height: 1; /* Better alignment */
+  text-decoration: none; /* CHANGE: Ensure no underline */
 }
 
 .social-link:hover,
@@ -1927,6 +1941,7 @@ fieldset .invalid-feedback.d-block /* Show error within fieldset manually */
   color: var(--rofilid-white);
   transform: scale(1.15) translateY(-2px);
   outline: none;
+  text-decoration: none; /* Double ensure */
 }
 
 .copyright {
@@ -2026,7 +2041,7 @@ fieldset .invalid-feedback.d-block /* Show error within fieldset manually */
 #fab-options-list:not([hidden]) { /* Show when attribute removed by JS */
     display: flex;
     flex-direction: column;
-    /* Other active styles */
+    /* Other active styles handled by .floating-action-btn.active .fab-options */
 }
 
 
@@ -2082,7 +2097,7 @@ fieldset .invalid-feedback.d-block /* Show error within fieldset manually */
   color: var(--pp-color-primary-dark);
   box-shadow: var(--shadow-lg);
   outline: none;
-  text-decoration: none;
+  text-decoration: none; /* CHANGE: Ensure no underline */
 }
 .fab-option:focus-visible {
   box-shadow: var(--shadow-lg), 0 0 0 3px color-mix(in srgb, var(--pp-color-secondary) 30%, transparent);
@@ -2202,9 +2217,11 @@ fieldset .invalid-feedback.d-block /* Show error within fieldset manually */
   opacity: 1;
   transform: translateY(0);
   transition: opacity 0.8s cubic-bezier(0.175, 0.885, 0.32, 1), transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1);
+  /* Individual delays set by JS preferred for more complex scenarios, or use nth-child */
 }
 
 /* Apply individual delays for stagger effect (Adjust index if elements change) */
+/* These can be kept as fallbacks or simpler implementations */
 .reveal-stagger > *:nth-child(1).revealed { transition-delay: 0.1s; }
 .reveal-stagger > *:nth-child(2).revealed { transition-delay: 0.2s; }
 .reveal-stagger > *:nth-child(3).revealed { transition-delay: 0.3s; }
@@ -2328,27 +2345,22 @@ fieldset .invalid-feedback.d-block /* Show error within fieldset manually */
         z-index: 1; /* Behind nodes */
     }
 
-    /* Create the progress line overlay */
+    /* Create the progress line overlay using CSS variable */
     .journey-path::after {
         content: '';
         position: absolute;
         width: 4px;
-        height: 0; /* Controlled by active/activated states */
+        height: var(--journey-progress-height, 0%); /* CHANGE: Controlled by CSS variable */
         background: var(--gradient-secondary);
         left: calc(60px / 2 - 4px / 2);
         top: calc(60px / 2);
         z-index: 2; /* Above base line */
-        transition: height 0.5s ease-out;
+        transition: height 0.6s ease-out; /* Smoother transition */
+        border-radius: var(--radius-full);
     }
 
-     /* Adjust height of progress line based on last activated node */
-    .journey-path[data-last-activated="awareness"]::after { height: calc((100% - 60px) * 0.1); } /* Approx percentage for first step */
-    .journey-path[data-last-activated="understanding"]::after { height: calc((100% - 60px) * 0.25); } /* Approx 25% */
-    .journey-path[data-last-activated="organization"]::after { height: calc((100% - 60px) * 0.5); }  /* Approx 50% */
-    .journey-path[data-last-activated="action"]::after { height: calc((100% - 60px) * 0.75); }  /* Approx 75% */
-    .journey-path[data-last-activated="growth"]::after { height: calc(100% - 60px); }  /* Approx 100% */
-    /* Note: These percentages depend heavily on equal node spacing. Needs JS to be more accurate if spacing varies */
-
+     /* REMOVED: data-last-activated dependent styles for vertical progress */
+     /* .journey-path[data-last-activated="awareness"]::after { height: ... } */
 
   .journey-node {
       flex-direction: row; /* Icon and text side-by-side */
@@ -2431,9 +2443,10 @@ fieldset .invalid-feedback.d-block /* Show error within fieldset manually */
    /* Template Cards on Small Screens */
    .template-grid { grid-template-columns: 1fr; } /* Force single column */
    .template-actions {
-        grid-template-columns: 1fr; /* Ensure template buttons always stack */
-        gap: var(--space-sm); /* Reduce gap slightly */
+        /* Single column already default, adjust gap maybe */
+        gap: var(--space-sm); /* Reduce gap slightly if needed */
     }
+    /* The breakpoint change (500px) above should handle button stacking better */
     .template-card .btn { font-size: var(--font-size-sm); } /* Smaller button text */
 
    .quiz-modal-question-area { font-size: var(--font-size-md); }
@@ -2457,9 +2470,9 @@ fieldset .invalid-feedback.d-block /* Show error within fieldset manually */
     .journey-node { gap: var(--space-md); } /* Less gap */
      .journey-node h3 { font-size: 0.9rem; }
      .journey-path::before, .journey-path::after {
-        left: calc(60px / 2 - 4px / 2 - var(--space-sm)); /* Adjust line position based on path margin */
+        /* Position line correctly considering the node's position within its container */
+        left: calc(60px / 2 - 4px / 2); /* Position relative to node's start (which has margin now) */
      }
-
 
 }
 
@@ -2555,11 +2568,11 @@ fieldset .invalid-feedback.d-block /* Show error within fieldset manually */
   /* Journey path simplify for print */
   .journey-path, .journey-content-container { display: block; }
   .journey-path::before, .journey-path::after, .journey-connector { display: none !important; } /* Hide all lines */
-  .journey-node { display: block !important; page-break-inside: avoid; margin-bottom: 0.5cm; flex-direction: column !important; align-items: flex-start !important; }
+  .journey-node { display: block !important; page-break-inside: avoid; margin-bottom: 0.5cm; flex-direction: column !important; align-items: flex-start !important; padding: 0 !important; gap: 0 !important; width: 100% !important; }
   .journey-node .node-icon { display: none; } /* Hide icon */
-   .journey-node h3 { margin: 0; font-size: 1rem; } /* Just print the title */
+   .journey-node h3 { margin: 0; font-size: 1rem; display: block; } /* Just print the title */
   .journey-content { display: block !important; animation: none; opacity: 1; border-top: 1px solid #ccc; padding-top: 0.5cm; page-break-before: avoid; }
-  .journey-content-container { padding: 0; border: none; box-shadow: none; background: none; backdrop-filter: none; }
+  .journey-content-container { padding: 0; border: none; box-shadow: none; background: none; backdrop-filter: none; min-height: auto; margin-top: 1cm;}
 
   .form-group, form { display: none !important; } /* Hide forms generally */
 }
