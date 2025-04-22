@@ -248,27 +248,30 @@
                     <!-- Ensure IntersectionObserver targets this section -->
                     <div class="journey-path reveal-stagger" role="tablist" aria-orientation="horizontal">
                         <!-- Ensure ARIA attributes are updated by JS -->
-                        <div class="journey-node" data-step="awareness" role="tab" tabindex="0" aria-selected="false" aria-controls="journey-awareness">
+                        <button type="button" class="journey-node" data-step="awareness" role="tab" tabindex="0" aria-selected="false" aria-controls="journey-awareness">
                             <div class="node-icon"><i class="fas fa-lightbulb"></i></div>
                             <h3>Awareness</h3>
-                        </div>
-                        <!-- Horizontal Connectors are styled via CSS, no HTML element needed between nodes -->
-                        <div class="journey-node" data-step="understanding" role="tab" tabindex="-1" aria-selected="false" aria-controls="journey-understanding">
+                        </button>
+                        <div class="journey-connector" aria-hidden="true"></div> <!-- Connector Element -->
+                        <button type="button" class="journey-node" data-step="understanding" role="tab" tabindex="-1" aria-selected="false" aria-controls="journey-understanding">
                             <div class="node-icon"><i class="fas fa-brain"></i></div>
                             <h3>Understanding</h3>
-                        </div>
-                        <div class="journey-node" data-step="organization" role="tab" tabindex="-1" aria-selected="false" aria-controls="journey-organization">
+                        </button>
+                        <div class="journey-connector" aria-hidden="true"></div> <!-- Connector Element -->
+                        <button type="button" class="journey-node" data-step="organization" role="tab" tabindex="-1" aria-selected="false" aria-controls="journey-organization">
                             <div class="node-icon"><i class="fas fa-tasks"></i></div>
                             <h3>Organization</h3>
-                        </div>
-                         <div class="journey-node" data-step="action" role="tab" tabindex="-1" aria-selected="false" aria-controls="journey-action">
+                        </button>
+                        <div class="journey-connector" aria-hidden="true"></div> <!-- Connector Element -->
+                        <button type="button" class="journey-node" data-step="action" role="tab" tabindex="-1" aria-selected="false" aria-controls="journey-action">
                             <div class="node-icon"><i class="fas fa-person-running"></i></div> <!-- Updated Icon -->
                             <h3>Action</h3>
-                        </div>
-                        <div class="journey-node" data-step="growth" role="tab" tabindex="-1" aria-selected="false" aria-controls="journey-growth">
+                         </button>
+                         <div class="journey-connector" aria-hidden="true"></div> <!-- Connector Element -->
+                        <button type="button" class="journey-node" data-step="growth" role="tab" tabindex="-1" aria-selected="false" aria-controls="journey-growth">
                             <div class="node-icon"><i class="fas fa-chart-line"></i></div>
                             <h3>Growth</h3>
-                        </div>
+                        </button>
                     </div>
 
                     <div class="journey-content-container">
@@ -288,7 +291,7 @@
                             <h4>Relevant Resources:</h4>
                             <ul>
                                 <li><i class="fas fa-check-circle" aria-hidden="true"></i> <a href="quizzes.html">Full Financial Fitness Challenge</a> - Deepen your knowledge</li>
-                                <li><i class="fas fa-check-circle" aria-hidden="true"></i> <a href="#free-tools" class="get-pdf-btn" data-template-key="50-30-20">50/30/20 Budget Guide</a> - Learn practical budgeting approaches</li>
+                                <li><i class="fas fa-check-circle" aria-hidden="true"></i> <button type="button" class="link-button get-pdf-btn" data-template-key="50-30-20">50/30/20 Budget Guide</button> - Learn practical budgeting approaches</li> <!-- Use button for JS hook -->
                             </ul>
                         </div>
                         <div class="journey-content" id="journey-organization" role="tabpanel" aria-labelledby="journey-organization-tab" hidden>
@@ -296,9 +299,9 @@
                             <p>Create structure and visibility into your financial situation through proper tools and systems.</p>
                              <h4>Relevant Resources:</h4>
                             <ul>
-                                <li><i class="fas fa-check-circle" aria-hidden="true"></i> <a href="#free-tools" class="get-pdf-btn" data-template-key="networth">Net Worth Statement</a> - Map your financial landscape</li>
-                                <li><i class="fas fa-check-circle" aria-hidden="true"></i> <a href="#free-tools" class="get-pdf-btn" data-template-key="cashflow">Personal Cash Flow Statement</a> - Understand money movement</li>
-                                <li><i class="fas fa-check-circle" aria-hidden="true"></i> <a href="#free-tools" class="get-pdf-btn" data-template-key="expense-tracker">Budget & Expense Tracker</a> - Create spending visibility</li>
+                                <li><i class="fas fa-check-circle" aria-hidden="true"></i> <button type="button" class="link-button get-pdf-btn" data-template-key="networth">Net Worth Statement</button> - Map your financial landscape</li>
+                                <li><i class="fas fa-check-circle" aria-hidden="true"></i> <button type="button" class="link-button get-pdf-btn" data-template-key="cashflow">Personal Cash Flow Statement</button> - Understand money movement</li>
+                                <li><i class="fas fa-check-circle" aria-hidden="true"></i> <button type="button" class="link-button get-pdf-btn" data-template-key="expense-tracker">Budget & Expense Tracker</button> - Create spending visibility</li>
                             </ul>
                         </div>
                          <div class="journey-content" id="journey-action" role="tabpanel" aria-labelledby="journey-action-tab" hidden>
@@ -306,7 +309,7 @@
                             <p>Implement decisions and make changes based on your new knowledge and organization.</p>
                             <h4>Relevant Resources:</h4>
                             <ul>
-                                <li><i class="fas fa-check-circle" aria-hidden="true"></i> <a href="#free-tools" class="get-pdf-btn" data-template-key="line-budget">Line-Item Budget</a> - Execute detailed spending plan</li>
+                                <li><i class="fas fa-check-circle" aria-hidden="true"></i> <button type="button" class="link-button get-pdf-btn" data-template-key="line-budget">Line-Item Budget</button> - Execute detailed spending plan</li>
                                 <li><i class="fas fa-check-circle" aria-hidden="true"></i> <a href="calculator.html">Interest Calculator</a> - Make informed decisions</li>
                             </ul>
                         </div>
@@ -525,7 +528,7 @@
                         <p>Our personalized coaching program is in development. Register below to get notified when spots open.</p>
                          <form class="coaching-interest-form" id="coachingInterestForm" novalidate>
                              <div class="form-group mb-md">
-                                 <label for="interest-email" class="form-label">Email Address:</label> <!-- Use actual label for a11y -->
+                                 <label for="interest-email" class="form-label visually-hidden">Email Address:</label> <!-- Keep visually-hidden for accessibility -->
                                  <input type="email" class="form-control" id="interest-email" name="email" required placeholder="Enter your email..." aria-describedby="interest-email-error interest-form-response" autocomplete="email">
                                  <span class="invalid-feedback" id="interest-email-error" aria-live="polite"></span>
                              </div>
@@ -565,6 +568,7 @@
              <div id="quiz-modal-progress" class="quiz-modal-progress text-center text-muted mb-md" aria-live="polite">
                  Question <span id="quiz-modal-q-current">1</span> of <span id="quiz-modal-q-total">5</span>
             </div>
+            <!-- Use preferred ID -->
             <div id="quiz-modal-question" class="quiz-modal-question-area h4 mb-lg" aria-live="polite">
                 <!-- Question text injected by JS -->
             </div>
@@ -597,19 +601,17 @@
             <p id="quiz-demographics-description" class="modal-description text-center mb-lg">Please provide some info to help us improve.</p>
             <form id="quiz-demographics-form" class="demographics-form" novalidate>
                 <div class="form-group mb-md">
-                    <!-- <label for="quiz-country" class="form-label visually-hidden">Country:</label> Removed label for placeholder approach -->
-                    <!-- Using placeholder as label -->
+                     <label for="quiz-country" class="form-label visually-hidden">Country:</label>
                     <input type="text" class="form-control" id="quiz-country" name="country" required placeholder="Country of Residence" aria-label="Country of Residence" aria-describedby="quiz-country-error">
                      <span class="invalid-feedback" id="quiz-country-error" aria-live="polite"></span>
                  </div>
                 <div class="form-group mb-md">
-                     <!-- <label for="quiz-city" class="form-label visually-hidden">City:</label> -->
+                    <label for="quiz-city" class="form-label visually-hidden">City:</label>
                     <input type="text" class="form-control" id="quiz-city" name="city" required placeholder="City of Residence" aria-label="City of Residence" aria-describedby="quiz-city-error">
                     <span class="invalid-feedback" id="quiz-city-error" aria-live="polite"></span>
                 </div>
                 <fieldset class="form-group mb-lg">
-                     <!-- Keep Legend for Accessibility -->
-                    <legend class="form-label fs-sm mb-sm">Have you taken this quiz before?</legend>
+                    <legend id="quiz-taken-legend" class="form-label fs-sm mb-sm text-center">Have you taken this quiz before?</legend> <!-- Centered legend -->
                      <div class="radio-group d-flex gap-lg justify-content-center" role="radiogroup" aria-labelledby="quiz-taken-legend">
                          <div class="form-check">
                             <input type="radio" class="form-check-input" name="taken_before" id="taken-yes" value="yes" required aria-describedby="quiz-taken-error">
@@ -639,12 +641,12 @@
             <form id="pdf-download-form" class="pdf-download-form" novalidate>
                 <input type="hidden" id="pdf-template-key" name="template_key">
                  <div class="form-group mb-md">
-                    <!-- <label for="pdf-country" class="form-label visually-hidden">Country:</label> -->
+                    <label for="pdf-country" class="form-label visually-hidden">Country:</label>
                      <input type="text" class="form-control" id="pdf-country" name="country" required placeholder="Country" aria-label="Country" aria-describedby="pdf-country-error">
                      <span class="invalid-feedback" id="pdf-country-error" aria-live="polite"></span>
                 </div>
                 <div class="form-group mb-lg">
-                     <!-- <label for="pdf-city" class="form-label visually-hidden">City:</label> -->
+                     <label for="pdf-city" class="form-label visually-hidden">City:</label>
                      <input type="text" class="form-control" id="pdf-city" name="city" required placeholder="City" aria-label="City" aria-describedby="pdf-city-error">
                      <span class="invalid-feedback" id="pdf-city-error" aria-live="polite"></span>
                 </div>
@@ -663,17 +665,18 @@
             <p id="feedback-modal-description" class="modal-description text-center mb-lg">Help us improve or share your success!</p>
             <form id="feedback-testimonial-form" class="feedback-form" novalidate>
                  <div class="form-group mb-md">
-                     <!-- <label for="feedback-name" class="form-label visually-hidden">Name (Optional):</label> -->
+                     <label for="feedback-name" class="form-label visually-hidden">Name (Optional):</label>
                      <input type="text" class="form-control" id="feedback-name" name="name" placeholder="Name (Optional)" aria-label="Name (Optional)" autocomplete="name">
                  </div>
                 <div class="form-group mb-md">
-                    <!-- <label for="feedback-email" class="form-label visually-hidden">Email (Optional):</label> -->
+                    <label for="feedback-email" class="form-label visually-hidden">Email (Optional):</label>
                      <input type="email" class="form-control" id="feedback-email" name="email" placeholder="Email (Optional, for follow-up)" aria-label="Email (Optional, for follow-up)" aria-describedby="feedback-email-error feedback-form-response" autocomplete="email">
                       <span class="invalid-feedback" id="feedback-email-error" aria-live="polite"></span> <!-- Add feedback element -->
                  </div>
                 <div class="form-group mb-md">
-                    <label for="feedback-type" class="form-label">Type:</label> <!-- Use explicit label for select -->
-                    <select class="form-select" id="feedback-type" name="type" required aria-describedby="feedback-type-error feedback-form-response">
+                     <!-- Use an explicit label -->
+                    <label for="feedback-type" class="form-label">Type of Feedback:</label>
+                     <select class="form-select" id="feedback-type" name="type" required aria-describedby="feedback-type-error feedback-form-response">
                          <!-- Add placeholder option -->
                          <option value="" disabled selected hidden>-- Please select type --</option>
                          <option value="feedback">Feedback/Suggestion</option>
@@ -683,7 +686,8 @@
                       <span class="invalid-feedback" id="feedback-type-error" aria-live="polite"></span> <!-- Add feedback element -->
                  </div>
                 <div class="form-group mb-lg">
-                      <label for="feedback-message" class="form-label">Message:</label> <!-- Use explicit label for textarea -->
+                       <!-- Use an explicit label -->
+                      <label for="feedback-message" class="form-label">Your Message:</label>
                       <textarea class="form-control" id="feedback-message" name="message" rows="5" required placeholder="Share your thoughts here..." aria-describedby="feedback-message-error feedback-form-response" maxlength="2000"></textarea>
                       <span class="invalid-feedback" id="feedback-message-error" aria-live="polite"></span> <!-- Add feedback element -->
                 </div>
@@ -710,6 +714,7 @@
             <i class="fas fa-plus" aria-hidden="true"></i>
             <i class="fas fa-times fab-close-icon" aria-hidden="true"></i>
         </button>
+        <!-- Use hidden attribute managed by JS -->
         <ul id="fab-options-list" class="fab-options" role="menu" aria-label="Quick access options" hidden>
              <li role="none">
                  <a href="#free-tools" class="fab-option" role="menuitem" aria-label="Jump to Free Tools">
@@ -761,7 +766,7 @@
                         <li><a href="../corporate/corporate.html">For Businesses</a></li>
                         <li><a href="#our-approach">Our Approach</a></li>
                         <li><a href="calculator.html">Calculator</a></li>
-                        <li><button type="button" class="link-button" id="footer-open-feedback-btn" aria-haspopup="dialog" aria-controls="feedback-modal">Feedback</button></li> <!-- Feedback trigger -->
+                        <li><button type="button" class="link-button" id="footer-open-feedback-btn" aria-haspopup="dialog" aria-controls="feedback-modal">Feedback</button></li> <!-- Feedback trigger as button -->
                         <li><a href="#footer-contact">Contact</a></li>
                     </ul>
                 </div>
