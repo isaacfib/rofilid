@@ -222,7 +222,6 @@ html {
   font-size: 16px;
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--header-height) + 20px); /* Adjust based on fixed header height */
-  height: 100%; /* Ensure HTML takes full height */
 }
 
 body {
@@ -234,22 +233,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden; /* Prevent horizontal scroll */
-  min-height: 100vh; /* CHANGE: Ensure body is at least viewport height */
-  display: flex; /* CHANGE: Use flexbox */
-  flex-direction: column; /* CHANGE: Stack children vertically */
-  position: relative; /* Add for deco blur positioning */
 }
 
 /* Specific styles for when a modal is open */
 body.modal-open {
   overflow: hidden;
-}
-
-/* Make main content area fill available space */
-main#main-content { /* Targeting the main element */
-  flex-grow: 1; /* CHANGE: Allow main content to grow */
-  width: 100%; /* Ensure it takes full width */
-  /* Removed hero-specific margin-top from here - keep it on the hero section */
 }
 
 img {
