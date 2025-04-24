@@ -1,3 +1,5 @@
+--- START OF FILE htmlpersonal.txt ---
+
 <!DOCTYPE html>
 <html lang="en" class="personal-page">
 <head>
@@ -28,7 +30,7 @@
         <div class="container header-container">
             <div class="logo">
                 <a href="../../index.html" aria-label="Rofilid Home">
-                    <img src="../../assets/images/common/rofilid-logo-teal.svg" alt="Rofilid Logo" width="120" height="35" loading="eager"> <!-- Adjusted height -->
+                    <img src="../../assets/images/common/rofilid-logo-teal.svg" alt="Rofilid Logo" width="120" height="35" loading="eager"> <!-- Adjusted height, eager loading -->
                 </a>
             </div>
 
@@ -45,7 +47,7 @@
                 </ul>
             </nav>
 
-            <!-- Tools Button (Desktop Right) - UPDATED CLASS -->
+            <!-- Tools Button (Desktop Right) -->
             <a href="#free-tools" class="btn btn-primary header-tool-btn btn-icon">
                 <i class="fas fa-tools" aria-hidden="true"></i> Tools
             </a>
@@ -112,7 +114,7 @@
                 <h2 id="resources-heading" class="section-title">Learn & Grow with Free Resources</h2>
                 <p class="section-description">Start building your financial foundation today with our collection of guides, articles, and social insights.</p>
                 <div class="resource-grid reveal-stagger">
-                     <article class="resource-card" aria-labelledby="resource-blog-title">
+                     <article class="resource-card card" aria-labelledby="resource-blog-title"> <!-- Added base 'card' class -->
                         <div class="card-image">
                             <img src="../../assets/images/personal/blog.jpg" alt="Person reading financial articles on a tablet" loading="lazy" width="400" height="225"> <!-- Aspect Ratio 16:9 -->
                         </div>
@@ -125,7 +127,7 @@
                             </div>
                         </div>
                     </article>
-                    <article class="resource-card social-integration" aria-labelledby="resource-social-title">
+                    <article class="resource-card social-integration card" aria-labelledby="resource-social-title"> <!-- Added base 'card' class -->
                         <div class="card-header">
                             <i class="fab fa-instagram" aria-hidden="true"></i>
                             <h3 id="resource-social-title">Daily Bites from BasicPFC</h3>
@@ -158,7 +160,7 @@
                             </div>
                         </div>
                     </article>
-                    <article class="resource-card" aria-labelledby="resource-understanding-title">
+                    <article class="resource-card card" aria-labelledby="resource-understanding-title"> <!-- Added base 'card' class -->
                         <div class="card-image">
                             <img src="../../assets/images/personal/literacy-step.jpg" alt="Steps representing financial growth" loading="lazy" width="400" height="225"> <!-- Aspect Ratio 16:9 -->
                         </div>
@@ -188,7 +190,7 @@
                 <p class="section-description">Check your grasp on key financial concepts with these quick, 5-question quizzes for personalized learning insights.</p>
                 <div class="category-grid reveal-stagger">
                     <!-- Quiz Category Cards - structure is correct -->
-                     <article class="category-card" data-category-id="1" aria-labelledby="category-1-title">
+                     <article class="category-card card" data-category-id="1" aria-labelledby="category-1-title"> <!-- Added base 'card' class -->
                         <div class="card-content"> <!-- Moved content into card-content for consistency -->
                             <i class="fas fa-piggy-bank category-icon" aria-hidden="true"></i>
                             <h4 id="category-1-title">Income & Vitals Check</h4>
@@ -196,7 +198,7 @@
                             <button type="button" class="btn btn-secondary btn-icon start-quiz-btn mt-auto" aria-label="Start Income & Vitals Check Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Check</button>
                         </div>
                     </article>
-                     <article class="category-card" data-category-id="2" aria-labelledby="category-2-title">
+                     <article class="category-card card" data-category-id="2" aria-labelledby="category-2-title"> <!-- Added base 'card' class -->
                         <div class="card-content">
                             <i class="fas fa-sack-dollar category-icon" aria-hidden="true"></i>
                             <h4 id="category-2-title">Savings Smarts</h4>
@@ -204,7 +206,7 @@
                             <button type="button" class="btn btn-secondary btn-icon start-quiz-btn mt-auto" aria-label="Start Savings Smarts Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Check</button>
                         </div>
                     </article>
-                    <article class="category-card" data-category-id="3" aria-labelledby="category-3-title">
+                    <article class="category-card card" data-category-id="3" aria-labelledby="category-3-title"> <!-- Added base 'card' class -->
                         <div class="card-content">
                             <i class="fas fa-calculator category-icon" aria-hidden="true"></i>
                             <h4 id="category-3-title">Budgeting Building Blocks</h4>
@@ -212,7 +214,7 @@
                             <button type="button" class="btn btn-secondary btn-icon start-quiz-btn mt-auto" aria-label="Start Budgeting Building Blocks Quiz"><i class="fas fa-play" aria-hidden="true"></i> Start Check</button>
                         </div>
                     </article>
-                    <article class="category-card" data-category-id="4" aria-labelledby="category-4-title">
+                    <article class="category-card card" data-category-id="4" aria-labelledby="category-4-title"> <!-- Added base 'card' class -->
                         <div class="card-content">
                             <i class="fas fa-receipt category-icon" aria-hidden="true"></i>
                             <h4 id="category-4-title">Spending Awareness</h4>
@@ -246,80 +248,85 @@
                 <div class="journey-path-container">
                     <!-- Journey path controlled by JS: adding/removing 'active', 'activated' classes -->
                     <!-- Ensure IntersectionObserver targets this section -->
-                    <div class="journey-path reveal-stagger" role="tablist" aria-orientation="horizontal">
-                        <!-- Ensure ARIA attributes are updated by JS -->
-                        <button type="button" class="journey-node" data-step="awareness" role="tab" tabindex="0" aria-selected="false" aria-controls="journey-awareness">
-                            <div class="node-icon"><i class="fas fa-lightbulb"></i></div>
+                    <!-- Added ARIA Roles: tablist, tab, aria-selected, aria-controls -->
+                    <div class="journey-path reveal-stagger" role="tablist" aria-label="Financial Journey Steps">
+                        <button type="button" class="journey-node" data-step="awareness" role="tab" tabindex="0" aria-selected="false" aria-controls="journey-content-awareness" id="journey-tab-awareness">
+                            <div class="node-icon"><i class="fas fa-lightbulb" aria-hidden="true"></i></div>
                             <h3>Awareness</h3>
                         </button>
                         <div class="journey-connector" aria-hidden="true"></div> <!-- Connector Element -->
-                        <button type="button" class="journey-node" data-step="understanding" role="tab" tabindex="-1" aria-selected="false" aria-controls="journey-understanding">
-                            <div class="node-icon"><i class="fas fa-brain"></i></div>
+                        <button type="button" class="journey-node" data-step="understanding" role="tab" tabindex="-1" aria-selected="false" aria-controls="journey-content-understanding" id="journey-tab-understanding">
+                            <div class="node-icon"><i class="fas fa-brain" aria-hidden="true"></i></div>
                             <h3>Understanding</h3>
                         </button>
                         <div class="journey-connector" aria-hidden="true"></div> <!-- Connector Element -->
-                        <button type="button" class="journey-node" data-step="organization" role="tab" tabindex="-1" aria-selected="false" aria-controls="journey-organization">
-                            <div class="node-icon"><i class="fas fa-tasks"></i></div>
+                        <button type="button" class="journey-node" data-step="organization" role="tab" tabindex="-1" aria-selected="false" aria-controls="journey-content-organization" id="journey-tab-organization">
+                            <div class="node-icon"><i class="fas fa-tasks" aria-hidden="true"></i></div>
                             <h3>Organization</h3>
                         </button>
                         <div class="journey-connector" aria-hidden="true"></div> <!-- Connector Element -->
-                        <button type="button" class="journey-node" data-step="action" role="tab" tabindex="-1" aria-selected="false" aria-controls="journey-action">
-                            <div class="node-icon"><i class="fas fa-person-running"></i></div> <!-- Updated Icon -->
+                        <button type="button" class="journey-node" data-step="action" role="tab" tabindex="-1" aria-selected="false" aria-controls="journey-content-action" id="journey-tab-action">
+                            <div class="node-icon"><i class="fas fa-person-running" aria-hidden="true"></i></div> <!-- Updated Icon -->
                             <h3>Action</h3>
                          </button>
                          <div class="journey-connector" aria-hidden="true"></div> <!-- Connector Element -->
-                        <button type="button" class="journey-node" data-step="growth" role="tab" tabindex="-1" aria-selected="false" aria-controls="journey-growth">
-                            <div class="node-icon"><i class="fas fa-chart-line"></i></div>
+                        <button type="button" class="journey-node" data-step="growth" role="tab" tabindex="-1" aria-selected="false" aria-controls="journey-content-growth" id="journey-tab-growth">
+                            <div class="node-icon"><i class="fas fa-chart-line" aria-hidden="true"></i></div>
                             <h3>Growth</h3>
                         </button>
                     </div>
 
                     <div class="journey-content-container">
-                        <!-- Journey content sections are toggled by JS based on active node -->
-                        <div class="journey-content" id="journey-awareness" role="tabpanel" aria-labelledby="journey-awareness-tab" hidden> <!-- Match controls ID -->
+                        <!-- Added role="tabpanel" and aria-labelledby -->
+                        <!-- Added hidden attribute for JS control -->
+                        <div class="journey-content" id="journey-content-awareness" role="tabpanel" aria-labelledby="journey-tab-awareness" hidden> <!-- Match controls ID -->
                             <h3>Financial Awareness</h3>
                             <p>The journey begins with recognizing where you stand financially and identifying areas for improvement.</p>
                             <h4>Relevant Resources:</h4>
                             <ul>
-                                <li><i class="fas fa-check-circle" aria-hidden="true"></i> <a href="#learning-hub">Financial Fitness Quizzes</a> - Assess your current knowledge</li>
-                                <li><i class="fas fa-check-circle" aria-hidden="true"></i> <a href="#free-resources">Rofilid Insights Blog</a> - Build foundational understanding</li>
+                                <li><i class="fas fa-check-circle text-success" aria-hidden="true"></i> <a href="#learning-hub">Financial Fitness Quizzes</a> - Assess your current knowledge</li>
+                                <li><i class="fas fa-check-circle text-success" aria-hidden="true"></i> <a href="#">Rofilid Insights Blog (Soon)</a> - Build foundational understanding</li>
                             </ul>
                         </div>
-                        <div class="journey-content" id="journey-understanding" role="tabpanel" aria-labelledby="journey-understanding-tab" hidden>
+                        <div class="journey-content" id="journey-content-understanding" role="tabpanel" aria-labelledby="journey-tab-understanding" hidden>
                              <h3>Financial Understanding</h3>
                             <p>Develop clarity about financial concepts and how they apply to your specific situation.</p>
                             <h4>Relevant Resources:</h4>
                             <ul>
-                                <li><i class="fas fa-check-circle" aria-hidden="true"></i> <a href="quizzes.html">Full Financial Fitness Challenge</a> - Deepen your knowledge</li>
-                                <li><i class="fas fa-check-circle" aria-hidden="true"></i> <button type="button" class="link-button get-pdf-btn" data-template-key="50-30-20">50/30/20 Budget Guide</button> - Learn practical budgeting approaches</li> <!-- Use button for JS hook -->
+                                <li><i class="fas fa-check-circle text-success" aria-hidden="true"></i> <a href="quizzes.html">Full Financial Fitness Challenge</a> - Deepen your knowledge</li>
+                                <!-- Changed to button type for JS action -->
+                                <li><i class="fas fa-check-circle text-success" aria-hidden="true"></i> <button type="button" class="link-button get-pdf-btn" data-template-key="50-30-20">50/30/20 Budget Guide</button> - Learn practical budgeting approaches</li>
                             </ul>
                         </div>
-                        <div class="journey-content" id="journey-organization" role="tabpanel" aria-labelledby="journey-organization-tab" hidden>
+                        <div class="journey-content" id="journey-content-organization" role="tabpanel" aria-labelledby="journey-tab-organization" hidden>
                             <h3>Financial Organization</h3>
                             <p>Create structure and visibility into your financial situation through proper tools and systems.</p>
                              <h4>Relevant Resources:</h4>
                             <ul>
-                                <li><i class="fas fa-check-circle" aria-hidden="true"></i> <button type="button" class="link-button get-pdf-btn" data-template-key="networth">Net Worth Statement</button> - Map your financial landscape</li>
-                                <li><i class="fas fa-check-circle" aria-hidden="true"></i> <button type="button" class="link-button get-pdf-btn" data-template-key="cashflow">Personal Cash Flow Statement</button> - Understand money movement</li>
-                                <li><i class="fas fa-check-circle" aria-hidden="true"></i> <button type="button" class="link-button get-pdf-btn" data-template-key="expense-tracker">Budget & Expense Tracker</button> - Create spending visibility</li>
+                                <!-- Changed to button type for JS action -->
+                                <li><i class="fas fa-check-circle text-success" aria-hidden="true"></i> <button type="button" class="link-button get-pdf-btn" data-template-key="networth">Net Worth Statement</button> - Map your financial landscape</li>
+                                <li><i class="fas fa-check-circle text-success" aria-hidden="true"></i> <button type="button" class="link-button get-pdf-btn" data-template-key="cashflow">Personal Cash Flow Statement</button> - Understand money movement</li>
+                                <li><i class="fas fa-check-circle text-success" aria-hidden="true"></i> <button type="button" class="link-button get-pdf-btn" data-template-key="expense-tracker">Budget & Expense Tracker</button> - Create spending visibility</li>
                             </ul>
                         </div>
-                         <div class="journey-content" id="journey-action" role="tabpanel" aria-labelledby="journey-action-tab" hidden>
+                         <div class="journey-content" id="journey-content-action" role="tabpanel" aria-labelledby="journey-tab-action" hidden>
                             <h3>Financial Action</h3>
                             <p>Implement decisions and make changes based on your new knowledge and organization.</p>
                             <h4>Relevant Resources:</h4>
                             <ul>
-                                <li><i class="fas fa-check-circle" aria-hidden="true"></i> <button type="button" class="link-button get-pdf-btn" data-template-key="line-budget">Line-Item Budget</button> - Execute detailed spending plan</li>
-                                <li><i class="fas fa-check-circle" aria-hidden="true"></i> <a href="calculator.html">Interest Calculator</a> - Make informed decisions</li>
+                                <!-- Changed to button type for JS action -->
+                                <li><i class="fas fa-check-circle text-success" aria-hidden="true"></i> <button type="button" class="link-button get-pdf-btn" data-template-key="line-budget">Line-Item Budget</button> - Execute detailed spending plan</li>
+                                <li><i class="fas fa-check-circle text-success" aria-hidden="true"></i> <a href="calculator.html">Interest Calculator</a> - Make informed decisions</li>
                             </ul>
                         </div>
-                         <div class="journey-content" id="journey-growth" role="tabpanel" aria-labelledby="journey-growth-tab" hidden>
+                         <div class="journey-content" id="journey-content-growth" role="tabpanel" aria-labelledby="journey-tab-growth" hidden>
                              <h3>Financial Growth</h3>
                             <p>Experience the benefits of your improved financial habits and continue building toward your goals.</p>
                             <h4>Relevant Resources:</h4>
                             <ul>
-                                <li><i class="fas fa-check-circle" aria-hidden="true"></i> <a href="#personal-coaching">Financial Coaching (Coming Soon)</a> - Get personalized guidance</li>
-                                <li><i class="fas fa-check-circle" aria-hidden="true"></i> <a href="#footer-contact">Social Media Community</a> - Connect with others</li>
+                                <li><i class="fas fa-check-circle text-success" aria-hidden="true"></i> <a href="#personal-coaching">Financial Coaching (Coming Soon)</a> - Get personalized guidance</li>
+                                <!-- Updated link to point to social icons in footer -->
+                                <li><i class="fas fa-check-circle text-success" aria-hidden="true"></i> <a href="#footer-contact">Social Media Community</a> - Connect with others</li>
                             </ul>
                         </div>
                     </div>
@@ -333,8 +340,8 @@
                 <h2 id="tools-heading" class="section-title">Tools & Templates</h2>
                 <p class="section-description">Download practical templates to manage your finances effectively. For interactive calculations, try our <a href="calculator.html" class="link-inline">Interest Calculator</a>!</p>
                 <div class="template-grid reveal-stagger">
-                    <!-- Template card structure is okay, image paths & data attributes need checking -->
-                     <article class="template-card" data-template="line-budget" aria-labelledby="template-line-budget-title">
+                    <!-- Added base 'card' class to articles -->
+                     <article class="template-card card" data-template="line-budget" aria-labelledby="template-line-budget-title">
                          <div class="template-preview">
                              <!-- Ensure correct image paths -->
                              <img src="../../assets/images/personal/lineitembudget.svg" alt="Preview of Line-Item Budget template showing income and expense sections" loading="lazy" width="300" height="225" class="template-image template-image-default">
@@ -345,9 +352,9 @@
                              <div class="template-value-prop">
                                  <h4>How This Tool Empowers You:</h4>
                                  <ul class="template-benefits">
-                                     <li><i class="fas fa-check-circle" aria-hidden="true"></i> Provides detailed tracking of every expense category</li>
-                                     <li><i class="fas fa-check-circle" aria-hidden="true"></i> Transforms chaotic spending into organized categories</li>
-                                     <li><i class="fas fa-check-circle" aria-hidden="true"></i> Gives you complete visibility and control over your finances</li>
+                                     <li><i class="fas fa-check-circle text-success" aria-hidden="true"></i> Provides detailed tracking of every expense category</li>
+                                     <li><i class="fas fa-check-circle text-success" aria-hidden="true"></i> Transforms chaotic spending into organized categories</li>
+                                     <li><i class="fas fa-check-circle text-success" aria-hidden="true"></i> Gives you complete visibility and control over your finances</li>
                                  </ul>
                              </div>
                              <div class="template-actions">
@@ -362,7 +369,7 @@
                          </div>
                      </article>
 
-                    <article class="template-card" data-template="networth" aria-labelledby="template-networth-title">
+                    <article class="template-card card" data-template="networth" aria-labelledby="template-networth-title">
                         <div class="template-preview">
                              <img src="../../assets/images/personal/networth.svg" alt="Preview of Net Worth Statement showing assets and liabilities columns" loading="lazy" width="300" height="225" class="template-image template-image-default">
                              <img src="../../assets/images/personal/NetWorth.JPG" alt="Detailed view of Net Worth Statement totals" loading="lazy" width="300" height="225" class="template-image template-image-hover" aria-hidden="true">
@@ -372,9 +379,9 @@
                             <div class="template-value-prop">
                                 <h4>How This Tool Empowers You:</h4>
                                 <ul class="template-benefits">
-                                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Monitors your overall financial health in one snapshot</li>
-                                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Tracks assets and liabilities for clear insights</li>
-                                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Helps you measure net worth growth over time</li>
+                                    <li><i class="fas fa-check-circle text-success" aria-hidden="true"></i> Monitors your overall financial health in one snapshot</li>
+                                    <li><i class="fas fa-check-circle text-success" aria-hidden="true"></i> Tracks assets and liabilities for clear insights</li>
+                                    <li><i class="fas fa-check-circle text-success" aria-hidden="true"></i> Helps you measure net worth growth over time</li>
                                 </ul>
                             </div>
                             <div class="template-actions">
@@ -389,7 +396,7 @@
                          </div>
                      </article>
 
-                     <article class="template-card" data-template="cashflow" aria-labelledby="template-cashflow-title">
+                     <article class="template-card card" data-template="cashflow" aria-labelledby="template-cashflow-title">
                          <div class="template-preview">
                              <img src="../../assets/images/personal/personalcashflow.svg" alt="Preview of Personal Cashflow Statement template showing inflows section" loading="lazy" width="300" height="225" class="template-image template-image-default">
                              <img src="../../assets/images/personal/CashFlow.JPG" alt="Detailed view of Personal Cashflow Statement template outflows section" loading="lazy" width="300" height="225" class="template-image template-image-hover" aria-hidden="true">
@@ -399,9 +406,9 @@
                               <div class="template-value-prop">
                                 <h4>How This Tool Empowers You:</h4>
                                 <ul class="template-benefits">
-                                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Reveals where your money goes each month</li>
-                                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Tracks inflows and outflows for better planning</li>
-                                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Turns deficits into surpluses with clear insights</li>
+                                    <li><i class="fas fa-check-circle text-success" aria-hidden="true"></i> Reveals where your money goes each month</li>
+                                    <li><i class="fas fa-check-circle text-success" aria-hidden="true"></i> Tracks inflows and outflows for better planning</li>
+                                    <li><i class="fas fa-check-circle text-success" aria-hidden="true"></i> Turns deficits into surpluses with clear insights</li>
                                 </ul>
                              </div>
                              <div class="template-actions">
@@ -416,7 +423,7 @@
                          </div>
                      </article>
 
-                    <article class="template-card" data-template="50-30-20" aria-labelledby="template-503020-title">
+                    <article class="template-card card" data-template="50-30-20" aria-labelledby="template-503020-title">
                          <div class="template-preview">
                             <img src="../../assets/images/personal/503020.svg" alt="Preview of 50/30/20 Budget Guide showing category definitions" loading="lazy" width="300" height="225" class="template-image template-image-default">
                             <img src="../../assets/images/personal/50_30_20.JPG" alt="Detailed view of 50/30/20 Budget Guide allocation examples" loading="lazy" width="300" height="225" class="template-image template-image-hover" aria-hidden="true">
@@ -426,9 +433,9 @@
                              <div class="template-value-prop">
                                  <h4>How This Tool Empowers You:</h4>
                                  <ul class="template-benefits">
-                                     <li><i class="fas fa-check-circle" aria-hidden="true"></i> Simplifies income allocation with a proven method</li>
-                                     <li><i class="fas fa-check-circle" aria-hidden="true"></i> Balances needs (50%), wants (30%), and goals (20%)</li>
-                                     <li><i class="fas fa-check-circle" aria-hidden="true"></i> Makes budgeting approachable and effective</li>
+                                     <li><i class="fas fa-check-circle text-success" aria-hidden="true"></i> Simplifies income allocation with a proven method</li>
+                                     <li><i class="fas fa-check-circle text-success" aria-hidden="true"></i> Balances needs (50%), wants (30%), and goals (20%)</li>
+                                     <li><i class="fas fa-check-circle text-success" aria-hidden="true"></i> Makes budgeting approachable and effective</li>
                                  </ul>
                              </div>
                              <div class="template-actions">
@@ -443,7 +450,7 @@
                          </div>
                      </article>
 
-                     <article class="template-card" data-template="expense-tracker" aria-labelledby="template-expense-title">
+                     <article class="template-card card" data-template="expense-tracker" aria-labelledby="template-expense-title">
                          <div class="template-preview">
                             <img src="../../assets/images/personal/budgetexpensetracker.svg" alt="Preview of Simple Expense Tracker showing daily entry rows" loading="lazy" width="300" height="225" class="template-image template-image-default">
                             <img src="../../assets/images/personal/LineBudgetTracker.JPG" alt="Detailed view of Simple Expense Tracker summary area" loading="lazy" width="300" height="225" class="template-image template-image-hover" aria-hidden="true">
@@ -453,9 +460,9 @@
                              <div class="template-value-prop">
                                 <h4>How This Tool Empowers You:</h4>
                                 <ul class="template-benefits">
-                                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Captures every small expense for full awareness</li>
-                                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Organizes spending into clear, actionable data</li>
-                                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Helps you adjust habits with daily tracking</li>
+                                    <li><i class="fas fa-check-circle text-success" aria-hidden="true"></i> Captures every small expense for full awareness</li>
+                                    <li><i class="fas fa-check-circle text-success" aria-hidden="true"></i> Organizes spending into clear, actionable data</li>
+                                    <li><i class="fas fa-check-circle text-success" aria-hidden="true"></i> Helps you adjust habits with daily tracking</li>
                                 </ul>
                             </div>
                             <div class="template-actions">
@@ -489,7 +496,7 @@
                         <li><i class="fas fa-check text-success me-2" aria-hidden="true"></i> Multi-currency support</li>
                      </ul>
                      <div class="calculator-promo-cta mt-lg">
-                         <a href="calculator.html" class="btn btn-primary btn-large btn-icon form-submit-btn">
+                         <a href="calculator.html" class="btn btn-primary btn-large btn-icon form-submit-btn"> <!-- Added form-submit-btn for potential ripple -->
                              <i class="fas fa-arrow-right" aria-hidden="true"></i> Use Calculator Now
                          </a>
                          <p class="promo-subtext mt-sm text-muted">Free, easy to use, and powerful.</p>
@@ -561,6 +568,7 @@
     <!-- Modals -->
 
     <!-- Quiz Modal -->
+    <!-- Added hidden, aria-modal, role -->
     <div id="quiz-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="quiz-modal-title" aria-describedby="quiz-modal-progress" hidden>
         <div class="modal-content quiz-modal-content">
             <button type="button" id="quiz-modal-close" class="modal-close-btn" aria-label="Close Quiz"><i class="fas fa-times" aria-hidden="true"></i></button>
@@ -568,7 +576,7 @@
              <div id="quiz-modal-progress" class="quiz-modal-progress text-center text-muted mb-md" aria-live="polite">
                  Question <span id="quiz-modal-q-current">1</span> of <span id="quiz-modal-q-total">5</span>
             </div>
-            <!-- Use preferred ID -->
+            <!-- Use preferred ID, ensure ID exists -->
             <div id="quiz-modal-question" class="quiz-modal-question-area h4 mb-lg" aria-live="polite">
                 <!-- Question text injected by JS -->
             </div>
@@ -610,6 +618,7 @@
                     <input type="text" class="form-control" id="quiz-city" name="city" required placeholder="City of Residence" aria-label="City of Residence" aria-describedby="quiz-city-error">
                     <span class="invalid-feedback" id="quiz-city-error" aria-live="polite"></span>
                 </div>
+                <!-- Changed to fieldset for better accessibility -->
                 <fieldset class="form-group mb-lg">
                     <legend id="quiz-taken-legend" class="form-label fs-sm mb-sm text-center">Have you taken this quiz before?</legend> <!-- Centered legend -->
                      <div class="radio-group d-flex gap-lg justify-content-center" role="radiogroup" aria-labelledby="quiz-taken-legend">
@@ -692,7 +701,7 @@
                       <span class="invalid-feedback" id="feedback-message-error" aria-live="polite"></span> <!-- Add feedback element -->
                 </div>
                 <!-- Ensure Checkbox Group is wrapped and styled -->
-                <div class="form-group permission-group mb-lg" hidden>
+                <div class="form-group permission-group mb-lg" hidden> <!-- Start hidden -->
                      <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="feedback-permission" name="permission" value="yes">
                         <label class="form-check-label" for="feedback-permission">
@@ -761,7 +770,8 @@
                         <li><a href="../corporate/corporate.html">For Businesses</a></li>
                         <li><a href="#our-approach">Our Approach</a></li>
                         <li><a href="calculator.html">Calculator</a></li>
-                        <li><button type="button" class="link-button" id="footer-open-feedback-btn" aria-haspopup="dialog" aria-controls="feedback-modal">Feedback</button></li> <!-- Feedback trigger as button -->
+                        <!-- Changed to button type for JS trigger -->
+                        <li><button type="button" class="link-button" id="footer-open-feedback-btn" aria-haspopup="dialog" aria-controls="feedback-modal">Feedback</button></li>
                         <li><a href="#footer-contact">Contact</a></li>
                     </ul>
                 </div>
@@ -805,3 +815,4 @@
 
 </body>
 </html>
+--- END OF FILE htmlpersonal.txt ---
