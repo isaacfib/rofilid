@@ -584,13 +584,29 @@ p {
 
 /* Header Tool Button Styling */
 .header-tool-btn {
-  /* Inherits .btn styling */
+  /* Inherits .btn styling, initially .btn-primary in HTML */
   margin-left: auto; /* Pushes it right, if nav list width is not 100% */
   flex-shrink: 0; /* Prevent shrinking */
-  /* Use smaller button size if desired */
   padding: var(--space-sm) var(--space-md);
   font-size: var(--font-size-sm);
 }
+
+/* --- NEW: Specific hover/focus for header tool button --- */
+.header-tool-btn:hover,
+.header-tool-btn:focus-visible {
+  background: transparent; /* Override btn-primary hover */
+  color: var(--pp-color-primary); /* Use primary text color */
+  border-color: var(--pp-color-primary); /* Show primary border */
+  /* Keep transform from base .btn:hover */
+  box-shadow: var(--shadow-lg); /* Keep shadow from base hover */
+  /* Override the specific btn-primary hover shadow if needed */
+}
+/* Ensure focus style is distinct if needed */
+.header-tool-btn:focus-visible {
+    box-shadow: var(--shadow-lg), 0 0 0 3px color-mix(in srgb, var(--pp-color-secondary) 40%, transparent); /* Combine shadows */
+}
+/* --- END NEW --- */
+
 
 /* Mobile Menu - Add styles for toggle, hiding nav list, etc. */
 .mobile-menu-toggle {
@@ -1276,10 +1292,21 @@ p {
 }
 
 /* Ensure buttons inside template cards don't overflow text */
+.template-card .btn {
+   /* Adjust button content layout if necessary */
+   display: inline-flex; /* Already default for btn */
+   align-items: center; /* Already default */
+   /* Ensure text container can shrink/wrap if needed */
+   overflow: hidden; /* Hide overflow on button itself */
+}
 .template-card .btn span {
+    /* Span needs to handle text overflow */
+    display: block; /* Or inline-block */
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    flex-grow: 1; /* Allow span to take space but still respect ellipsis */
+    min-width: 0; /* Important for flex children overflow */
 }
 .template-card .btn i {
     flex-shrink: 0; /* Prevent icon shrinking */
@@ -1622,6 +1649,17 @@ fieldset .invalid-feedback.d-block /* Show error within fieldset manually */
 .form-check-input.is-invalid ~ .form-check-label {
     color: var(--pp-color-danger);
 }
+/* Highlight parent fieldset when radio group is invalid */
+fieldset.is-invalid-check-group {
+    /* Add a subtle visual cue to the fieldset */
+    /* border: 1px dashed var(--pp-color-danger); */ /* Optional: Add a border */
+    /* background-color: color-mix(in srgb, var(--pp-color-danger) 5%, transparent); */ /* Optional: Light background */
+}
+/* Improve focus on invalid radio/checkbox group fieldset */
+fieldset.is-invalid-check-group legend {
+    color: var(--pp-color-danger); /* Highlight legend text */
+}
+
 
 .form-control.is-invalid:focus,
 .form-select.is-invalid:focus,
@@ -2080,7 +2118,7 @@ fieldset .invalid-feedback.d-block /* Show error within fieldset manually */
 }
 
 .fab-option i {
-  color: var(--pp-color-secondary); /* Accent icon color */
+  color: var(--pp-color-primary); /* CHANGE: Use primary color (dark teal) */
   margin-right: var(--space-sm); /* Added explicit spacing */
 }
 
@@ -2099,6 +2137,12 @@ fieldset .invalid-feedback.d-block /* Show error within fieldset manually */
   outline: none;
   text-decoration: none; /* CHANGE: Ensure no underline */
 }
+/* Optional: Change icon color on hover if desired */
+/* .fab-option:hover i,
+.fab-option:focus-visible i {
+    color: var(--pp-color-secondary); /* Example: mint on hover */
+/* } */
+
 .fab-option:focus-visible {
   box-shadow: var(--shadow-lg), 0 0 0 3px color-mix(in srgb, var(--pp-color-secondary) 30%, transparent);
 }
@@ -2195,33 +2239,38 @@ fieldset .invalid-feedback.d-block /* Show error within fieldset manually */
 
 
 /* Scroll Animations */
-/* Correct approach: Elements start visible, class adds hidden state */
+/* Correct approach: Elements start hidden */
 .reveal-on-scroll {
-    opacity: 1; /* Start visible */
-    transform: translateY(0);
-    transition: opacity 0.8s cubic-bezier(0.175, 0.885, 0.32, 1), transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1);
-}
-.reveal-on-scroll:not(.revealed) { /* Hide elements until revealed by JS */
     opacity: 0;
     transform: translateY(40px);
-    pointer-events: none; /* Prevent interaction before revealed */
+    /* transition defined below for revealed state */
+}
+.reveal-on-scroll.revealed {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.8s cubic-bezier(0.175, 0.885, 0.32, 1), transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1);
+    pointer-events: auto; /* Re-enable interaction */
+}
+.reveal-on-scroll:not(.revealed) {
+     pointer-events: none; /* Prevent interaction before revealed */
 }
 
 /* Ensure stagger children are initially hidden */
 .reveal-stagger > * {
   opacity: 0;
   transform: translateY(40px);
+  pointer-events: none; /* Prevent interaction before revealed */
 }
 
 .reveal-stagger > *.revealed {
   opacity: 1;
   transform: translateY(0);
   transition: opacity 0.8s cubic-bezier(0.175, 0.885, 0.32, 1), transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1);
-  /* Individual delays set by JS preferred for more complex scenarios, or use nth-child */
+  pointer-events: auto; /* Re-enable interaction */
+  /* Individual delays set by JS or CSS nth-child */
 }
 
 /* Apply individual delays for stagger effect (Adjust index if elements change) */
-/* These can be kept as fallbacks or simpler implementations */
 .reveal-stagger > *:nth-child(1).revealed { transition-delay: 0.1s; }
 .reveal-stagger > *:nth-child(2).revealed { transition-delay: 0.2s; }
 .reveal-stagger > *:nth-child(3).revealed { transition-delay: 0.3s; }
@@ -2263,8 +2312,9 @@ fieldset .invalid-feedback.d-block /* Show error within fieldset manually */
       margin-left: auto; /* Push to right */
   }
 
-  #primary-navigation.nav-list { /* Targeting the UL when it's used for mobile */
-    display: block; /* Change display type */
+  /* Target primary nav UL for mobile styles */
+  #primary-navigation {
+    display: block; /* Required for flex/positioning to work */
     position: fixed; /* Fixed position */
     inset: var(--header-height) 0 0 0; /* Position below header, cover screen */
     background-color: color-mix(in srgb, var(--rofilid-white) 95%, transparent); /* Slightly transparent white */
@@ -2278,42 +2328,51 @@ fieldset .invalid-feedback.d-block /* Show error within fieldset manually */
     transform: translateX(100%); /* Start off-screen */
     opacity: 0;
     visibility: hidden;
-    transition: transform 0.4s ease-out, opacity 0.4s ease-out, visibility 0.4s;
+    transition: transform 0.4s ease-out, opacity 0.4s ease-out, visibility 0s linear 0.4s; /* Delay visibility change */
     gap: 0; /* Reset gap */
     overflow-y: auto; /* Allow scrolling if content overflows */
     z-index: 1000; /* Below toggle button */
+    list-style: none; /* Ensure no list bullets */
+    margin: 0; /* Reset default margin */
   }
-  #primary-navigation.nav-list.active { /* State when menu is open */
+  #primary-navigation.active { /* State when menu is open */
     transform: translateX(0);
     opacity: 1;
     visibility: visible;
+    transition: transform 0.4s ease-out, opacity 0.4s ease-out, visibility 0s linear 0s; /* Make visible immediately */
   }
-  .nav-item { width: 100%; }
-  .nav-link {
+
+  /* Nav Item and Link styles within mobile nav */
+  #primary-navigation .nav-item { width: 100%; }
+  #primary-navigation .nav-link {
       display: block;
       padding: var(--space-md) var(--space-lg);
       text-align: left;
       border-bottom: 1px solid var(--pp-color-border-light);
       font-size: var(--font-size-md); /* Larger font for mobile nav */
+      position: static; /* Reset position from desktop */
+      color: var(--pp-color-text); /* Ensure correct text color */
   }
-   .nav-item:last-child .nav-link { border-bottom: none; }
+   #primary-navigation .nav-item:last-child .nav-link { border-bottom: none; }
 
-   .nav-link::after { /* Remove underline effect on mobile */
+   #primary-navigation .nav-link::after { /* Remove underline effect on mobile */
       display: none;
    }
    /* Optional: Add an active indicator */
-   .nav-link.active-page {
+   #primary-navigation .nav-link.active-page {
        background-color: var(--pp-color-bg-light-accent);
+       color: var(--pp-color-primary); /* Ensure active link color */
    }
 
   /* Show mobile-only nav items */
   .nav-item.mobile-only { display: block; }
 
-  /* Hide/show toggle icons based on nav state - requires JS to toggle 'active' on header/button */
+  /* Hide/show toggle icons based on nav state */
   .mobile-menu-toggle .open-icon { display: inline-block; } /* Show bars by default */
   .mobile-menu-toggle .close-icon { display: none; } /* Hide X by default */
   .mobile-menu-toggle.active .open-icon { display: none; } /* Hide bars when active */
   .mobile-menu-toggle.active .close-icon { display: inline-block; } /* Show X when active */
+
 
   .hero-stats-grid { grid-template-columns: 1fr; } /* Stack stats */
 
@@ -2576,3 +2635,18 @@ fieldset .invalid-feedback.d-block /* Show error within fieldset manually */
 
   .form-group, form { display: none !important; } /* Hide forms generally */
 }
+
+/* Add is-invalid-check-group class for fieldset errors */
+.is-invalid-check-group legend {
+    color: var(--pp-color-danger);
+}
+/* Optional: add border to fieldset if needed */
+/*
+.is-invalid-check-group {
+    border: 1px dashed var(--pp-color-danger);
+    padding: var(--space-sm);
+    margin-left: -var(--space-sm);
+    margin-right: -var(--space-sm);
+    border-radius: var(--radius-sm);
+}
+*/
