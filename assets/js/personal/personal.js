@@ -716,6 +716,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 menuToggle.click();
            }
         });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (primaryNav.classList.contains('active') && 
+                !primaryNav.contains(e.target) && 
+                !menuToggle.contains(e.target)) {
+                menuToggle.click();
+            }
+        });
+
+        // Close menu when scrolling
+        window.addEventListener('scroll', function() {
+            if (primaryNav.classList.contains('active')) {
+                menuToggle.click();
+            }
+        });
+        
     } else {
         console.warn("Mobile nav toggle or primary nav element not found.");
     }
