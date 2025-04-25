@@ -605,18 +605,25 @@
              <button type="button" id="quiz-demographics-close" class="modal-close-btn" aria-label="Close Demographics Form"><i class="fas fa-times" aria-hidden="true"></i></button>
             <h3 id="quiz-demographics-title" class="modal-title text-center mb-md">Before You Start</h3>
             <p id="quiz-demographics-description" class="modal-description text-center mb-lg">Please provide some info to help us improve.</p>
+            <!-- MODIFICATION START: Added list attributes and datalists -->
             <form id="quiz-demographics-form" class="demographics-form" novalidate>
                 <div class="form-group mb-md">
-                     <label for="quiz-country" class="form-label visually-hidden">Country:</label>
-                    <input type="text" class="form-control" id="quiz-country" name="country" required placeholder="Country of Residence" aria-label="Country of Residence" aria-describedby="quiz-country-error">
-                     <span class="invalid-feedback" id="quiz-country-error" aria-live="polite"></span>
+                    <label for="quiz-country" class="form-label visually-hidden">Country:</label>
+                    <input type="text" class="form-control" id="quiz-country" name="country" required placeholder="Country of Residence" aria-label="Country of Residence" aria-describedby="quiz-country-error" list="country-list-options-quiz" autocomplete="off">
+                    <datalist id="country-list-options-quiz">
+                        <!-- Options populated by JS -->
+                    </datalist>
+                    <span class="invalid-feedback" id="quiz-country-error" aria-live="polite"></span>
                  </div>
                 <div class="form-group mb-md">
                     <label for="quiz-city" class="form-label visually-hidden">City:</label>
-                    <input type="text" class="form-control" id="quiz-city" name="city" required placeholder="City of Residence" aria-label="City of Residence" aria-describedby="quiz-city-error">
+                    <input type="text" class="form-control" id="quiz-city" name="city" required placeholder="City (Select Country First)" aria-label="City of Residence" aria-describedby="quiz-city-error" list="city-list-options-quiz" disabled autocomplete="off">
+                     <datalist id="city-list-options-quiz">
+                        <!-- Options populated by JS -->
+                    </datalist>
                     <span class="invalid-feedback" id="quiz-city-error" aria-live="polite"></span>
                 </div>
-                <!-- Changed to fieldset for better accessibility -->
+                 <!-- Rest of the demographics form -->
                 <fieldset class="form-group mb-lg">
                     <legend id="quiz-taken-legend" class="form-label fs-sm mb-sm text-center">Have you taken this quiz before?</legend> <!-- Centered legend -->
                      <div class="radio-group d-flex gap-lg justify-content-center" role="radiogroup" aria-labelledby="quiz-taken-legend">
@@ -636,6 +643,7 @@
                     <button type="submit" class="btn btn-primary btn-icon form-submit-btn"><i class="fas fa-arrow-right" aria-hidden="true"></i> Start Quiz</button>
                 </div>
             </form>
+            <!-- MODIFICATION END -->
         </div>
     </div>
 
@@ -645,22 +653,30 @@
             <button type="button" id="pdf-download-close" class="modal-close-btn" aria-label="Close Download Form"><i class="fas fa-times" aria-hidden="true"></i></button>
              <h3 id="pdf-download-title" class="modal-title text-center mb-md">Get Your Free PDF</h3>
              <p id="pdf-download-description" class="modal-description text-center mb-lg">Enter location to download.</p>
+            <!-- MODIFICATION START: Added list attributes and datalists -->
             <form id="pdf-download-form" class="pdf-download-form" novalidate>
                 <input type="hidden" id="pdf-template-key" name="template_key">
                  <div class="form-group mb-md">
                     <label for="pdf-country" class="form-label visually-hidden">Country:</label>
-                     <input type="text" class="form-control" id="pdf-country" name="country" required placeholder="Country" aria-label="Country" aria-describedby="pdf-country-error">
-                     <span class="invalid-feedback" id="pdf-country-error" aria-live="polite"></span>
+                    <input type="text" class="form-control" id="pdf-country" name="country" required placeholder="Country" aria-label="Country" aria-describedby="pdf-country-error" list="country-list-options-pdf" autocomplete="off">
+                    <datalist id="country-list-options-pdf">
+                        <!-- Options populated by JS -->
+                    </datalist>
+                    <span class="invalid-feedback" id="pdf-country-error" aria-live="polite"></span>
                 </div>
                 <div class="form-group mb-lg">
                      <label for="pdf-city" class="form-label visually-hidden">City:</label>
-                     <input type="text" class="form-control" id="pdf-city" name="city" required placeholder="City" aria-label="City" aria-describedby="pdf-city-error">
-                     <span class="invalid-feedback" id="pdf-city-error" aria-live="polite"></span>
+                     <input type="text" class="form-control" id="pdf-city" name="city" required placeholder="City (Select Country First)" aria-label="City" aria-describedby="pdf-city-error" list="city-list-options-pdf" disabled autocomplete="off">
+                    <datalist id="city-list-options-pdf">
+                         <!-- Options populated by JS -->
+                    </datalist>
+                    <span class="invalid-feedback" id="pdf-city-error" aria-live="polite"></span>
                 </div>
                  <div class="text-center">
                     <button type="submit" class="btn btn-primary btn-icon form-submit-btn"><i class="fas fa-download" aria-hidden="true"></i> Download PDF</button>
                  </div>
             </form>
+            <!-- MODIFICATION END -->
         </div>
     </div>
 
@@ -807,9 +823,6 @@
 
     <!-- Main Script File -->
     <script src="../../assets/js/personal/personal.js" defer></script>
-
-    <!-- Add country list data (example using a separate simple data file/object) -->
-    <!-- Example: <script src="country-data.js" defer></script> -->
 
 </body>
 </html>
