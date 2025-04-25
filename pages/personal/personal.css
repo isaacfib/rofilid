@@ -480,6 +480,25 @@ p {
   box-shadow: 0 10px 20px color-mix(in srgb, var(--pp-color-primary) 20%, transparent);
 }
 
+/* Specific button colors for correct/incorrect answers */
+.btn-success-light {
+  background-color: color-mix(in srgb, var(--pp-color-success) 15%, transparent);
+  border-color: var(--pp-color-success);
+  color: var(--pp-color-text);
+}
+.btn-danger-light {
+  background-color: color-mix(in srgb, var(--pp-color-danger) 15%, transparent);
+  border-color: var(--pp-color-danger);
+  color: var(--pp-color-text);
+}
+/* Remove hover effect on these specific feedback buttons if needed */
+.btn-success-light:hover, .btn-danger-light:hover {
+   /* Override hover effect or keep it subtle */
+   transform: none;
+   box-shadow: var(--shadow-sm);
+}
+
+
 .btn-icon i {
   line-height: 0; /* Helps with vertical alignment */
 }
@@ -764,7 +783,7 @@ p {
     border: 1px solid var(--pp-color-border-light);
     box-shadow: var(--shadow-md);
     overflow: hidden;
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow var(--transition-normal);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow var(--transition-normal), border-color var(--transition-fast), background-color var(--transition-fast); /* Added transitions */
     position: relative;
     display: flex;
     flex-direction: column;
@@ -904,6 +923,12 @@ p {
 
 
 /* Learning Hub Section */
+#quiz-progress-message {
+  /* Styling for the overall progress message (e.g., font size, color) */
+  font-weight: var(--font-weight-medium);
+  color: var(--pp-color-text-secondary);
+}
+
 .category-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -922,6 +947,10 @@ p {
 
 .category-card .card-content {
    padding: var(--space-xl) var(--space-lg);
+   /* Ensure enough space for indicator if needed */
+   display: flex; /* Use flex to push button down */
+   flex-direction: column;
+   height: 100%;
 }
 
 .category-card .category-icon {
@@ -942,12 +971,47 @@ p {
 
 .category-card p {
     color: var(--pp-color-text-secondary);
-    flex-grow: 1;
+    /* Removed flex-grow here - button now pushed down by margin-top: auto */
     margin-bottom: var(--space-lg);
 }
-.category-card .start-quiz-btn {
-    margin-top: auto;
+
+.category-card .quiz-completion-indicator {
+  /* Styles for the completion indicator text, e.g. "✔ Completed (Best: 4/5)" */
+  display: block; /* Ensure it's on its own line */
+  font-size: var(--font-size-sm);
+  color: var(--pp-color-success); /* Default to success color, JS might override */
+  margin-top: var(--space-sm);
+  font-weight: var(--font-weight-medium);
+  min-height: 1.2em; /* Prevent layout jumps if text appears/disappears */
 }
+
+
+.category-card .start-quiz-btn {
+    margin-top: auto; /* Pushes button to the bottom */
+    margin-top: var(--space-sm); /* Ensures space between indicator/p and button */
+}
+/* Adjust bottom margin of the element before the indicator/button */
+.category-card .card-content > *:nth-last-child(2):not(.quiz-completion-indicator):not(.start-quiz-btn), /* Element before button if no indicator */
+.category-card .card-content > *:nth-last-child(3):not(.quiz-completion-indicator) /* Element before indicator */ {
+     margin-bottom: var(--space-lg); /* Ensure paragraph has bottom margin */
+}
+
+/* Optional styling for completed card */
+.category-card.completed {
+   border-left: 4px solid var(--pp-color-success); /* Example: Green left border */
+   /* background-color: color-mix(in srgb, var(--pp-color-success) 5%, transparent); */ /* Optional subtle tint */
+}
+/* Make the "Retake" button (outline) stand out a bit */
+.category-card.completed .start-quiz-btn {
+    border-color: var(--pp-color-primary-light); /* Slightly darker border */
+    color: var(--pp-color-primary-dark);
+}
+.category-card.completed .start-quiz-btn:hover {
+    background: var(--gradient-primary); /* Keep primary hover */
+    border-color: transparent;
+    color: var(--rofilid-white);
+}
+
 .full-challenge-link {
     text-align: center;
     margin-top: var(--space-2xl);
@@ -1804,32 +1868,48 @@ fieldset.is-invalid-check-group legend {
 .quiz-option[disabled] {
     opacity: 0.7;
     cursor: default;
-    background-color: transparent !important;
-    color: var(--pp-color-text-secondary) !important;
-    border-color: var(--pp-color-border) !important;
-    box-shadow: none !important;
+    /* Remove explicit background/color/border to allow correct/incorrect override */
 }
 .quiz-option.correct {
-    background: color-mix(in srgb, var(--pp-color-success) 15%, transparent) !important;
-    border-color: var(--pp-color-success) !important;
-    color: var(--pp-color-text) !important;
+    /* Removed !important to allow base .btn hover to work (though JS disables it) */
+    background: color-mix(in srgb, var(--pp-color-success) 15%, transparent);
+    border-color: var(--pp-color-success);
+    color: var(--pp-color-text); /* Use text color for readability */
     font-weight: var(--font-weight-semibold);
     box-shadow: var(--shadow-sm);
+    /* Remove outline style as base button should handle focus */
 }
 .quiz-option.correct[disabled] {
-   opacity: 0.8;
+   opacity: 0.9; /* Slightly less opaque when disabled but correct */
 }
 .quiz-option.incorrect {
-    background: color-mix(in srgb, var(--pp-color-danger) 15%, transparent) !important;
-    border-color: var(--pp-color-danger) !important;
-    color: var(--pp-color-text) !important;
+    /* Removed !important */
+    background: color-mix(in srgb, var(--pp-color-danger) 15%, transparent);
+    border-color: var(--pp-color-danger);
+    color: var(--pp-color-text);
     box-shadow: var(--shadow-sm);
+     /* Remove outline style */
 }
 .quiz-option.incorrect[disabled] {
-     opacity: 0.8;
+     opacity: 0.9; /* Slightly less opaque when disabled but incorrect */
 }
 
-#quiz-modal-feedback {
+/* Override general .btn:hover for disabled quiz options */
+.quiz-option[disabled]:hover {
+  transform: none;
+  box-shadow: var(--shadow-sm); /* Revert to base shadow or none */
+}
+/* Ensure hover on disabled still uses the correct/incorrect colors */
+.quiz-option.correct[disabled]:hover {
+    background: color-mix(in srgb, var(--pp-color-success) 15%, transparent);
+}
+.quiz-option.incorrect[disabled]:hover {
+     background: color-mix(in srgb, var(--pp-color-danger) 15%, transparent);
+}
+
+
+/* Quiz Feedback Area Styles (renamed to avoid confusion with global form feedback) */
+.quiz-modal-feedback { /* Used for correct/incorrect explanation box */
     padding: var(--space-md);
     border-radius: var(--radius-md);
     margin-bottom: var(--space-lg);
@@ -1837,16 +1917,17 @@ fieldset.is-invalid-check-group legend {
     font-weight: var(--font-weight-medium);
     font-size: var(--font-size-sm);
 }
-#quiz-modal-feedback.correct {
+.quiz-modal-feedback.correct {
     background-color: color-mix(in srgb, var(--pp-color-success) 10%, transparent);
     border-color: color-mix(in srgb, var(--pp-color-success) 30%, transparent);
-    color: var(--pp-color-success);
+    color: color-mix(in srgb, var(--pp-color-success) 95%, black);
 }
-#quiz-modal-feedback.incorrect {
+.quiz-modal-feedback.incorrect {
     background-color: color-mix(in srgb, var(--pp-color-danger) 10%, transparent);
     border-color: color-mix(in srgb, var(--pp-color-danger) 30%, transparent);
-    color: var(--pp-color-danger);
+    color: color-mix(in srgb, var(--pp-color-danger) 95%, black);
 }
+
 
 #quiz-modal-results {
     text-align: center;
@@ -2215,8 +2296,9 @@ fieldset.is-invalid-check-group legend {
 .reveal-stagger > *.revealed {
     opacity: 1;
     transform: translateY(0);
-    transition: opacity 0.8s cubic-bezier(0.175, 0.885, 0.32, 1), transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1);
+    transition: opacity 0.8s cubic-bezier(0.175, 0.885, 0.32, 1), transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1), var(--reveal-delay, 0s); /* Added reveal delay */
     pointer-events: auto; /* Re-enable interaction */
+    transition-delay: var(--reveal-delay, 0s); /* Explicit delay property */
 }
 
 /* Stagger delay set by JS via inline style preferred now */
@@ -2529,7 +2611,9 @@ fieldset.is-invalid-check-group legend {
   .approach-icon,
   .template-actions, /* Hide download/buy buttons */
   .template-price-note,
-  .start-quiz-btn,
+  .start-quiz-btn, /* Hide quiz buttons */
+  .quiz-completion-indicator, /* Hide completion indicator */
+  #quiz-progress-message, /* Hide overall progress */
   .full-challenge-link,
   .calculator-promo-cta,
   .coaching-interest, /* Hide interest form */
@@ -2578,6 +2662,7 @@ fieldset.is-invalid-check-group legend {
       page-break-inside: avoid !important;
       background: #fff !important;
       height: auto !important; /* Let height adjust */
+      border-left: none !important; /* Remove completed border */
   }
   .card-image img, .template-preview img { display: none; }
   .card-cta { display: none; }
