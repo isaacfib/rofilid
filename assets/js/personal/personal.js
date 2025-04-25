@@ -1,6 +1,43 @@
 // personal.js
 'use strict';
 
+// --- Data Lists ---
+const countryList = [
+    "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia",
+    "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium",
+    "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei",
+    "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Central African Republic",
+    "Chad", "Chile", "China", "Colombia", "Comoros", "Congo (Congo-Brazzaville)", "Costa Rica", "Côte d'Ivoire",
+    "Croatia", "Cuba", "Cyprus", "Czechia (Czech Republic)", "Democratic Republic of the Congo", "Denmark",
+    "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea",
+    "Estonia", "Eswatini (fmr. \"Swaziland\")", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia",
+    "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Holy See",
+    "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy",
+    "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kuwait", "Kyrgyzstan", "Laos", "Latvia",
+    "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi",
+    "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia",
+    "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar (formerly Burma)", "Namibia",
+    "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea",
+    "North Macedonia", "Norway", "Oman", "Pakistan", "Palau", "Palestine State", "Panama", "Papua New Guinea",
+    "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda",
+    "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino",
+    "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore",
+    "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Korea", "South Sudan", "Spain",
+    "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria", "Tajikistan", "Tanzania", "Thailand",
+    "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Uganda",
+    "Ukraine", "United Arab Emirates", "United Kingdom", "United States of America", "Uruguay", "Uzbekistan",
+    "Vanuatu", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+];
+
+// Note: Your nigeria-cities.txt lists STATES. We'll use them as states/cities for simplicity here.
+const nigerianStatesList = [
+    "Abuja", "Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River",
+    "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina",
+    "Kebbi", "Kogi", "Kwara", "Lagos", "Nassarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau",
+    "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"
+];
+
+
 // --- Quiz Data (Unchanged) ---
 const introQuizQuestions = [
     { id: 1, categoryId: 1, category: "Income & Vitals Check", question: "What is the first essential step when starting to create a budget?", options: ["Calculate total monthly income", "List all fixed expenses", "Set long-term financial goals", "Track spending habits for a month"], correctAnswerIndex: 0, explanation: "Knowing your total income is fundamental; it's the basis upon which all budget allocations are planned." },
@@ -25,6 +62,7 @@ const introQuizQuestions = [
     { id: 20, categoryId: 4, category: "Spending Awareness", question: "Item costs ₦25,000, but has a 20% discount. What's the final price?", options: ["₦5,000", "₦20,000", "₦24,000", "₦30,000"], correctAnswerIndex: 1, explanation: "Discount = ₦25k * 0.20 = ₦5k. Final Price = ₦25k - ₦5k = ₦20,000." }
 ];
 
+
 // --- Global State Variables ---
 let currentCategoryId = null;
 let currentQuestions = [];
@@ -43,7 +81,10 @@ let journeyPath, journeyNodes, journeyContents, journeyContentContainer; // jour
 let menuToggle, primaryNav; // Mobile Nav elements
 let mainContentArea;
 let journeyNodeList = []; // Array copy for easier index finding
-
+// MODIFICATION START: Added Datalist element references
+let quizCountryInput, quizCityInput, quizCountryDatalist, quizCityDatalist;
+let pdfCountryInput, pdfCityInput, pdfCountryDatalist, pdfCityDatalist;
+// MODIFICATION END
 
 // --- Utility Function to Reset Form Errors ---
 function resetFormErrors(formId) {
@@ -366,6 +407,16 @@ function handleQuizStart(categoryId) {
         resetFormErrors('quiz-demographics-form');
         const form = demographicsModal.querySelector('#quiz-demographics-form');
         if (form) form.reset();
+        // MODIFICATION START: Reset city field state when showing demo modal
+        if (quizCityInput) {
+            quizCityInput.value = '';
+            quizCityInput.disabled = true;
+            quizCityInput.placeholder = "City (Select Country First)";
+        }
+        if (quizCityDatalist) {
+            quizCityDatalist.innerHTML = ''; // Clear Nigeria states
+        }
+        // MODIFICATION END
         demographicsModal.hidden = false;
         document.body.classList.add('modal-open');
         // Focus first input
@@ -374,6 +425,7 @@ function handleQuizStart(categoryId) {
         startQuiz(categoryId);
     }
 }
+
 
 // --- Financial Journey Path Functions ---
 function stopJourneyAutoAdvance() {
@@ -576,6 +628,75 @@ function setupJourneyObserver() {
     console.log("Journey auto-advance observer watching #financial-journey section.");
 }
 
+// --- Datalist Helper Functions ---
+/**
+ * Populates a datalist element with options from an array.
+ * @param {HTMLDataListElement} datalistElement The <datalist> element to populate.
+ * @param {string[]} optionsArray An array of strings for the options.
+ */
+function populateDatalist(datalistElement, optionsArray) {
+    if (!datalistElement || !Array.isArray(optionsArray)) return;
+    // Store current scroll position if applicable (though datalists rarely scroll)
+    // const currentScrollTop = datalistElement.scrollTop;
+    datalistElement.innerHTML = ''; // Clear existing options
+    optionsArray.forEach(optionText => {
+        const option = document.createElement('option');
+        option.value = optionText;
+        datalistElement.appendChild(option);
+    });
+    // Restore scroll position
+    // datalistElement.scrollTop = currentScrollTop;
+}
+
+/**
+ * Handles changes in a country input field to update the corresponding city datalist.
+ * @param {Event} event The input event from the country field.
+ */
+function handleCountryChange(event) {
+    const countryInput = event.target;
+    const countryValue = countryInput.value.trim();
+    let cityInput = null;
+    let cityDatalist = null;
+
+    // Find the corresponding city input and datalist within the SAME modal
+    const modalContent = countryInput.closest('.modal-content');
+    if (!modalContent) return; // Should not happen within modals
+
+    if (modalContent.classList.contains('quiz-demographics-content')) {
+        cityInput = quizCityInput;
+        cityDatalist = quizCityDatalist;
+    } else if (modalContent.classList.contains('pdf-download-content')) {
+        cityInput = pdfCityInput;
+        cityDatalist = pdfCityDatalist;
+    }
+
+    if (!cityInput || !cityDatalist) {
+        console.error("Could not find corresponding city input/datalist for", countryInput.id);
+        return;
+    }
+
+    // Check if Nigeria is selected (case-insensitive)
+    if (countryValue.toLowerCase() === 'nigeria') {
+        console.log(`Nigeria selected in ${countryInput.id}. Populating states.`);
+        populateDatalist(cityDatalist, nigerianStatesList);
+        cityInput.disabled = false;
+        cityInput.placeholder = "State/City in Nigeria";
+        cityInput.setAttribute('list', cityDatalist.id); // Ensure list attribute is set
+    } else {
+        // Check if the datalist is not already empty before clearing
+        if (cityDatalist.options.length > 0) {
+             console.log(`Non-Nigeria country selected/cleared in ${countryInput.id}. Clearing states.`);
+            cityDatalist.innerHTML = ''; // Clear the datalist only if it had options
+        }
+        cityInput.disabled = true;   // Optionally disable
+        cityInput.value = '';        // Optionally clear value
+        cityInput.placeholder = "City (Select Country First)";
+        // Remove or keep the list attribute? Keeping it but empty is fine.
+        // cityInput.removeAttribute('list');
+    }
+}
+// --- END Datalist Helper Functions ---
+
 
 // --- Helper to open feedback modal (reusable) ---
 function openFeedbackModal(triggerButton = null) { // Optional: pass the button that triggered it
@@ -630,9 +751,20 @@ document.addEventListener('DOMContentLoaded', function() {
     journeyContentContainer = document.querySelector('.journey-content-container');
     mainContentArea = document.getElementById('main-content');
 
+    // MODIFICATION START: Cache datalist related elements
+    quizCountryInput = document.getElementById('quiz-country');
+    quizCityInput = document.getElementById('quiz-city');
+    quizCountryDatalist = document.getElementById('country-list-options-quiz');
+    quizCityDatalist = document.getElementById('city-list-options-quiz');
+
+    pdfCountryInput = document.getElementById('pdf-country');
+    pdfCityInput = document.getElementById('pdf-city');
+    pdfCountryDatalist = document.getElementById('country-list-options-pdf');
+    pdfCityDatalist = document.getElementById('city-list-options-pdf'); // Corrected ID reference here
+    // MODIFICATION END
+
     // Check essential elements (optional, for debugging)
     // if (!quizModal) console.warn("Quiz Modal not found.");
-    // ... other checks ...
     if (!mainContentArea) console.error("Main content area (#main-content) not found! Many listeners will fail.");
 
 
@@ -719,8 +851,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Close menu when clicking outside
         document.addEventListener('click', function(e) {
-            if (primaryNav.classList.contains('active') && 
-                !primaryNav.contains(e.target) && 
+            if (primaryNav.classList.contains('active') &&
+                !primaryNav.contains(e.target) &&
                 !menuToggle.contains(e.target)) {
                 menuToggle.click();
             }
@@ -732,10 +864,39 @@ document.addEventListener('DOMContentLoaded', function() {
                 menuToggle.click();
             }
         });
-        
+
     } else {
         console.warn("Mobile nav toggle or primary nav element not found.");
     }
+
+
+    // --- Populate Country Datalists on Load ---
+    if (quizCountryDatalist && pdfCountryDatalist) {
+        populateDatalist(quizCountryDatalist, countryList);
+        populateDatalist(pdfCountryDatalist, countryList);
+        console.log("Country datalists populated.");
+    } else {
+        console.warn("Could not find one or both country datalist elements.");
+    }
+
+    // --- Attach Country Input Listeners ---
+    if (quizCountryInput) {
+        quizCountryInput.addEventListener('input', handleCountryChange);
+        // Add blur listener to validate exact match from list if needed
+        // quizCountryInput.addEventListener('blur', validateDatalistSelection);
+    } else {
+        console.warn("Quiz country input not found.");
+    }
+    if (pdfCountryInput) {
+        pdfCountryInput.addEventListener('input', handleCountryChange);
+         // pdfCountryInput.addEventListener('blur', validateDatalistSelection);
+    } else {
+        console.warn("PDF country input not found.");
+    }
+
+    // --- Initialize City Inputs (Disabled by default) ---
+    if(quizCityInput) quizCityInput.disabled = true;
+    if(pdfCityInput) pdfCityInput.disabled = true;
 
 
     // --- Quiz Related Listeners ---
@@ -781,29 +942,48 @@ document.addEventListener('DOMContentLoaded', function() {
             resetFormErrors('quiz-demographics-form');
             let isValid = true;
 
-            const countryInput = document.getElementById('quiz-country');
-            const cityInput = document.getElementById('quiz-city');
+            // Re-fetch inputs inside handler in case DOM changes
+            const currentCountryInput = demographicsForm.querySelector('#quiz-country');
+            const currentCityInput = demographicsForm.querySelector('#quiz-city');
             const takenBeforeRadios = demographicsForm.querySelectorAll('input[name="taken_before"]');
             const takenBeforeChecked = demographicsForm.querySelector('input[name="taken_before"]:checked');
-            const radioFieldset = takenBeforeRadios[0]?.closest('fieldset');
+            const radioFieldset = takenBeforeRadios.length > 0 ? takenBeforeRadios[0].closest('fieldset') : null;
 
-            if (!countryInput?.value.trim()) {
-                showFeedback(countryInput, 'Please enter your country'); isValid = false;
-            } else showFeedback(countryInput, '', false);
+            if (!currentCountryInput?.value.trim()) {
+                showFeedback(currentCountryInput, 'Please enter your country'); isValid = false;
+            } else showFeedback(currentCountryInput, '', false);
 
-            if (!cityInput?.value.trim()) {
-                showFeedback(cityInput, 'Please enter your city'); isValid = false;
-            } else showFeedback(cityInput, '', false);
+            // Validate City ONLY if it's enabled (i.e., Nigeria was selected)
+            if (!currentCityInput.disabled && !currentCityInput?.value.trim()) {
+                 showFeedback(currentCityInput, 'Please enter your state/city in Nigeria'); isValid = false;
+            } else if (!currentCityInput.disabled) {
+                 // Optionally, validate if the city input matches a Nigerian state if Nigeria is selected
+                 // if (currentCountryInput.value.toLowerCase() === 'nigeria' && !nigerianStatesList.includes(currentCityInput.value)) {
+                 //     showFeedback(currentCityInput, 'Please select a valid state/city from the list'); isValid = false;
+                 // } else {
+                     showFeedback(currentCityInput, '', false); // Clear error if valid or not required
+                 // }
+            } else {
+                 showFeedback(currentCityInput, '', false); // Clear potential error if disabled
+            }
+
 
             if (!takenBeforeChecked) {
-                showFeedback(radioFieldset, 'Please select an option', true); isValid = false;
-            } else showFeedback(radioFieldset, '', false);
+                if(radioFieldset) showFeedback(radioFieldset, 'Please select an option', true); // Show error on fieldset
+                 isValid = false;
+            } else {
+                if(radioFieldset) showFeedback(radioFieldset, '', false);
+             }
 
 
             if (isValid) {
                 quizDemographicsSubmitted = true;
                 sessionStorage.setItem('quizDemographicsSubmitted', 'true');
-                console.log('Submitting Demographics:', { /* form data */ }); // Placeholder
+                console.log('Submitting Demographics:', {
+                    country: currentCountryInput.value,
+                    city: currentCityInput.value,
+                    taken_before: takenBeforeChecked.value
+                 });
 
                 closeModal(demographicsModal);
                 const selectedCategoryId = sessionStorage.getItem('selectedQuizCategory');
@@ -841,9 +1021,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     templateKeyInput.value = templateKey;
                     resetFormErrors('pdf-download-form');
                     pdfDownloadForm.reset();
+                    // MODIFICATION START: Reset city state for PDF modal
+                    if (pdfCityInput) {
+                        pdfCityInput.value = '';
+                        pdfCityInput.disabled = true;
+                        pdfCityInput.placeholder = "City (Select Country First)";
+                    }
+                    if (pdfCityDatalist) {
+                        pdfCityDatalist.innerHTML = '';
+                    }
+                    // MODIFICATION END
                     pdfModal.hidden = false;
                     document.body.classList.add('modal-open');
-                     pdfModal.querySelector('input')?.focus();
+                    pdfModal.querySelector('input')?.focus();
                 } else {
                     console.error("PDF download error: Missing key, input, or modal.");
                     alert("Sorry, unable to prepare download link.");
@@ -856,35 +1046,59 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             resetFormErrors('pdf-download-form');
             let isValid = true;
-            const templateKeyInput = document.getElementById('pdf-template-key');
-            const countryInput = document.getElementById('pdf-country');
-            const cityInput = document.getElementById('pdf-city');
+             // Re-fetch inputs inside handler
+             const currentTemplateKeyInput = pdfDownloadForm.querySelector('#pdf-template-key');
+             const currentCountryInput = pdfDownloadForm.querySelector('#pdf-country');
+             const currentCityInput = pdfDownloadForm.querySelector('#pdf-city');
 
-             if (!countryInput?.value.trim()) { showFeedback(countryInput, 'Please enter your country'); isValid = false; }
-             else { showFeedback(countryInput, '', false); }
+             if (!currentCountryInput?.value.trim()) { showFeedback(currentCountryInput, 'Please enter your country'); isValid = false; }
+             else { showFeedback(currentCountryInput, '', false); }
 
-             if (!cityInput?.value.trim()) { showFeedback(cityInput, 'Please enter your city'); isValid = false; }
-             else { showFeedback(cityInput, '', false); }
+             // Validate City ONLY if enabled (Nigeria selected)
+             if (!currentCityInput.disabled && !currentCityInput?.value.trim()) { showFeedback(currentCityInput, 'Please enter your state/city'); isValid = false; }
+             else if (!currentCityInput.disabled) { showFeedback(currentCityInput, '', false); }
+             else { showFeedback(currentCityInput, '', false); } // Clear error if disabled
+
 
             if (isValid) {
-                const templateKey = templateKeyInput.value;
-                console.log('PDF Download Data:', { /* form data */ templateKey });
+                const templateKey = currentTemplateKeyInput.value;
+                console.log('PDF Download Data:', {
+                    template: templateKey,
+                    country: currentCountryInput.value,
+                    city: currentCityInput.value
+                });
 
-                 const pdfBaseUrl = '../../assets/pdfs/'; // Relative path from JS location might be safer
+                 // Use a more robust relative path if possible
+                 const pdfBaseUrl = '../../assets/pdfs/'; // Assumes JS is in assets/js/personal/
                  const pdfFilename = `${templateKey}.pdf`;
                  const pdfUrl = `${pdfBaseUrl}${pdfFilename}`;
 
                  console.log(`Attempting to download: ${pdfUrl}`); // Debug
 
-                 const link = document.createElement('a');
-                 link.href = pdfUrl;
-                 link.download = `${templateKey}_template_${Date.now()}.pdf`; // Add timestamp to ensure unique filename
-                 link.target = '_blank'; // Suggest opening in new tab might be more reliable for some browsers
-                 document.body.appendChild(link);
-                 link.click();
-                 setTimeout(() => link.remove(), 100); // Clean up link
-
-                 closeModal(pdfModal);
+                 // Improved download trigger
+                 fetch(pdfUrl)
+                     .then(response => {
+                         if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}. Could not fetch PDF at ${pdfUrl}`);
+                         }
+                         return response.blob();
+                     })
+                     .then(blob => {
+                         const blobUrl = window.URL.createObjectURL(blob);
+                         const link = document.createElement('a');
+                         link.href = blobUrl;
+                         link.download = `${templateKey}_template_${Date.now()}.pdf`;
+                         document.body.appendChild(link);
+                         link.click();
+                         document.body.removeChild(link);
+                         window.URL.revokeObjectURL(blobUrl); // Clean up Blob URL
+                         closeModal(pdfModal);
+                     })
+                     .catch(error => {
+                         console.error('PDF Download failed:', error);
+                         // Display user-friendly error IN the modal instead of alert
+                         showFeedback(currentTemplateKeyInput, 'Error downloading PDF. File may be missing or path incorrect. Please try again later or contact support.', true); // Show general error
+                     });
 
             } else {
                 pdfDownloadForm.querySelector('.is-invalid')?.focus();
@@ -952,7 +1166,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const emailInput = document.getElementById('feedback-email');
             const currentFeedbackTypeSelect = document.getElementById('feedback-type'); // re-fetch current select
             const messageTextarea = document.getElementById('feedback-message');
-            const currentResponseElement = document.getElementById('feedback-form-response');
+            const currentResponseElement = document.getElementById('feedback-form-response'); // Re-fetch current response element
             const permissionCheckbox = document.getElementById('feedback-permission');
 
              if (!currentFeedbackTypeSelect?.value) { showFeedback(currentFeedbackTypeSelect, 'Please select type'); isValid = false; }
@@ -962,11 +1176,21 @@ document.addEventListener('DOMContentLoaded', function() {
              else showFeedback(messageTextarea, '', false);
 
              const emailValue = emailInput?.value.trim();
-             if (emailValue && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) { showFeedback(emailInput, 'Invalid email format'); isValid = false; }
-             else if(emailInput) showFeedback(emailInput, '', false); // Clear if valid or empty
+             // Email is optional, only validate format if provided
+             if (emailValue && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
+                  showFeedback(emailInput, 'Invalid email format'); isValid = false;
+             } else if(emailInput) {
+                  showFeedback(emailInput, '', false); // Clear if valid or empty
+             }
 
             if (isValid && currentResponseElement) {
-                console.log('Submitting Feedback:', { /* form data */ });
+                console.log('Submitting Feedback:', {
+                    name: nameInput.value,
+                    email: emailValue,
+                    type: currentFeedbackTypeSelect.value,
+                    message: messageTextarea.value,
+                    permission: permissionCheckbox?.checked ?? false // Use checkbox state directly
+                 });
 
                 currentResponseElement.textContent = 'Thank you for your feedback!';
                 currentResponseElement.className = 'form-response-note mt-md text-center success'; // Add success class if needed
@@ -974,12 +1198,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 currentResponseElement.setAttribute('aria-live', 'assertive');
 
                 feedbackForm.reset();
-                if (permissionGroup) permissionGroup.hidden = true;
-                if (currentFeedbackTypeSelect) currentFeedbackTypeSelect.value = "";
+                if (permissionGroup) permissionGroup.hidden = true; // Hide permission again
+                if (currentFeedbackTypeSelect) currentFeedbackTypeSelect.value = ""; // Reset dropdown
 
                  setTimeout(() => {
                      closeModal(feedbackModal);
-                     if(currentResponseElement) currentResponseElement.hidden = true;
+                     if(currentResponseElement) currentResponseElement.hidden = true; // Hide response message after closing
                  }, 3000);
 
             } else if (!isValid) {
@@ -1060,7 +1284,10 @@ document.addEventListener('DOMContentLoaded', function() {
                  // Apply stagger delays to visible items
                  const fabListItems = Array.from(fabOptions.querySelectorAll('li'));
                  fabListItems.forEach((item, index) => {
-                    item.style.setProperty('--delay', `${0.05 * (index + 1)}s`);
+                    // Ensure item is visible before trying to apply delay styles maybe?
+                    if (window.getComputedStyle(item).display !== 'none') {
+                       item.style.setProperty('--delay', `${0.05 * (index + 1)}s`);
+                    }
                  });
                  // Focus first item
                  fabOptions.querySelector('a[href], button')?.focus();
@@ -1094,7 +1321,11 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('click', function(e) {
         // Close on overlay click
         if (e.target.classList.contains('modal-overlay')) {
-            closeModal(e.target);
+            // Find the specific modal content inside the overlay clicked
+            const modalToClose = e.target.querySelector('.modal-content')?.closest('.modal-overlay');
+             if (modalToClose) {
+                closeModal(modalToClose);
+            }
         }
     });
 
