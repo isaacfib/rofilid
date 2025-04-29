@@ -87,6 +87,8 @@ let learningHubContainer; // Added caching for learning hub section if needed
 // Datalist element references
 let quizCountryInput, quizCityInput, quizCountryDatalist, quizCityDatalist;
 let pdfCountryInput, pdfCityInput, pdfCountryDatalist, pdfCityDatalist;
+// Cached quiz modal elements (add others as needed)
+let quizModalNextBtn, quizModalFeedbackEl, quizModalResultsEl, quizModalQuestionEl, quizModalOptionsEl, quizModalProgressCurrentEl, quizModalProgressTotalEl, quizModalTitleEl, quizModalRestartBtn, quizModalCloseResultsBtn, quizModalFullChallengePromptEl;
 
 
 // --- Utility Function to Reset Form Errors ---
@@ -235,13 +237,12 @@ function saveQuizStats(stats) {
 }
 
 /**
- * Updates the statistics for a completed quiz category.
+ * Updates the statistics for a completed quiz category. This is called ONLY when results are shown.
  * @param {number|string} categoryId The ID of the completed category.
  * @param {number} achievedScore The score achieved in the latest attempt.
  * @param {number} totalQuestions The total questions in the quiz.
- * @param {boolean} isFirstAttempt Flags if this was the user's very first time taking *this specific quiz*.
  */
-function updateQuizStats(categoryId, achievedScore, totalQuestions, isFirstAttempt = false) {
+function updateQuizStats(categoryId, achievedScore, totalQuestions) {
     if (typeof categoryId === 'undefined' || categoryId === null) {
         console.error("Cannot update stats: categoryId is undefined or null.");
         return;
@@ -249,31 +250,30 @@ function updateQuizStats(categoryId, achievedScore, totalQuestions, isFirstAttem
     const catIdStr = String(categoryId); // Ensure key is string
     const stats = getQuizStats();
     const existingCategoryStats = stats[catIdStr];
-    const isActuallyFirstAttempt = !existingCategoryStats; // Check if stats *don't* exist for this category ID yet
 
-    const categoryStats = existingCategoryStats || { attempts: 0, bestScore: -1, completed: false }; // Initialize if new
-
-    // Only increment attempts if it wasn't the demographic check preventing the first *real* attempt
-    // Or if it's simply not the first attempt
-    if (!isActuallyFirstAttempt || categoryStats.completed) {
-        categoryStats.attempts = (categoryStats.attempts || 0) + 1;
-    } else {
-        // If it IS the first actual attempt (no prior completed entry), set attempts to 1
-        categoryStats.attempts = 1;
+    let attempts = 1; // Default to 1 attempt if this is the first time completing
+    if (existingCategoryStats?.completed) {
+        attempts = (existingCategoryStats.attempts || 0) + 1; // Increment existing attempts if completed before
     }
 
-    categoryStats.completed = true;
-    categoryStats.score = achievedScore; // Last score
-    categoryStats.total = totalQuestions;
-    categoryStats.lastPercentage = totalQuestions > 0 ? Math.round((achievedScore / totalQuestions) * 100) : 0;
-    categoryStats.timestamp = Date.now();
-    // Ensure bestScore calculation handles initial -1 correctly or existing score
-    categoryStats.bestScore = categoryStats.bestScore === -1 ? achievedScore : Math.max(categoryStats.bestScore, achievedScore);
+    const bestScore = existingCategoryStats?.bestScore !== undefined && existingCategoryStats.bestScore > -1
+                      ? Math.max(existingCategoryStats.bestScore, achievedScore)
+                      : achievedScore; // Calculate new best score, handling initial state
 
+    // Prepare the new stats entry for this category
+    const newCategoryStats = {
+        attempts: attempts,
+        bestScore: bestScore,
+        completed: true,
+        score: achievedScore, // Last score
+        total: totalQuestions,
+        lastPercentage: totalQuestions > 0 ? Math.round((achievedScore / totalQuestions) * 100) : 0,
+        timestamp: Date.now(),
+    };
 
-    stats[catIdStr] = categoryStats;
+    stats[catIdStr] = newCategoryStats;
     saveQuizStats(stats);
-    console.log(`Stats updated for category ${catIdStr}:`, categoryStats);
+    console.log(`Stats updated for category ${catIdStr}:`, newCategoryStats);
 
     // After saving, update the UI immediately for the specific card
     updateCategoryCardUI(catIdStr);
@@ -356,7 +356,9 @@ function updateCategoryCardUI(categoryId, stats) {
             startButton.setAttribute('aria-label', `Retake ${card.querySelector('h4')?.textContent || 'Quiz'}`);
         }
         // Show best score
-        indicatorArea.innerHTML = `✔️ Completed (Best: ${categoryData.bestScore}/${categoryData.total})`;
+        const bestScoreDisplay = categoryData.bestScore !== undefined ? categoryData.bestScore : 'N/A';
+        const totalDisplay = categoryData.total !== undefined ? categoryData.total : 'N/A';
+        indicatorArea.innerHTML = `✔️ Completed (Best: ${bestScoreDisplay}/${totalDisplay})`;
         indicatorArea.style.color = 'var(--pp-color-success)'; // Make indicator green
 
     } else {
@@ -473,32 +475,18 @@ function startQuiz(categoryId) {
     userAnswers = [];
     score = 0;
 
-    // Get elements inside the modal (assume they exist based on caching/checks)
-    const titleEl = quizModal.querySelector('#quiz-modal-title');
-    const qTotalEl = quizModal.querySelector('#quiz-modal-q-total');
-    const resultsEl = quizModal.querySelector('#quiz-modal-results');
-    const promptEl = quizModal.querySelector('#quiz-modal-full-challenge-prompt');
-    const restartBtn = quizModal.querySelector('#quiz-modal-restart');
-    const closeResultsBtn = quizModal.querySelector('#quiz-modal-close-results');
-    const feedbackAreaEl = quizModal.querySelector('#quiz-modal-feedback');
-    const nextBtnEl = quizModal.querySelector('#quiz-modal-next');
-    const showResultsBtnEl = quizModal.querySelector('#quiz-modal-show-results'); // New button ref
-    const questionArea = quizModal.querySelector('#quiz-modal-question');
-    const optionsArea = quizModal.querySelector('#quiz-modal-options');
-
-    // Initial setup
-    titleEl.textContent = currentQuestions[0]?.category || 'Quiz';
-    qTotalEl.textContent = currentQuestions.length;
-    resultsEl.hidden = true;
-    promptEl.hidden = true;
-    restartBtn.hidden = true;
-    closeResultsBtn.hidden = true;
-    feedbackAreaEl.hidden = true;
-    nextBtnEl.hidden = true; // Start hidden
-    if(showResultsBtnEl) showResultsBtnEl.hidden = true; // Start hidden
-    questionArea.hidden = false;
-    optionsArea.hidden = false;
-    optionsArea.innerHTML = ''; // Clear options
+    // Initial setup using cached elements
+    quizModalTitleEl.textContent = currentQuestions[0]?.category || 'Quiz';
+    quizModalProgressTotalEl.textContent = currentQuestions.length;
+    quizModalResultsEl.hidden = true;
+    quizModalFullChallengePromptEl.hidden = true;
+    quizModalRestartBtn.hidden = true;
+    quizModalCloseResultsBtn.hidden = true;
+    quizModalFeedbackEl.hidden = true;
+    quizModalNextBtn.hidden = true; // Always hide next button initially
+    quizModalQuestionEl.hidden = false;
+    quizModalOptionsEl.hidden = false;
+    quizModalOptionsEl.innerHTML = ''; // Clear options
 
     // Show modal
     quizModal.hidden = false;
@@ -510,39 +498,27 @@ function startQuiz(categoryId) {
 }
 
 function displayQuestion() {
-    // If advancing past the last question, show results directly
+    // This check might not be strictly necessary if handleAnswerSelection and the next button handle the flow correctly,
+    // but it's a safety net.
     if (currentQuestionIndex >= currentQuestions.length || !quizModal) {
         showQuizResults();
         return;
     }
 
     const question = currentQuestions[currentQuestionIndex];
-    const questionElement = quizModal.querySelector('#quiz-modal-question');
-    const optionsElement = quizModal.querySelector('#quiz-modal-options');
-    const feedbackElement = quizModal.querySelector('#quiz-modal-feedback');
-    const nextButton = quizModal.querySelector('#quiz-modal-next');
-    const showResultsButton = quizModal.querySelector('#quiz-modal-show-results');
-    const progressElement = quizModal.querySelector('#quiz-modal-q-current');
 
-
-    if (!questionElement || !optionsElement || !feedbackElement || !nextButton || !showResultsButton || !progressElement) {
-        console.error("Required quiz elements missing inside modal for question:", currentQuestionIndex);
-        closeModal(quizModal);
-        return;
-    }
-
-    progressElement.textContent = currentQuestionIndex + 1;
-    questionElement.textContent = question.question;
-    optionsElement.innerHTML = ''; // Clear previous options
-    optionsElement.hidden = false;
-    feedbackElement.hidden = true;
-    nextButton.hidden = true; // Always hide initially for new question
-    showResultsButton.hidden = true; // Always hide initially
-    questionElement.hidden = false;
+    // Use cached elements
+    quizModalProgressCurrentEl.textContent = currentQuestionIndex + 1;
+    quizModalQuestionEl.textContent = question.question;
+    quizModalOptionsEl.innerHTML = ''; // Clear previous options
+    quizModalOptionsEl.hidden = false;
+    quizModalFeedbackEl.hidden = true;
+    quizModalNextBtn.hidden = true; // Always hide initially for new question
+    quizModalQuestionEl.hidden = false;
 
     // ARIA setup
-    questionElement.id = questionElement.id || 'quiz-modal-question';
-    optionsElement.setAttribute('aria-labelledby', questionElement.id);
+    quizModalQuestionEl.id = quizModalQuestionEl.id || 'quiz-modal-question';
+    quizModalOptionsEl.setAttribute('aria-labelledby', quizModalQuestionEl.id);
 
     question.options.forEach((option, index) => {
         const optionButton = document.createElement('button');
@@ -552,10 +528,10 @@ function displayQuestion() {
         optionButton.setAttribute('data-index', index.toString());
         optionButton.setAttribute('aria-label', `Option ${index + 1}: ${option}`);
         optionButton.addEventListener('click', handleAnswerSelection);
-        optionsElement.appendChild(optionButton);
+        quizModalOptionsEl.appendChild(optionButton);
     });
      // Ensure focus is reasonable, perhaps on the first option after loading
-     setTimeout(() => optionsElement.querySelector('.quiz-option')?.focus(), 150);
+     setTimeout(() => quizModalOptionsEl.querySelector('.quiz-option')?.focus(), 150);
 }
 
 function handleAnswerSelection(event) {
@@ -571,35 +547,42 @@ function handleAnswerSelection(event) {
         score++;
     }
 
-    const feedbackElement = quizModal.querySelector('#quiz-modal-feedback');
-    const nextButton = quizModal.querySelector('#quiz-modal-next');
-    const showResultsButton = quizModal.querySelector('#quiz-modal-show-results');
-    const optionButtons = quizModal.querySelectorAll('#quiz-modal-options .quiz-option');
-
-    if (feedbackElement) {
-        feedbackElement.innerHTML = `<strong>${isCorrect ? 'Correct!' : 'Incorrect.'}</strong> ${question.explanation || ''}`;
-        feedbackElement.className = 'quiz-modal-feedback p-md border rounded mb-lg'; // Reset classes first & add base styles
-        feedbackElement.classList.add(isCorrect ? 'correct' : 'incorrect'); // Add status style
-        feedbackElement.hidden = false;
+    // Use cached elements
+    if (quizModalFeedbackEl) {
+        quizModalFeedbackEl.innerHTML = `<strong>${isCorrect ? 'Correct!' : 'Incorrect.'}</strong> ${question.explanation || ''}`;
+        quizModalFeedbackEl.className = 'quiz-modal-feedback p-md border rounded mb-lg'; // Reset classes first & add base styles
+        quizModalFeedbackEl.classList.add(isCorrect ? 'correct' : 'incorrect'); // Add status style
+        quizModalFeedbackEl.hidden = false;
     }
 
-    // Show EITHER Next button OR Show Results button
     const isLastQuestion = currentQuestionIndex === currentQuestions.length - 1;
-    if (isLastQuestion) {
-        if(nextButton) nextButton.hidden = true;
-        if (showResultsButton) {
-             showResultsButton.hidden = false;
-             setTimeout(() => showResultsButton.focus(), 100); // Delay focus slightly
+
+    // Only show the "Next Question" button if it's NOT the last question.
+    if (!isLastQuestion) {
+        if (quizModalNextBtn) {
+            quizModalNextBtn.hidden = false;
+             setTimeout(() => quizModalNextBtn.focus(), 100); // Delay focus slightly
         }
     } else {
-        if (nextButton) {
-            nextButton.hidden = false;
-            setTimeout(() => nextButton.focus(), 100); // Delay focus slightly
-        }
-        if(showResultsButton) showResultsButton.hidden = true;
+         // If it IS the last question, the next step is implicitly showing results,
+         // which will happen when the user clicks the 'Next Question' button
+         // (which now knows it's the last question's turn - see modal click handler)
+         // --- ** BUT we want it auto - WRONG LOGIC HERE PREVIOUSLY ---
+         // Corrected approach: We don't show 'Next' button on last Q.
+         // Instead, after selection on last Q, the *only* way forward is via results screen logic.
+         // We need to handle the transition *from* last question click -> results.
+         // Since there's no "Show Results" button, clicking "Next" after the last question should trigger results.
+         // We ensure the "Next" button IS shown even after the last question,
+         // and the CLICK HANDLER for "Next" will trigger showQuizResults().
+         if (quizModalNextBtn) {
+            quizModalNextBtn.hidden = false;
+            setTimeout(() => quizModalNextBtn.focus(), 100); // Focus 'Next' which will trigger results on click
+         }
     }
 
+
     // Style and disable option buttons
+    const optionButtons = quizModalOptionsEl.querySelectorAll('.quiz-option');
     optionButtons.forEach(btn => {
         btn.disabled = true;
         const buttonIndex = parseInt(btn.dataset.index);
@@ -618,8 +601,6 @@ function handleAnswerSelection(event) {
          } else {
              // Keep other disabled buttons outlined for consistency maybe? Or default grey?
              btn.classList.add('btn-outline'); // Ensure others are outlined if preferred
-             // Optionally, add a generic disabled style
-             // btn.classList.add('btn-disabled-generic'); // Needs CSS rule
          }
     });
 }
@@ -627,56 +608,53 @@ function handleAnswerSelection(event) {
 function showQuizResults() {
     if (!quizModal) return;
 
-    const resultsElement = quizModal.querySelector('#quiz-modal-results');
-    const questionArea = quizModal.querySelector('#quiz-modal-question');
-    const optionsArea = quizModal.querySelector('#quiz-modal-options');
-    const feedbackArea = quizModal.querySelector('#quiz-modal-feedback');
-    const nextButton = quizModal.querySelector('#quiz-modal-next');
-    const showResultsButton = quizModal.querySelector('#quiz-modal-show-results'); // Get ref
-    const restartButton = quizModal.querySelector('#quiz-modal-restart');
-    const closeResultsButton = quizModal.querySelector('#quiz-modal-close-results');
-    const fullChallengePrompt = quizModal.querySelector('#quiz-modal-full-challenge-prompt');
-
-    if (!resultsElement || !questionArea || !optionsArea || !feedbackArea || !nextButton || !showResultsButton || !restartButton || !closeResultsButton || !fullChallengePrompt) {
-        console.error("Required quiz elements missing for displaying results.");
-        closeModal(quizModal);
-        return;
-    }
-
     // Hide question/answer elements and intermediate buttons
-    questionArea.hidden = true;
-    optionsArea.hidden = true;
-    feedbackArea.hidden = true;
-    nextButton.hidden = true;
-    showResultsButton.hidden = true; // Hide show results btn itself
+    quizModalQuestionEl.hidden = true;
+    quizModalOptionsEl.hidden = true;
+    quizModalFeedbackEl.hidden = true;
+    quizModalNextBtn.hidden = true; // Hide next btn on results screen
 
     const totalQuestions = currentQuestions.length;
     const percentage = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
 
+    // --- Update local storage stats ---
+    // This is now the definitive point where a quiz attempt is considered completed.
+    if (currentCategoryId !== null) {
+        updateQuizStats(currentCategoryId, score, totalQuestions); // Update stats function revised below
+    } else {
+        console.error("Cannot update stats: currentCategoryId is null.");
+    }
+
+
     // Use Local Storage for richer feedback
-    const stats = getQuizStats();
+    const stats = getQuizStats(); // Fetch fresh stats after update
     const catIdStr = currentCategoryId !== null ? String(currentCategoryId) : null;
-    const categoryStats = catIdStr ? stats[catIdStr] : undefined;
+    const categoryStats = catIdStr ? stats[catIdStr] : undefined; // Use potentially updated stats
     let message = '';
     let prefix = '';
-    let isFirstCompletedAttempt = false; // Track if this is the *first time this category is marked completed*
 
-     if (categoryStats && categoryStats.completed) {
-         // User has completed this quiz before
-         const attempts = categoryStats.attempts || 1; // Get attempts (already completed at least once)
-         prefix = `Attempt #${attempts + 1}: `;
-         if (score > categoryStats.bestScore) {
-             message = `Fantastic! You beat your previous best score of ${categoryStats.bestScore}/${totalQuestions}!`;
-         } else if (score === categoryStats.bestScore && score === totalQuestions) {
+     // Check attempts count from the updated stats
+     const currentAttempts = categoryStats?.attempts || 1;
+
+     if (currentAttempts > 1) {
+         // User has completed this quiz before (attempts > 1)
+         prefix = `Attempt #${currentAttempts}: `;
+         const bestScore = categoryStats?.bestScore ?? -1; // Use best score from updated stats
+
+         if (score > bestScore) {
+              // Note: This case shouldn't technically happen if bestScore logic is correct in updateQuizStats
+             message = `Fantastic! You set a new best score, previously ${bestScore}/${totalQuestions}!`;
+             console.warn("Score higher than bestScore found, which might indicate a logic issue.", {score, bestScore});
+         } else if (score === bestScore && score === totalQuestions) {
               message = `Perfect score again! Well done!`;
-         } else if (score === categoryStats.bestScore) {
+         } else if (score === bestScore) {
              message = `Great effort, matching your best score!`;
          } else {
-              message = `Keep practicing! Your best score is ${categoryStats.bestScore}/${totalQuestions}.`;
+              const displayBestScore = bestScore > -1 ? `${bestScore}/${totalQuestions}` : 'N/A';
+              message = `Keep practicing! Your best score is ${displayBestScore}.`;
          }
      } else {
-         // First time completing this quiz (stats might exist but not 'completed')
-         isFirstCompletedAttempt = true;
+         // First time completing this quiz (attempts is 1)
          prefix = 'First completed attempt: ';
          if (percentage >= 80) message = 'Excellent! You have a strong understanding.';
          else if (percentage >= 60) message = 'Good job! Keep building on your knowledge.';
@@ -684,19 +662,11 @@ function showQuizResults() {
      }
 
 
-    resultsElement.innerHTML = `
+    quizModalResultsEl.innerHTML = `
         <h4>Quiz Complete!</h4>
         <p>${prefix}You scored ${score} out of ${totalQuestions} (${percentage}%).</p>
         <p>${message}</p>
     `;
-
-    // --- Update local storage stats ---
-    if (catIdStr !== null) {
-         // Pass flag indicating if it was the first *completion*
-        updateQuizStats(currentCategoryId, score, totalQuestions, isFirstCompletedAttempt);
-    } else {
-        console.error("Cannot update stats: currentCategoryId is null.");
-    }
 
     // Logic for next quiz button or full challenge prompt
     const nextCategoryId = currentCategoryId !== null ? currentCategoryId + 1 : null; // Handle null case
@@ -708,7 +678,7 @@ function showQuizResults() {
 
     if (nextCategory) {
         const nextCategoryName = nextCategory.category || `Check ${nextCategoryId}`;
-        resultsElement.innerHTML += `<p class="mt-lg">Continue your learning journey with the next check:</p>`;
+        quizModalResultsEl.innerHTML += `<p class="mt-lg">Continue your learning journey with the next check:</p>`;
         const nextQuizButton = document.createElement('button');
         nextQuizButton.type = 'button';
         nextQuizButton.classList.add('btn', 'btn-primary', 'btn-small', 'btn-icon', 'mt-sm', 'next-quiz-button');
@@ -720,18 +690,18 @@ function showQuizResults() {
                  console.error("Attempted to start next quiz with null categoryId.");
             }
         };
-        resultsElement.appendChild(nextQuizButton);
-        fullChallengePrompt.hidden = true; // Hide the 100q prompt if there's a next category
+        quizModalResultsEl.appendChild(nextQuizButton);
+        quizModalFullChallengePromptEl.hidden = true; // Hide the 100q prompt if there's a next category
     } else {
         // This was the last category
-        resultsElement.innerHTML += `<p class="mt-lg">You've completed all the introductory checks!</p>`;
-        fullChallengePrompt.hidden = false; // Show the 100q prompt
+        quizModalResultsEl.innerHTML += `<p class="mt-lg">You've completed all the introductory checks!</p>`;
+        quizModalFullChallengePromptEl.hidden = false; // Show the 100q prompt
     }
 
-    resultsElement.hidden = false;
-    restartButton.hidden = false;
-    closeResultsButton.hidden = false;
-    restartButton.focus(); // Focus the restart button
+    quizModalResultsEl.hidden = false;
+    quizModalRestartBtn.hidden = false;
+    quizModalCloseResultsBtn.hidden = false;
+    quizModalRestartBtn.focus(); // Focus the restart button
 }
 
 
@@ -765,7 +735,9 @@ function handleQuizStart(categoryId) {
         }
         demographicsModal.hidden = false;
         document.body.classList.add('modal-open');
-        demographicsModal.dataset.triggeredBy = `start-quiz-btn-${categoryId}`; // Assuming start button has an ID like this or is the event target passed
+        // Try to get the button ID more reliably
+        const triggerButton = document.querySelector(`.category-card[data-category-id="${categoryId}"] .start-quiz-btn`);
+        demographicsModal.dataset.triggeredBy = triggerButton?.id || `start-quiz-btn-${categoryId}`;
         // Focus first input (country input)
         demographicsModal.querySelector('#quiz-country')?.focus();
     } else {
@@ -1046,6 +1018,23 @@ document.addEventListener('DOMContentLoaded', function() {
     pdfCountryDatalist = document.getElementById('country-list-options-pdf');
     pdfCityDatalist = document.getElementById('city-list-options-pdf'); // Corrected ID
 
+    // --- Cache Quiz Modal Inner Elements ---
+    if (quizModal) {
+        quizModalNextBtn = quizModal.querySelector('#quiz-modal-next');
+        quizModalFeedbackEl = quizModal.querySelector('#quiz-modal-feedback');
+        quizModalResultsEl = quizModal.querySelector('#quiz-modal-results');
+        quizModalQuestionEl = quizModal.querySelector('#quiz-modal-question');
+        quizModalOptionsEl = quizModal.querySelector('#quiz-modal-options');
+        quizModalProgressCurrentEl = quizModal.querySelector('#quiz-modal-q-current');
+        quizModalProgressTotalEl = quizModal.querySelector('#quiz-modal-q-total');
+        quizModalTitleEl = quizModal.querySelector('#quiz-modal-title');
+        quizModalRestartBtn = quizModal.querySelector('#quiz-modal-restart');
+        quizModalCloseResultsBtn = quizModal.querySelector('#quiz-modal-close-results');
+        quizModalFullChallengePromptEl = quizModal.querySelector('#quiz-modal-full-challenge-prompt');
+    } else {
+        console.error("Quiz modal root element not found. Cannot cache inner elements.");
+    }
+
 
     // --- General UI Enhancements ---
     const currentYearElement = document.getElementById('current-year');
@@ -1154,12 +1143,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Optional: Close nav on scroll (can be annoying, consider removing if user scrolls within nav)
-        // window.addEventListener('scroll', function() {
-        //     if (primaryNav.classList.contains('active')) {
-        //         menuToggle.click();
-        //     }
-        // });
     } else {
         console.warn("Mobile nav toggle or primary nav element not found.");
     }
@@ -1220,25 +1203,36 @@ document.addEventListener('DOMContentLoaded', function() {
         quizModal.addEventListener('click', function(e) {
             // Handle Next Question click
             if (e.target.matches('#quiz-modal-next')) {
-                 currentQuestionIndex++;
-                 displayQuestion();
-            // Handle Show Results click (new button)
-            } else if (e.target.matches('#quiz-modal-show-results')) {
-                 showQuizResults();
-             // Handle Restart click
-             } else if (e.target.matches('#quiz-modal-restart')) {
+                 // Determine if clicking "Next" should show results or the next question
+                 const isLastQuestionAnswered = currentQuestionIndex === currentQuestions.length - 1;
+                 if (isLastQuestionAnswered) {
+                     // We are on the last question, clicking 'Next' should show results
+                     showQuizResults();
+                 } else {
+                     // It's not the last question, proceed to the next one
+                     currentQuestionIndex++;
+                     displayQuestion();
+                 }
+            // REMOVED 'Show Results' button logic
+            // Handle Restart click
+            } else if (e.target.matches('#quiz-modal-restart')) {
                  if (currentCategoryId !== null) {
                      // Reset score/index before starting again for the UI
                      score = 0;
                      currentQuestionIndex = 0;
                      userAnswers = [];
-                     startQuiz(currentCategoryId);
+                     startQuiz(currentCategoryId); // Re-start the current quiz
                  } else {
                       console.warn("Attempted restart with no currentCategoryId.");
                  }
             // Handle Close buttons (main close and results close)
             } else if (e.target.matches('#quiz-modal-close') || e.target.matches('#quiz-modal-close-results')) {
                  closeModal(quizModal);
+            }
+            // Handle dynamic "Take Next Check" button in results
+            else if (e.target.closest('.next-quiz-button')) {
+                 // The click handler for this is attached inline in showQuizResults()
+                 // This block is just for potentially logging or future complex logic
             }
         });
     } else {
@@ -1520,8 +1514,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
                  setTimeout(() => {
                      closeModal(feedbackModal);
-                     // Optionally hide response element AFTER closing animation is likely done
-                      // setTimeout(() => { if(responseElement) responseElement.hidden = true; }, 300);
                  }, 3000);
 
             } else if (!isValid) {
