@@ -1,11 +1,7 @@
 /**
  * File Location: /assets/js/personal/quizzes.js
  * Description: Scripts exclusive to the main Quizzes page (quizzes.html).
- *              Handles accordion theme toggling and launching quizzes
- *              (both category-specific and the full 100-question challenge)
- *              in the shared modal structure.
- * Version: 2.6.0 (Improved Modal Handling, Accordion Animation, Validation)
- * Dependencies: quizzes.html structure, personal.css base styles, quizzes.css accordion styles.
+ * Dependencies: quizzes.html structure, personal.css base styles, quizzes.css.
  */
 
 
