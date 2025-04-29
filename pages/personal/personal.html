@@ -34,6 +34,7 @@
 
             <!-- Main Navigation - Centered -->
             <nav aria-label="Main navigation">
+                <!-- ul is now the mobile nav container, moved attributes and classes -->
                 <ul id="primary-navigation" class="nav-list">
                     <li class="nav-item"><a href="../../index.html" class="nav-link">Home</a></li>
                     <li class="nav-item"><a href="personal.html" class="nav-link active-page" aria-current="page">Personal Finance</a></li>
@@ -45,8 +46,8 @@
                 </ul>
             </nav>
 
-            <!-- Tools Button (Desktop Right) -->
-            <a href="#free-tools" class="btn btn-primary header-tool-btn btn-icon">
+            <!-- Tools Button (Desktop Right) - Uses the section underline gradient -->
+            <a href="#free-tools" class="btn header-tool-btn btn-icon">
                 <i class="fas fa-tools" aria-hidden="true"></i> Tools
             </a>
 
@@ -69,7 +70,8 @@
                     <p class="subheadline">Gain practical knowledge, access tools, and build sustainable money habits.</p>
                     <div class="hero-actions">
                         <a href="#free-tools" class="btn btn-primary btn-large btn-icon"><i class="fas fa-tools" aria-hidden="true"></i> Explore Free Tools</a> <!-- Updated text/target -->
-                        <a href="#learning-hub" class="btn btn-outline btn-large btn-icon"><i class="fas fa-lightbulb" aria-hidden="true"></i> Test Your Knowledge</a>
+                        <!-- >> FIX: Added btn-outline-no-fill-hover class << -->
+                        <a href="#learning-hub" class="btn btn-outline btn-large btn-icon btn-outline-no-fill-hover"><i class="fas fa-lightbulb" aria-hidden="true"></i> Test Your Knowledge</a>
                     </div>
                 </div>
                 <div class="hero-stats-grid reveal-stagger">
@@ -602,8 +604,11 @@
             <div id="quiz-modal-full-challenge-prompt" class="quiz-modal-prompt text-center mt-lg" hidden>
                  <p>Completed the checks? Explore all 100 questions in the <a href="quizzes.html" class="link-inline">Financial Fitness Challenge</a>.</p>
             </div>
-             <div class="quiz-modal-navigation d-flex flex-wrap justify-content-center gap-md mt-lg">
+            <div class="quiz-modal-navigation d-flex flex-wrap justify-content-center gap-md mt-lg">
                  <button type="button" id="quiz-modal-next" class="btn btn-secondary btn-small quiz-next-btn" hidden>Next Question</button>
+                 <!-- ADD THIS BUTTON vvv -->
+                 <button type="button" id="quiz-modal-show-results" class="btn btn-primary btn-small quiz-show-results-btn" hidden>Show Results</button>
+                 <!-- ^^^ ADD THIS BUTTON -->
                 <button type="button" id="quiz-modal-restart" class="btn btn-outline btn-small quiz-restart-btn" hidden><i class="fas fa-redo" aria-hidden="true"></i> Restart Check</button>
                  <button type="button" id="quiz-modal-close-results" class="btn btn-outline btn-small quiz-close-btn" hidden><i class="fas fa-times" aria-hidden="true"></i> Close</button>
             </div>
@@ -833,4 +838,3 @@
 
 </body>
 </html>
-
