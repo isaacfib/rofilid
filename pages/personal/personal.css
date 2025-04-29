@@ -73,6 +73,7 @@
   --transition-fast: 150ms ease-in-out;
   --transition-normal: 250ms ease-in-out;
   --transition-slow: 350ms ease-in-out;
+  --transition-gentle: 500ms ease-in-out; /* New for gentler image hover */
 
   /* Layout */
   --container-max-width: 1280px;
@@ -110,6 +111,9 @@
   --gradient-secondary: linear-gradient(135deg, var(--pp-color-secondary), var(--pp-color-secondary-light));
   --gradient-accent: linear-gradient(135deg, var(--pp-color-accent), var(--pp-color-accent-light));
   --gradient-light: linear-gradient(135deg, var(--pp-color-bg-light), var(--pp-color-bg-lighter));
+  /* >> FIX: Add specific gradient for header button << */
+  --gradient-section-underline: linear-gradient(90deg, var(--pp-color-primary), var(--pp-color-secondary), var(--pp-color-accent));
+
 
   /* Effects */
   --backdrop-blur: blur(8px);
@@ -388,7 +392,7 @@ p {
   transform: translateX(-50%);
   width: 60px;
   height: 3px;
-  background: linear-gradient(90deg, var(--pp-color-primary), var(--pp-color-secondary), var(--pp-color-accent));
+  background: var(--gradient-section-underline); /* >> FIX: Use specific gradient << */
   background-size: 200% 100%;
   border-radius: var(--radius-full);
   animation: gradientShift 5s infinite alternate;
@@ -479,6 +483,20 @@ p {
   color: var(--rofilid-white);
   box-shadow: 0 10px 20px color-mix(in srgb, var(--pp-color-primary) 20%, transparent);
 }
+
+/* >> FIX: Specific outline button hover - prevents background fill << */
+.btn-outline-no-fill-hover:hover,
+.btn-outline-no-fill-hover:focus-visible {
+  background: transparent; /* Override background fill */
+  color: var(--pp-color-secondary-dark); /* Change text color on hover */
+  border-color: var(--pp-color-secondary-dark); /* Change border color */
+  box-shadow: var(--shadow-lg); /* Keep shadow effect */
+}
+/* Adjust focus ring for no-fill outline */
+.btn-outline-no-fill-hover:focus-visible {
+    box-shadow: var(--shadow-lg), 0 0 0 3px color-mix(in srgb, var(--pp-color-secondary) 40%, transparent);
+}
+
 
 /* Specific button colors for correct/incorrect answers */
 .btn-success-light {
@@ -624,7 +642,14 @@ p {
 
 /* Header Tool Button Styling */
 .header-tool-btn {
-  /* Inherits .btn styling */
+  /* >> FIX: Use section underline gradient << */
+  background: var(--gradient-section-underline);
+  background-size: 200% 100%;
+  animation: gradientShift 5s infinite alternate;
+  color: var(--rofilid-white);
+  box-shadow: var(--shadow-md);
+  border-color: transparent; /* Override .btn border */
+
   margin-left: var(--space-lg); /* Add explicit margin to prevent touching nav */
   flex-shrink: 0;
   padding: var(--space-sm) var(--space-md);
@@ -634,12 +659,13 @@ p {
 /* --- Specific hover/focus for header tool button --- */
 .header-tool-btn:hover,
 .header-tool-btn:focus-visible {
-  background: var(--pp-color-primary-light); /* Keep primary background */
-  color: var(--rofilid-white); /* Keep white text */
+   /* >> FIX: Use section underline gradient - slight shift/brighten on hover << */
+  background-position: 100% 0%; /* Shift gradient */
+  filter: brightness(1.1); /* Slight brighten */
+  color: var(--rofilid-white);
   border-color: transparent;
-  /* Keep transform from base .btn:hover */
-  /* box-shadow: var(--shadow-lg); */ /* Keep base shadow or customize */
-  box-shadow: 0 10px 20px color-mix(in srgb, var(--pp-color-primary) 20%, transparent);
+  box-shadow: 0 10px 20px color-mix(in srgb, var(--pp-color-primary) 20%, transparent); /* Adjust shadow color if needed */
+  animation-play-state: paused; /* Pause animation on hover */
 }
 /* Focus style combined */
 .header-tool-btn:focus-visible {
@@ -1016,6 +1042,19 @@ p {
     text-align: center;
     margin-top: var(--space-2xl);
 }
+/* >> FIX: Make 100q button wrap text << */
+.full-challenge-link .btn {
+   white-space: normal; /* Allow text wrapping */
+   text-align: center;
+   display: inline-flex; /* Keep flex properties for icon */
+   justify-content: center; /* Center content horizontally */
+   padding-left: var(--space-lg); /* Add padding back if needed */
+   padding-right: var(--space-lg);
+   max-width: 90%; /* Prevent spanning full width on mobile */
+}
+.full-challenge-link .btn i {
+   margin-left: var(--space-sm); /* Add space before arrow */
+}
 
 
 /* Financial Journey Path */
@@ -1266,6 +1305,19 @@ p {
   gap: var(--space-xl);
 }
 
+/* >> FIX: Add media queries for more columns on larger screens << */
+@media (min-width: 1024px) {
+  .template-grid {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Adjust minmax if needed */
+  }
+}
+@media (min-width: 1300px) { /* Increase breakpoint for 4 columns */
+    .template-grid {
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Usually results in 4 on typical large screens */
+    }
+}
+
+
 .template-card {
    /* Inherits from .card base style */
    /* Add specific template card borders or backgrounds if needed */
@@ -1285,7 +1337,8 @@ p {
     height: auto;
     aspect-ratio: 4 / 3;
     object-fit: cover; /* Default image covers */
-    transition: opacity var(--transition-normal);
+    /* >> FIX: Gentler transition for default image fade << */
+    transition: opacity var(--transition-gentle);
     border-radius: inherit;
 }
 
@@ -1298,7 +1351,8 @@ p {
   padding: var(--space-sm); /* Padding around hover image */
   opacity: 0;
   transform: scale(0.9);
-  transition: opacity var(--transition-normal), transform var(--transition-normal) ease-out;
+  /* >> FIX: Gentler transition for hover image reveal << */
+  transition: opacity var(--transition-gentle), transform var(--transition-gentle) ease-in-out;
   z-index: 1;
   border-radius: inherit;
   background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
@@ -2296,9 +2350,9 @@ fieldset.is-invalid-check-group legend {
 .reveal-stagger > *.revealed {
     opacity: 1;
     transform: translateY(0);
-    transition: opacity 0.8s cubic-bezier(0.175, 0.885, 0.32, 1), transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1), var(--reveal-delay, 0s); /* Added reveal delay */
+    transition: opacity 0.8s cubic-bezier(0.175, 0.885, 0.32, 1), transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1); /* Removed transition-delay here */
     pointer-events: auto; /* Re-enable interaction */
-    transition-delay: var(--reveal-delay, 0s); /* Explicit delay property */
+    transition-delay: var(--reveal-delay, 0s); /* Explicit delay property for JS */
 }
 
 /* Stagger delay set by JS via inline style preferred now */
@@ -2312,6 +2366,10 @@ fieldset.is-invalid-check-group legend {
   }
    .journey-path {
       min-width: 0; /* Allow shrinking below explicit min-width */
+  }
+  /* Template grid columns for Tablet */
+  .template-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   }
 }
 
@@ -2338,34 +2396,32 @@ fieldset.is-invalid-check-group legend {
   }
 
   /* Mobile Nav Container Styles (#primary-navigation is the UL) */
+  /* >> FIX: Ensure active state is working << */
   #primary-navigation {
-    display: block; /* Needs display: block for positioning/transform */
+    /* Needs display block/flex etc. *inside* the active class, not here */
     position: fixed;
-    inset: var(--header-height) 0 0 0;
-    background-color: color-mix(in srgb, var(--rofilid-white) 98%, transparent); /* Less transparent */
-    background-color: rgba(255, 255, 255, 0.98); /* Ensure visibility */
+    inset: var(--header-height) 0 0 0; /* Position below header */
+    background-color: rgba(255, 255, 255, 0.97); /* Slightly opaque background */
     backdrop-filter: var(--backdrop-blur);
     -webkit-backdrop-filter: var(--backdrop-blur);
-    flex-direction: column;
-    align-items: stretch;
-    padding: var(--space-md) 0 0; /* Reduced top padding */
-    box-shadow: none;
-    border-top: 1px solid var(--pp-color-border-light);
     transform: translateX(100%); /* Start off-screen */
     opacity: 0;
     visibility: hidden;
-    transition: transform 0.35s ease-out, opacity 0.35s ease-out, visibility 0s linear 0.35s; /* Adjust timing */
-    gap: 0;
-    overflow-y: auto;
+    transition: transform 0.35s ease-out, opacity 0.35s ease-out, visibility 0s linear 0.35s; /* Off-screen transition */
     z-index: 1000; /* Below toggle */
+    overflow-y: auto;
     list-style: none;
     margin: 0;
+    padding: 0;
+    display: flex; /* Use flex for vertical layout */
+    flex-direction: column;
   }
+
   #primary-navigation.active { /* Open state */
     transform: translateX(0);
     opacity: 1;
     visibility: visible;
-    transition: transform 0.35s ease-out, opacity 0.35s ease-out, visibility 0s linear 0s;
+    transition: transform 0.35s ease-out, opacity 0.35s ease-out, visibility 0s linear 0s; /* On-screen transition */
   }
 
   /* Mobile Nav Links */
@@ -2376,7 +2432,7 @@ fieldset.is-invalid-check-group legend {
       text-align: left;
       border-bottom: 1px solid var(--pp-color-border-light);
       font-size: var(--font-size-md);
-      position: static;
+      position: static; /* Override any relative positioning */
       color: var(--pp-color-text);
       font-weight: var(--font-weight-medium);
   }
@@ -2553,6 +2609,11 @@ fieldset.is-invalid-check-group legend {
         left: calc(60px / 2 - 4px / 2);
      }
 
+   /* Reduce 100q button font-size slightly */
+   .full-challenge-link .btn {
+        font-size: var(--font-size-sm);
+   }
+
 }
 
 /* Print Styles */
@@ -2591,6 +2652,7 @@ fieldset.is-invalid-check-group legend {
     --gradient-secondary: none !important;
     --gradient-accent: none !important;
     --gradient-light: none !important;
+    --gradient-section-underline: none !important; /* Disable for print */
     --journey-progress-height: 0 !important;
   }
   .site-header,
@@ -2694,3 +2756,4 @@ fieldset.is-invalid-check-group legend {
   .calculator-features-list i { display: none; }
 }
 
+/* END OF FILE personal.css */
