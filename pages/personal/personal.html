@@ -70,7 +70,6 @@
                     <p class="subheadline">Gain practical knowledge, access tools, and build sustainable money habits.</p>
                     <div class="hero-actions">
                         <a href="#free-tools" class="btn btn-primary btn-large btn-icon"><i class="fas fa-tools" aria-hidden="true"></i> Explore Free Tools</a> <!-- Updated text/target -->
-                        <!-- >> FIX: Added btn-outline-no-fill-hover class << -->
                         <a href="#learning-hub" class="btn btn-outline btn-large btn-icon btn-outline-no-fill-hover"><i class="fas fa-lightbulb" aria-hidden="true"></i> Test Your Knowledge</a>
                     </div>
                 </div>
@@ -184,7 +183,6 @@
         </aside>
 
         <!-- Learning Hub Section -->
-        <!-- MODIFICATION START: Added ID to section -->
         <section id="learning-hub" class="section-padding bg-light reveal-on-scroll" aria-labelledby="learning-hub-heading"> <!-- Renamed ID for clarity -->
             <div class="container">
                 <h2 id="learning-hub-heading" class="section-title">Can you pass a 5-question quiz on financial literacy?</h2>
@@ -233,7 +231,6 @@
                         </div>
                     </article>
                 </div>
-                 <!-- MODIFICATION END: Rest of section is unchanged -->
                 <div class="full-challenge-link text-center mt-xl">
                     <p class="section-description" style="margin-bottom: var(--space-md);">Crave a comprehensive financial challenge?</p>
                     <a href="quizzes.html" class="btn btn-outline btn-large btn-icon">
@@ -606,9 +603,9 @@
             </div>
             <div class="quiz-modal-navigation d-flex flex-wrap justify-content-center gap-md mt-lg">
                  <button type="button" id="quiz-modal-next" class="btn btn-secondary btn-small quiz-next-btn" hidden>Next Question</button>
-                 <!-- ADD THIS BUTTON vvv -->
-                 <button type="button" id="quiz-modal-show-results" class="btn btn-primary btn-small quiz-show-results-btn" hidden>Show Results</button>
-                 <!-- ^^^ ADD THIS BUTTON -->
+                 <!-- REMOVED Show Results Button vvv -->
+                 <!-- <button type="button" id="quiz-modal-show-results" class="btn btn-primary btn-small quiz-show-results-btn" hidden>Show Results</button> -->
+                 <!-- ^^^ REMOVED Show Results Button -->
                 <button type="button" id="quiz-modal-restart" class="btn btn-outline btn-small quiz-restart-btn" hidden><i class="fas fa-redo" aria-hidden="true"></i> Restart Check</button>
                  <button type="button" id="quiz-modal-close-results" class="btn btn-outline btn-small quiz-close-btn" hidden><i class="fas fa-times" aria-hidden="true"></i> Close</button>
             </div>
