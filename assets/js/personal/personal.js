@@ -534,6 +534,7 @@ function displayQuestion() {
      setTimeout(() => quizModalOptionsEl.querySelector('.quiz-option')?.focus(), 150);
 }
 
+// --- MODIFIED FUNCTION ---
 function handleAnswerSelection(event) {
     const selectedButton = event.target.closest('.quiz-option');
     if (!selectedButton || selectedButton.disabled || !quizModal) return;
@@ -547,41 +548,15 @@ function handleAnswerSelection(event) {
         score++;
     }
 
-    // Use cached elements
+    // Use cached elements to show feedback *immediately*
     if (quizModalFeedbackEl) {
         quizModalFeedbackEl.innerHTML = `<strong>${isCorrect ? 'Correct!' : 'Incorrect.'}</strong> ${question.explanation || ''}`;
         quizModalFeedbackEl.className = 'quiz-modal-feedback p-md border rounded mb-lg'; // Reset classes first & add base styles
         quizModalFeedbackEl.classList.add(isCorrect ? 'correct' : 'incorrect'); // Add status style
-        quizModalFeedbackEl.hidden = false;
+        quizModalFeedbackEl.hidden = false; // Show feedback
     }
 
-    const isLastQuestion = currentQuestionIndex === currentQuestions.length - 1;
-
-    // Only show the "Next Question" button if it's NOT the last question.
-    if (!isLastQuestion) {
-        if (quizModalNextBtn) {
-            quizModalNextBtn.hidden = false;
-             setTimeout(() => quizModalNextBtn.focus(), 100); // Delay focus slightly
-        }
-    } else {
-         // If it IS the last question, the next step is implicitly showing results,
-         // which will happen when the user clicks the 'Next Question' button
-         // (which now knows it's the last question's turn - see modal click handler)
-         // --- ** BUT we want it auto - WRONG LOGIC HERE PREVIOUSLY ---
-         // Corrected approach: We don't show 'Next' button on last Q.
-         // Instead, after selection on last Q, the *only* way forward is via results screen logic.
-         // We need to handle the transition *from* last question click -> results.
-         // Since there's no "Show Results" button, clicking "Next" after the last question should trigger results.
-         // We ensure the "Next" button IS shown even after the last question,
-         // and the CLICK HANDLER for "Next" will trigger showQuizResults().
-         if (quizModalNextBtn) {
-            quizModalNextBtn.hidden = false;
-            setTimeout(() => quizModalNextBtn.focus(), 100); // Focus 'Next' which will trigger results on click
-         }
-    }
-
-
-    // Style and disable option buttons
+    // Disable all options buttons after selection
     const optionButtons = quizModalOptionsEl.querySelectorAll('.quiz-option');
     optionButtons.forEach(btn => {
         btn.disabled = true;
@@ -589,21 +564,40 @@ function handleAnswerSelection(event) {
         if (buttonIndex === question.correctAnswerIndex) {
             btn.classList.add('correct');
             btn.classList.remove('btn-outline');
-            btn.classList.add('btn-success-light'); // Use light success background
+            btn.classList.add('btn-success-light');
         } else if (buttonIndex === selectedIndex && !isCorrect) {
             btn.classList.add('incorrect');
             btn.classList.remove('btn-outline');
-            btn.classList.add('btn-danger-light'); // Use light danger background
+            btn.classList.add('btn-danger-light');
         }
-        // Remove outline only if a specific state is applied
-         if (btn.classList.contains('correct') || btn.classList.contains('incorrect')) {
-            btn.classList.remove('btn-outline');
-         } else {
-             // Keep other disabled buttons outlined for consistency maybe? Or default grey?
-             btn.classList.add('btn-outline'); // Ensure others are outlined if preferred
-         }
+        if (btn.classList.contains('correct') || btn.classList.contains('incorrect')) {
+           btn.classList.remove('btn-outline');
+        } else {
+            btn.classList.add('btn-outline');
+        }
     });
+
+    // --- CHANGE START ---
+    // Check if this was the LAST question
+    const isLastQuestion = currentQuestionIndex === currentQuestions.length - 1;
+
+    if (isLastQuestion) {
+        // Immediately proceed to show results after the last question's feedback is shown
+        // No "Next" button will be shown or needed.
+        setTimeout(showQuizResults, 600); // Add a slight delay to allow user to read feedback
+        // Hide the next button defensively (though it shouldn't be visible)
+        if (quizModalNextBtn) quizModalNextBtn.hidden = true;
+    } else {
+        // Not the last question, show the "Next Question" button
+        if (quizModalNextBtn) {
+            quizModalNextBtn.hidden = false;
+            // Focus the "Next Question" button after a short delay
+            setTimeout(() => quizModalNextBtn.focus(), 100);
+        }
+    }
+    // --- CHANGE END ---
 }
+
 
 function showQuizResults() {
     if (!quizModal) return;
@@ -612,24 +606,23 @@ function showQuizResults() {
     quizModalQuestionEl.hidden = true;
     quizModalOptionsEl.hidden = true;
     quizModalFeedbackEl.hidden = true;
-    quizModalNextBtn.hidden = true; // Hide next btn on results screen
+    quizModalNextBtn.hidden = true; // Hide next btn explicitly on results screen
 
     const totalQuestions = currentQuestions.length;
     const percentage = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
 
     // --- Update local storage stats ---
-    // This is now the definitive point where a quiz attempt is considered completed.
     if (currentCategoryId !== null) {
-        updateQuizStats(currentCategoryId, score, totalQuestions); // Update stats function revised below
+        updateQuizStats(currentCategoryId, score, totalQuestions);
     } else {
         console.error("Cannot update stats: currentCategoryId is null.");
     }
 
 
     // Use Local Storage for richer feedback
-    const stats = getQuizStats(); // Fetch fresh stats after update
+    const stats = getQuizStats();
     const catIdStr = currentCategoryId !== null ? String(currentCategoryId) : null;
-    const categoryStats = catIdStr ? stats[catIdStr] : undefined; // Use potentially updated stats
+    const categoryStats = catIdStr ? stats[catIdStr] : undefined;
     let message = '';
     let prefix = '';
 
@@ -639,17 +632,16 @@ function showQuizResults() {
      if (currentAttempts > 1) {
          // User has completed this quiz before (attempts > 1)
          prefix = `Attempt #${currentAttempts}: `;
-         const bestScore = categoryStats?.bestScore ?? -1; // Use best score from updated stats
+         const bestScore = categoryStats?.bestScore ?? -1;
 
-         if (score > bestScore) {
-              // Note: This case shouldn't technically happen if bestScore logic is correct in updateQuizStats
-             message = `Fantastic! You set a new best score, previously ${bestScore}/${totalQuestions}!`;
-             console.warn("Score higher than bestScore found, which might indicate a logic issue.", {score, bestScore});
-         } else if (score === bestScore && score === totalQuestions) {
+         if (score === bestScore && score === totalQuestions) {
               message = `Perfect score again! Well done!`;
          } else if (score === bestScore) {
              message = `Great effort, matching your best score!`;
-         } else {
+         } else if (score > (categoryStats?.score ?? -1) && score <= bestScore ) { // Improved score but not new best
+              message = `Improvement noted! Your best score remains ${bestScore}/${totalQuestions}. Keep going!`;
+         }
+          else {
               const displayBestScore = bestScore > -1 ? `${bestScore}/${totalQuestions}` : 'N/A';
               message = `Keep practicing! Your best score is ${displayBestScore}.`;
          }
@@ -671,10 +663,13 @@ function showQuizResults() {
     // Logic for next quiz button or full challenge prompt
     const nextCategoryId = currentCategoryId !== null ? currentCategoryId + 1 : null; // Handle null case
     let nextCategory = null;
-    if (nextCategoryId !== null) {
-         // Find the *first question* of the next category to get its details
-         nextCategory = introQuizQuestions.find(q => q.categoryId === nextCategoryId);
+    // Find if there's *any* question defined for the next category ID
+    if (nextCategoryId !== null && introQuizQuestions.some(q => q.categoryId === nextCategoryId)) {
+         // We just need the category name, find the *first* question of that next category
+         const nextCategoryQuestion = introQuizQuestions.find(q => q.categoryId === nextCategoryId);
+         if(nextCategoryQuestion) nextCategory = nextCategoryQuestion;
     }
+
 
     if (nextCategory) {
         const nextCategoryName = nextCategory.category || `Check ${nextCategoryId}`;
@@ -685,7 +680,7 @@ function showQuizResults() {
         nextQuizButton.innerHTML = `<i class="fas fa-arrow-right" aria-hidden="true"></i> Take ${nextCategoryName} Check`;
         nextQuizButton.onclick = () => {
             if (nextCategoryId !== null) {
-                 handleQuizStart(nextCategoryId);
+                 handleQuizStart(nextCategoryId); // Trigger start for the *next* category
             } else {
                  console.error("Attempted to start next quiz with null categoryId.");
             }
@@ -693,7 +688,7 @@ function showQuizResults() {
         quizModalResultsEl.appendChild(nextQuizButton);
         quizModalFullChallengePromptEl.hidden = true; // Hide the 100q prompt if there's a next category
     } else {
-        // This was the last category
+        // This was the last category or no next category defined
         quizModalResultsEl.innerHTML += `<p class="mt-lg">You've completed all the introductory checks!</p>`;
         quizModalFullChallengePromptEl.hidden = false; // Show the 100q prompt
     }
@@ -1202,20 +1197,15 @@ document.addEventListener('DOMContentLoaded', function() {
     if (quizModal) {
         quizModal.addEventListener('click', function(e) {
             // Handle Next Question click
+            // This event listener still handles the 'Next' button click, but the logic in handleAnswerSelection prevents
+            // the 'Next' button from being shown after the last question. This click handler will only run
+            // for questions 1 through n-1.
             if (e.target.matches('#quiz-modal-next')) {
-                 // Determine if clicking "Next" should show results or the next question
-                 const isLastQuestionAnswered = currentQuestionIndex === currentQuestions.length - 1;
-                 if (isLastQuestionAnswered) {
-                     // We are on the last question, clicking 'Next' should show results
-                     showQuizResults();
-                 } else {
-                     // It's not the last question, proceed to the next one
-                     currentQuestionIndex++;
-                     displayQuestion();
-                 }
-            // REMOVED 'Show Results' button logic
-            // Handle Restart click
-            } else if (e.target.matches('#quiz-modal-restart')) {
+                 currentQuestionIndex++;
+                 displayQuestion();
+            }
+            // Handle Restart click (now also available on results screen)
+            else if (e.target.matches('#quiz-modal-restart')) {
                  if (currentCategoryId !== null) {
                      // Reset score/index before starting again for the UI
                      score = 0;
@@ -1225,14 +1215,14 @@ document.addEventListener('DOMContentLoaded', function() {
                  } else {
                       console.warn("Attempted restart with no currentCategoryId.");
                  }
+            }
             // Handle Close buttons (main close and results close)
-            } else if (e.target.matches('#quiz-modal-close') || e.target.matches('#quiz-modal-close-results')) {
+            else if (e.target.matches('#quiz-modal-close') || e.target.matches('#quiz-modal-close-results')) {
                  closeModal(quizModal);
             }
             // Handle dynamic "Take Next Check" button in results
             else if (e.target.closest('.next-quiz-button')) {
                  // The click handler for this is attached inline in showQuizResults()
-                 // This block is just for potentially logging or future complex logic
             }
         });
     } else {
