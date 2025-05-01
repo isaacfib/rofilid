@@ -251,6 +251,15 @@ function updateQuizStats(categoryId, achievedScore, totalQuestions) {
     const stats = getQuizStats();
     const existingCategoryStats = stats[catIdStr];
 
+    // Check if the current attempt results are already stored for this category
+    // This is a safety check to prevent duplicate attempt increments if showQuizResults is accidentally called twice
+    if (existingCategoryStats && existingCategoryStats.score === achievedScore && existingCategoryStats.timestamp && (Date.now() - existingCategoryStats.timestamp < 10000)) { // Check if timestamp is very recent
+         // console.warn(`Attempt count for category ${catIdStr} might be inflated. Duplicate results detected shortly after previous save.`);
+         // Optionally return here to prevent incrementing attempts multiple times rapidly
+         // return; // Decide if you want to strictly prevent this. For now, let it proceed but be aware.
+    }
+
+
     let attempts = 1; // Default to 1 attempt if this is the first time completing
     if (existingCategoryStats?.completed) {
         attempts = (existingCategoryStats.attempts || 0) + 1; // Increment existing attempts if completed before
@@ -268,12 +277,12 @@ function updateQuizStats(categoryId, achievedScore, totalQuestions) {
         score: achievedScore, // Last score
         total: totalQuestions,
         lastPercentage: totalQuestions > 0 ? Math.round((achievedScore / totalQuestions) * 100) : 0,
-        timestamp: Date.now(),
+        timestamp: Date.now(), // Record timestamp of this result save
     };
 
     stats[catIdStr] = newCategoryStats;
     saveQuizStats(stats);
-    console.log(`Stats updated for category ${catIdStr}:`, newCategoryStats);
+    console.log(`Stats updated for category ${catIdStr}: Attempts=${attempts}, Best=${bestScore}, Last=${achievedScore}`);
 
     // After saving, update the UI immediately for the specific card
     updateCategoryCardUI(catIdStr);
@@ -422,21 +431,21 @@ function handleCountryChange(event) {
 
     if (isNigeria) {
         // Nigeria is selected
-        console.log(`Nigeria selected in ${countryInput.id}. Populating states.`);
+        // console.log(`Nigeria selected in ${countryInput.id}. Populating states.`);
         populateDatalist(cityDatalist, nigerianStatesList);
         cityInput.disabled = false;
         cityInput.placeholder = "Select State/City in Nigeria";
         cityInput.setAttribute('list', cityDatalist.id); // Ensure list attribute is set
     } else if (countryValue) {
         // Another country is selected (and the input is not empty)
-        console.log(`Non-Nigeria country '${countryValue}' selected in ${countryInput.id}. Allowing manual city input.`);
+        // console.log(`Non-Nigeria country '${countryValue}' selected in ${countryInput.id}. Allowing manual city input.`);
         cityInput.disabled = false; // **ENABLE** manual input
         cityInput.placeholder = "Enter City/Town"; // Update placeholder
         cityDatalist.innerHTML = ''; // Clear Nigerian states
         cityInput.removeAttribute('list'); // Remove list attribute to prevent stale suggestions
     } else {
         // Country input is empty
-        console.log(`Country cleared in ${countryInput.id}. Disabling city.`);
+        // console.log(`Country cleared in ${countryInput.id}. Disabling city.`);
         cityInput.disabled = true; // Disable city input
         cityInput.value = '';      // Clear city value
         cityInput.placeholder = "City (Select Country First)";
@@ -537,7 +546,6 @@ function displayQuestion() {
      setTimeout(() => quizModalOptionsEl.querySelector('.quiz-option')?.focus(), 150);
 }
 
-// --- UPDATED FUNCTION ---
 function handleAnswerSelection(event) {
     const selectedButton = event.target.closest('.quiz-option');
     if (!selectedButton || selectedButton.disabled || !quizModal) return;
@@ -588,29 +596,26 @@ function handleAnswerSelection(event) {
 
     if (isLastQuestion) {
         // Last question answered: Proceed to show results after a delay
-        // DO NOT SHOW "Next Question" button.
-        if (quizModalNextBtn) quizModalNextBtn.hidden = true; // Ensure it's hidden
-        // Use setTimeout to delay the display of the final results screen
-        setTimeout(showQuizResults, 1200); // Increased delay to read feedback
+        if (quizModalNextBtn) quizModalNextBtn.hidden = true; // Ensure it's hidden *before* the delay starts
+        setTimeout(showQuizResults, 1200); // Delay results display
     } else {
         // Not the last question: Show the "Next Question" button
         if (quizModalNextBtn) {
             quizModalNextBtn.hidden = false;
-            setTimeout(() => quizModalNextBtn.focus(), 100); // Focus it after a short delay
+            setTimeout(() => quizModalNextBtn.focus(), 100); // Focus it
         }
     }
 }
 
-// --- UPDATED FUNCTION ---
+
 function showQuizResults() {
     if (!quizModal) return;
 
-    // --- Core Change: Explicitly hide question/options/feedback elements ---
+    // Explicitly hide question, options, feedback, and the next button
     quizModalQuestionEl.hidden = true;
     quizModalOptionsEl.hidden = true;
     quizModalFeedbackEl.hidden = true;
-    quizModalNextBtn.hidden = true; // Crucial: Ensure Next button is hidden here
-    // ---------------------------------------------------------------------
+    quizModalNextBtn.hidden = true; // Ensure next button is hidden *now*
 
     const totalQuestions = currentQuestions.length;
     const percentage = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
@@ -669,7 +674,7 @@ function showQuizResults() {
         quizModalResultsEl.innerHTML += `<p class="mt-lg">Continue your learning journey with the next check:</p>`;
         const nextQuizButton = document.createElement('button');
         nextQuizButton.type = 'button';
-        nextQuizButton.classList.add('btn', 'btn-primary', 'btn-small', 'btn-icon', 'mt-sm', 'next-quiz-button'); // Add class for potential removal later
+        nextQuizButton.classList.add('btn', 'btn-primary', 'btn-small', 'btn-icon', 'mt-sm', 'next-quiz-button');
         nextQuizButton.innerHTML = `<i class="fas fa-arrow-right" aria-hidden="true"></i> Take ${nextCategoryName} Check`;
         nextQuizButton.onclick = () => {
             if (nextCategoryId !== null) handleQuizStart(nextCategoryId);
@@ -696,7 +701,7 @@ function handleQuizStart(categoryId) {
     sessionStorage.setItem('selectedQuizCategory', categoryId.toString());
 
     if (!demographicsModal) {
-        console.warn("Demographics modal not found, starting quiz directly.");
+        // console.warn("Demographics modal not found, starting quiz directly.");
         startQuiz(categoryId);
         return;
     }
@@ -746,7 +751,7 @@ function stopJourneyAutoAdvance() {
 
 function activateJourneyStep(step, options = { focusNode: false }) {
     if (!journeyPath || journeyNodeList.length === 0 || !journeyContents || journeyContents.length === 0 || !journeyContentContainer) {
-         console.warn("Journey path elements not available for activation.");
+         // console.warn("Journey path elements not available for activation.");
          return;
     }
 
@@ -851,7 +856,7 @@ function setupJourneyObserver() {
          if (!isJourneyObserverActive) console.warn("Journey observer prerequisites not met.");
          return;
     }
-    console.log("Setting up journey observers...");
+    // console.log("Setting up journey observers...");
     isJourneyObserverActive = true;
 
     const sectionTriggerOptions = {
@@ -912,7 +917,7 @@ function setupJourneyObserver() {
             console.warn(`Journey section trigger: Section ID "${sectionInfo.id}" not found.`);
         }
     });
-    if (observedTriggerCount > 0) console.log(`Journey section trigger observer watching ${observedTriggerCount} sections.`);
+    // if (observedTriggerCount > 0) console.log(`Journey section trigger observer watching ${observedTriggerCount} sections.`);
 
     // Intersection observer for the #financial-journey section itself (for auto-advance control)
     const autoAdvanceOptions = { root: null, threshold: 0.01 }; // Trigger when even a small part is visible
@@ -922,13 +927,13 @@ function setupJourneyObserver() {
                 if (entry.isIntersecting) {
                      // Section is visible, start auto-advance IF NOT ALREADY running
                      if (!journeyAutoAdvanceInterval) {
-                          console.log("Journey section visible, starting auto-advance.");
+                          // console.log("Journey section visible, starting auto-advance.");
                           journeyAutoAdvanceInterval = setInterval(autoAdvanceJourney, JOURNEY_ADVANCE_DELAY);
                      }
                  } else {
                      // Section is NOT visible, stop auto-advance
                       if (journeyAutoAdvanceInterval) {
-                          console.log("Journey section not visible, stopping auto-advance.");
+                          // console.log("Journey section not visible, stopping auto-advance.");
                           stopJourneyAutoAdvance();
                       }
                  }
@@ -937,7 +942,7 @@ function setupJourneyObserver() {
     }, autoAdvanceOptions);
 
     journeySectionObserver.observe(financialJourneySection);
-    console.log("Journey auto-advance observer watching #financial-journey section.");
+    // console.log("Journey auto-advance observer watching #financial-journey section.");
 }
 
 
@@ -1029,7 +1034,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const revealElements = document.querySelectorAll('.reveal-on-scroll, .reveal-stagger > *');
     if (revealElements.length > 0 && 'IntersectionObserver' in window) {
-         console.log(`Initializing IntersectionObserver for reveal animations.`);
+         // console.log(`Initializing IntersectionObserver for reveal animations.`);
          const scrollObserverOptions = { threshold: 0.1, rootMargin: '0px 0px -10% 0px' };
         const scrollObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
@@ -1095,7 +1100,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Mobile Navigation ---
     if (menuToggle && primaryNav) {
-        console.log("Attaching mobile nav listener.");
+        // console.log("Attaching mobile nav listener.");
         menuToggle.addEventListener('click', () => {
             const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
             menuToggle.setAttribute('aria-expanded', String(!isExpanded));
@@ -1125,7 +1130,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (primaryNav.classList.contains('active') &&
                 !primaryNav.contains(e.target) &&
                 !menuToggle.contains(e.target)) {
-                 console.log("Closing nav via outside click");
+                 // console.log("Closing nav via outside click");
                 menuToggle.click();
             }
         });
@@ -1140,7 +1145,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (quizCountryDatalist && pdfCountryDatalist) {
         populateDatalist(quizCountryDatalist, countryList);
         populateDatalist(pdfCountryDatalist, countryList);
-        console.log("Country datalists populated.");
+        // console.log("Country datalists populated.");
     } else {
         console.warn("Could not find one or both country datalist elements.");
     }
@@ -1185,18 +1190,20 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
-    // --- Quiz Modal Event Listeners ---
+    // --- Quiz Modal Event Listeners --- UPDATED ---
     if (quizModal) {
         quizModal.addEventListener('click', function(e) {
-            // Handle Next Question click
-            // The event listener remains, but it will only fire if the button is clicked.
-            // Since handleAnswerSelection hides the button after the last question,
-            // this block effectively only runs for questions 1 to N-1.
+            // Handle Next Question click - GUARD ADDED
             if (e.target.matches('#quiz-modal-next')) {
-                 currentQuestionIndex++;
-                 displayQuestion();
+                 // *** NEW GUARD ***: Only proceed if results are NOT currently shown
+                 if (quizModalResultsEl && quizModalResultsEl.hidden === true) {
+                     currentQuestionIndex++;
+                     displayQuestion();
+                 } else {
+                      console.warn("Next button clicked while results are visible. Ignoring.");
+                 }
             }
-            // Handle Restart click (now also available on results screen)
+            // Handle Restart click
             else if (e.target.matches('#quiz-modal-restart')) {
                  if (currentCategoryId !== null) {
                      // Reset score/index before starting again for the UI
@@ -1261,11 +1268,11 @@ document.addEventListener('DOMContentLoaded', function() {
             if (isValid) {
                 quizDemographicsSubmitted = true; // Set flag for this session
                 sessionStorage.setItem('quizDemographicsSubmitted', 'true');
-                console.log('Submitting Demographics:', {
-                    country: currentCountryInput.value,
-                    city: currentCityInput.value,
-                    taken_before: takenBeforeChecked.value
-                 });
+                // console.log('Submitting Demographics:', {
+                //     country: currentCountryInput.value,
+                //     city: currentCityInput.value,
+                //     taken_before: takenBeforeChecked.value
+                //  });
 
                 closeModal(demographicsModal); // Close demographics modal
                 const selectedCategoryId = sessionStorage.getItem('selectedQuizCategory');
@@ -1345,11 +1352,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (isValid) {
                 const templateKey = currentTemplateKeyInput.value;
-                console.log('PDF Download Data:', {
-                    template: templateKey,
-                    country: currentCountryInput.value,
-                    city: currentCityInput.value
-                });
+                // console.log('PDF Download Data:', {
+                //     template: templateKey,
+                //     country: currentCountryInput.value,
+                //     city: currentCityInput.value
+                // });
 
                  // Construct the relative path more carefully
                  // Assuming 'personal.js' is in assets/js/personal/
@@ -1357,7 +1364,7 @@ document.addEventListener('DOMContentLoaded', function() {
                  const pdfBaseUrl = '../../assets/pdfs/'; // Path relative to the HTML file location
                  const pdfFilename = `${templateKey}.pdf`;
                  const pdfUrl = `${pdfBaseUrl}${pdfFilename}`;
-                 console.log(`Attempting to download: ${pdfUrl}`);
+                 // console.log(`Attempting to download: ${pdfUrl}`);
 
                  fetch(pdfUrl)
                      .then(response => {
@@ -1476,13 +1483,13 @@ document.addEventListener('DOMContentLoaded', function() {
              }
 
             if (isValid && responseElement) {
-                console.log('Submitting Feedback:', {
-                    name: nameInput.value,
-                    email: emailValue,
-                    type: currentFeedbackTypeSelect.value,
-                    message: messageTextarea.value,
-                    permission: permissionCheckbox?.checked ?? false // Default to false if not present
-                 });
+                // console.log('Submitting Feedback:', {
+                //     name: nameInput.value,
+                //     email: emailValue,
+                //     type: currentFeedbackTypeSelect.value,
+                //     message: messageTextarea.value,
+                //     permission: permissionCheckbox?.checked ?? false // Default to false if not present
+                //  });
 
                  // Show success message
                 responseElement.textContent = 'Thank you for your feedback!';
@@ -1536,7 +1543,7 @@ document.addEventListener('DOMContentLoaded', function() {
                  showFeedback(emailInput, 'Please enter a valid email address', true);
             } else {
                 showFeedback(emailInput, '', false); // Clear error
-                console.log('Submitting Coaching Interest:', { email: email });
+                // console.log('Submitting Coaching Interest:', { email: email });
 
                 // Show success message
                 responseElement.textContent = 'Thank you! We’ll notify you soon.';
@@ -1557,7 +1564,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Financial Journey Path Initialization ---
     if (journeyPath && journeyNodeList.length > 0 && journeyContents && journeyContents.length > 0) {
-        console.log("Initializing Financial Journey Path.");
+        // console.log("Initializing Financial Journey Path.");
         journeyNodeList.forEach(node => {
             node.addEventListener('click', handleJourneyInteraction);
             node.addEventListener('keydown', handleJourneyInteraction);
@@ -1587,7 +1594,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Floating Action Button (FAB) ---
     if (fabContainer && fabButton && fabOptions) {
-        console.log("Initializing Floating Action Button (FAB).");
+        // console.log("Initializing Floating Action Button (FAB).");
         fabButton.addEventListener('click', function() {
              const isExpanded = fabContainer.classList.toggle('active');
              fabButton.setAttribute('aria-expanded', String(isExpanded));
