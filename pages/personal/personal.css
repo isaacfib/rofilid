@@ -111,7 +111,7 @@
   --gradient-secondary: linear-gradient(135deg, var(--pp-color-secondary), var(--pp-color-secondary-light));
   --gradient-accent: linear-gradient(135deg, var(--pp-color-accent), var(--pp-color-accent-light));
   --gradient-light: linear-gradient(135deg, var(--pp-color-bg-light), var(--pp-color-bg-lighter));
-  /* >> FIX: Add specific gradient for header button << */
+  /* Gradient for header button AND challenge button */
   --gradient-section-underline: linear-gradient(90deg, var(--pp-color-primary), var(--pp-color-secondary), var(--pp-color-accent));
 
 
@@ -284,7 +284,6 @@ a.link-inline {
 a.link-inline:hover {
    color: var(--pp-color-secondary-dark);
    text-decoration-thickness: 2px;
-   /* filter: brightness(1.1); REMOVED */
 }
 
 /* Styling for buttons used as links (e.g., in footer or journey content) */
@@ -392,7 +391,7 @@ p {
   transform: translateX(-50%);
   width: 60px;
   height: 3px;
-  background: var(--gradient-section-underline); /* >> FIX: Use specific gradient << */
+  background: var(--gradient-section-underline); /* Uses gradient */
   background-size: 200% 100%;
   border-radius: var(--radius-full);
   animation: gradientShift 5s infinite alternate;
@@ -484,7 +483,7 @@ p {
   box-shadow: 0 10px 20px color-mix(in srgb, var(--pp-color-primary) 20%, transparent);
 }
 
-/* >> FIX: Specific outline button hover - prevents background fill << */
+/* Specific outline button hover - prevents background fill */
 .btn-outline-no-fill-hover:hover,
 .btn-outline-no-fill-hover:focus-visible {
   background: transparent; /* Override background fill */
@@ -642,7 +641,7 @@ p {
 
 /* Header Tool Button Styling */
 .header-tool-btn {
-  /* >> FIX: Use section underline gradient << */
+  /* Uses section underline gradient */
   background: var(--gradient-section-underline);
   background-size: 200% 100%;
   animation: gradientShift 5s infinite alternate;
@@ -659,7 +658,7 @@ p {
 /* --- Specific hover/focus for header tool button --- */
 .header-tool-btn:hover,
 .header-tool-btn:focus-visible {
-   /* >> FIX: Use section underline gradient - slight shift/brighten on hover << */
+   /* Uses section underline gradient - slight shift/brighten on hover */
   background-position: 100% 0%; /* Shift gradient */
   filter: brightness(1.1); /* Slight brighten */
   color: var(--rofilid-white);
@@ -1025,7 +1024,6 @@ p {
 /* Optional styling for completed card */
 .category-card.completed {
    border-left: 4px solid var(--pp-color-success); /* Example: Green left border */
-   /* background-color: color-mix(in srgb, var(--pp-color-success) 5%, transparent); */ /* Optional subtle tint */
 }
 /* Make the "Retake" button (outline) stand out a bit */
 .category-card.completed .start-quiz-btn {
@@ -1042,19 +1040,51 @@ p {
     text-align: center;
     margin-top: var(--space-2xl);
 }
-/* >> FIX: Make 100q button wrap text << */
-.full-challenge-link .btn {
-   white-space: normal; /* Allow text wrapping */
-   text-align: center;
-   display: inline-flex; /* Keep flex properties for icon */
-   justify-content: center; /* Center content horizontally */
-   padding-left: var(--space-lg); /* Add padding back if needed */
-   padding-right: var(--space-lg);
-   max-width: 90%; /* Prevent spanning full width on mobile */
+
+/* --- START: Styling for the 100-Question Challenge button --- */
+/* Specific selector for the challenge button link */
+#learning-hub .full-challenge-link a.btn {
+    /* Override existing btn-outline styles */
+    background: var(--gradient-section-underline); /* Apply gradient */
+    background-size: 200% 100%; /* For animation */
+    animation: gradientShift 5s infinite alternate; /* Apply animation */
+    color: var(--rofilid-white); /* Set text color */
+    border-color: transparent; /* Remove outline border */
+    box-shadow: var(--shadow-md); /* Add base shadow */
+
+    /* Inherited styles we might want to keep/adjust from the original .full-challenge-link .btn */
+    white-space: normal;
+    text-align: center;
+    display: inline-flex;
+    justify-content: center;
+    padding: 1rem 2rem; /* Keep large padding */
+    font-size: var(--font-size-md); /* Keep large font */
+    max-width: 90%;
+    line-height: 1.5;
 }
-.full-challenge-link .btn i {
-   margin-left: var(--space-sm); /* Add space before arrow */
+#learning-hub .full-challenge-link a.btn i {
+    margin-left: var(--space-sm); /* Keep icon spacing */
 }
+
+/* Hover and focus styles for challenge button (match header button) */
+#learning-hub .full-challenge-link a.btn:hover,
+#learning-hub .full-challenge-link a.btn:focus-visible {
+    background-position: 100% 0%; /* Shift gradient */
+    filter: brightness(1.1); /* Slight brighten */
+    color: var(--rofilid-white); /* Keep text color */
+    border-color: transparent; /* Keep border transparent */
+    box-shadow: 0 10px 20px color-mix(in srgb, var(--pp-color-primary) 20%, transparent); /* Enhanced shadow */
+    animation-play-state: paused; /* Pause animation */
+    transform: translateY(-2px); /* Standard button hover lift */
+    text-decoration: none; /* Ensure no underline */
+}
+
+/* Specific focus ring for challenge button */
+#learning-hub .full-challenge-link a.btn:focus-visible {
+    outline: none;
+    box-shadow: 0 10px 20px color-mix(in srgb, var(--pp-color-primary) 20%, transparent), 0 0 0 3px color-mix(in srgb, var(--pp-color-secondary) 40%, transparent); /* Add focus ring */
+}
+/* --- END: Styling for the 100-Question Challenge button --- */
 
 
 /* Financial Journey Path */
@@ -1305,7 +1335,7 @@ p {
   gap: var(--space-xl);
 }
 
-/* >> FIX: Add media queries for more columns on larger screens << */
+/* Media queries for more columns on larger screens */
 @media (min-width: 1024px) {
   .template-grid {
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Adjust minmax if needed */
@@ -1337,7 +1367,7 @@ p {
     height: auto;
     aspect-ratio: 4 / 3;
     object-fit: cover; /* Default image covers */
-    /* >> FIX: Gentler transition for default image fade << */
+    /* Gentler transition for default image fade */
     transition: opacity var(--transition-gentle);
     border-radius: inherit;
 }
@@ -1351,7 +1381,7 @@ p {
   padding: var(--space-sm); /* Padding around hover image */
   opacity: 0;
   transform: scale(0.9);
-  /* >> FIX: Gentler transition for hover image reveal << */
+  /* Gentler transition for hover image reveal */
   transition: opacity var(--transition-gentle), transform var(--transition-gentle) ease-in-out;
   z-index: 1;
   border-radius: inherit;
@@ -2396,7 +2426,6 @@ fieldset.is-invalid-check-group legend {
   }
 
   /* Mobile Nav Container Styles (#primary-navigation is the UL) */
-  /* >> FIX: Ensure active state is working << */
   #primary-navigation {
     /* Needs display block/flex etc. *inside* the active class, not here */
     position: fixed;
@@ -2609,9 +2638,13 @@ fieldset.is-invalid-check-group legend {
         left: calc(60px / 2 - 4px / 2);
      }
 
-   /* Reduce 100q button font-size slightly */
-   .full-challenge-link .btn {
-        font-size: var(--font-size-sm);
+   /* Adjust 100q button size */
+   #learning-hub .full-challenge-link a.btn {
+       font-size: var(--font-size-sm); /* Smaller font on smallest screens */
+       padding: var(--space-md) var(--space-lg); /* Slightly smaller padding */
+   }
+   #learning-hub .full-challenge-link a.btn i {
+       /* Icon spacing might need adjustment */
    }
 
 }
