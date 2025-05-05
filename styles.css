@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ROFILID Global Styles 
+   ROFILID Global Styles
    ========================================================================== */
 
 /* === Root Variables (Global Default) === */
@@ -324,6 +324,11 @@ nav[aria-label="Main navigation"] {
   .connect-button { display: none; /* Hide connect button when toggle is shown */ }
   .nav-list { display: none; /* Ensure desktop nav is hidden */ }
   #primary-navigation.active { display: flex; /* Show dropdown when active */ }
+  /* Adjust nav container on mobile to ensure toggle aligns right */
+  nav[aria-label="Main navigation"] {
+    justify-content: flex-end; /* Keep toggle/button on the right */
+    margin-left: auto; /* Push nav container right if space allows */
+  }
 }
 
 /* Desktop */
@@ -337,62 +342,72 @@ nav[aria-label="Main navigation"] {
   .mobile-menu-toggle { display: none !important; } /* Hide toggle */
   .connect-button { display: inline-block; } /* Ensure button visible */
 
-  /* Reset mobile .active state styles (common) */
-  #primary-navigation.active {
-    position: static; box-shadow: none; overflow: visible; padding: 0; background-color: transparent;
-    display: flex; flex-wrap: nowrap; width: auto; gap: var(--spacing-lg);
-  }
-
-  /* --- UNIFIED Header Layout (space-between approach) --- */
+  /* --- Centered Nav Header Layout --- */
   .header-container {
     display: flex;
     align-items: center;
-    /* ADD THIS LINE - Key Change */
-    justify-content: space-between;
-    /* End Added Line */
+    justify-content: space-between; /* Keeps logo left, button right */
     width: 100%; max-width: var(--container-width); margin: 0 auto; padding: 0 var(--spacing-md);
   }
 
   .header-container .logo {
-    /* No auto margin needed */
-    flex-shrink: 0; /* Keep this */
+    flex-shrink: 0; /* Prevent logo from shrinking */
+    margin-right: var(--spacing-lg); /* Add some space between logo and nav */
   }
 
-  /* Nav simply acts as a container for the list */
+  /* Nav element takes available space and centers its content */
   nav[aria-label="Main navigation"] {
-    /* Removed flex-grow, justify-content, and auto margins */
-    display: flex; /* Still useful for aligning the ul if needed */
-    align-items: center; /* Still useful */
+    flex-grow: 1;             /* Allow nav to expand */
+    display: flex;            /* Enable flex for centering */
+    justify-content: center; /* Center the nav list horizontally */
+    align-items: center;
+    margin: 0; /* Remove potential mobile margins */
+    padding: 0; /* Remove potential mobile padding */
   }
 
-  /* UL displays the links horizontally */
+  /* UL (nav-list) displays the links horizontally */
    .nav-list {
-      display: flex !important; /* Keep if overriding mobile */
-      flex-direction: row;
-      gap: var(--spacing-lg);
+      display: flex !important; /* Show the list */
+      flex-direction: row;     /* Arrange items horizontally */
+      flex-wrap: nowrap;       /* Prevent wrapping */
+      gap: var(--spacing-lg);   /* Space between nav items */
+      /* Reset mobile/active styles */
       position: static;
       width: auto;
       background-color: transparent;
       box-shadow: none;
       padding: 0;
       opacity: 1;
-      flex-wrap: nowrap;
       overflow: visible;
       margin: 0; /* Ensure no extra margin */
+      /* The parent nav handles centering, so no margin: auto here */
+   }
+   /* Remove active state modifications */
+   #primary-navigation.active { /* Reset these for desktop view */
+      position: static;
+      box-shadow: none;
+      overflow: visible;
+      padding: 0;
+      background-color: transparent;
+      /* Ensure flex properties are still applied via .nav-list */
+      display: flex !important; /* Redundant if .nav-list is already display: flex, but safe */
+      flex-direction: row;
+      gap: var(--spacing-lg);
+      width: auto;
    }
 
-  /* Button takes its natural place at the end */
-  .connect-button { /* This targets the button OUTSIDE nav */
-    /* No auto margin needed */
-    flex-shrink: 0; /* Keep this */
-  }
-  /* --- End UNIFIED Header Layout --- */
 
-  /* Index cards - 3 columns (Keep scoped if only for Index page) */
-  /* If used elsewhere, remove .page-index */
+  /* Button takes its natural place at the end (due to space-between) */
+  .connect-button { /* This targets the button OUTSIDE nav */
+    flex-shrink: 0; /* Prevent button from shrinking */
+    margin-left: var(--spacing-lg); /* Add some space between nav and button */
+  }
+  /* --- End Centered Nav Header Layout --- */
+
+  /* Index cards - Can remain as is if 2/3 column layout is fine */
   .page-index .cards .card {
-      flex-basis: calc(33.333% - var(--spacing-lg) * 2 / 3);
-      max-width: 360px;
+      flex-basis: calc(33.333% - var(--spacing-lg) * 2 / 3); /* Example for 3 columns */
+      max-width: 360px; /* Adjust as needed */
   }
 }
 
