@@ -346,13 +346,13 @@ nav[aria-label="Main navigation"] {
   .header-container {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Keeps logo left, button right */
+    /* Removed justify-content: space-between to allow nav centering */
     width: 100%; max-width: var(--container-width); margin: 0 auto; padding: 0 var(--spacing-md);
   }
 
   .header-container .logo {
     flex-shrink: 0; /* Prevent logo from shrinking */
-    margin-right: var(--spacing-lg); /* Add some space between logo and nav */
+    /* Removed margin-right, spacing handled by nav grow and button margin */
   }
 
   /* Nav element takes available space and centers its content */
@@ -362,7 +362,7 @@ nav[aria-label="Main navigation"] {
     justify-content: center; /* Center the nav list horizontally */
     align-items: center;
     margin: 0; /* Remove potential mobile margins */
-    padding: 0; /* Remove potential mobile padding */
+    padding: 0 var(--spacing-md); /* Add some padding around the centered nav */
   }
 
   /* UL (nav-list) displays the links horizontally */
@@ -379,8 +379,7 @@ nav[aria-label="Main navigation"] {
       padding: 0;
       opacity: 1;
       overflow: visible;
-      margin: 0; /* Ensure no extra margin */
-      /* The parent nav handles centering, so no margin: auto here */
+      margin: 0; /* Ensure no extra margin, centering is done by parent nav */
    }
    /* Remove active state modifications */
    #primary-navigation.active { /* Reset these for desktop view */
@@ -397,10 +396,10 @@ nav[aria-label="Main navigation"] {
    }
 
 
-  /* Button takes its natural place at the end (due to space-between) */
+  /* Button takes its natural place at the end (due to margin-left: auto) */
   .connect-button { /* This targets the button OUTSIDE nav */
     flex-shrink: 0; /* Prevent button from shrinking */
-    margin-left: var(--spacing-lg); /* Add some space between nav and button */
+    margin-left: auto; /* Pushes button to the far right */
   }
   /* --- End Centered Nav Header Layout --- */
 
