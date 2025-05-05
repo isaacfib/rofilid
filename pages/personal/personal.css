@@ -2783,39 +2783,59 @@ fieldset.is-invalid-check-group legend { color: var(--pp-color-danger); } /* Col
 @media (max-width: 768px) {
   html { font-size: 15px; scroll-padding-top: calc(var(--header-height) + 15px); }
 
+  /* Section Padding adjustments */
+  .section-padding { padding-block: var(--space-xl); }
+  .section-padding--large { padding-block: var(--space-2xl); }
 
+  /* Heading size adjustments */
+  h1 { font-size: 2.2rem; }
+  h2 { font-size: 1.8rem; }
+
+  /* Header container padding */
   .header-container { padding-inline: var(--space-md); gap: var(--space-md); }
-  .mobile-menu-toggle { display: flex; } /* Show toggle */
 
+  /* --- MOBILE NAVIGATION FIX START --- */
+  .mobile-menu-toggle { display: flex; } /* Show hamburger toggle */
 
-  nav[aria-label="Main navigation"] { /* Hide desktop nav container */
-      display: none;
+  nav[aria-label="Main navigation"] {
+      /* REMOVED display: none; This allows the container to exist */
+      /* Desktop styles like flex-grow, justify-content are irrelevant here */
+      /* We only care that it *exists* so the UL inside can be positioned */
+      all: unset; /* Optional: Reset any desktop styles that might interfere */
+      display: block; /* Or simply let it be default block */
+      position: static; /* Ensure it doesn't interfere with fixed UL */
   }
-  #primary-navigation { /* Style the mobile menu itself */
+
+  #primary-navigation { /* Style the mobile menu UL */
       position: fixed;
       inset: var(--header-height) 0 0 0;
-      background-color: rgba(255, 255, 255, 0.98); /* Near opaque */
+      background-color: rgba(255, 255, 255, 0.98);
       backdrop-filter: var(--backdrop-blur);
       -webkit-backdrop-filter: var(--backdrop-blur);
       transform: translateX(100%);
       opacity: 0;
       visibility: hidden;
+      /* Smooth transitions for transform and opacity, instant change for visibility (when showing) */
       transition: transform var(--transition-slow), opacity var(--transition-slow), visibility 0s var(--transition-slow);
       z-index: 1000;
       overflow-y: auto;
-      display: flex !important; /* Override inline styles */
+      display: flex; /* Use flex for column layout (removed !important) */
       flex-direction: column;
       gap: 0; /* No gap needed, using borders */
       height: calc(100vh - var(--header-height));
-      padding-top: var(--space-sm); /* Space at top */
-      padding-bottom: var(--space-xl); /* Space at bottom */
+      padding-top: var(--space-sm);
+      padding-bottom: var(--space-xl);
   }
   #primary-navigation.active {
       transform: translateX(0);
       opacity: 1;
       visibility: visible;
+      /* Make visibility change instantly when becoming active */
       transition: transform var(--transition-slow), opacity var(--transition-slow), visibility 0s 0s;
   }
+  /* --- MOBILE NAVIGATION FIX END --- */
+
+  /* Mobile menu item/link styles */
   #primary-navigation .nav-item { width: 100%; }
   #primary-navigation .nav-link {
       display: block; padding: var(--space-md) var(--space-lg);
@@ -2824,7 +2844,7 @@ fieldset.is-invalid-check-group legend { color: var(--pp-color-danger); } /* Col
       color: var(--pp-color-text);
   }
   #primary-navigation .nav-item:last-child .nav-link { border-bottom: none; }
-  #primary-navigation .nav-link::after { display: none; } /* No underline */
+  #primary-navigation .nav-link::after { display: none; } /* No desktop underline */
   #primary-navigation .nav-link:hover { background-color: var(--neutral-100); }
   #primary-navigation .nav-link[aria-current="page"] {
      background-color: var(--pp-color-primary-lightest);
@@ -2832,20 +2852,17 @@ fieldset.is-invalid-check-group legend { color: var(--pp-color-danger); } /* Col
      border-left: 4px solid var(--pp-color-secondary); /* Active indicator */
      padding-left: calc(var(--space-lg) - 4px);
   }
-  .nav-item.mobile-only { display: block; } /* Show mobile only item */
-  /* Add styling for the tool button *inside* the mobile nav */
+  .nav-item.mobile-only { display: block; }
    .nav-item.mobile-only .header-tool-btn {
       margin: var(--space-md) var(--space-lg);
       width: calc(100% - var(--space-lg) * 2);
-      justify-content: center; /* Center content */
-      display: flex !important; /* Ensure it shows */
-      padding: var(--space-md); /* Ensure decent size */
+      justify-content: center;
+      display: flex !important; /* Needs display */
+      padding: var(--space-md);
       font-size: var(--font-size-base);
    }
 
-
-   .header-tool-btn { display: none; } /* Hide desktop tool btn */
-
+   .header-tool-btn { display: none; } /* Hide main desktop tool btn */
 
    /* Journey Path Vertical Layout */
    .journey-path-container { padding-inline: 0; }
@@ -2875,23 +2892,26 @@ fieldset.is-invalid-check-group legend { color: var(--pp-color-danger); } /* Col
        flex-direction: row; width: 100%; text-align: left;
        align-items: center; gap: var(--space-lg);
        padding: var(--space-sm) 0; z-index: 3; position: relative;
-       min-width: auto; /* Reset desktop min width */
+       min-width: auto;
    }
    .journey-node:not(:last-child) { margin-bottom: var(--space-md); }
-   .journey-node .node-icon { flex-shrink: 0; width: 60px; height: 60px; } /* Slightly smaller */
+   .journey-node .node-icon { flex-shrink: 0; width: 60px; height: 60px; }
    .journey-node h3 {
        margin: 0; font-size: 1rem; flex-grow: 1; min-height: auto; display: block;
        padding-right: var(--space-sm); line-height: 1.4;
    }
-   .journey-connector { display: none; } /* Hide horizontal lines */
+   .journey-connector { display: none; }
    .journey-content-container { margin-top: var(--space-xl); max-width: none; margin-inline: var(--space-md); }
 
-
    /* Other mobile tweaks */
+   .hero-stats-grid { grid-template-columns: 1fr; }
    .footer-content { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
    .footer-column, .social-links { text-align: left; justify-content: flex-start; }
+   .coaching-interest { justify-content: flex-start; }
+   .deco-blur { filter: blur(100px); opacity: 0.2; }
+   .deco-blur.blur-2 { top: 60%; right: -15%; }
+   .deco-blur.blur-3 { display: none; }
 }
-
 
 /* --- Extra Small Screens (Max Width: 480px) --- */
 @media (max-width: 480px) {
