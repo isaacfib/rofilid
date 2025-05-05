@@ -343,16 +343,19 @@ nav[aria-label="Main navigation"] {
   .connect-button { display: inline-block; } /* Ensure button visible */
 
   /* --- Centered Nav Header Layout --- */
-  .header-container {
+   .header-container {
     display: flex;
     align-items: center;
-    /* Removed justify-content: space-between to allow nav centering */
-    width: 100%; max-width: var(--container-width); margin: 0 auto; padding: 0 var(--spacing-md);
+    justify-content: space-between; /* This is correct */
+    width: 100%; 
+    max-width: var(--container-width); 
+    margin: 0 auto; 
+    padding: 0 var(--spacing-md);
   }
 
   .header-container .logo {
     flex-shrink: 0; /* Prevent logo from shrinking */
-    /* Removed margin-right, spacing handled by nav grow and button margin */
+    margin-right: var(--spacing-lg); /* Add some space between logo and nav */
   }
 
   /* Nav element takes available space and centers its content */
@@ -362,7 +365,7 @@ nav[aria-label="Main navigation"] {
     justify-content: center; /* Center the nav list horizontally */
     align-items: center;
     margin: 0; /* Remove potential mobile margins */
-    padding: 0 var(--spacing-md); /* Add some padding around the centered nav */
+    padding: 0; /* Remove potential mobile padding */
   }
 
   /* UL (nav-list) displays the links horizontally */
@@ -379,7 +382,8 @@ nav[aria-label="Main navigation"] {
       padding: 0;
       opacity: 1;
       overflow: visible;
-      margin: 0; /* Ensure no extra margin, centering is done by parent nav */
+      margin: 0; /* Ensure no extra margin */
+      /* The parent nav handles centering, so no margin: auto here */
    }
    /* Remove active state modifications */
    #primary-navigation.active { /* Reset these for desktop view */
@@ -396,10 +400,10 @@ nav[aria-label="Main navigation"] {
    }
 
 
-  /* Button takes its natural place at the end (due to margin-left: auto) */
+  /* Button takes its natural place at the end (due to space-between) */
   .connect-button { /* This targets the button OUTSIDE nav */
     flex-shrink: 0; /* Prevent button from shrinking */
-    margin-left: auto; /* Pushes button to the far right */
+    margin-left: auto; /* This is the key change - pushes button to far right */
   }
   /* --- End Centered Nav Header Layout --- */
 
