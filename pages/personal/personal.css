@@ -111,7 +111,7 @@
   --gradient-secondary: linear-gradient(135deg, var(--pp-color-secondary), var(--pp-color-secondary-light));
   --gradient-accent: linear-gradient(135deg, var(--pp-color-accent), var(--pp-color-accent-light));
   --gradient-light: linear-gradient(135deg, var(--pp-color-bg-light), var(--pp-color-bg-lighter));
-  /* Gradient for header button AND challenge button */
+  /* Gradient for header button AND specific animated buttons */
   --gradient-section-underline: linear-gradient(90deg, var(--pp-color-primary), var(--pp-color-secondary), var(--pp-color-accent));
 
 
@@ -422,7 +422,7 @@ p {
   font-weight: var(--font-weight-medium);
   text-align: center;
   cursor: pointer;
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), filter var(--transition-fast); /* Added filter */
   border: 1px solid transparent; /* Base border for consistent size */
   font-size: var(--font-size-base);
   line-height: 1.5;
@@ -444,7 +444,7 @@ p {
 }
 
 /* Prevent double borders */
-.btn.btn-primary, .btn.btn-secondary { border-color: transparent; }
+.btn.btn-primary, .btn.btn-secondary, .btn.btn-gradient-animated { border-color: transparent; }
 
 .btn-primary {
   background: var(--gradient-primary);
@@ -514,6 +514,46 @@ p {
    transform: none;
    box-shadow: var(--shadow-sm);
 }
+
+/* --- START: Styling for Reusable Gradient Animated Button --- */
+.btn-gradient-animated {
+    background: var(--gradient-section-underline); /* Apply gradient */
+    background-size: 200% 100%; /* For animation */
+    animation: gradientShift 5s infinite alternate; /* Apply animation */
+    color: var(--rofilid-white); /* Set text color */
+    border-color: transparent; /* Remove border */
+    box-shadow: var(--shadow-md); /* Add base shadow */
+    /* Allows wrapping for longer button text (like 100q challenge) */
+    white-space: normal;
+    text-align: center;
+}
+/* Ensure icon alignment if text wraps */
+.btn-gradient-animated.btn-icon {
+    align-items: center;
+}
+.btn-gradient-animated i {
+    flex-shrink: 0; /* Prevent icon shrinking */
+}
+
+/* Hover and focus styles */
+.btn-gradient-animated:hover,
+.btn-gradient-animated:focus-visible {
+    background-position: 100% 0%; /* Shift gradient */
+    filter: brightness(1.1); /* Slight brighten */
+    color: var(--rofilid-white); /* Keep text color */
+    border-color: transparent; /* Keep border transparent */
+    box-shadow: 0 10px 20px color-mix(in srgb, var(--pp-color-primary) 20%, transparent); /* Enhanced shadow */
+    animation-play-state: paused; /* Pause animation */
+    transform: translateY(-2px); /* Standard button hover lift */
+    text-decoration: none; /* Ensure no underline */
+}
+
+/* Specific focus ring */
+.btn-gradient-animated:focus-visible {
+    outline: none;
+    box-shadow: 0 10px 20px color-mix(in srgb, var(--pp-color-primary) 20%, transparent), 0 0 0 3px color-mix(in srgb, var(--pp-color-secondary) 40%, transparent); /* Add focus ring */
+}
+/* --- END: Styling for Reusable Gradient Animated Button --- */
 
 
 .btn-icon i {
@@ -1041,50 +1081,12 @@ p {
     margin-top: var(--space-2xl);
 }
 
-/* --- START: Styling for the 100-Question Challenge button --- */
-/* Specific selector for the challenge button link */
-#learning-hub .full-challenge-link a.btn {
-    /* Override existing btn-outline styles */
-    background: var(--gradient-section-underline); /* Apply gradient */
-    background-size: 200% 100%; /* For animation */
-    animation: gradientShift 5s infinite alternate; /* Apply animation */
-    color: var(--rofilid-white); /* Set text color */
-    border-color: transparent; /* Remove outline border */
-    box-shadow: var(--shadow-md); /* Add base shadow */
-
-    /* Inherited styles we might want to keep/adjust from the original .full-challenge-link .btn */
-    white-space: normal;
-    text-align: center;
-    display: inline-flex;
-    justify-content: center;
-    padding: 1rem 2rem; /* Keep large padding */
-    font-size: var(--font-size-md); /* Keep large font */
-    max-width: 90%;
-    line-height: 1.5;
-}
-#learning-hub .full-challenge-link a.btn i {
-    margin-left: var(--space-sm); /* Keep icon spacing */
-}
-
-/* Hover and focus styles for challenge button (match header button) */
-#learning-hub .full-challenge-link a.btn:hover,
-#learning-hub .full-challenge-link a.btn:focus-visible {
-    background-position: 100% 0%; /* Shift gradient */
-    filter: brightness(1.1); /* Slight brighten */
-    color: var(--rofilid-white); /* Keep text color */
-    border-color: transparent; /* Keep border transparent */
-    box-shadow: 0 10px 20px color-mix(in srgb, var(--pp-color-primary) 20%, transparent); /* Enhanced shadow */
-    animation-play-state: paused; /* Pause animation */
-    transform: translateY(-2px); /* Standard button hover lift */
-    text-decoration: none; /* Ensure no underline */
-}
-
-/* Specific focus ring for challenge button */
-#learning-hub .full-challenge-link a.btn:focus-visible {
-    outline: none;
-    box-shadow: 0 10px 20px color-mix(in srgb, var(--pp-color-primary) 20%, transparent), 0 0 0 3px color-mix(in srgb, var(--pp-color-secondary) 40%, transparent); /* Add focus ring */
-}
-/* --- END: Styling for the 100-Question Challenge button --- */
+/* --- START: Styling for the 100-Question Challenge button (REMOVED) --- */
+/* This specific rule is removed because .btn-gradient-animated now handles it */
+/* #learning-hub .full-challenge-link a.btn { ... } */
+/* #learning-hub .full-challenge-link a.btn:hover, */
+/* #learning-hub .full-challenge-link a.btn:focus-visible { ... } */
+/* --- END: Styling for the 100-Question Challenge button (REMOVED) --- */
 
 
 /* Financial Journey Path */
@@ -1532,27 +1534,28 @@ p {
 }
 
 
-/* Coaching Section */
+/* --- Coaching Section --- */
 .coaching-container {
     max-width: var(--container-narrow);
 }
 
 .coaching-content-redesigned {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Default to single column */
     gap: var(--space-2xl);
     margin-top: var(--space-xl);
+    align-items: start; /* Align items to the top of their grid area */
 }
 
+/* --- NEW: Apply 2-column layout on medium screens and up --- */
 @media (min-width: 768px) {
     .coaching-content-redesigned {
-        grid-template-columns: 1fr 1fr;
-        align-items: start;
+        grid-template-columns: 1fr 1fr; /* Switch to two columns */
     }
 }
 
 .coaching-info h3,
-.coaching-interest h3 {
+.coaching-interest h3 { /* Now targets the form title if we add one */
     color: var(--pp-color-primary);
     margin-bottom: var(--space-md);
 }
@@ -1581,18 +1584,53 @@ p {
     flex-shrink: 0;
 }
 
+/* --- NEW: Style the interest form container for centering --- */
+.coaching-interest {
+    /* On larger screens (when grid is 2-column), center content vertically */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center items vertically */
+    align-items: center; /* Center items horizontally */
+    padding: var(--space-lg) 0; /* Add some padding */
+}
+
 .coaching-interest-form {
     background: var(--rofilid-white);
     border: 1px solid var(--pp-color-border);
     box-shadow: var(--shadow-md);
     border-radius: var(--radius-lg);
     padding: var(--space-xl);
+    /* --- NEW: Centering the form box itself --- */
+    width: 100%; /* Take full width of parent */
+    max-width: 450px; /* But don't exceed this width */
+    margin-inline: auto; /* Horizontally center within parent */
+    display: flex; /* Use flex for internal centering of button */
+    flex-direction: column;
+    align-items: center; /* Center the button horizontally */
 }
+
+/* Ensure form elements inside still stretch */
+.coaching-interest-form .form-group {
+    width: 100%; /* Make input group take full width of form */
+}
+.coaching-interest-form .form-control {
+    /* Already width: 100% */
+}
+.coaching-interest-form button[type="submit"] {
+    /* Button width can remain default or be set to 100% if preferred */
+     /* width: 100%; */
+     /* max-width: 200px; /* Example max width */
+}
+
+
 .privacy-note {
    font-size: var(--font-size-sm);
    color: var(--pp-color-text-muted);
    margin-top: var(--space-md);
    text-align: center;
+   max-width: 450px; /* Match form width */
+   width: 100%;
+   margin-inline: auto; /* Also center the note */
 }
 .disclaimer {
    font-size: var(--font-size-sm);
@@ -1603,6 +1641,9 @@ p {
    padding-top: var(--space-lg);
 }
 .disclaimer p { margin-bottom: 0; }
+
+/* --- END Coaching Section --- */
+
 
 /* Feedback Section */
 .feedback-container {
@@ -1809,11 +1850,17 @@ fieldset.is-invalid-check-group legend {
   color: color-mix(in srgb, var(--pp-color-success) 90%, black);
   border: 1px solid color-mix(in srgb, var(--pp-color-success) 30%, transparent);
   font-size: var(--font-size-sm); /* Ensure appropriate size */
+  width: 100%; /* Make it take full width */
+  text-align: center; /* Center text */
 }
 .form-response-note.error { /* Add an error state if needed */
     background-color: color-mix(in srgb, var(--pp-color-danger) 15%, transparent);
     color: color-mix(in srgb, var(--pp-color-danger) 90%, black);
     border-color: color-mix(in srgb, var(--pp-color-danger) 30%, transparent);
+}
+/* Style the coaching form specifically for success */
+#coachingInterestForm .form-response-note {
+   /* Can adjust padding or margin if needed specifically here */
 }
 
 
@@ -2572,6 +2619,18 @@ fieldset.is-invalid-check-group legend {
     }
   /* --- End Financial Journey Path - Mobile --- */
 
+
+  /* --- Coaching Section Mobile --- */
+   .coaching-content-redesigned {
+        /* Already single column by default */
+    }
+   .coaching-interest {
+        /* Ensure centering works on mobile too if needed, adjust padding */
+        padding: var(--space-md) 0;
+        justify-content: flex-start; /* Align form to top on mobile stack */
+    }
+
+
   .footer-content { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-lg); }
   .footer-column { text-align: left; }
   .social-links { justify-content: flex-start; }
@@ -2638,12 +2697,12 @@ fieldset.is-invalid-check-group legend {
         left: calc(60px / 2 - 4px / 2);
      }
 
-   /* Adjust 100q button size */
-   #learning-hub .full-challenge-link a.btn {
+   /* Adjust gradient button size */
+   .btn-gradient-animated.btn-large {
        font-size: var(--font-size-sm); /* Smaller font on smallest screens */
        padding: var(--space-md) var(--space-lg); /* Slightly smaller padding */
    }
-   #learning-hub .full-challenge-link a.btn i {
+   .btn-gradient-animated.btn-icon i {
        /* Icon spacing might need adjustment */
    }
 
@@ -2716,7 +2775,8 @@ fieldset.is-invalid-check-group legend {
   .feedback-action,
   button, /* Hide generic buttons unless specifically shown */
   input, select, textarea, form, /* Hide forms */
-  .btn-ripple {
+  .btn-ripple,
+  #personal-coaching .text-center[aria-hidden="true"] /* Hide coaching section icon */ {
     display: none !important;
   }
   .reveal-on-scroll, .reveal-stagger > * { /* Make animated elements visible */
@@ -2783,11 +2843,11 @@ fieldset.is-invalid-check-group legend {
   .template-benefits li i { display: none; }
 
   /* Coaching Info print */
-  .coaching-info li i { display: none; }
+   .coaching-content-redesigned { display: block; } /* Stack grid items for print */
+   .coaching-info li i { display: none; }
 
   /* Calculator Features print */
   .calculator-features-list i { display: none; }
 }
 
 /* END OF FILE personal.css */
-
