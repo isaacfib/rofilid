@@ -1,6 +1,5 @@
-/* START OF FILE personal.css (Improved Responsiveness) */
+/* START OF FILE personal.css (Improved Responsiveness - Clean) */
 
-/* Root Variables - Core Brand Colors plus Complementary Palette */
 :root {
   --rofilid-teal: #0c343d;
   --rofilid-white: #ffffff;
@@ -28,16 +27,14 @@
   --warning: #ffc107;
   --danger: #dc3545;
 
-  /* Spacing */
-  --space-xs: 0.25rem;  /* 4px */
-  --space-sm: 0.5rem;   /* 8px */
-  --space-md: 1rem;     /* 16px */
-  --space-lg: 1.5rem;   /* 24px */
-  --space-xl: 2rem;     /* 32px */
-  --space-2xl: 3rem;    /* 48px */
-  --space-3xl: 4rem;    /* 64px */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
 
-  /* Typography */
   --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   --font-family-heading: 'Roboto', sans-serif;
   --font-weight-light: 300;
@@ -54,7 +51,6 @@
   --font-size-2xl: 2rem;
   --font-size-3xl: 2.5rem;
 
-  /* Radii */
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
@@ -62,30 +58,26 @@
   --radius-2xl: 24px;
   --radius-full: 9999px;
 
-  /* Shadows */
   --shadow-sm: 0 1px 2px rgba(12, 52, 61, 0.05);
   --shadow-md: 0 4px 6px rgba(12, 52, 61, 0.1);
   --shadow-lg: 0 10px 15px -3px rgba(12, 52, 61, 0.1), 0 4px 6px -2px rgba(12, 52, 61, 0.05);
   --shadow-xl: 0 20px 25px -5px rgba(12, 52, 61, 0.1), 0 10px 10px -5px rgba(12, 52, 61, 0.04);
   --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
 
-  /* Transitions */
   --transition-fast: 150ms ease-in-out;
   --transition-normal: 250ms ease-in-out;
   --transition-slow: 350ms ease-in-out;
-  --transition-gentle: 500ms ease-in-out; /* New for gentler image hover */
+  --transition-gentle: 500ms ease-in-out;
 
-  /* Layout */
   --container-max-width: 1280px;
   --container-narrow: 1024px;
-  --header-height: 70px; /* Approximate header height */
+  --header-height: 70px;
 
-  /* Personal Page Specific Colors */
   --pp-color-primary: var(--rofilid-teal);
-  --pp-color-primary-light: var(--rofilid-teal-light); /* Defined for consistency */
-  --pp-color-primary-lighter: var(--rofilid-teal-lighter); /* Defined for consistency */
-  --pp-color-primary-lightest: #e6f7f6; /* Light Teal - used in Journey Path active node */
-  --pp-color-primary-dark: var(--rofilid-teal-dark); /* Defined for consistency */
+  --pp-color-primary-light: var(--rofilid-teal-light);
+  --pp-color-primary-lighter: var(--rofilid-teal-lighter);
+  --pp-color-primary-lightest: #e6f7f6;
+  --pp-color-primary-dark: var(--rofilid-teal-dark);
 
   --pp-color-secondary: var(--rofilid-mint);
   --pp-color-secondary-light: var(--rofilid-mint-light);
@@ -100,34 +92,27 @@
   --pp-color-text-muted: var(--neutral-500);
   --pp-color-bg-light: var(--neutral-100);
   --pp-color-bg-lighter: var(--neutral-200);
-  --pp-color-bg-light-accent: #f5fbf9; /* Very light mint/teal accent background */
+  --pp-color-bg-light-accent: #f5fbf9;
   --pp-color-border: var(--neutral-300);
   --pp-color-border-light: var(--neutral-200);
   --pp-color-success: var(--success);
   --pp-color-danger: var(--danger);
 
-  /* Gradients */
   --gradient-primary: linear-gradient(135deg, var(--pp-color-primary), var(--pp-color-primary-light));
   --gradient-secondary: linear-gradient(135deg, var(--pp-color-secondary), var(--pp-color-secondary-light));
   --gradient-accent: linear-gradient(135deg, var(--pp-color-accent), var(--pp-color-accent-light));
   --gradient-light: linear-gradient(135deg, var(--pp-color-bg-light), var(--pp-color-bg-lighter));
-  /* Gradient for header button AND specific animated buttons */
   --gradient-section-underline: linear-gradient(90deg, var(--pp-color-primary), var(--pp-color-secondary), var(--pp-color-accent));
 
-
-  /* Effects */
   --backdrop-blur: blur(8px);
 
-   /* Decorative Blur - Adjusted for less overflow potential */
    --blur-color-1: color-mix(in srgb, var(--pp-color-secondary) 40%, transparent);
    --blur-color-2: color-mix(in srgb, var(--pp-color-primary) 20%, transparent);
    --blur-color-3: color-mix(in srgb, var(--pp-color-accent) 30%, transparent);
 
-  /* Journey Path Vertical Progress */
-  --journey-progress-height: 0%; /* Added CSS variable for JS control */
+  --journey-progress-height: 0%;
 }
 
-/* Utility Classes */
 .mt-xs { margin-top: var(--space-xs); }
 .mt-sm { margin-top: var(--space-sm); }
 .mt-md { margin-top: var(--space-md); }
@@ -143,11 +128,11 @@
 .mb-xl { margin-bottom: var(--space-xl); }
 .mb-2xl { margin-bottom: var(--space-2xl); }
 .mb-3xl { margin-bottom: var(--space-3xl); }
-.me-1 { margin-inline-end: var(--space-xs); } /* For LTR/RTL */
+.me-1 { margin-inline-end: var(--space-xs); }
 .me-2 { margin-inline-end: var(--space-sm); }
 .ms-1 { margin-inline-start: var(--space-xs); }
 .ms-2 { margin-inline-start: var(--space-sm); }
-.mx-auto { margin-inline: auto; } /* NEW: Horizontal centering */
+.mx-auto { margin-inline: auto; }
 .p-xs { padding: var(--space-xs); }
 .p-sm { padding: var(--space-sm); }
 .p-md { padding: var(--space-md); }
@@ -160,7 +145,6 @@
 .pb-lg { padding-bottom: var(--space-lg); }
 .pb-xl { padding-bottom: var(--space-xl); }
 
-/* Flexbox & Grid Utils */
 .d-flex { display: flex; }
 .d-grid { display: grid; }
 .flex-wrap { flex-wrap: wrap; }
@@ -173,7 +157,6 @@
 .gap-md { gap: var(--space-md); }
 .gap-lg { gap: var(--space-lg); }
 
-/* Text Utilities */
 .text-center { text-align: center; }
 .text-left { text-align: left; }
 .text-right { text-align: right; }
@@ -185,7 +168,6 @@
 .text-light { color: var(--rofilid-white); }
 .fs-sm { font-size: var(--font-size-sm); }
 
-/* Background Utilities */
 .bg-primary { background-color: var(--pp-color-primary); }
 .bg-secondary { background-color: var(--pp-color-secondary); }
 .bg-light { background-color: var(--pp-color-bg-light); }
@@ -193,15 +175,13 @@
 .bg-light-accent { background-color: var(--pp-color-bg-light-accent); }
 .bg-white { background-color: var(--rofilid-white); }
 
-/* Border Utilities */
 .border { border: 1px solid var(--pp-color-border); }
 .border-top { border-top: 1px solid var(--pp-color-border); }
 .rounded { border-radius: var(--radius-md); }
 .rounded-lg { border-radius: var(--radius-lg); }
-.rounded-xl { border-radius: var(--radius-xl); } /* Added for consistency */
+.rounded-xl { border-radius: var(--radius-xl); }
 .rounded-pill { border-radius: var(--radius-full); }
 
-/* Screen Reader Only */
 .visually-hidden {
   position: absolute !important;
   width: 1px !important;
@@ -214,7 +194,6 @@
   border: 0 !important;
 }
 
-/* Global Reset & Base Styles */
 *,
 *::before,
 *::after {
@@ -226,9 +205,8 @@
 html {
   font-size: 16px;
   scroll-behavior: smooth;
-  scroll-padding-top: calc(var(--header-height) + 20px); /* Adjust based on fixed header height */
-  height: 100%; /* Ensure HTML takes full height */
-  /* Ensure html/body take full width and prevent implicit overflow */
+  scroll-padding-top: calc(var(--header-height) + 20px);
+  height: 100%;
   width: 100%;
   overflow-x: hidden;
 }
@@ -241,25 +219,23 @@ body {
   background-color: var(--rofilid-white);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden; /* Prevent horizontal scroll on body too */
-  width: 100%; /* Explicitly set width */
+  overflow-x: hidden;
+  width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  position: relative; /* Needed for absolute positioning of children like blurs if not contained elsewhere */
+  position: relative;
 }
 
-/* Specific styles for when a modal OR mobile nav is open */
 body.modal-open {
   overflow: hidden;
 }
 
-/* Make main content area fill available space and contain overflow */
 main#main-content {
   flex-grow: 1;
   width: 100%;
-  position: relative; /* Anchor for absolute positioned elements like deco-blur */
-  overflow-x: clip; /* Contain horizontal overflow strictly */
+  position: relative;
+  overflow-x: clip;
 }
 
 img {
@@ -282,7 +258,7 @@ a:focus {
 }
 
 a.link-inline {
-  text-decoration: underline; /* Add underline for inline links */
+  text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
   font-weight: var(--font-weight-medium);
@@ -292,18 +268,17 @@ a.link-inline:hover {
    text-decoration-thickness: 2px;
 }
 
-/* Styling for buttons used as links (e.g., in footer or journey content) */
 .link-button {
     background: none;
     border: none;
     padding: 0;
     margin: 0;
     font: inherit;
-    color: var(--pp-color-primary); /* Match standard link color */
+    color: var(--pp-color-primary);
     cursor: pointer;
     text-align: left;
-    display: inline; /* Flow with text */
-    text-decoration: underline; /* Mimic link appearance */
+    display: inline;
+    text-decoration: underline;
     text-underline-offset: 2px;
     text-decoration-thickness: 1px;
     font-weight: var(--font-weight-medium);
@@ -311,37 +286,33 @@ a.link-inline:hover {
 }
 .link-button:hover,
 .link-button:focus-visible {
-    color: var(--pp-color-secondary-dark); /* Match standard link hover */
+    color: var(--pp-color-secondary-dark);
     text-decoration-color: var(--pp-color-secondary-dark);
     outline: none;
 }
-/* Footer specific link button styling */
 .site-footer .link-button {
-    color: var(--neutral-300); /* Match footer link color */
-    text-decoration: none; /* Remove underline in footer */
-    display: inline-block; /* Needed for padding effect */
+    color: var(--neutral-300);
+    text-decoration: none;
+    display: inline-block;
     padding-left: 0;
     transition: color var(--transition-fast), padding-left var(--transition-fast);
 }
 .site-footer .link-button:hover,
 .site-footer .link-button:focus-visible {
-    color: var(--rofilid-white); /* Match footer link hover */
-    padding-left: var(--space-xs); /* Indent on hover */
+    color: var(--rofilid-white);
+    padding-left: var(--space-xs);
     text-decoration: none;
     outline: none;
 }
 
-
-/* Headings and Typography */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-family-heading);
   font-weight: var(--font-weight-bold);
   line-height: 1.2;
   color: var(--pp-color-primary);
-  margin-bottom: var(--space-md); /* Default margin bottom */
+  margin-bottom: var(--space-md);
   overflow-wrap: break-word;
   word-wrap: break-word;
-  /* hyphens: auto; Consider removing if it causes layout issues */
 }
 
 h1 { font-size: var(--font-size-3xl); }
@@ -355,7 +326,6 @@ p {
   margin-bottom: var(--space-md);
   overflow-wrap: break-word;
   word-wrap: break-word;
- /* hyphens: auto; Consider removing if it causes layout issues */
 }
 
 .subheadline {
@@ -369,7 +339,6 @@ p {
   font-weight: var(--font-weight-medium);
 }
 
-/* Container */
 .container {
   width: 100%;
   max-width: var(--container-max-width);
@@ -377,11 +346,9 @@ p {
   padding-inline: var(--space-lg);
 }
 
-/* Section Padding */
 .section-padding { padding-block: var(--space-2xl); }
 .section-padding--large { padding-block: var(--space-3xl); }
 
-/* Section Title & Description */
 .section-title {
   text-align: center;
   margin-bottom: var(--space-lg);
@@ -397,7 +364,7 @@ p {
   transform: translateX(-50%);
   width: 60px;
   height: 3px;
-  background: var(--gradient-section-underline); /* Uses gradient */
+  background: var(--gradient-section-underline);
   background-size: 200% 100%;
   border-radius: var(--radius-full);
   animation: gradientShift 5s infinite alternate;
@@ -417,24 +384,23 @@ p {
   font-size: var(--font-size-md);
 }
 
-/* Button Styles */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-sm);
-  padding: 0.75rem 1.5rem; /* Base padding */
+  padding: 0.75rem 1.5rem;
   border-radius: var(--radius-md);
   font-weight: var(--font-weight-medium);
   text-align: center;
   cursor: pointer;
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), filter var(--transition-fast); /* Added filter */
-  border: 1px solid transparent; /* Base border for consistent size */
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), filter var(--transition-fast);
+  border: 1px solid transparent;
   font-size: var(--font-size-base);
   line-height: 1.5;
   text-decoration: none;
-  white-space: nowrap; /* Prevent wrapping by default */
-  vertical-align: middle; /* Better alignment if next to text */
+  white-space: nowrap;
+  vertical-align: middle;
 }
 
 .btn:hover {
@@ -449,7 +415,6 @@ p {
   transition: box-shadow var(--transition-fast);
 }
 
-/* Prevent double borders */
 .btn.btn-primary, .btn.btn-secondary, .btn.btn-gradient-animated { border-color: transparent; }
 
 .btn-primary {
@@ -466,7 +431,7 @@ p {
 
 .btn-secondary {
   background: var(--gradient-secondary);
-  color: var(--pp-color-primary-dark); /* Use dark teal text on mint */
+  color: var(--pp-color-primary-dark);
   box-shadow: var(--shadow-md);
 }
 .btn-secondary:hover,
@@ -484,26 +449,23 @@ p {
 .btn-outline:hover,
 .btn-outline:focus-visible {
   background: var(--gradient-primary);
-  border-color: transparent; /* Hide border on hover */
+  border-color: transparent;
   color: var(--rofilid-white);
   box-shadow: 0 10px 20px color-mix(in srgb, var(--pp-color-primary) 20%, transparent);
 }
 
-/* Specific outline button hover - prevents background fill */
 .btn-outline-no-fill-hover:hover,
 .btn-outline-no-fill-hover:focus-visible {
-  background: transparent; /* Override background fill */
-  color: var(--pp-color-secondary-dark); /* Change text color on hover */
-  border-color: var(--pp-color-secondary-dark); /* Change border color */
-  box-shadow: var(--shadow-lg); /* Keep shadow effect */
+  background: transparent;
+  color: var(--pp-color-secondary-dark);
+  border-color: var(--pp-color-secondary-dark);
+  box-shadow: var(--shadow-lg);
 }
-/* Adjust focus ring for no-fill outline */
 .btn-outline-no-fill-hover:focus-visible {
     box-shadow: var(--shadow-lg), 0 0 0 3px color-mix(in srgb, var(--pp-color-secondary) 40%, transparent);
 }
 
 
-/* Specific button colors for correct/incorrect answers */
 .btn-success-light {
   background-color: color-mix(in srgb, var(--pp-color-success) 15%, transparent);
   border-color: var(--pp-color-success);
@@ -514,56 +476,48 @@ p {
   border-color: var(--pp-color-danger);
   color: var(--pp-color-text);
 }
-/* Remove hover effect on these specific feedback buttons if needed */
 .btn-success-light:hover, .btn-danger-light:hover {
-   /* Override hover effect or keep it subtle */
    transform: none;
    box-shadow: var(--shadow-sm);
 }
 
-/* --- START: Styling for Reusable Gradient Animated Button --- */
 .btn-gradient-animated {
-    background: var(--gradient-section-underline); /* Apply gradient */
-    background-size: 200% 100%; /* For animation */
-    animation: gradientShift 5s infinite alternate; /* Apply animation */
-    color: var(--rofilid-white); /* Set text color */
-    border-color: transparent; /* Remove border */
-    box-shadow: var(--shadow-md); /* Add base shadow */
-    /* Allows wrapping for longer button text (like 100q challenge) */
+    background: var(--gradient-section-underline);
+    background-size: 200% 100%;
+    animation: gradientShift 5s infinite alternate;
+    color: var(--rofilid-white);
+    border-color: transparent;
+    box-shadow: var(--shadow-md);
     white-space: normal;
     text-align: center;
 }
-/* Ensure icon alignment if text wraps */
 .btn-gradient-animated.btn-icon {
     align-items: center;
 }
 .btn-gradient-animated i {
-    flex-shrink: 0; /* Prevent icon shrinking */
+    flex-shrink: 0;
 }
 
-/* Hover and focus styles */
 .btn-gradient-animated:hover,
 .btn-gradient-animated:focus-visible {
-    background-position: 100% 0%; /* Shift gradient */
-    filter: brightness(1.1); /* Slight brighten */
-    color: var(--rofilid-white); /* Keep text color */
-    border-color: transparent; /* Keep border transparent */
-    box-shadow: 0 10px 20px color-mix(in srgb, var(--pp-color-primary) 20%, transparent); /* Enhanced shadow */
-    animation-play-state: paused; /* Pause animation */
-    transform: translateY(-2px); /* Standard button hover lift */
-    text-decoration: none; /* Ensure no underline */
+    background-position: 100% 0%;
+    filter: brightness(1.1);
+    color: var(--rofilid-white);
+    border-color: transparent;
+    box-shadow: 0 10px 20px color-mix(in srgb, var(--pp-color-primary) 20%, transparent);
+    animation-play-state: paused;
+    transform: translateY(-2px);
+    text-decoration: none;
 }
 
-/* Specific focus ring */
 .btn-gradient-animated:focus-visible {
     outline: none;
-    box-shadow: 0 10px 20px color-mix(in srgb, var(--pp-color-primary) 20%, transparent), 0 0 0 3px color-mix(in srgb, var(--pp-color-secondary) 40%, transparent); /* Add focus ring */
+    box-shadow: 0 10px 20px color-mix(in srgb, var(--pp-color-primary) 20%, transparent), 0 0 0 3px color-mix(in srgb, var(--pp-color-secondary) 40%, transparent);
 }
-/* --- END: Styling for Reusable Gradient Animated Button --- */
 
 
 .btn-icon i {
-  line-height: 0; /* Helps with vertical alignment */
+  line-height: 0;
 }
 
 .btn-large {
@@ -576,17 +530,14 @@ p {
     font-size: var(--font-size-sm);
 }
 
-/* Handle text overflow in buttons if needed */
 .btn span {
     display: block;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    min-width: 0; /* Important for flex child overflow */
+    min-width: 0;
 }
 
-
-/* Ripple Effect for Buttons */
 .form-submit-btn {
   position: relative;
   overflow: hidden;
@@ -598,21 +549,19 @@ p {
   transform: scale(0);
   animation: ripple 0.6s linear;
   background-color: color-mix(in srgb, var(--rofilid-white) 40%, transparent);
-  pointer-events: none; /* So it doesn't interfere with clicks */
+  pointer-events: none;
 }
 
 @keyframes ripple {
   to {
-    transform: scale(4); /* Increase size */
+    transform: scale(4);
     opacity: 0;
   }
 }
 
-
-/* --- Header Styles --- */
 .site-header {
   background-color: var(--rofilid-white);
-  padding-block: var(--space-sm); /* Slightly reduced padding */
+  padding-block: var(--space-sm);
   position: sticky;
   top: 0;
   z-index: 999;
@@ -622,8 +571,8 @@ p {
   width: 100%;
 }
 
-.header-content-wrapper { /* NEW: Wrapper inside header for padding */
-  display: flex; /* Replaces container inside for better control */
+.header-content-wrapper {
+  display: flex;
   justify-content: space-between;
   align-items: center;
   height: 100%;
@@ -636,9 +585,8 @@ p {
 .logo { flex-shrink: 0; }
 .logo img { height: 35px; width: auto; }
 
-/* Mobile Nav Toggle */
 .mobile-menu-toggle {
-  display: none; /* Hidden by default */
+  display: none;
   background: none;
   border: none;
   font-size: 1.5rem;
@@ -650,16 +598,14 @@ p {
   margin-left: auto;
 }
 
-/* Primary Navigation Styles (UL element) - Default state for mobile */
 nav[aria-label="Main navigation"] {
-   /* Base styles for the nav container */
+
 }
 
 #primary-navigation {
     list-style: none;
     margin: 0;
     padding: 0;
-    /* Mobile State - Hidden by default, handled via transforms below */
     position: fixed;
     inset: var(--header-height) 0 0 0;
     background-color: rgba(255, 255, 255, 0.97);
@@ -668,7 +614,7 @@ nav[aria-label="Main navigation"] {
     transform: translateX(100%);
     opacity: 0;
     visibility: hidden;
-    transition: transform 0.35s ease-out, opacity 0.35s ease-out, visibility 0.35s; /* Delay visibility transition */
+    transition: transform 0.35s ease-out, opacity 0.35s ease-out, visibility 0.35s;
     transition-delay: 0s, 0s, 0.35s;
     z-index: 1000;
     overflow-y: auto;
@@ -676,45 +622,40 @@ nav[aria-label="Main navigation"] {
     flex-direction: column;
 }
 
-#primary-navigation.active { /* Mobile Open State */
+#primary-navigation.active {
     transform: translateX(0);
     opacity: 1;
     visibility: visible;
     transition-delay: 0s;
 }
 
-#primary-navigation .nav-item { width: 100%; } /* Mobile link container */
-#primary-navigation .nav-link { /* Mobile Link styles */
+#primary-navigation .nav-item { width: 100%; }
+#primary-navigation .nav-link {
       display: block;
       padding: var(--space-md) var(--space-lg);
       text-align: left;
       border-bottom: 1px solid var(--pp-color-border-light);
       font-size: var(--font-size-md);
-      position: relative; /* Changed from static for ::after if needed, but removing it */
+      position: relative;
       color: var(--pp-color-text);
       font-weight: var(--font-weight-medium);
       text-decoration: none;
 }
 #primary-navigation .nav-item:last-child .nav-link { border-bottom: none; }
 
-#primary-navigation .nav-link::after { display: none; } /* Hide underline effect on mobile */
+#primary-navigation .nav-link::after { display: none; }
 
 #primary-navigation .nav-link[aria-current="page"] {
    background-color: var(--pp-color-bg-light-accent);
    color: var(--pp-color-primary);
    font-weight: var(--font-weight-semibold);
 }
-#primary-navigation .nav-link:hover { /* Simple hover for mobile */
+#primary-navigation .nav-link:hover {
    background-color: var(--neutral-100);
 }
-.nav-item.mobile-only { display: block; } /* Show mobile-specific items in mobile menu */
+.nav-item.mobile-only { display: block; }
 
-
-/* --- Desktop Header Styles (Applied via Media Query Below) --- */
-
-/* Header Tool Button Styling */
 .header-tool-btn {
-  /* Base styles - also used for mobile-only if needed */
   background: var(--gradient-section-underline);
   background-size: 200% 100%;
   animation: gradientShift 5s infinite alternate;
@@ -736,27 +677,22 @@ nav[aria-label="Main navigation"] {
   animation-play-state: paused;
 }
 .header-tool-btn:focus-visible {
-    outline: none; /* Outline is handled by box-shadow */
+    outline: none;
     box-shadow: 0 10px 20px color-mix(in srgb, var(--pp-color-primary) 20%, transparent), 0 0 0 3px color-mix(in srgb, var(--pp-color-secondary) 40%, transparent);
 }
 
-/* Add mobile only button style here if needed, otherwise hide on desktop */
-.nav-item.mobile-only .header-tool-btn { /* If button duplicated in mobile menu */
-   margin: var(--space-lg); /* Add margin within mobile menu */
-   width: calc(100% - var(--space-lg) * 2); /* Make it full width with padding */
+.nav-item.mobile-only .header-tool-btn {
+   margin: var(--space-lg);
+   width: calc(100% - var(--space-lg) * 2);
    text-align: center;
    justify-content: center;
 }
 
-/* --- END Header --- */
-
-
-/* Hero Section */
 .hero-section {
   padding-block: var(--space-3xl);
   background-color: var(--pp-color-bg-light);
   position: relative;
-  overflow: hidden; /* Contain potential background elements if any */
+  overflow: hidden;
   width: 100%;
 }
 
@@ -789,7 +725,7 @@ nav[aria-label="Main navigation"] {
     justify-content: center;
     gap: var(--space-lg);
     margin-top: var(--space-xl);
-    flex-wrap: wrap; /* Allow buttons to wrap on narrow screens */
+    flex-wrap: wrap;
 }
 
 .hero-stats-grid {
@@ -831,10 +767,8 @@ nav[aria-label="Main navigation"] {
     margin-bottom: 0;
 }
 
-
-/* Our Approach Section */
 #our-approach {
-    /* Background defined by utility class */
+
 }
 .approach-container {
     text-align: center;
@@ -856,7 +790,7 @@ nav[aria-label="Main navigation"] {
     font-weight: var(--font-weight-medium);
     color: var(--pp-color-text);
 }
-.approach-highlights span { /* Ensure wrapping items have margin */
+.approach-highlights span {
   margin-bottom: var(--space-sm);
 }
 .approach-highlights span i {
@@ -864,19 +798,17 @@ nav[aria-label="Main navigation"] {
     margin-right: var(--space-sm);
 }
 
-
-/* Base Card Style */
 .card {
     background-color: var(--rofilid-white);
     border-radius: var(--radius-lg);
     border: 1px solid var(--pp-color-border-light);
     box-shadow: var(--shadow-md);
     overflow: hidden;
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow var(--transition-normal), border-color var(--transition-fast), background-color var(--transition-fast); /* Added transitions */
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow var(--transition-normal), border-color var(--transition-fast), background-color var(--transition-fast);
     position: relative;
     display: flex;
     flex-direction: column;
-    height: 100%; /* Make cards in a grid same height */
+    height: 100%;
 }
 
 .card:hover {
@@ -895,7 +827,7 @@ nav[aria-label="Main navigation"] {
 
 .card-content {
     padding: var(--space-lg);
-    flex-grow: 1; /* Allow content to fill space */
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
 }
@@ -905,21 +837,18 @@ nav[aria-label="Main navigation"] {
 }
 
 .card-cta {
-    margin-top: auto; /* Push button to the bottom */
+    margin-top: auto;
     padding-top: var(--space-md);
 }
 
-
-/* Resource Section */
 .resource-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: var(--space-xl);
 }
 
-/* Resource card uses base .card style */
 .resource-card {
-   /* Inherits from .card */
+
 }
 
 .resource-card .card-content h3 {
@@ -933,7 +862,6 @@ nav[aria-label="Main navigation"] {
    flex-shrink: 0;
 }
 
-/* Social Integration Specific Styles */
 .social-integration .card-header {
     display: flex;
     align-items: center;
@@ -979,9 +907,9 @@ nav[aria-label="Main navigation"] {
 }
 .social-post-preview p {
     margin-bottom: 0;
-    min-width: 0; /* Prevent overflow in flex container */
+    min-width: 0;
     overflow-wrap: break-word;
-    word-break: break-word; /* Add word break */
+    word-break: break-word;
 }
 .social-post-preview .social-handle {
     display: block;
@@ -1013,10 +941,7 @@ nav[aria-label="Main navigation"] {
     text-decoration: none;
 }
 
-
-/* Learning Hub Section */
 #quiz-progress-message {
-  /* Styling for the overall progress message (e.g., font size, color) */
   font-weight: var(--font-weight-medium);
   color: var(--pp-color-text-secondary);
 }
@@ -1027,9 +952,7 @@ nav[aria-label="Main navigation"] {
   gap: var(--space-xl);
 }
 
-/* Category card uses base .card style */
 .category-card {
-   /* Inherits from .card */
    text-align: center;
 }
 
@@ -1039,8 +962,7 @@ nav[aria-label="Main navigation"] {
 
 .category-card .card-content {
    padding: var(--space-xl) var(--space-lg);
-   /* Ensure enough space for indicator if needed */
-   display: flex; /* Use flex to push button down */
+   display: flex;
    flex-direction: column;
    height: 100%;
 }
@@ -1063,42 +985,38 @@ nav[aria-label="Main navigation"] {
 
 .category-card p {
     color: var(--pp-color-text-secondary);
-    /* Removed flex-grow here - button now pushed down by margin-top: auto */
     margin-bottom: var(--space-lg);
 }
 
 .category-card .quiz-completion-indicator {
-  /* Styles for the completion indicator text, e.g. "✔ Completed (Best: 4/5)" */
-  display: block; /* Ensure it's on its own line */
+  display: block;
   font-size: var(--font-size-sm);
-  color: var(--pp-color-success); /* Default to success color, JS might override */
+  color: var(--pp-color-success);
   margin-top: var(--space-sm);
   font-weight: var(--font-weight-medium);
-  min-height: 1.2em; /* Prevent layout jumps if text appears/disappears */
+  min-height: 1.2em;
 }
 
 
 .category-card .start-quiz-btn {
-    margin-top: auto; /* Pushes button to the bottom */
-    margin-top: var(--space-sm); /* Ensures space between indicator/p and button */
+    margin-top: auto;
+    margin-top: var(--space-sm);
 }
-/* Adjust bottom margin of the element before the indicator/button */
-.category-card .card-content > *:nth-last-child(2):not(.quiz-completion-indicator):not(.start-quiz-btn), /* Element before button if no indicator */
-.category-card .card-content > *:nth-last-child(3):not(.quiz-completion-indicator) /* Element before indicator */ {
-     margin-bottom: var(--space-lg); /* Ensure paragraph has bottom margin */
+.category-card .card-content > *:nth-last-child(2):not(.quiz-completion-indicator):not(.start-quiz-btn),
+.category-card .card-content > *:nth-last-child(3):not(.quiz-completion-indicator)
+ {
+     margin-bottom: var(--space-lg);
 }
 
-/* Optional styling for completed card */
 .category-card.completed {
-   border-left: 4px solid var(--pp-color-success); /* Example: Green left border */
+   border-left: 4px solid var(--pp-color-success);
 }
-/* Make the "Retake" button (outline) stand out a bit */
 .category-card.completed .start-quiz-btn {
-    border-color: var(--pp-color-primary-light); /* Slightly darker border */
+    border-color: var(--pp-color-primary-light);
     color: var(--pp-color-primary-dark);
 }
 .category-card.completed .start-quiz-btn:hover {
-    background: var(--gradient-primary); /* Keep primary hover */
+    background: var(--gradient-primary);
     border-color: transparent;
     color: var(--rofilid-white);
 }
@@ -1108,16 +1026,14 @@ nav[aria-label="Main navigation"] {
     margin-top: var(--space-2xl);
 }
 
-/* --- Financial Journey Path --- */
 .journey-path-container {
     margin-top: var(--space-2xl);
-    padding-block: var(--space-xl); /* Add vertical padding */
+    padding-block: var(--space-xl);
     position: relative;
-    overflow-x: auto; /* Allow horizontal scroll on medium screens */
-    width: 100%; /* Ensure container takes full width */
+    overflow-x: auto;
+    width: 100%;
 }
 
-/* Optional background pattern - kept */
 .journey-path-container::before {
     content: '';
     position: absolute;
@@ -1130,16 +1046,13 @@ nav[aria-label="Main navigation"] {
     z-index: -1;
 }
 
-/* Default: Horizontal Layout for Journey Path */
 .journey-path {
-    display: inline-flex; /* Changed from flex to inline-flex to allow container scrolling based on content width */
-    align-items: flex-start; /* Align items to the top */
-    /* justify-content: space-between; /* Removed: rely on flex gap or element widths */
-    gap: 0; /* Use padding/margin on connectors/nodes instead */
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 0;
     margin-bottom: var(--space-xl);
     position: relative;
-    padding: var(--space-sm) var(--space-lg); /* Padding for space at ends INSIDE scrollable area */
-    /* REMOVED: max-width, min-width, margin auto. Let container scroll. */
+    padding: var(--space-sm) var(--space-lg);
 }
 
 .journey-node {
@@ -1147,14 +1060,14 @@ nav[aria-label="Main navigation"] {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    width: 110px; /* Fixed width for each node */
+    width: 110px;
     cursor: pointer;
     transition: transform var(--transition-fast);
     border: none;
     background: none;
     padding: 0;
     font-family: inherit;
-    flex-shrink: 0; /* Prevent nodes from shrinking */
+    flex-shrink: 0;
     position: relative;
     z-index: 2;
 }
@@ -1166,9 +1079,9 @@ nav[aria-label="Main navigation"] {
     color: var(--pp-color-text-secondary);
     transition: color var(--transition-fast);
     margin-bottom: 0;
-    min-height: 2.4em; /* Prevent jumpiness */
+    min-height: 2.4em;
     line-height: 1.2;
-    display: flex; /* Use flex here for potential vertical centering if needed */
+    display: flex;
     align-items: center;
     justify-content: center;
 }
@@ -1195,23 +1108,21 @@ nav[aria-label="Main navigation"] {
 }
 
 .journey-connector {
-    /* flex-grow: 1; Remove flex-grow */
-    min-width: 40px; /* Add a minimum width for the connector */
+    min-width: 40px;
     height: 4px;
     background-color: var(--pp-color-border);
     position: relative;
     z-index: 1;
-    align-self: center; /* Center the line vertically relative to nodes */
-    margin-top: calc(30px - 2px); /* Align connector with vertical center of 60px icon */
-    /* margin-inline: var(--space-xs); Removed */
+    align-self: center;
+    margin-top: calc(30px - 2px);
 }
 
-.journey-connector::after { /* Progress indicator */
+.journey-connector::after {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
-    width: 0%; /* Animated width */
+    width: 0%;
     height: 100%;
     background: var(--gradient-secondary);
     transition: width 0.6s ease-out;
@@ -1219,7 +1130,6 @@ nav[aria-label="Main navigation"] {
     border-radius: var(--radius-full);
 }
 
-/* State Styling: Active Node */
 .journey-node.active .node-icon {
     background-color: var(--pp-color-secondary-light);
     border-color: var(--pp-color-secondary);
@@ -1237,22 +1147,18 @@ nav[aria-label="Main navigation"] {
     font-weight: var(--font-weight-bold);
 }
 
-/* Apply progress fill to connectors *preceding* an activated node */
 .journey-node.activated + .journey-connector::after {
     width: 100%;
     transition-duration: 0.8s;
 }
-/* Reset width for connectors AFTER the active node */
 .journey-node.active + .journey-connector::after {
     width: 0%;
     transition: none;
 }
-/* Make sure initial connectors are zero width if first node is active */
 .journey-path .journey-node:first-child.active + .journey-connector::after {
    width: 0%;
 }
 
-/* State Styling: Hover Node */
 .journey-node:hover:not(.active) .node-icon {
     transform: scale(1.08);
     border-color: var(--pp-color-primary-light);
@@ -1262,7 +1168,6 @@ nav[aria-label="Main navigation"] {
    color: var(--pp-color-primary);
 }
 
-/* Keyboard Focus state */
 .journey-node:focus-visible {
    outline: none;
 }
@@ -1271,7 +1176,6 @@ nav[aria-label="Main navigation"] {
    border-color: var(--pp-color-secondary);
 }
 
-/* Journey Content Area */
 .journey-content-container {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: var(--backdrop-blur);
@@ -1284,12 +1188,12 @@ nav[aria-label="Main navigation"] {
     position: relative;
     transition: all 0.4s ease;
     margin-top: var(--space-xl);
-    max-width: 900px; /* Limit width, consistent with intended path design */
-    margin-inline: auto; /* Center content */
+    max-width: 900px;
+    margin-inline: auto;
 }
 
 .journey-content {
-    display: none; /* Hide by default, JS controls via hidden attribute */
+    display: none;
     animation: fadeInUp 0.6s ease forwards;
     opacity: 0;
 }
@@ -1329,7 +1233,7 @@ nav[aria-label="Main navigation"] {
     flex-shrink: 0;
 }
 .journey-content ul li a,
-.journey-content ul li .link-button { /* Style both links and link-buttons */
+.journey-content ul li .link-button {
     font-weight: var(--font-weight-medium);
 }
 
@@ -1344,16 +1248,14 @@ nav[aria-label="Main navigation"] {
   }
 }
 
-
-/* --- Free Tools Section (Template Cards) --- */
 .template-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Keep larger min size */
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: var(--space-xl);
 }
 
 .template-card {
-   /* Inherits from .card base style */
+
 }
 
 .template-preview {
@@ -1369,28 +1271,28 @@ nav[aria-label="Main navigation"] {
     width: 100%;
     height: auto;
     aspect-ratio: 4 / 3;
-    object-fit: cover; /* Default image covers */
+    object-fit: cover;
     transition: opacity var(--transition-gentle);
     border-radius: inherit;
 }
 
 .template-image-hover {
   position: absolute;
-  inset: 0; /* Easier positioning */
+  inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Hover image contains */
-  padding: var(--space-sm); /* Padding around hover image */
+  object-fit: contain;
+  padding: var(--space-sm);
   opacity: 0;
   transform: scale(0.9);
   transition: opacity var(--transition-gentle), transform var(--transition-gentle) ease-in-out;
   z-index: 1;
   border-radius: inherit;
-  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .template-preview:hover .template-image-default {
-  opacity: 0.2; /* Fade out default slightly */
+  opacity: 0.2;
 }
 
 .template-preview:hover .template-image-hover {
@@ -1398,7 +1300,6 @@ nav[aria-label="Main navigation"] {
   transform: scale(1);
 }
 
-/* Styles for the template details */
 .template-details {
     padding: var(--space-lg);
     flex-grow: 1;
@@ -1407,13 +1308,13 @@ nav[aria-label="Main navigation"] {
 }
 .template-details h3 {
     margin-top: 0;
-    margin-bottom: var(--space-md); /* Reduced margin */
+    margin-bottom: var(--space-md);
     font-size: var(--font-size-lg);
 }
 
 .template-value-prop {
     margin-bottom: var(--space-lg);
-    flex-grow: 1; /* Allow this section to grow, pushing actions down */
+    flex-grow: 1;
 }
 .template-value-prop h4 {
     font-size: var(--font-size-base);
@@ -1427,7 +1328,7 @@ nav[aria-label="Main navigation"] {
     padding-left: 0;
     font-size: var(--font-size-sm);
     color: var(--pp-color-text);
-    margin-bottom: 0; /* Remove margin */
+    margin-bottom: 0;
 }
 .template-benefits li {
     display: flex;
@@ -1442,44 +1343,41 @@ nav[aria-label="Main navigation"] {
     flex-shrink: 0;
 }
 
-/* Tool Card Button Layout */
 .template-actions {
     display: grid;
-    grid-template-columns: 1fr; /* Stack buttons by default */
+    grid-template-columns: 1fr;
     gap: var(--space-md);
-    margin-top: var(--space-lg); /* Explicit top margin */
-    padding-top: var(--space-lg); /* Space above buttons */
-    border-top: 1px solid var(--pp-color-border-light); /* Separator line */
+    margin-top: var(--space-lg);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--pp-color-border-light);
 }
 
-/* Go side-by-side earlier on wider cards (adjusted breakpoint slightly) */
 @media (min-width: 420px) {
     .template-card .template-actions {
         grid-template-columns: 1fr 1fr;
     }
 }
 
-/* Ensure buttons inside template cards don't overflow text */
 .template-card .btn {
-   white-space: normal; /* Allow text to wrap */
+   white-space: normal;
    text-align: center;
-   padding: var(--space-sm) var(--space-md); /* Adjust padding for potentially wrapped text */
-   line-height: 1.4; /* Improve readability for wrapped text */
-   font-size: var(--font-size-sm); /* Slightly smaller font */
+   padding: var(--space-sm) var(--space-md);
+   line-height: 1.4;
+   font-size: var(--font-size-sm);
    align-items: center;
 }
 .template-card .btn span {
-    white-space: normal; /* Override base button span style */
-    overflow: visible; /* Allow wrapping */
-    text-overflow: clip; /* Don't use ellipsis if wrapping */
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
     flex-grow: 1;
     min-width: 0;
-    display: block; /* Make span take full width */
+    display: block;
 }
 .template-card .btn i {
     flex-shrink: 0;
     margin-right: var(--space-xs);
-    align-self: center; /* Align icon center */
+    align-self: center;
 }
 
 
@@ -1491,8 +1389,6 @@ nav[aria-label="Main navigation"] {
     margin-bottom: 0;
 }
 
-
-/* Interest Calculator Promo */
 .calculator-promo-container {
     text-align: center;
 }
@@ -1512,7 +1408,7 @@ nav[aria-label="Main navigation"] {
 }
 .calculator-features-list li {
     display: flex;
-    align-items: center; /* Changed from start */
+    align-items: center;
 }
 .calculator-features-list i.fa-check {
     color: var(--pp-color-success);
@@ -1528,21 +1424,18 @@ nav[aria-label="Main navigation"] {
    font-size: var(--font-size-sm);
 }
 
-
-/* --- Coaching Section --- */
 .coaching-container {
     max-width: var(--container-narrow);
 }
 
 .coaching-content-redesigned {
     display: grid;
-    grid-template-columns: 1fr; /* Default to single column */
+    grid-template-columns: 1fr;
     gap: var(--space-2xl);
     margin-top: var(--space-xl);
-    align-items: start; /* Align items to the top of their grid area */
+    align-items: start;
 }
 
-/* Switch to two columns on medium screens and up */
 @media (min-width: 768px) {
     .coaching-content-redesigned {
         grid-template-columns: 1fr 1fr;
@@ -1550,7 +1443,7 @@ nav[aria-label="Main navigation"] {
 }
 
 .coaching-info h3,
-.coaching-interest h3 { /* Targets section title and form title if added */
+.coaching-interest h3 {
     color: var(--pp-color-primary);
     margin-bottom: var(--space-md);
 }
@@ -1582,14 +1475,12 @@ nav[aria-label="Main navigation"] {
 .coaching-interest {
     display: flex;
     flex-direction: column;
-    /* No explicit justify/align here - let content flow */
     padding: var(--space-lg) 0;
 }
-/* Ensure alignment context for centered children */
 @media (min-width: 768px) {
      .coaching-interest {
-        align-items: center; /* Center form box horizontally in grid area */
-        justify-content: center; /* Center vertically if needed */
+        align-items: center;
+        justify-content: center;
     }
 }
 
@@ -1600,17 +1491,17 @@ nav[aria-label="Main navigation"] {
     box-shadow: var(--shadow-md);
     border-radius: var(--radius-lg);
     padding: var(--space-xl);
-    width: 100%; /* Take full width of parent */
-    max-width: 450px; /* Max width for the form */
-    margin-inline: auto; /* Horizontally center within parent */
+    width: 100%;
+    max-width: 450px;
+    margin-inline: auto;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center button horizontally */
+    align-items: center;
 }
 
 .coaching-interest-form .form-group { width: 100%; }
 .coaching-interest-form button[type="submit"] {
-    /* Default button styles apply */
+
 }
 
 .privacy-note {
@@ -1618,9 +1509,9 @@ nav[aria-label="Main navigation"] {
    color: var(--pp-color-text-muted);
    margin-top: var(--space-md);
    text-align: center;
-   max-width: 450px; /* Match form width */
+   max-width: 450px;
    width: 100%;
-   margin-inline: auto; /* Also center the note */
+   margin-inline: auto;
 }
 .disclaimer {
    font-size: var(--font-size-sm);
@@ -1631,16 +1522,11 @@ nav[aria-label="Main navigation"] {
    padding-top: var(--space-lg);
 }
 .disclaimer p { margin-bottom: 0; }
-/* --- END Coaching Section --- */
 
-
-/* Feedback Section */
 .feedback-container {
     text-align: center;
 }
 
-
-/* --- Form Styles --- */
 .form-group {
   position: relative;
   margin-bottom: var(--space-lg);
@@ -1697,7 +1583,6 @@ textarea.form-control {
     color: var(--neutral-500);
 }
 
-/* Radio Buttons & Checkboxes */
 .form-check {
     display: flex;
     align-items: center;
@@ -1718,7 +1603,7 @@ textarea.form-control {
     flex-shrink: 0;
     cursor: pointer;
     position: relative;
-    top: -0.1em; /* Slight vertical adjustment */
+    top: -0.1em;
 }
 .form-check-input:checked {
     background-color: var(--pp-color-primary);
@@ -1753,7 +1638,6 @@ textarea.form-control {
     line-height: 1.5;
 }
 
-/* Fieldset and Legend */
 fieldset {
   border: none;
   padding: 0;
@@ -1769,16 +1653,14 @@ fieldset legend {
     display: block;
     width: 100%;
 }
-.radio-group { /* Container for radio buttons */
+.radio-group {
   display: flex;
   gap: var(--space-lg);
   justify-content: center;
   margin-top: var(--space-sm);
-  flex-wrap: wrap; /* Allow wrapping */
+  flex-wrap: wrap;
 }
 
-
-/* Error Message Styling */
 .form-error-msg, .invalid-feedback {
     color: var(--pp-color-danger);
     font-size: var(--font-size-sm);
@@ -1810,8 +1692,6 @@ fieldset.is-invalid-check-group legend {
    border-color: var(--pp-color-danger);
 }
 
-
-/* Form Response/Success Note */
 .form-response-note {
   margin-top: var(--space-md);
   padding: var(--space-sm) var(--space-md);
@@ -1823,14 +1703,12 @@ fieldset.is-invalid-check-group legend {
   width: 100%;
   text-align: center;
 }
-.form-response-note.error { /* Add an error state if needed */
+.form-response-note.error {
     background-color: color-mix(in srgb, var(--pp-color-danger) 15%, transparent);
     color: color-mix(in srgb, var(--pp-color-danger) 90%, black);
     border-color: color-mix(in srgb, var(--pp-color-danger) 30%, transparent);
 }
 
-
-/* --- Modal Styles --- */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -1843,7 +1721,7 @@ fieldset.is-invalid-check-group legend {
   opacity: 0;
   visibility: hidden;
   transition: opacity var(--transition-normal), visibility var(--transition-normal);
-  transition-delay: 0s, 0.25s; /* Delay visibility hide */
+  transition-delay: 0s, 0.25s;
 }
 .modal-overlay:not([hidden]) {
     opacity: 1;
@@ -1857,7 +1735,7 @@ fieldset.is-invalid-check-group legend {
     box-shadow: var(--shadow-xl);
     border-radius: var(--radius-lg);
     width: 100%;
-    max-width: 600px; /* Default */
+    max-width: 600px;
     max-height: 90vh;
     overflow-y: auto;
     position: relative;
@@ -1871,7 +1749,6 @@ fieldset.is-invalid-check-group legend {
    opacity: 1;
 }
 
-/* Specific modal widths */
 .quiz-demographics-content,
 .pdf-download-content { max-width: 400px; }
 .feedback-modal-content { max-width: 500px; }
@@ -1909,7 +1786,6 @@ fieldset.is-invalid-check-group legend {
     color: var(--pp-color-text-secondary);
 }
 
-/* Quiz Modal Specific Styles */
 .quiz-modal-progress {
     text-align: center;
     color: var(--pp-color-text-secondary);
@@ -1967,13 +1843,10 @@ fieldset.is-invalid-check-group legend {
 }
 .quiz-option.incorrect[disabled] { opacity: 0.9; }
 
-/* Override hover for disabled quiz options */
 .quiz-option[disabled]:hover { transform: none; box-shadow: var(--shadow-sm); }
 .quiz-option.correct[disabled]:hover { background: color-mix(in srgb, var(--pp-color-success) 15%, transparent); }
 .quiz-option.incorrect[disabled]:hover { background: color-mix(in srgb, var(--pp-color-danger) 15%, transparent); }
 
-
-/* Quiz Feedback Area Styles */
 .quiz-modal-feedback {
     padding: var(--space-md);
     border-radius: var(--radius-md);
@@ -2008,10 +1881,7 @@ fieldset.is-invalid-check-group legend {
     padding-top: var(--space-lg);
     border-top: 1px solid var(--pp-color-border-light);
 }
-/* --- END Modal --- */
 
-
-/* Footer Styles */
 .site-footer {
   background-color: var(--pp-color-primary-dark);
   color: var(--neutral-300);
@@ -2051,7 +1921,7 @@ fieldset.is-invalid-check-group legend {
 .footer-column .link-button:focus-visible {
   color: var(--rofilid-white);
   text-decoration: none;
-  padding-left: var(--space-xs); /* Slight indent on hover */
+  padding-left: var(--space-xs);
   outline: none;
 }
 
@@ -2082,7 +1952,7 @@ fieldset.is-invalid-check-group legend {
   margin-top: var(--space-sm);
 }
 
-.social-link { /* Footer specific */
+.social-link {
   color: var(--neutral-300);
   font-size: 1.3rem;
   transition: color var(--transition-fast), transform var(--transition-fast);
@@ -2107,14 +1977,12 @@ fieldset.is-invalid-check-group legend {
   border-top: 1px solid color-mix(in srgb, var(--rofilid-white) 10%, transparent);
 }
 
-/* Floating Action Button */
 .floating-action-btn {
   position: fixed;
   bottom: var(--space-xl);
   right: var(--space-xl);
   z-index: 998;
 }
-/* Other FAB styles (.fab-main, .fab-options, etc.) remain the same */
 .fab-main { width: 60px; height: 60px; border-radius: 50%; background: var(--gradient-primary); color: white; border: none; box-shadow: 0 6px 16px color-mix(in srgb, var(--pp-color-primary) 30%, transparent); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; }
 .fab-main::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background-color: var(--rofilid-white); opacity: 0; transform: scale(0.8); transition: all 0.6s ease-out; }
 .fab-main:hover::after { opacity: 0.1; transform: scale(1); }
@@ -2135,7 +2003,6 @@ fieldset.is-invalid-check-group legend {
 .fab-option:focus-visible { box-shadow: var(--shadow-lg), 0 0 0 3px color-mix(in srgb, var(--pp-color-secondary) 30%, transparent); }
 
 
-/* Motivational Quotes */
 .motivational-quote { position: relative; padding: var(--space-2xl) var(--space-3xl); margin: var(--space-3xl) 0; background: var(--gradient-light); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--pp-color-border-light); text-align: center; }
 .motivational-quote.alt-bg { background: var(--pp-color-bg-light-accent); border-color: transparent; }
 .motivational-quote::before { content: '"'; position: absolute; top: -10px; left: var(--space-lg); font-size: 10rem; font-family: Georgia, serif; color: color-mix(in srgb, var(--pp-color-primary) 8%, transparent); line-height: 1; z-index: 1; user-select: none; pointer-events: none; }
@@ -2143,32 +2010,31 @@ fieldset.is-invalid-check-group legend {
 .motivational-quote p { font-size: var(--font-size-xl); font-weight: var(--font-weight-medium); color: var(--pp-color-primary-dark); line-height: 1.6; position: relative; z-index: 2; max-width: 800px; margin-inline: auto; margin-bottom: 0; }
 
 
-/* Decorative Blur Styles - Reduced offsets */
 .deco-blur {
   position: absolute;
   width: 30vw;
-  min-width: 250px; /* Minimum size */
-  max-width: 400px; /* Maximum size */
+  min-width: 250px;
+  max-width: 400px;
   height: 30vw;
   min-height: 250px;
   max-height: 400px;
-  filter: blur(120px); /* Slightly reduced blur */
+  filter: blur(120px);
   border-radius: 50%;
-  z-index: -1; /* Ensure it's behind content */
+  z-index: -1;
   pointer-events: none;
-  opacity: 0.4; /* Reduced opacity */
+  opacity: 0.4;
 }
 
 .deco-blur.blur-1 {
   background: var(--blur-color-1);
   top: -5%;
-  left: -5%; /* Reduced negative offset */
+  left: -5%;
 }
 
 .deco-blur.blur-2 {
   background: var(--blur-color-2);
   top: 40%;
-  right: -2%; /* Reduced negative offset */
+  right: -2%;
 }
 
 .deco-blur.blur-3 {
@@ -2177,37 +2043,30 @@ fieldset.is-invalid-check-group legend {
   left: 15%;
 }
 
-
-/* Scroll Animations */
 .reveal-on-scroll,
 .reveal-stagger > * {
     opacity: 0;
     transform: translateY(40px);
-    pointer-events: none; /* Prevent interaction before revealed */
+    pointer-events: none;
 }
 .reveal-on-scroll.revealed,
 .reveal-stagger > *.revealed {
     opacity: 1;
     transform: translateY(0);
     transition: opacity 0.8s cubic-bezier(0.175, 0.885, 0.32, 1), transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1);
-    pointer-events: auto; /* Re-enable interaction */
-    transition-delay: var(--reveal-delay, 0s); /* Explicit delay property for JS */
+    pointer-events: auto;
+    transition-delay: var(--reveal-delay, 0s);
 }
 
-/* --- Responsive Overrides --- */
-
 @media (max-width: 1024px) {
-  /* Desktop nav styles are active up to this point */
-  #primary-navigation { gap: var(--space-md); } /* Reduce gap on larger screens */
-  /* Template grid columns for Tablet */
+  #primary-navigation { gap: var(--space-md); }
   .template-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
 }
 
-@media (max-width: 991px) { /* Adjusted to hide blur-3 earlier */
+@media (max-width: 991px) {
     .deco-blur.blur-3 { display: none; }
 }
 
-/* --- Tablet & Mobile Breakpoint (768px) --- */
 @media (max-width: 768px) {
   html {
     font-size: 15px;
@@ -2219,73 +2078,65 @@ fieldset.is-invalid-check-group legend {
   h1 { font-size: 2.2rem; }
   h2 { font-size: 1.8rem; }
 
-  /* --- Mobile Header Activation --- */
   .header-content-wrapper {
-      display: grid; /* Switch header wrapper to grid for mobile */
-      grid-template-columns: auto 1fr; /* Logo auto, Toggle takes rest */
-      padding-inline: var(--space-md); /* Adjust padding */
+      display: grid;
+      grid-template-columns: auto 1fr;
+      padding-inline: var(--space-md);
   }
-  .logo { grid-column: 1; } /* Logo in first column */
+  .logo { grid-column: 1; }
   .mobile-menu-toggle {
-      grid-column: 2; /* Toggle in second column */
-      justify-self: end; /* Align toggle to the right */
-      display: block; /* Show hamburger */
+      grid-column: 2;
+      justify-self: end;
+      display: block;
   }
 
-  /* Hide desktop navigation elements */
-  nav[aria-label="Main navigation"], /* Hide entire nav block */
-  .header-tool-btn { /* Hide desktop tool button */
+  nav[aria-label="Main navigation"],
+  .header-tool-btn {
       display: none;
   }
 
-  /* Mobile navigation list (#primary-navigation) becomes visible when .active */
-  /* Base styles already set above */
-
-  /* Toggle icon visibility */
   .mobile-menu-toggle .open-icon { display: inline-block; }
   .mobile-menu-toggle .close-icon { display: none; }
   .mobile-menu-toggle.active .open-icon { display: none; }
   .mobile-menu-toggle.active .close-icon { display: inline-block; }
-  /* --- End Mobile Header --- */
+
 
   .hero-stats-grid { grid-template-columns: 1fr; }
 
-  /* --- Financial Journey Path - Mobile (Vertical) --- */
   .journey-path-container {
-      overflow-x: hidden; /* Prevent accidental scroll */
-      padding-inline: 0; /* Remove horizontal padding for vertical path */
+      overflow-x: hidden;
+      padding-inline: 0;
   }
   .journey-path {
-      display: flex; /* Use Flex for vertical */
+      display: flex;
       flex-direction: column;
       align-items: flex-start;
-      width: 100%; /* Take full width */
+      width: 100%;
       max-width: 100%;
       margin-inline: auto;
-      padding-inline: var(--space-lg); /* Add padding back */
+      padding-inline: var(--space-lg);
       gap: 0;
       margin-bottom: 0;
       position: relative;
-      /* Remove inline-flex from horizontal state */
   }
-    .journey-path::before { /* Base vertical line */
+    .journey-path::before {
         content: '';
         position: absolute;
         width: 4px;
-        height: calc(100% - 60px); /* Approx height minus icon size */
+        height: calc(100% - 60px);
         background-color: var(--pp-color-border);
-        left: calc(var(--space-lg) + 60px / 2 - 4px / 2); /* Position under icon center, accounting for padding */
+        left: calc(var(--space-lg) + 60px / 2 - 4px / 2);
         top: calc(60px / 2);
         z-index: 1;
         border-radius: var(--radius-full);
     }
-    .journey-path::after { /* Progress line overlay */
+    .journey-path::after {
         content: '';
         position: absolute;
         width: 4px;
-        height: var(--journey-progress-height, 0%); /* Controlled by JS */
+        height: var(--journey-progress-height, 0%);
         background: var(--gradient-secondary);
-        left: calc(var(--space-lg) + 60px / 2 - 4px / 2); /* Position under icon center */
+        left: calc(var(--space-lg) + 60px / 2 - 4px / 2);
         top: calc(60px / 2);
         z-index: 2;
         transition: height 0.6s ease-out;
@@ -2294,7 +2145,7 @@ fieldset.is-invalid-check-group legend {
 
   .journey-node {
       flex-direction: row;
-      width: 100%; /* Take full width */
+      width: 100%;
       text-align: left;
       align-items: center;
       gap: var(--space-lg);
@@ -2303,35 +2154,28 @@ fieldset.is-invalid-check-group legend {
       position: relative;
   }
   .journey-node:not(:last-child) {
-       margin-bottom: var(--space-lg); /* Vertical space between nodes */
+       margin-bottom: var(--space-lg);
   }
 
   .journey-node h3 {
       margin-top: 0;
       margin-left: 0;
       font-size: 1rem;
-      flex-grow: 1; /* Allow text to take remaining space */
+      flex-grow: 1;
       min-height: auto;
       display: block;
-      padding-right: var(--space-sm); /* Prevent text hitting edge */
+      padding-right: var(--space-sm);
   }
   .journey-node .node-icon { flex-shrink: 0; }
-  /* Hide horizontal connectors */
   .journey-connector { display: none; }
-   /* Adjust content container margin and width */
    .journey-content-container {
       margin-top: var(--space-2xl);
-      max-width: calc(100% - var(--space-lg) * 2); /* Max width within padding */
+      max-width: calc(100% - var(--space-lg) * 2);
     }
-  /* --- End Financial Journey Path - Mobile --- */
 
-
-  /* --- Coaching Section Mobile --- */
-   /* Grid already defaults to 1 column */
    .coaching-interest {
-        /* Ensure centering works on mobile too if needed, adjust padding */
         padding: var(--space-md) 0;
-        justify-content: flex-start; /* Align form to top on mobile stack */
+        justify-content: flex-start;
     }
 
 
@@ -2339,78 +2183,81 @@ fieldset.is-invalid-check-group legend {
   .footer-column { text-align: left; }
   .social-links { justify-content: flex-start; }
 
-  /* Decorative blurs - further reduce size/opacity */
   .deco-blur { width: 50vw; height: 50vw; filter: blur(100px); opacity: 0.3; }
   .deco-blur.blur-1 { top: 0%; left: -10%; }
   .deco-blur.blur-2 { top: 50%; right: -5%; }
-  .deco-blur.blur-3 { display: none; } /* Keep hidden */
+  .deco-blur.blur-3 { display: none; }
 }
 
-
-/* --- Desktop Navigation Activation (min-width 769px) --- */
 @media (min-width: 769px) {
-  /* --- Redesigned Desktop Header using Grid (inspired by Rofilid) --- */
   .header-content-wrapper {
       display: grid;
-      grid-template-columns: auto 1fr auto; /* Logo | Nav | Button */
+      grid-template-columns: auto 1fr auto;
       align-items: center;
-      gap: var(--space-lg); /* Gap between grid items */
+      gap: var(--space-lg);
   }
 
   .logo {
       grid-column: 1;
-      justify-self: start;
+      flex-shrink: 0;
   }
 
   nav[aria-label="Main navigation"] {
       grid-column: 2;
-      display: flex; /* Use flex *inside* the nav grid item */
-      justify-content: center; /* Center the UL within the nav area */
-      width: 100%; /* Ensure nav takes space */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      overflow: hidden;
   }
 
   #primary-navigation {
-    /* Reset mobile styles & apply desktop flex layout */
-    display: flex !important; /* Override mobile 'flex' and !important to show */
-    flex-direction: row;
-    align-items: center;
-    gap: var(--space-lg);
-    position: static; /* Reset positioning */
-    transform: none;
-    opacity: 1;
-    visibility: visible;
-    background: none;
-    backdrop-filter: none;
-    overflow: visible;
-    width: auto; /* Let content determine width */
-    height: auto; /* Let content determine height */
-    transition: none; /* Remove mobile transitions */
+      display: flex !important;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-lg);
+      flex-wrap: nowrap;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      width: auto;
+      position: static;
+      transform: none;
+      opacity: 1;
+      visibility: visible;
+      background: none;
+      backdrop-filter: none;
+      overflow: visible;
+      height: auto;
+      transition: none;
   }
 
   #primary-navigation .nav-item {
-      width: auto; /* Reset mobile width */
-      flex-shrink: 0; /* Prevent nav items from shrinking */
+      width: auto;
+      flex-shrink: 0;
   }
 
   #primary-navigation .nav-link {
-    /* Desktop Link Styles */
     color: var(--pp-color-text);
     font-weight: var(--font-weight-medium);
     padding-block: var(--space-sm);
-    position: relative; /* Needed for ::after */
+    position: relative;
     text-decoration: none;
-    border-bottom: none; /* Reset mobile border */
-    font-size: var(--font-size-base); /* Reset mobile font size */
-    background: none; /* Reset mobile background */
-    white-space: nowrap; /* Prevent links wrapping */
+    border-bottom: none;
+    font-size: var(--font-size-base);
+    background: none;
+    white-space: nowrap;
+    display: block;
+    transition: color var(--transition-fast);
   }
   #primary-navigation .nav-link:hover,
   #primary-navigation .nav-link:focus {
       text-decoration: none;
-      color: var(--pp-color-primary); /* Hover color for desktop */
+      color: var(--pp-color-primary);
   }
 
-  #primary-navigation .nav-link::after { /* Underline effect */
+  #primary-navigation .nav-link::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -2419,7 +2266,7 @@ fieldset.is-invalid-check-group legend {
     height: 2px;
     background-color: var(--pp-color-secondary);
     transition: width var(--transition-normal);
-    display: block; /* Ensure ::after is visible */
+    display: block;
   }
 
   #primary-navigation .nav-link:hover::after,
@@ -2428,21 +2275,20 @@ fieldset.is-invalid-check-group legend {
   }
 
   #primary-navigation .nav-link[aria-current="page"] {
-    color: var(--pp-color-primary); /* Keep active color distinct */
-    font-weight: var(--font-weight-semibold); /* Add weight to active link */
-    background: none; /* Ensure no background */
+    color: var(--pp-color-primary);
+    font-weight: var(--font-weight-semibold);
+    background: none;
   }
 
   .header-tool-btn {
       grid-column: 3;
       justify-self: end;
-      display: inline-flex; /* Show the button */
-      /* margin-left: var(--space-lg); Already gapped by grid */
+      display: inline-flex;
+      flex-shrink: 0;
   }
 
-  .mobile-menu-toggle { display: none !important; } /* Hide toggle definitively */
-  .nav-item.mobile-only { display: none; } /* Hide mobile only items */
-  /* --- End Desktop Header Grid Layout --- */
+  .mobile-menu-toggle { display: none !important; }
+  .nav-item.mobile-only { display: none; }
 }
 
 
@@ -2454,44 +2300,38 @@ fieldset.is-invalid-check-group legend {
   .hero-actions { gap: var(--space-md); }
   h1 { font-size: 1.9rem; }
 
-  /* Modal Adjustments */
   .modal-content { padding: var(--space-lg) var(--space-md); max-height: 95vh; }
   .modal-title { font-size: var(--font-size-lg); }
 
-  /* Template Cards: Buttons always stack */
   .template-grid { grid-template-columns: 1fr; }
-  .template-actions { grid-template-columns: 1fr !important; /* Ensure stacking */ gap: var(--space-sm); }
+  .template-actions { grid-template-columns: 1fr !important; gap: var(--space-sm); }
 
   #quiz-modal-options { grid-template-columns: 1fr; gap: var(--space-sm); }
   .quiz-option { padding: var(--space-sm) var(--space-md); }
 
-  .footer-content { grid-template-columns: 1fr; } /* Stack footer columns */
+  .footer-content { grid-template-columns: 1fr; }
 
   .deco-blur { width: 60vw; height: 60vw; filter: blur(80px); opacity: 0.25; }
   .deco-blur.blur-1 { top: 5%; left: -15%; }
   .deco-blur.blur-2 { top: 60%; right: -10%; }
 
-   /* Journey Path Vertical Adjustments */
-  .journey-path { padding-inline: var(--space-md); } /* Reduce padding slightly */
+  .journey-path { padding-inline: var(--space-md); }
   .journey-path::before, .journey-path::after {
-      left: calc(var(--space-md) + 60px / 2 - 4px / 2); /* Adjust for new padding */
+      left: calc(var(--space-md) + 60px / 2 - 4px / 2);
    }
    .journey-node { gap: var(--space-md); }
    .journey-node h3 { font-size: 0.9rem; }
 
-   /* Adjust gradient button size */
    .btn-gradient-animated.btn-large {
-       font-size: var(--font-size-sm); /* Smaller font */
-       padding: var(--space-md) var(--space-lg); /* Smaller padding */
+       font-size: var(--font-size-sm);
+       padding: var(--space-md) var(--space-lg);
    }
 }
 
 @media (max-width: 420px) {
-  /* Template actions single column (already handled, but reinforces) */
   .template-card .template-actions { grid-template-columns: 1fr; }
 }
 
-/* Print Styles (Kept as is, but verify journey path etc. looks ok) */
 @media print {
   body { background: none !important; color: #000 !important; font-size: 11pt !important; font-family: 'Times New Roman', Times, serif !important; display: block !important; min-height: auto !important; padding-top: 0 !important; margin: 1cm !important; }
   :root {
@@ -2515,14 +2355,14 @@ fieldset.is-invalid-check-group legend {
 
   .reveal-on-scroll, .reveal-stagger > * { opacity: 1 !important; transform: none !important; transition: none !important; pointer-events: auto !important; }
 
-  html { scroll-padding-top: 0; width: auto; overflow: visible; } /* Allow natural flow for print */
-  body { width: auto; overflow: visible; display: block; } /* Override flex */
+  html { scroll-padding-top: 0; width: auto; overflow: visible; }
+  body { width: auto; overflow: visible; display: block; }
   main#main-content { flex-grow: 0 !important; overflow: visible !important; }
   .container { width: 100% !important; max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
   h1, h2, h3, h4, h5, h6 { color: #000 !important; page-break-after: avoid; font-family: inherit !important; }
   p, ul, li { color: #000 !important; page-break-inside: avoid; }
-  a { color: #000 !important; text-decoration: underline !important; /* Show links underlined */ }
-  a[href^="http"]::after { content: ""; /* Do not print URL */ }
+  a { color: #000 !important; text-decoration: underline !important; }
+  a[href^="http"]::after { content: ""; }
   .section-padding, .section-padding--large { padding-block: 1cm !important; }
   .section-title::after { display: none; }
 
@@ -2531,10 +2371,9 @@ fieldset.is-invalid-check-group legend {
   .card-cta { display: none; }
   .stat-card i, .category-card .category-icon { display: none; }
 
-  /* Journey path simplify for print */
-  .journey-path-container::before { display: none; } /* Hide bg pattern */
-  .journey-path-container { overflow: visible !important; } /* Prevent scrolling */
-  .journey-path { display: block; padding: 0; } /* Stack items */
+  .journey-path-container::before { display: none; }
+  .journey-path-container { overflow: visible !important; }
+  .journey-path { display: block; padding: 0; }
   .journey-path::before, .journey-path::after, .journey-connector { display: none !important; }
   .journey-node { display: block !important; page-break-inside: avoid; margin-bottom: 0.5cm; flex-direction: column !important; align-items: flex-start !important; padding: 0 !important; gap: 0 !important; width: 100% !important; }
   .journey-node .node-icon { display: none; }
@@ -2545,16 +2384,13 @@ fieldset.is-invalid-check-group legend {
   .journey-content a, .journey-content .link-button { display: inline !important; color: #000 !important; text-decoration: underline !important;}
   .journey-content ul li i { display: none; }
 
-  /* Template card value prop print */
   .template-value-prop { display: block !important; margin-bottom: 0.5cm; flex-grow: 0 !important; }
   .template-benefits li i { display: none; }
   .template-card .template-image-hover { display: none !important; }
 
-  /* Coaching Info print */
    .coaching-content-redesigned { display: block; }
    .coaching-info li i { display: none; }
 
-  /* Calculator Features print */
   .calculator-features-list i { display: none; }
 }
 
