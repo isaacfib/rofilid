@@ -187,8 +187,6 @@ html {
   height: 100%;
   width: 100%;
   overflow-x: clip; /* Prevents minor overflows causing scroll */
-  /* If gutters (outside the 80vw body) need a specific background: */
-  /* background-color: var(--neutral-100); */
 }
 
 
@@ -198,35 +196,17 @@ body {
   line-height: 1.65; /* Slightly more generous line height */
   color: var(--pp-color-text);
   background-color: var(--pp-color-bg);
-  overflow-x: hidden; /* Keep this to prevent horizontal scroll within the body itself */
+  overflow-x: hidden; /* Keep this to prevent horizontal scroll */
   width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   position: relative;
-  /* max-width and margin-left/right for centering will be applied by the media query below */
 }
 
 /* Applied by JS when a modal OR mobile nav is open */
 body.modal-open {
   overflow: hidden; /* Prevents scrolling of content behind modal/nav */
-}
-
-/* Apply 80vw width constraint for wider screens */
-@media (min-width: 1281px) {
-  body {
-    max-width: 80vw;
-    margin-left: auto;
-    margin-right: auto;
-    /* Optional: Add a subtle shadow to the body to visually define its edges
-       if the HTML background and body background are similar. */
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.07);
-  }
-  /* Fixed position elements like .deco-blur, .modal-overlay, .floating-action-btn
-     will remain relative to the viewport by default. This is usually the desired behavior.
-     If they needed to be positioned relative to the new 80vw body edges,
-     their positioning logic would need to be more complex (e.g., using calc).
-     For now, this change only constrains the main body layout. */
 }
 
 
@@ -735,7 +715,7 @@ p:last-child { margin-bottom: 0; } /* Common cleanup */
   box-shadow: 0 2px 4px rgba(12, 52, 61, 0.03); /* Very subtle shadow */
   border-bottom: 1px solid var(--pp-color-border-light);
   height: var(--header-height);
-  width: 100%; /* Will be 100% of body, which might be 80vw */
+  width: 100%;
   transition: background-color var(--transition-normal); /* Smooth bg change */
 }
 .site-header.scrolled { /* Add this class via JS if needed */
@@ -2708,7 +2688,7 @@ fieldset.is-invalid-check-group legend { color: var(--pp-color-danger); } /* Col
   padding: var(--space-2xl) 0 var(--space-xl);
   font-size: var(--font-size-sm);
   line-height: 1.7; /* More space */
-  width: 100%; /* Will be 100% of body, which might be 80vw */
+  width: 100%;
 }
 
 
