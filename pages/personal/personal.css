@@ -1,4 +1,4 @@
-﻿/* START OF FILE personal.css */
+/* START OF FILE personal.css */
 
 
 /* ==========================================================================
@@ -196,18 +196,17 @@ body {
   line-height: 1.65; /* Slightly more generous line height */
   color: var(--pp-color-text);
   background-color: var(--pp-color-bg);
-  overflow-x: hidden;
+  overflow-x: hidden; /* Keep this to prevent horizontal scroll */
   width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   position: relative;
-  /* transition: filter var(--transition-normal); Maybe for mobile menu blur? */
 }
 
-
+/* Applied by JS when a modal OR mobile nav is open */
 body.modal-open {
-  overflow: hidden;
+  overflow: hidden; /* Prevents scrolling of content behind modal/nav */
 }
 
 
@@ -726,7 +725,6 @@ p:last-child { margin-bottom: 0; } /* Common cleanup */
 
 
 .header-container {
-  /* This applies to all screen sizes now as it contains the wrapper */
   max-width: var(--container-max-width);
   margin-inline: auto;
   padding-inline: var(--space-lg);
@@ -750,18 +748,43 @@ p:last-child { margin-bottom: 0; } /* Common cleanup */
   font-size: 1.6rem;
   color: var(--pp-color-primary);
   cursor: pointer;
-  z-index: 1001;
-  padding: var(--space-xs); /* Add slight padding */
+  z-index: 1001; /* Above mobile nav before it opens */
+  padding: var(--space-xs);
   line-height: 1;
-  margin-left: auto;
+  margin-left: auto; /* Push to right if nav menu center means it isn't far enough */
   transition: color var(--transition-fast), transform var(--transition-fast);
+  position: relative; /* For icon absolute positioning */
+  width: 44px; /* Ensure decent tap target */
+  height: 44px;
+  align-items: center;
+  justify-content: center;
 }
 .mobile-menu-toggle:hover { color: var(--pp-color-secondary-dark); transform: scale(1.1); }
+
+/* Icon animations within the toggle */
 .mobile-menu-toggle .open-icon,
-.mobile-menu-toggle .close-icon { transition: transform var(--transition-normal), opacity var(--transition-normal); }
-.mobile-menu-toggle .close-icon { position: absolute; opacity: 0; transform: rotate(-45deg) scale(0.8); }
-.mobile-menu-toggle.active .open-icon { opacity: 0; transform: rotate(45deg) scale(0.8); }
-.mobile-menu-toggle.active .close-icon { opacity: 1; transform: rotate(0deg) scale(1); }
+.mobile-menu-toggle .close-icon {
+  transition: transform var(--transition-normal) ease-in-out, opacity var(--transition-normal) ease-in-out;
+  position: absolute; /* Allow them to overlap for smooth transition */
+}
+
+.mobile-menu-toggle .open-icon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+.mobile-menu-toggle .close-icon {
+  opacity: 0;
+  transform: rotate(-45deg) scale(0.8);
+}
+
+.mobile-menu-toggle.active .open-icon {
+  opacity: 0;
+  transform: rotate(45deg) scale(0.8);
+}
+.mobile-menu-toggle.active .close-icon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
 .mobile-menu-toggle:focus-visible {
     outline: none;
     box-shadow: var(--shadow-focus);
@@ -841,9 +864,6 @@ nav[aria-label="Main navigation"] {
   /* Can use the ::after trick for focus or a different indicator */
   color: var(--pp-color-primary); /* Ensure focus looks like active/hover */
   outline: none;
-  /* Option 1: Use ::after */
-  /* &::after { width: 100%; } */
-  /* Option 2: Subtle box shadow */
   box-shadow: 0 0 0 2px var(--pp-color-secondary-light); /* Less intense than standard focus */
   border-radius: var(--radius-sm);
 }
@@ -1081,7 +1101,6 @@ nav[aria-label="Main navigation"] {
 }
 .approach-highlights span i {
     color: var(--pp-color-success);
-    /* margin-right removed, using gap */
     font-size: 1em;
 }
 
@@ -1455,7 +1474,15 @@ nav[aria-label="Main navigation"] {
    border-color: var(--pp-color-secondary-dark);
 }
 .category-card.completed .start-quiz-btn {
-    /* Style defined in original CSS for completed state is reasonable */
+   /* Change style from .btn-secondary to .btn-outline when completed */
+   background-color: transparent;
+   border-color: var(--pp-color-secondary);
+   color: var(--pp-color-secondary-dark);
+}
+.category-card.completed .start-quiz-btn:hover {
+   background-color: var(--pp-color-primary-lightest);
+   border-color: var(--pp-color-secondary-dark);
+   color: var(--pp-color-secondary-dark);
 }
 .category-card.completed .start-quiz-btn i { /* Ensure icon shows */
   display: inline-block !important;
@@ -1676,20 +1703,22 @@ nav[aria-label="Main navigation"] {
 
 
 .journey-content {
-    position: absolute; /* Allow fading in/out in place */
-    inset: var(--space-xl); /* Match padding */
     opacity: 0;
     transform: translateY(15px);
-    transition: opacity var(--transition-normal), transform var(--transition-normal);
-    pointer-events: none; /* Prevent interaction when hidden */
-    /* display: none; handled by JS */
+    transition: opacity var(--transition-normal), transform var(--transition-normal), display 0s var(--transition-normal);
+    pointer-events: none;
+    display: none; /* Start hidden, JS will toggle */
+    position: absolute; /* Default position for transition */
+    inset: var(--space-xl); /* Default for when it's 'fading out' */
 }
-.journey-content:not([hidden]) { /* Active content panel */
+.journey-content:not([hidden]) {
      opacity: 1;
      transform: translateY(0);
      pointer-events: auto;
-     position: static; /* Let it take space */
-     inset: auto;
+     position: static; /* Take up space when active */
+     inset: auto; /* Reset inset for static position */
+     display: block; /* Make visible */
+     transition-delay: 0s; /* Ensure it transitions in immediately */
 }
 
 
@@ -2001,7 +2030,21 @@ nav[aria-label="Main navigation"] {
         grid-template-columns: 1fr 1fr;
         gap: var(--space-2xl); /* Restore larger gap */
     }
-    .coaching-interest { padding-top: 0; } /* Align form */
+    .coaching-info { /* Example for centering content in the left column if it's sparse */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center; /* or flex-start if preferred */
+        text-align: center; /* if text should be centered */
+    }
+    .coaching-interest {
+        display: flex; /* Ensure flex for centering content */
+        flex-direction: column;
+        align-items: center; /* Center the form horizontally */
+    }
+    .coaching-interest-form {
+        margin-inline: auto; /* Already does this, but confirm parent allows it */
+    }
 }
 
 
@@ -2029,8 +2072,8 @@ nav[aria-label="Main navigation"] {
     border-radius: var(--radius-lg);
     padding: var(--space-xl);
     width: 100%;
-    max-width: 450px;
-    margin-inline: auto;
+    max-width: 450px; /* Keep form width constrained */
+    margin-inline: auto; /* This centers the form */
     display: flex;
     flex-direction: column;
     align-items: stretch; /* Stretch elements to full width */
@@ -2208,18 +2251,26 @@ fieldset legend {
 /* Show feedback */
 .form-control.is-invalid ~ .invalid-feedback,
 .form-select.is-invalid ~ .invalid-feedback,
-.form-check-input.is-invalid ~ .form-check-label ~ .invalid-feedback, /* May need JS if feedback is separate */
-fieldset.is-invalid-check-group .invalid-feedback {
+fieldset.is-invalid-check-group .invalid-feedback, /* Targets feedback within an invalid fieldset */
+.form-check-input.is-invalid ~ .invalid-feedback /* If feedback is direct sibling of checkbox (less common) */
+{
   display: block;
 }
 
+/* If form-check-label contains the .invalid-feedback (Bootstrap 5 style) */
+.form-check-input.is-invalid ~ .form-check-label .invalid-feedback {
+    display: block;
+}
 
 /* Invalid input styles */
 .form-control.is-invalid,
 .form-select.is-invalid,
-.form-check-input.is-invalid,
-fieldset.is-invalid-check-group { /* Apply to fieldset container too */
+.form-check-input.is-invalid {
     border-color: var(--pp-color-danger) !important; /* Override specificity if needed */
+}
+fieldset.is-invalid-check-group {
+    /* For fieldsets, we color the legend and potentially a border around the fieldset if desired */
+    /* border: 1px solid var(--pp-color-danger) !important; Example: fieldset border */
 }
 fieldset.is-invalid-check-group legend { color: var(--pp-color-danger); } /* Color legend */
 .form-check-input.is-invalid ~ .form-check-label { color: var(--pp-color-danger); }
@@ -2265,7 +2316,7 @@ fieldset.is-invalid-check-group legend { color: var(--pp-color-danger); } /* Col
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(12, 52, 61, 0.8); /* Darker overlay */
+  background-color: rgba(9, 40, 48, 0.85); /* Darker overlay using teal-dark base, more opaque */
   backdrop-filter: var(--backdrop-blur);
   -webkit-backdrop-filter: var(--backdrop-blur);
   display: flex;
@@ -2275,12 +2326,12 @@ fieldset.is-invalid-check-group legend { color: var(--pp-color-danger); } /* Col
   padding: var(--space-lg);
   opacity: 0;
   visibility: hidden;
-  transition: opacity var(--transition-normal), visibility var(--transition-normal) steps(1, end); /* Use steps for visibility */
+  transition: opacity var(--transition-normal), visibility 0s var(--transition-normal);
 }
 .modal-overlay:not([hidden]) {
     opacity: 1;
     visibility: visible;
-    transition: opacity var(--transition-normal), visibility var(--transition-normal) steps(1, start);
+    transition-delay: 0s; /* Ensure visibility change is instant when showing */
 }
 
 
@@ -2380,12 +2431,14 @@ fieldset.is-invalid-check-group legend { color: var(--pp-color-danger); } /* Col
     margin-bottom: var(--space-lg); /* Reduce margin */
     text-align: center;
     line-height: 1.4;
+    min-height: 2.8em; /* Reserve space for 2 lines of question text */
 }
 #quiz-modal-options {
     display: grid;
     grid-template-columns: 1fr; /* Mobile first */
     gap: var(--space-md);
     margin-bottom: var(--space-lg);
+    min-height: 100px; /* Reserve some space for options before they load */
 }
 @media (min-width: 576px) { /* Two columns on wider modals */
    #quiz-modal-options { grid-template-columns: 1fr 1fr; }
@@ -2424,7 +2477,6 @@ fieldset.is-invalid-check-group legend { color: var(--pp-color-danger); } /* Col
     background: var(--pp-color-danger-light);
     border-color: var(--pp-color-danger);
     color: color-mix(in srgb, var(--pp-color-danger) 85%, black);
-    /* font-weight unchanged unless needed */
 }
 /* Ensure disabled looks okay with color */
 .quiz-option.correct[disabled], .quiz-option.incorrect[disabled] {
@@ -2441,19 +2493,44 @@ fieldset.is-invalid-check-group legend { color: var(--pp-color-danger); } /* Col
     font-weight: var(--font-weight-medium);
     font-size: var(--font-size-base); /* Slightly larger */
     line-height: 1.5;
-    transition: opacity var(--transition-normal);
+    transition: opacity var(--transition-normal), height var(--transition-normal), padding var(--transition-normal), margin var(--transition-normal), border var(--transition-normal);
 }
-.quiz-modal-feedback.correct { /* Styles defined earlier */ }
-.quiz-modal-feedback.incorrect { /* Styles defined earlier */ }
+.quiz-modal-feedback.correct {
+    background-color: var(--pp-color-success-light);
+    color: color-mix(in srgb, var(--pp-color-success) 90%, black);
+    border-color: color-mix(in srgb, var(--pp-color-success) 40%, transparent);
+}
+.quiz-modal-feedback.incorrect {
+    background-color: var(--pp-color-danger-light);
+    color: color-mix(in srgb, var(--pp-color-danger) 90%, black);
+    border-color: color-mix(in srgb, var(--pp-color-danger) 40%, transparent);
+}
 .quiz-modal-feedback strong {
    display: block; margin-bottom: var(--space-xs);
    font-weight: var(--font-weight-bold);
 }
-.quiz-modal-feedback[hidden] { opacity: 0; height: 0; padding: 0; margin: 0; border: none; overflow: hidden; }
+.quiz-modal-feedback[hidden] {
+    opacity: 0;
+    height: 0;
+    padding-block: 0;
+    margin-block: 0;
+    border-width: 0;
+    overflow: hidden;
+}
 
 
 /* Quiz Results Area */
-#quiz-modal-results { text-align: center; }
+#quiz-modal-results {
+    text-align: center;
+    transition: opacity var(--transition-normal), height var(--transition-normal), padding var(--transition-normal), margin var(--transition-normal);
+}
+#quiz-modal-results[hidden] {
+    opacity: 0;
+    height: 0;
+    padding-block: 0;
+    margin-block: 0;
+    overflow: hidden;
+}
 #quiz-modal-results h4 {
     color: var(--pp-color-primary);
     margin-bottom: var(--space-sm);
@@ -2461,7 +2538,7 @@ fieldset.is-invalid-check-group legend { color: var(--pp-color-danger); } /* Col
 }
 #quiz-modal-results p { margin-bottom: var(--space-md); font-size: var(--font-size-md); }
 #quiz-modal-results .btn { margin-top: var(--space-sm); margin-inline: var(--space-xs); }
-#quiz-modal-results .next-quiz-button { /* Make primary button stand out */
+#quiz-modal-results .next-quiz-button {
    /* uses .btn-primary */
 }
 
@@ -2473,7 +2550,9 @@ fieldset.is-invalid-check-group legend { color: var(--pp-color-danger); } /* Col
    border-radius: var(--radius-md);
    padding: var(--space-md);
    margin-top: var(--space-lg);
+   transition: opacity var(--transition-normal);
 }
+#quiz-modal-full-challenge-prompt[hidden] { opacity: 0; height: 0; padding: 0; margin: 0; border: none; overflow: hidden;}
 
 
 .quiz-modal-navigation {
@@ -2546,7 +2625,8 @@ fieldset.is-invalid-check-group legend { color: var(--pp-color-danger); } /* Col
   pointer-events: none; opacity: 0;
   /* Use transition on list items for staggered effect */
 }
-#fab-options-list[hidden] { display: none; } /* Ensure JS hide works */
+/* [hidden] attribute directly from JS will work with this too */
+.fab-options[hidden] { display: none !important; }
 .floating-action-btn.active .fab-options { pointer-events: auto; opacity: 1; }
 
 
@@ -2554,7 +2634,7 @@ fieldset.is-invalid-check-group legend { color: var(--pp-color-danger); } /* Col
    transform: translateY(10px) scale(0.95);
    opacity: 0;
    transition: opacity var(--transition-normal) ease-out, transform var(--transition-normal) ease-out;
-   transition-delay: var(--delay, 0s); /* Delay applied by JS */
+   transition-delay: var(--fab-item-delay, 0s); /* Updated variable name if JS sets it directly */
 }
 .floating-action-btn.active .fab-options li {
    opacity: 1;
@@ -2747,17 +2827,15 @@ fieldset.is-invalid-check-group legend { color: var(--pp-color-danger); } /* Col
     transform: translateY(40px);
     transition: opacity 0.7s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1); /* Smooth ease curve */
     pointer-events: none;
+    /* Respect explicit transition-delay from JS or direct style */
+    transition-delay: var(--reveal-item-delay, 0s);
 }
 .reveal-on-scroll.revealed, .reveal-stagger > *.revealed {
     opacity: 1;
     transform: translateY(0);
-    transition-delay: var(--reveal-delay, 0s); /* Respect custom delay */
     pointer-events: auto;
 }
-/* Ensure stagger delay works */
-.reveal-stagger > *.revealed {
-   transition-delay: calc(var(--stagger-index, 0) * 100ms); /* Use CSS variable if set by JS */
-}
+/* Stagger delay applied via JS by setting --reveal-item-delay on each child or directly style.transitionDelay */
 
 
 
@@ -2794,35 +2872,32 @@ fieldset.is-invalid-check-group legend { color: var(--pp-color-danger); } /* Col
   /* Header container padding */
   .header-container { padding-inline: var(--space-md); gap: var(--space-md); }
 
-  /* --- MOBILE NAVIGATION FIX START --- */
+  /* --- MOBILE NAVIGATION --- */
   .mobile-menu-toggle { display: flex; } /* Show hamburger toggle */
 
   nav[aria-label="Main navigation"] {
-      /* REMOVED display: none; This allows the container to exist */
-      /* Desktop styles like flex-grow, justify-content are irrelevant here */
-      /* We only care that it *exists* so the UL inside can be positioned */
-      all: unset; /* Optional: Reset any desktop styles that might interfere */
-      display: block; /* Or simply let it be default block */
-      position: static; /* Ensure it doesn't interfere with fixed UL */
+      all: unset; /* Reset desktop flex container styles */
+      display: block; /* Ensure it exists for the UL inside */
+      position: static;
   }
 
   #primary-navigation { /* Style the mobile menu UL */
       position: fixed;
-      inset: var(--header-height) 0 0 0;
-      background-color: rgba(255, 255, 255, 0.98);
+      inset: var(--header-height) 0 0 0; /* Full screen below header */
+      background-color: rgba(255, 255, 255, 0.99); /* Slightly more opaque */
       backdrop-filter: var(--backdrop-blur);
       -webkit-backdrop-filter: var(--backdrop-blur);
-      transform: translateX(100%);
+      transform: translateX(100%); /* Start off-screen */
       opacity: 0;
       visibility: hidden;
-      /* Smooth transitions for transform and opacity, instant change for visibility (when showing) */
-      transition: transform var(--transition-slow), opacity var(--transition-slow), visibility 0s var(--transition-slow);
-      z-index: 1000;
+      /* Snappier transitions with distinct timing for visibility */
+      transition: transform var(--transition-normal) ease-in-out, opacity var(--transition-normal) ease-in-out, visibility 0s var(--transition-normal);
+      z-index: 1000; /* Ensure it's above other content but below the toggle button when inactive */
       overflow-y: auto;
-      display: flex; /* Use flex for column layout (removed !important) */
+      display: flex;
       flex-direction: column;
-      gap: 0; /* No gap needed, using borders */
-      height: calc(100vh - var(--header-height));
+      gap: 0; /* No gap, using borders */
+      height: calc(100vh - var(--header-height)); /* Full viewport height minus header */
       padding-top: var(--space-sm);
       padding-bottom: var(--space-xl);
   }
@@ -2830,10 +2905,9 @@ fieldset.is-invalid-check-group legend { color: var(--pp-color-danger); } /* Col
       transform: translateX(0);
       opacity: 1;
       visibility: visible;
-      /* Make visibility change instantly when becoming active */
-      transition: transform var(--transition-slow), opacity var(--transition-slow), visibility 0s 0s;
+      transition-delay: 0s; /* Ensure visibility becomes active immediately */
   }
-  /* --- MOBILE NAVIGATION FIX END --- */
+  /* --- END MOBILE NAVIGATION --- */
 
   /* Mobile menu item/link styles */
   #primary-navigation .nav-item { width: 100%; }
@@ -2845,7 +2919,12 @@ fieldset.is-invalid-check-group legend { color: var(--pp-color-danger); } /* Col
   }
   #primary-navigation .nav-item:last-child .nav-link { border-bottom: none; }
   #primary-navigation .nav-link::after { display: none; } /* No desktop underline */
-  #primary-navigation .nav-link:hover { background-color: var(--neutral-100); }
+  #primary-navigation .nav-link:hover,
+  #primary-navigation .nav-link:focus-visible { /* Combine hover and focus */
+      background-color: var(--neutral-100);
+      color: var(--pp-color-primary); /* Ensure text color changes as well */
+      box-shadow: none; /* Override desktop focus style for mobile */
+  }
   #primary-navigation .nav-link[aria-current="page"] {
      background-color: var(--pp-color-primary-lightest);
      color: var(--pp-color-primary); font-weight: var(--font-weight-semibold);
@@ -2907,7 +2986,7 @@ fieldset.is-invalid-check-group legend { color: var(--pp-color-danger); } /* Col
    .hero-stats-grid { grid-template-columns: 1fr; }
    .footer-content { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
    .footer-column, .social-links { text-align: left; justify-content: flex-start; }
-   .coaching-interest { justify-content: flex-start; }
+   /* .coaching-interest { justify-content: flex-start; } No specific change needed if form is margin-inline: auto */
    .deco-blur { filter: blur(100px); opacity: 0.2; }
    .deco-blur.blur-2 { top: 60%; right: -15%; }
    .deco-blur.blur-3 { display: none; }
@@ -2944,14 +3023,24 @@ fieldset.is-invalid-check-group legend { color: var(--pp-color-danger); } /* Col
   /* Adjust journey path mobile alignment */
   .journey-path { padding-inline: var(--space-sm); }
    .journey-path::before, .journey-path::after {
-      left: calc(var(--space-sm) + 60px / 2 - 4px / 2); /* Use node size */
+      left: calc(var(--space-sm) + 50px / 2 - 4px / 2); /* Use updated node-icon size for calc */
    }
    .journey-node { gap: var(--space-md); }
    .journey-node .node-icon { width: 50px; height: 50px; border-width: 2px; }
    .journey-node .node-icon i { font-size: 1.5rem; }
    .journey-node h3 { font-size: 0.9rem; }
-   .journey-path::before { height: calc(100% - 50px); top: 25px; left: calc(var(--space-sm) + 25px - 2px); }
-   .journey-path::after { height: var(--journey-progress-height, 0%); top: 25px; left: calc(var(--space-sm) + 25px - 2px); }
+
+   /* Corrected mobile journey vertical track/progress position */
+   .journey-path::before {
+       height: calc(100% - 50px); /* Node icon height */
+       top: calc(50px / 2);      /* Half node icon height */
+       left: calc(var(--space-sm) + (50px / 2) - (4px / 2));
+   }
+   .journey-path::after {
+       height: var(--journey-progress-height, 0%);
+       top: calc(50px / 2);
+       left: calc(var(--space-sm) + (50px / 2) - (4px / 2));
+   }
 
 
   .floating-action-btn { bottom: var(--space-md); right: var(--space-md); }
@@ -2989,7 +3078,7 @@ fieldset.is-invalid-check-group legend { color: var(--pp-color-danger); } /* Col
   .coaching-interest, .disclaimer, #feedback-section, button, input, select, textarea, form, .btn-ripple,
   .motivational-quote::before, .motivational-quote::after, .journey-node .node-icon,
   .category-card .category-icon, .stat-card i,
-  #personal-coaching .text-center[aria-hidden="true"]
+  #personal-coaching .text-center[aria-hidden="true"] /* Ensure this specifically targets the decorative icon */
   { display: none !important; visibility: hidden !important; }
 
 
