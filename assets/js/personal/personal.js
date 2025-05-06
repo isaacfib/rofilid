@@ -73,6 +73,8 @@ let isJourneyObserverActive = false;
 let journeyAutoAdvanceInterval = null;
 const JOURNEY_ADVANCE_DELAY = 4000;
 const QUIZ_STATS_STORAGE_KEY = 'rofilidQuizStats';
+const STANDARD_FEEDBACK_VISIBILITY_DURATION = 1200; // ms to show Correct/Incorrect before next action
+const LAST_QUESTION_EXPLANATION_VISIBILITY_DURATION = 4000; // ms to show only explanation for last Q
 
 
 // --- DOM Element References (Cached on DOMContentLoaded) ---
@@ -251,7 +253,6 @@ function updateQuizStats(categoryId, achievedScore, totalQuestions) {
 
     stats[catIdStr] = newCategoryStats;
     saveQuizStats(stats);
-    // console.log(`Stats updated for category ${catIdStr}: Attempts=${attempts}, Best=${bestScore}, Last=${achievedScore}`);
     updateCategoryCardUI(catIdStr);
 }
 
@@ -283,7 +284,6 @@ function initializeQuizUIFromStats() {
              progressMessageArea.hidden = true;
         }
     }
-    // console.log(`Initialized UI based on stored stats. ${completedCount}/${totalCategories} completed.`);
 }
 
 function updateCategoryCardUI(categoryId, stats) {
@@ -302,7 +302,7 @@ function updateCategoryCardUI(categoryId, stats) {
         indicatorArea.className = 'quiz-completion-indicator'; // Base class
         startButton.parentNode.insertBefore(indicatorArea, startButton);
     }
-    if (!indicatorArea) return; // Still no indicator area, can't proceed
+    if (!indicatorArea) return; 
 
     indicatorArea.innerHTML = '';
 
@@ -310,7 +310,6 @@ function updateCategoryCardUI(categoryId, stats) {
         card.classList.add('completed');
         if (startButton) {
             startButton.innerHTML = '<i class="fas fa-redo" aria-hidden="true"></i> Retake Check';
-            // No need to replace classes if .category-card.completed .start-quiz-btn CSS handles it
             startButton.setAttribute('aria-label', `Retake ${card.querySelector('h4')?.textContent || 'Quiz'}`);
         }
         const bestScoreDisplay = categoryData.bestScore !== undefined ? categoryData.bestScore : 'N/A';
@@ -321,7 +320,6 @@ function updateCategoryCardUI(categoryId, stats) {
         card.classList.remove('completed');
         if (startButton) {
             startButton.innerHTML = '<i class="fas fa-play" aria-hidden="true"></i> Start Check';
-            // No need to replace classes if default CSS for .start-quiz-btn is correct
             startButton.setAttribute('aria-label', `Start ${card.querySelector('h4')?.textContent || 'Quiz'}`);
         }
         indicatorArea.innerHTML = '';
@@ -356,35 +354,34 @@ function handleCountryChange(event) {
     }
 
     if (!cityInput || !cityDatalist) {
-        // console.error("Could not find corresponding city input/datalist for", countryInput.id);
         return;
     }
 
     const isNigeria = countryValue.toLowerCase() === 'nigeria';
-    cityDatalist.innerHTML = ''; // Clear previous options first
+    cityDatalist.innerHTML = ''; 
 
     if (isNigeria) {
         populateDatalist(cityDatalist, nigerianStatesList);
         cityInput.disabled = false;
         cityInput.placeholder = "Select State/City in Nigeria";
         cityInput.setAttribute('list', cityDatalist.id);
-    } else if (countryValue) { // Other country selected and not empty
+    } else if (countryValue) { 
         cityInput.disabled = false;
         cityInput.placeholder = "Enter City/Town";
-        cityInput.removeAttribute('list'); // Allow free text
-    } else { // Country input is empty
+        cityInput.removeAttribute('list'); 
+    } else { 
         cityInput.disabled = true;
         cityInput.value = '';
         cityInput.placeholder = "City (Select Country First)";
         cityInput.removeAttribute('list');
     }
-    showFeedback(cityInput, '', false); // Clear validation on city field
+    showFeedback(cityInput, '', false); 
 }
 
 
 // --- Quiz Functions ---
 function startQuiz(categoryId) {
-    if (!quizModal || !quizModalTitleEl) { // Check a few key elements
+    if (!quizModal || !quizModalTitleEl) {
         console.error("Quiz modal or its core elements not cached! Cannot start quiz.");
         return;
     }
@@ -407,17 +404,20 @@ function startQuiz(categoryId) {
     userAnswers = [];
     score = 0;
 
+    // Initial UI state for starting/restarting a quiz
     quizModalTitleEl.textContent = currentQuestions[0]?.category || 'Quiz';
     if(quizModalProgressTotalEl) quizModalProgressTotalEl.textContent = currentQuestions.length;
+    
     if(quizModalResultsEl) quizModalResultsEl.hidden = true;
     if(quizModalFullChallengePromptEl) quizModalFullChallengePromptEl.hidden = true;
-    if(quizModalRestartBtn) quizModalRestartBtn.hidden = true;
+    if(quizModalRestartBtn) quizModalRestartBtn.hidden = true; // Crucial: Hide restart btn
     if(quizModalCloseResultsBtn) quizModalCloseResultsBtn.hidden = true;
     if(quizModalFeedbackEl) quizModalFeedbackEl.hidden = true;
     if(quizModalNextBtn) quizModalNextBtn.hidden = true;
-    if(quizModalQuestionEl) quizModalQuestionEl.hidden = false;
+    
+    if(quizModalQuestionEl) quizModalQuestionEl.hidden = false; // Show question area
     if(quizModalOptionsEl) {
-        quizModalOptionsEl.hidden = false;
+        quizModalOptionsEl.hidden = false; // Show options area
         quizModalOptionsEl.innerHTML = '';
     }
 
@@ -431,38 +431,39 @@ function startQuiz(categoryId) {
 
 function displayQuestion() {
     if (currentQuestionIndex >= currentQuestions.length || !quizModalQuestionEl || !quizModalOptionsEl || !quizModalProgressCurrentEl) {
-        if(currentQuestions.length > 0) showQuizResults(); // Go to results if questions existed
+        if(currentQuestions.length > 0) showQuizResults();
         return;
     }
 
     const question = currentQuestions[currentQuestionIndex];
 
+    // UI state for displaying a new question
     quizModalQuestionEl.hidden = false;
     quizModalOptionsEl.hidden = false;
     if(quizModalFeedbackEl) quizModalFeedbackEl.hidden = true;
     if(quizModalResultsEl) quizModalResultsEl.hidden = true;
-    if(quizModalNextBtn) quizModalNextBtn.hidden = true;
+    if(quizModalNextBtn) quizModalNextBtn.hidden = true; // Crucial: Hide next btn initially
+    if(quizModalRestartBtn) quizModalRestartBtn.hidden = true; // Ensure restart is hidden
 
     quizModalProgressCurrentEl.textContent = currentQuestionIndex + 1;
     quizModalQuestionEl.textContent = question.question;
     quizModalOptionsEl.innerHTML = '';
 
-    quizModalQuestionEl.id = quizModalQuestionEl.id || 'quiz-modal-question-id'; // Ensure ID for ARIA
+    quizModalQuestionEl.id = quizModalQuestionEl.id || 'quiz-modal-question-id';
     quizModalOptionsEl.setAttribute('aria-labelledby', quizModalQuestionEl.id);
 
-    // Prepare options for shuffling
     const optionsToShuffle = question.options.map((optionText, originalIdx) => ({
         text: optionText,
         originalIndex: originalIdx
     }));
-    shuffleArray(optionsToShuffle); // Shuffle the options
+    shuffleArray(optionsToShuffle);
 
     optionsToShuffle.forEach((shuffledOption) => {
         const optionButton = document.createElement('button');
         optionButton.type = 'button';
         optionButton.classList.add('btn', 'btn-outline', 'quiz-option');
         optionButton.textContent = shuffledOption.text;
-        optionButton.setAttribute('data-index', shuffledOption.originalIndex.toString()); // Store ORIGINAL index
+        optionButton.setAttribute('data-index', shuffledOption.originalIndex.toString());
         optionButton.setAttribute('aria-label', `Option: ${shuffledOption.text}`);
         optionButton.addEventListener('click', handleAnswerSelection);
         quizModalOptionsEl.appendChild(optionButton);
@@ -483,7 +484,7 @@ function handleAnswerSelection(event) {
     if (isCorrect) score++;
 
     quizModalFeedbackEl.innerHTML = `<strong>${isCorrect ? 'Correct!' : 'Incorrect.'}</strong> ${question.explanation || ''}`;
-    quizModalFeedbackEl.className = 'quiz-modal-feedback'; // Reset then add
+    quizModalFeedbackEl.className = 'quiz-modal-feedback';
     quizModalFeedbackEl.classList.add(isCorrect ? 'correct' : 'incorrect');
     quizModalFeedbackEl.hidden = false;
 
@@ -497,26 +498,37 @@ function handleAnswerSelection(event) {
         } else if (buttonOriginalIndex === selectedOriginalIndex && !isCorrect) {
             btnClass = 'incorrect btn-danger-light';
         }
-        // Apply classes
         btn.classList.remove('btn-outline', 'btn-success-light', 'btn-danger-light', 'correct', 'incorrect');
         if (btnClass) {
             btn.classList.add(...btnClass.split(' '));
         } else {
-             btn.classList.add('btn-outline'); // Fallback to outline if not selected or correct
+             btn.classList.add('btn-outline');
         }
     });
 
     const isLastQuestion = currentQuestionIndex === currentQuestions.length - 1;
 
-    if (isLastQuestion) {
-        if (quizModalNextBtn) quizModalNextBtn.hidden = true;
-        setTimeout(showQuizResults, 1200);
-    } else {
-        if (quizModalNextBtn) {
-            quizModalNextBtn.hidden = false;
-            setTimeout(() => quizModalNextBtn.focus(), 100);
+    // Hide Next and Restart buttons during feedback display
+    if(quizModalNextBtn) quizModalNextBtn.hidden = true;
+    if(quizModalRestartBtn) quizModalRestartBtn.hidden = true;
+
+    setTimeout(() => {
+        if (isLastQuestion) {
+            // For the last question, transition to explanation-only view
+            if(quizModalQuestionEl) quizModalQuestionEl.hidden = true;
+            if(quizModalOptionsEl) quizModalOptionsEl.hidden = true;
+            // quizModalFeedbackEl (explanation) remains visible
+            
+            // Set another timeout to show results after the explanation duration
+            setTimeout(showQuizResults, LAST_QUESTION_EXPLANATION_VISIBILITY_DURATION);
+        } else {
+            // For non-last questions, show the "Next Question" button
+            if (quizModalNextBtn) {
+                quizModalNextBtn.hidden = false;
+                setTimeout(() => quizModalNextBtn.focus(), 100);
+            }
         }
-    }
+    }, STANDARD_FEEDBACK_VISIBILITY_DURATION);
 }
 
 function showQuizResults() {
@@ -525,10 +537,11 @@ function showQuizResults() {
         return;
     }
 
+    // UI state for results page
     quizModalQuestionEl.hidden = true;
     quizModalOptionsEl.hidden = true;
     quizModalFeedbackEl.hidden = true;
-    if (quizModalNextBtn) quizModalNextBtn.hidden = true; // Explicitly hide if somehow visible
+    if (quizModalNextBtn) quizModalNextBtn.hidden = true; // Crucial: Hide next button on results
 
     const totalQuestions = currentQuestions.length;
     const percentage = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
@@ -590,7 +603,7 @@ function showQuizResults() {
     }
 
     quizModalResultsEl.hidden = false;
-    quizModalRestartBtn.hidden = false;
+    quizModalRestartBtn.hidden = false; // Crucial: Show restart btn on results
     quizModalCloseResultsBtn.hidden = false;
     quizModalRestartBtn.focus();
 }
@@ -663,16 +676,15 @@ function activateJourneyStep(step, options = { focusNode: false }) {
     let contentFound = false;
     journeyContents.forEach(content => {
         const isActive = content.id === `journey-content-${step}`;
-        content.hidden = !isActive; // Use hidden attribute for primary control
+        content.hidden = !isActive; 
         if (isActive) {
             contentFound = true;
-             content.style.display = 'block'; // Ensure display for transition
-             requestAnimationFrame(() => { // Force reflow before animation
+             content.style.display = 'block'; 
+             requestAnimationFrame(() => { 
                   content.style.opacity = '1';
                   content.style.transform = 'translateY(0)';
              });
         } else {
-            // Reset styles for re-animation, ensure display: none
              content.style.opacity = '0';
              content.style.transform = 'translateY(20px)';
              content.style.display = 'none';
@@ -790,7 +802,6 @@ function openFeedbackModal(triggerButton = null) {
 
 // --- DOMContentLoaded Event Listener ---
 document.addEventListener('DOMContentLoaded', function() {
-    // console.log("DOM fully loaded. Initializing scripts...");
 
     // --- Cache Global DOM Elements ---
     quizModal = document.getElementById('quiz-modal');
@@ -845,7 +856,6 @@ document.addEventListener('DOMContentLoaded', function() {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                      const target = entry.target;
-                     // Set CSS variable for delay, which CSS rule picks up
                      if (target.parentElement.classList.contains('reveal-stagger') && typeof target.dataset.index === 'string') {
                         target.style.setProperty('--reveal-item-delay', `${parseInt(target.dataset.index) * 0.1}s`);
                      } else if (target.dataset.delay) {
@@ -890,17 +900,17 @@ document.addEventListener('DOMContentLoaded', function() {
             menuToggle.setAttribute('aria-expanded', String(!isExpanded));
             menuToggle.classList.toggle('active');
             primaryNav.classList.toggle('active');
-            updateBodyScrollLock(); // Manage scroll lock
+            updateBodyScrollLock(); 
 
-            if (!isExpanded) { // Opening
+            if (!isExpanded) { 
                 primaryNav.querySelector('a[href], button:not([disabled])')?.focus();
-            } else { // Closing
+            } else { 
                  menuToggle.focus();
             }
         });
         primaryNav.addEventListener('click', (e) => {
            if (e.target.matches('a') && primaryNav.classList.contains('active')) {
-                menuToggle.click(); // Use toggle's click for consistent closing
+                menuToggle.click(); 
            }
         });
         document.addEventListener('click', function(e) {
@@ -942,13 +952,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (quizModal) {
         quizModal.addEventListener('click', function(e) {
-            if (e.target.matches('#quiz-modal-next') && quizModalResultsEl?.hidden) { // Only if results not shown
+            if (e.target.matches('#quiz-modal-next') && quizModalNextBtn && !quizModalNextBtn.hidden) { // Check if next button is meant to be active
                  currentQuestionIndex++;
                  displayQuestion();
             }
-            else if (e.target.matches('#quiz-modal-restart') && currentCategoryId !== null) {
-                 score = 0; currentQuestionIndex = 0; userAnswers = [];
-                 startQuiz(currentCategoryId);
+            else if (e.target.matches('#quiz-modal-restart') && currentCategoryId !== null && quizModalRestartBtn && !quizModalRestartBtn.hidden) { // Check if restart button is meant to be active
+                 startQuiz(currentCategoryId); // score, index, answers reset inside startQuiz
             }
             else if (e.target.matches('#quiz-modal-close') || e.target.matches('#quiz-modal-close-results')) {
                  closeModal(quizModal);
@@ -965,7 +974,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const countryIn = demographicsForm.querySelector('#quiz-country');
             const cityIn = demographicsForm.querySelector('#quiz-city');
             const takenBeforeChecked = demographicsForm.querySelector('input[name="taken_before"]:checked');
-            const radioFieldset = demographicsForm.querySelector('fieldset'); // Assuming only one fieldset for radio
+            const radioFieldset = demographicsForm.querySelector('fieldset'); 
 
             if (!countryIn?.value.trim()) { showFeedback(countryIn, 'Please enter your country'); isValid = false; }
             else showFeedback(countryIn, '', false);
@@ -976,7 +985,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
             if (!takenBeforeChecked) {
-                 if(radioFieldset) showFeedback(radioFieldset, 'Please select an option', true); // Pass fieldset for context
+                 if(radioFieldset) showFeedback(radioFieldset, 'Please select an option', true); 
                  isValid = false;
             } else {
                  if(radioFieldset) showFeedback(radioFieldset, '', false);
@@ -1033,7 +1042,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (isValid) {
                 const templateKey = templateKeyIn.value;
-                const pdfBaseUrl = '../../assets/pdfs/'; // Relative to HTML
+                const pdfBaseUrl = '../../assets/pdfs/'; 
                 const pdfFilename = `${templateKey}.pdf`;
                 const pdfUrl = `${pdfBaseUrl}${pdfFilename}`;
                  fetch(pdfUrl)
@@ -1167,7 +1176,7 @@ document.addEventListener('DOMContentLoaded', function() {
              const activeStep = alreadyActive.dataset.step;
              if (activeStep) {
                   const contentPanel = document.getElementById(`journey-content-${activeStep}`);
-                  if (contentPanel) { contentPanel.hidden = false; contentPanel.style.display = 'block';} // Ensure it's displayed
+                  if (contentPanel) { contentPanel.hidden = false; contentPanel.style.display = 'block';} 
               }
          }
          setupJourneyObserver();
@@ -1183,7 +1192,7 @@ document.addEventListener('DOMContentLoaded', function() {
                  fabOptions.querySelectorAll('li').forEach(item => item.style.transitionDelay = '0s');
              } else {
                  Array.from(fabOptions.querySelectorAll('li')).forEach((item, index) => {
-                      item.style.setProperty('--fab-item-delay', `${0.05 * (index + 1)}s`); // Use custom prop
+                      item.style.setProperty('--fab-item-delay', `${0.05 * (index + 1)}s`); 
                  });
                  setTimeout(() => fabOptions.querySelector('a[href], button')?.focus(), 50);
              }
@@ -1195,7 +1204,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- Global Modal & Nav Close Handlers ---
     document.addEventListener('click', function(e) {
         if (e.target.classList.contains('modal-overlay')) {
-            const modalToClose = e.target.closest('.modal-overlay'); // The overlay itself is the element
+            const modalToClose = e.target.closest('.modal-overlay'); 
              if (modalToClose) closeModal(modalToClose);
          }
     });
@@ -1209,6 +1218,4 @@ document.addEventListener('DOMContentLoaded', function() {
              else if (isFabOpen) fabButton.click();
          }
     });
-
-    // console.log("Personal page scripts initialized successfully.");
 });
