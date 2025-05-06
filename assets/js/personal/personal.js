@@ -74,7 +74,6 @@ let journeyAutoAdvanceInterval = null;
 const JOURNEY_ADVANCE_DELAY = 4000;
 const QUIZ_STATS_STORAGE_KEY = 'rofilidQuizStats';
 const STANDARD_FEEDBACK_VISIBILITY_DURATION = 1200; // ms to show Correct/Incorrect before next action
-const LAST_QUESTION_EXPLANATION_VISIBILITY_DURATION = 4000; // ms to show only explanation for last Q
 
 
 // --- DOM Element References (Cached on DOMContentLoaded) ---
@@ -121,8 +120,8 @@ function resetFormErrors(formId) {
     const errorElements = form.querySelectorAll('.invalid-feedback');
     errorElements.forEach(el => {
         el.textContent = '';
-        el.style.display = 'none'; // Prefer style for immediate hiding
-        el.classList.remove('d-block'); // For Bootstrap compatibility if used
+        el.style.display = 'none'; 
+        el.classList.remove('d-block'); 
     });
 
     const invalidInputs = form.querySelectorAll('.is-invalid');
@@ -132,8 +131,7 @@ function resetFormErrors(formId) {
     invalidFieldsets.forEach(fieldset => {
         fieldset.classList.remove('is-invalid-check-group');
         const legend = fieldset.querySelector('legend');
-        if (legend) legend.style.color = ''; // Reset explicit color styling if any
-        // Remove specific invalid classes from labels within this fieldset if added
+        if (legend) legend.style.color = ''; 
         fieldset.querySelectorAll('.form-check-label.text-danger').forEach(label => label.classList.remove('text-danger'));
     });
 }
@@ -141,7 +139,7 @@ function resetFormErrors(formId) {
 function closeModal(modalElement) {
     if (modalElement && !modalElement.hidden) {
         modalElement.hidden = true;
-        updateBodyScrollLock(); // Update scroll lock status
+        updateBodyScrollLock(); 
 
         const triggerId = modalElement.dataset.triggeredBy;
         const triggerElement = triggerId ? document.getElementById(triggerId) : null;
@@ -156,17 +154,16 @@ function showFeedback(fieldElement, message, isError = true) {
     if (!fieldElement) return;
 
     let feedbackElement = null;
-    let containerElement = fieldElement; // Input/select default
+    let containerElement = fieldElement; 
 
     const parentGroup = fieldElement.closest('.form-group, fieldset');
 
     if (parentGroup) {
         feedbackElement = parentGroup.querySelector('.invalid-feedback');
         if (fieldElement.type === 'radio' || fieldElement.type === 'checkbox') {
-            containerElement = parentGroup; // Fieldset is the container
+            containerElement = parentGroup; 
         }
     }
-    // Fallback attempts (simplified from original, as explicit parentGroup should be preferred)
     if (!feedbackElement && fieldElement.getAttribute('aria-describedby')) {
         const describedById = fieldElement.getAttribute('aria-describedby').split(' ')[0];
         feedbackElement = document.getElementById(describedById);
@@ -185,7 +182,6 @@ function showFeedback(fieldElement, message, isError = true) {
         if (isError && message) {
             containerElement.classList.add(errorClass);
              if (errorClass === 'is-invalid-check-group' && containerElement.tagName === 'FIELDSET') {
-                // Also add is-invalid to inputs inside for border, and text-danger to labels
                 containerElement.querySelectorAll('.form-check-input').forEach(input => input.classList.add('is-invalid'));
                 containerElement.querySelectorAll('.form-check-label').forEach(label => label.classList.add('text-danger'));
             }
@@ -195,7 +191,7 @@ function showFeedback(fieldElement, message, isError = true) {
                 containerElement.querySelectorAll('.form-check-input.is-invalid').forEach(input => input.classList.remove('is-invalid'));
                 containerElement.querySelectorAll('.form-check-label.text-danger').forEach(label => label.classList.remove('text-danger'));
             }
-             if (feedbackElement && !message) { // Ensure feedback is hidden if no message
+             if (feedbackElement && !message) { 
                 feedbackElement.style.display = 'none';
                 feedbackElement.setAttribute('aria-live', 'off');
              }
@@ -299,7 +295,7 @@ function updateCategoryCardUI(categoryId, stats) {
 
     if (!indicatorArea && startButton) {
         indicatorArea = document.createElement('div');
-        indicatorArea.className = 'quiz-completion-indicator'; // Base class
+        indicatorArea.className = 'quiz-completion-indicator'; 
         startButton.parentNode.insertBefore(indicatorArea, startButton);
     }
     if (!indicatorArea) return; 
@@ -381,7 +377,7 @@ function handleCountryChange(event) {
 
 // --- Quiz Functions ---
 function startQuiz(categoryId) {
-    if (!quizModal || !quizModalTitleEl) {
+    if (!quizModal || !quizModalTitleEl) { 
         console.error("Quiz modal or its core elements not cached! Cannot start quiz.");
         return;
     }
@@ -408,11 +404,13 @@ function startQuiz(categoryId) {
     quizModalTitleEl.textContent = currentQuestions[0]?.category || 'Quiz';
     if(quizModalProgressTotalEl) quizModalProgressTotalEl.textContent = currentQuestions.length;
     
-    if(quizModalResultsEl) quizModalResultsEl.hidden = true;
+    if(quizModalResultsEl) quizModalResultsEl.hidden = true; // Hide results area
+    if(quizModalFeedbackEl) quizModalFeedbackEl.hidden = true; // Hide feedback/explanation area
     if(quizModalFullChallengePromptEl) quizModalFullChallengePromptEl.hidden = true;
-    if(quizModalRestartBtn) quizModalRestartBtn.hidden = true; // Crucial: Hide restart btn
+    
+    // Ensure all action buttons are in their initial (hidden) state for a new quiz/question
+    if(quizModalRestartBtn) quizModalRestartBtn.hidden = true; 
     if(quizModalCloseResultsBtn) quizModalCloseResultsBtn.hidden = true;
-    if(quizModalFeedbackEl) quizModalFeedbackEl.hidden = true;
     if(quizModalNextBtn) quizModalNextBtn.hidden = true;
     
     if(quizModalQuestionEl) quizModalQuestionEl.hidden = false; // Show question area
@@ -431,7 +429,7 @@ function startQuiz(categoryId) {
 
 function displayQuestion() {
     if (currentQuestionIndex >= currentQuestions.length || !quizModalQuestionEl || !quizModalOptionsEl || !quizModalProgressCurrentEl) {
-        if(currentQuestions.length > 0) showQuizResults();
+        if(currentQuestions.length > 0) showQuizResults(); 
         return;
     }
 
@@ -440,10 +438,10 @@ function displayQuestion() {
     // UI state for displaying a new question
     quizModalQuestionEl.hidden = false;
     quizModalOptionsEl.hidden = false;
-    if(quizModalFeedbackEl) quizModalFeedbackEl.hidden = true;
-    if(quizModalResultsEl) quizModalResultsEl.hidden = true;
-    if(quizModalNextBtn) quizModalNextBtn.hidden = true; // Crucial: Hide next btn initially
-    if(quizModalRestartBtn) quizModalRestartBtn.hidden = true; // Ensure restart is hidden
+    if(quizModalFeedbackEl) quizModalFeedbackEl.hidden = true; // Hide feedback from previous question
+    if(quizModalResultsEl) quizModalResultsEl.hidden = true;   // Ensure results are hidden
+    if(quizModalNextBtn) quizModalNextBtn.hidden = true;       // Next btn initially hidden
+    if(quizModalRestartBtn) quizModalRestartBtn.hidden = true; // Restart btn initially hidden
 
     quizModalProgressCurrentEl.textContent = currentQuestionIndex + 1;
     quizModalQuestionEl.textContent = question.question;
@@ -483,11 +481,13 @@ function handleAnswerSelection(event) {
     userAnswers.push({ questionId: question.id, selected: selectedOriginalIndex, correct: isCorrect });
     if (isCorrect) score++;
 
+    // Display feedback & explanation (common for all questions)
     quizModalFeedbackEl.innerHTML = `<strong>${isCorrect ? 'Correct!' : 'Incorrect.'}</strong> ${question.explanation || ''}`;
-    quizModalFeedbackEl.className = 'quiz-modal-feedback';
+    quizModalFeedbackEl.className = 'quiz-modal-feedback'; 
     quizModalFeedbackEl.classList.add(isCorrect ? 'correct' : 'incorrect');
-    quizModalFeedbackEl.hidden = false;
+    quizModalFeedbackEl.hidden = false; // Make feedback visible
 
+    // Disable and style option buttons (common for all questions)
     const optionButtons = quizModalOptionsEl.querySelectorAll('.quiz-option');
     optionButtons.forEach(btn => {
         btn.disabled = true;
@@ -502,46 +502,45 @@ function handleAnswerSelection(event) {
         if (btnClass) {
             btn.classList.add(...btnClass.split(' '));
         } else {
-             btn.classList.add('btn-outline');
+             btn.classList.add('btn-outline'); 
         }
     });
 
+    // Initially hide Next and Restart buttons (common for all questions before decision)
+    if (quizModalNextBtn) quizModalNextBtn.hidden = true;
+    if (quizModalRestartBtn) quizModalRestartBtn.hidden = true;
+
     const isLastQuestion = currentQuestionIndex === currentQuestions.length - 1;
 
-    // Hide Next and Restart buttons during feedback display
-    if(quizModalNextBtn) quizModalNextBtn.hidden = true;
-    if(quizModalRestartBtn) quizModalRestartBtn.hidden = true;
+    if (isLastQuestion) {
+        // For the LAST question:
+        // 1. Hide question and options areas (feedback/explanation for Q5 remains visible)
+        if (quizModalQuestionEl) quizModalQuestionEl.hidden = true;
+        if (quizModalOptionsEl) quizModalOptionsEl.hidden = true;
 
-    setTimeout(() => {
-        if (isLastQuestion) {
-            // For the last question, transition to explanation-only view
-            if(quizModalQuestionEl) quizModalQuestionEl.hidden = true;
-            if(quizModalOptionsEl) quizModalOptionsEl.hidden = true;
-            // quizModalFeedbackEl (explanation) remains visible
-            
-            // Set another timeout to show results after the explanation duration
-            setTimeout(showQuizResults, LAST_QUESTION_EXPLANATION_VISIBILITY_DURATION);
-        } else {
-            // For non-last questions, show the "Next Question" button
+        // 2. Immediately proceed to show results underneath the Q5 explanation.
+        showQuizResults(); 
+    } else {
+        // For NON-LAST questions:
+        // Wait for feedback visibility duration, then show Next button.
+        // Feedback/explanation for the current question remains visible.
+        setTimeout(() => {
             if (quizModalNextBtn) {
                 quizModalNextBtn.hidden = false;
                 setTimeout(() => quizModalNextBtn.focus(), 100);
             }
-        }
-    }, STANDARD_FEEDBACK_VISIBILITY_DURATION);
+        }, STANDARD_FEEDBACK_VISIBILITY_DURATION);
+    }
 }
 
 function showQuizResults() {
-    if (!quizModal || !quizModalResultsEl || !quizModalQuestionEl || !quizModalOptionsEl || !quizModalFeedbackEl || !quizModalRestartBtn || !quizModalCloseResultsBtn) {
+    if (!quizModal || !quizModalResultsEl || !quizModalRestartBtn || !quizModalCloseResultsBtn) {
         console.error("One or more critical quiz modal elements for results display not found.");
         return;
     }
 
-    // UI state for results page
-    quizModalQuestionEl.hidden = true;
-    quizModalOptionsEl.hidden = true;
-    quizModalFeedbackEl.hidden = true;
-    if (quizModalNextBtn) quizModalNextBtn.hidden = true; // Crucial: Hide next button on results
+    // Ensure "Next Question" button is hidden on the results screen
+    if (quizModalNextBtn) quizModalNextBtn.hidden = true;
 
     const totalQuestions = currentQuestions.length;
     const percentage = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
@@ -602,9 +601,11 @@ function showQuizResults() {
         if (quizModalFullChallengePromptEl) quizModalFullChallengePromptEl.hidden = false;
     }
 
+    // Make results area and appropriate buttons visible
     quizModalResultsEl.hidden = false;
     quizModalRestartBtn.hidden = false; // Crucial: Show restart btn on results
     quizModalCloseResultsBtn.hidden = false;
+    
     quizModalRestartBtn.focus();
 }
 
@@ -952,12 +953,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (quizModal) {
         quizModal.addEventListener('click', function(e) {
-            if (e.target.matches('#quiz-modal-next') && quizModalNextBtn && !quizModalNextBtn.hidden) { // Check if next button is meant to be active
+            // Only trigger if the next button is actually visible and meant to be clicked
+            if (e.target.matches('#quiz-modal-next') && quizModalNextBtn && !quizModalNextBtn.hidden) { 
                  currentQuestionIndex++;
                  displayQuestion();
             }
-            else if (e.target.matches('#quiz-modal-restart') && currentCategoryId !== null && quizModalRestartBtn && !quizModalRestartBtn.hidden) { // Check if restart button is meant to be active
-                 startQuiz(currentCategoryId); // score, index, answers reset inside startQuiz
+            // Only trigger if the restart button is actually visible and meant to be clicked
+            else if (e.target.matches('#quiz-modal-restart') && currentCategoryId !== null && quizModalRestartBtn && !quizModalRestartBtn.hidden) { 
+                 startQuiz(currentCategoryId); 
             }
             else if (e.target.matches('#quiz-modal-close') || e.target.matches('#quiz-modal-close-results')) {
                  closeModal(quizModal);
