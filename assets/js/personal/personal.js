@@ -120,8 +120,8 @@ function resetFormErrors(formId) {
     const errorElements = form.querySelectorAll('.invalid-feedback');
     errorElements.forEach(el => {
         el.textContent = '';
-        el.style.display = 'none'; 
-        el.classList.remove('d-block'); 
+        el.style.display = 'none';
+        el.classList.remove('d-block');
     });
 
     const invalidInputs = form.querySelectorAll('.is-invalid');
@@ -131,7 +131,7 @@ function resetFormErrors(formId) {
     invalidFieldsets.forEach(fieldset => {
         fieldset.classList.remove('is-invalid-check-group');
         const legend = fieldset.querySelector('legend');
-        if (legend) legend.style.color = ''; 
+        if (legend) legend.style.color = '';
         fieldset.querySelectorAll('.form-check-label.text-danger').forEach(label => label.classList.remove('text-danger'));
     });
 }
@@ -139,7 +139,7 @@ function resetFormErrors(formId) {
 function closeModal(modalElement) {
     if (modalElement && !modalElement.hidden) {
         modalElement.hidden = true;
-        updateBodyScrollLock(); 
+        updateBodyScrollLock();
 
         const triggerId = modalElement.dataset.triggeredBy;
         const triggerElement = triggerId ? document.getElementById(triggerId) : null;
@@ -154,14 +154,14 @@ function showFeedback(fieldElement, message, isError = true) {
     if (!fieldElement) return;
 
     let feedbackElement = null;
-    let containerElement = fieldElement; 
+    let containerElement = fieldElement;
 
     const parentGroup = fieldElement.closest('.form-group, fieldset');
 
     if (parentGroup) {
         feedbackElement = parentGroup.querySelector('.invalid-feedback');
         if (fieldElement.type === 'radio' || fieldElement.type === 'checkbox') {
-            containerElement = parentGroup; 
+            containerElement = parentGroup;
         }
     }
     if (!feedbackElement && fieldElement.getAttribute('aria-describedby')) {
@@ -191,7 +191,7 @@ function showFeedback(fieldElement, message, isError = true) {
                 containerElement.querySelectorAll('.form-check-input.is-invalid').forEach(input => input.classList.remove('is-invalid'));
                 containerElement.querySelectorAll('.form-check-label.text-danger').forEach(label => label.classList.remove('text-danger'));
             }
-             if (feedbackElement && !message) { 
+             if (feedbackElement && !message) {
                 feedbackElement.style.display = 'none';
                 feedbackElement.setAttribute('aria-live', 'off');
              }
@@ -295,10 +295,10 @@ function updateCategoryCardUI(categoryId, stats) {
 
     if (!indicatorArea && startButton) {
         indicatorArea = document.createElement('div');
-        indicatorArea.className = 'quiz-completion-indicator'; 
+        indicatorArea.className = 'quiz-completion-indicator';
         startButton.parentNode.insertBefore(indicatorArea, startButton);
     }
-    if (!indicatorArea) return; 
+    if (!indicatorArea) return;
 
     indicatorArea.innerHTML = '';
 
@@ -354,30 +354,30 @@ function handleCountryChange(event) {
     }
 
     const isNigeria = countryValue.toLowerCase() === 'nigeria';
-    cityDatalist.innerHTML = ''; 
+    cityDatalist.innerHTML = '';
 
     if (isNigeria) {
         populateDatalist(cityDatalist, nigerianStatesList);
         cityInput.disabled = false;
         cityInput.placeholder = "Select State/City in Nigeria";
         cityInput.setAttribute('list', cityDatalist.id);
-    } else if (countryValue) { 
+    } else if (countryValue) {
         cityInput.disabled = false;
         cityInput.placeholder = "Enter City/Town";
-        cityInput.removeAttribute('list'); 
-    } else { 
+        cityInput.removeAttribute('list');
+    } else {
         cityInput.disabled = true;
         cityInput.value = '';
         cityInput.placeholder = "City (Select Country First)";
         cityInput.removeAttribute('list');
     }
-    showFeedback(cityInput, '', false); 
+    showFeedback(cityInput, '', false);
 }
 
 
 // --- Quiz Functions ---
 function startQuiz(categoryId) {
-    if (!quizModal || !quizModalTitleEl) { 
+    if (!quizModal || !quizModalTitleEl) {
         console.error("Quiz modal or its core elements not cached! Cannot start quiz.");
         return;
     }
@@ -403,16 +403,16 @@ function startQuiz(categoryId) {
     // Initial UI state for starting/restarting a quiz
     quizModalTitleEl.textContent = currentQuestions[0]?.category || 'Quiz';
     if(quizModalProgressTotalEl) quizModalProgressTotalEl.textContent = currentQuestions.length;
-    
+
     if(quizModalResultsEl) quizModalResultsEl.hidden = true; // Hide results area
     if(quizModalFeedbackEl) quizModalFeedbackEl.hidden = true; // Hide feedback/explanation area
     if(quizModalFullChallengePromptEl) quizModalFullChallengePromptEl.hidden = true;
-    
+
     // Ensure all action buttons are in their initial (hidden) state for a new quiz/question
-    if(quizModalRestartBtn) quizModalRestartBtn.hidden = true; 
+    if(quizModalRestartBtn) quizModalRestartBtn.hidden = true;
     if(quizModalCloseResultsBtn) quizModalCloseResultsBtn.hidden = true;
     if(quizModalNextBtn) quizModalNextBtn.hidden = true;
-    
+
     if(quizModalQuestionEl) quizModalQuestionEl.hidden = false; // Show question area
     if(quizModalOptionsEl) {
         quizModalOptionsEl.hidden = false; // Show options area
@@ -429,7 +429,7 @@ function startQuiz(categoryId) {
 
 function displayQuestion() {
     if (currentQuestionIndex >= currentQuestions.length || !quizModalQuestionEl || !quizModalOptionsEl || !quizModalProgressCurrentEl) {
-        if(currentQuestions.length > 0) showQuizResults(); 
+        if(currentQuestions.length > 0) showQuizResults();
         return;
     }
 
@@ -483,7 +483,7 @@ function handleAnswerSelection(event) {
 
     // Display feedback & explanation (common for all questions)
     quizModalFeedbackEl.innerHTML = `<strong>${isCorrect ? 'Correct!' : 'Incorrect.'}</strong> ${question.explanation || ''}`;
-    quizModalFeedbackEl.className = 'quiz-modal-feedback'; 
+    quizModalFeedbackEl.className = 'quiz-modal-feedback';
     quizModalFeedbackEl.classList.add(isCorrect ? 'correct' : 'incorrect');
     quizModalFeedbackEl.hidden = false; // Make feedback visible
 
@@ -502,7 +502,7 @@ function handleAnswerSelection(event) {
         if (btnClass) {
             btn.classList.add(...btnClass.split(' '));
         } else {
-             btn.classList.add('btn-outline'); 
+             btn.classList.add('btn-outline');
         }
     });
 
@@ -514,12 +514,10 @@ function handleAnswerSelection(event) {
 
     if (isLastQuestion) {
         // For the LAST question:
-        // 1. Hide question and options areas (feedback/explanation for Q5 remains visible)
-        if (quizModalQuestionEl) quizModalQuestionEl.hidden = true;
-        if (quizModalOptionsEl) quizModalOptionsEl.hidden = true;
-
-        // 2. Immediately proceed to show results underneath the Q5 explanation.
-        showQuizResults(); 
+        // The question, options (styled), and feedback/explanation for Q5 should remain visible.
+        // Results will be shown *underneath* these elements by showQuizResults().
+        // No need to hide quizModalQuestionEl or quizModalOptionsEl here anymore.
+        showQuizResults();
     } else {
         // For NON-LAST questions:
         // Wait for feedback visibility duration, then show Next button.
@@ -605,7 +603,7 @@ function showQuizResults() {
     quizModalResultsEl.hidden = false;
     quizModalRestartBtn.hidden = false; // Crucial: Show restart btn on results
     quizModalCloseResultsBtn.hidden = false;
-    
+
     quizModalRestartBtn.focus();
 }
 
@@ -625,7 +623,7 @@ function handleQuizStart(categoryId) {
         resetFormErrors('quiz-demographics-form');
         const form = demographicsModal.querySelector('#quiz-demographics-form');
         if (form) form.reset();
-        
+
         if (quizCountryInput) quizCountryInput.value = '';
         if (quizCityInput) {
             quizCityInput.value = '';
@@ -677,11 +675,11 @@ function activateJourneyStep(step, options = { focusNode: false }) {
     let contentFound = false;
     journeyContents.forEach(content => {
         const isActive = content.id === `journey-content-${step}`;
-        content.hidden = !isActive; 
+        content.hidden = !isActive;
         if (isActive) {
             contentFound = true;
-             content.style.display = 'block'; 
-             requestAnimationFrame(() => { 
+             content.style.display = 'block';
+             requestAnimationFrame(() => {
                   content.style.opacity = '1';
                   content.style.transform = 'translateY(0)';
              });
@@ -901,17 +899,17 @@ document.addEventListener('DOMContentLoaded', function() {
             menuToggle.setAttribute('aria-expanded', String(!isExpanded));
             menuToggle.classList.toggle('active');
             primaryNav.classList.toggle('active');
-            updateBodyScrollLock(); 
+            updateBodyScrollLock();
 
-            if (!isExpanded) { 
+            if (!isExpanded) {
                 primaryNav.querySelector('a[href], button:not([disabled])')?.focus();
-            } else { 
+            } else {
                  menuToggle.focus();
             }
         });
         primaryNav.addEventListener('click', (e) => {
            if (e.target.matches('a') && primaryNav.classList.contains('active')) {
-                menuToggle.click(); 
+                menuToggle.click();
            }
         });
         document.addEventListener('click', function(e) {
@@ -954,13 +952,13 @@ document.addEventListener('DOMContentLoaded', function() {
     if (quizModal) {
         quizModal.addEventListener('click', function(e) {
             // Only trigger if the next button is actually visible and meant to be clicked
-            if (e.target.matches('#quiz-modal-next') && quizModalNextBtn && !quizModalNextBtn.hidden) { 
+            if (e.target.matches('#quiz-modal-next') && quizModalNextBtn && !quizModalNextBtn.hidden) {
                  currentQuestionIndex++;
                  displayQuestion();
             }
             // Only trigger if the restart button is actually visible and meant to be clicked
-            else if (e.target.matches('#quiz-modal-restart') && currentCategoryId !== null && quizModalRestartBtn && !quizModalRestartBtn.hidden) { 
-                 startQuiz(currentCategoryId); 
+            else if (e.target.matches('#quiz-modal-restart') && currentCategoryId !== null && quizModalRestartBtn && !quizModalRestartBtn.hidden) {
+                 startQuiz(currentCategoryId);
             }
             else if (e.target.matches('#quiz-modal-close') || e.target.matches('#quiz-modal-close-results')) {
                  closeModal(quizModal);
@@ -977,7 +975,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const countryIn = demographicsForm.querySelector('#quiz-country');
             const cityIn = demographicsForm.querySelector('#quiz-city');
             const takenBeforeChecked = demographicsForm.querySelector('input[name="taken_before"]:checked');
-            const radioFieldset = demographicsForm.querySelector('fieldset'); 
+            const radioFieldset = demographicsForm.querySelector('fieldset');
 
             if (!countryIn?.value.trim()) { showFeedback(countryIn, 'Please enter your country'); isValid = false; }
             else showFeedback(countryIn, '', false);
@@ -988,7 +986,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
             if (!takenBeforeChecked) {
-                 if(radioFieldset) showFeedback(radioFieldset, 'Please select an option', true); 
+                 if(radioFieldset) showFeedback(radioFieldset, 'Please select an option', true);
                  isValid = false;
             } else {
                  if(radioFieldset) showFeedback(radioFieldset, '', false);
@@ -1045,7 +1043,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (isValid) {
                 const templateKey = templateKeyIn.value;
-                const pdfBaseUrl = '../../assets/pdfs/'; 
+                const pdfBaseUrl = '../../assets/pdfs/';
                 const pdfFilename = `${templateKey}.pdf`;
                 const pdfUrl = `${pdfBaseUrl}${pdfFilename}`;
                  fetch(pdfUrl)
@@ -1179,7 +1177,7 @@ document.addEventListener('DOMContentLoaded', function() {
              const activeStep = alreadyActive.dataset.step;
              if (activeStep) {
                   const contentPanel = document.getElementById(`journey-content-${activeStep}`);
-                  if (contentPanel) { contentPanel.hidden = false; contentPanel.style.display = 'block';} 
+                  if (contentPanel) { contentPanel.hidden = false; contentPanel.style.display = 'block';}
               }
          }
          setupJourneyObserver();
@@ -1195,7 +1193,7 @@ document.addEventListener('DOMContentLoaded', function() {
                  fabOptions.querySelectorAll('li').forEach(item => item.style.transitionDelay = '0s');
              } else {
                  Array.from(fabOptions.querySelectorAll('li')).forEach((item, index) => {
-                      item.style.setProperty('--fab-item-delay', `${0.05 * (index + 1)}s`); 
+                      item.style.setProperty('--fab-item-delay', `${0.05 * (index + 1)}s`);
                  });
                  setTimeout(() => fabOptions.querySelector('a[href], button')?.focus(), 50);
              }
@@ -1207,7 +1205,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- Global Modal & Nav Close Handlers ---
     document.addEventListener('click', function(e) {
         if (e.target.classList.contains('modal-overlay')) {
-            const modalToClose = e.target.closest('.modal-overlay'); 
+            const modalToClose = e.target.closest('.modal-overlay');
              if (modalToClose) closeModal(modalToClose);
          }
     });
