@@ -496,29 +496,25 @@
             </div>
         </aside>
 
-        <!-- Coaching Section -->
+                <!-- Coaching Section -->
         <section id="personal-coaching" class="section-padding bg-light reveal-on-scroll" aria-labelledby="coaching-heading">
             <div class="container coaching-container">
                 <div class="text-center" aria-hidden="true"><i class="fas fa-handshake-angle fa-3x text-primary mb-md"></i></div>
                 <h2 id="coaching-heading" class="section-title">Financial Coaching (Coming Soon)</h2>
                 <p class="section-description">Ready for dedicated support? We're developing a one-on-one program to help you build lasting money habits. Register below to get notified when spots open.</p>
-                <div class="coaching-content-redesigned">
-                     <div class="coaching-info">
-                         <!-- Content for left column can be added here. For now, it ensures proper grid alignment for the form. -->
-                     </div>
-                    <div class="coaching-interest">
-                         <form class="coaching-interest-form" id="coachingInterestForm" novalidate>
-                             <div class="form-group mb-md">
-                                 <label for="interest-email" class="form-label visually-hidden">Email Address</label>
-                                 <input type="email" class="form-control" id="interest-email" name="email" required placeholder="Enter your email..." aria-describedby="interest-email-error interest-form-response" autocomplete="email">
-                                 <span class="invalid-feedback" id="interest-email-error" aria-live="polite"></span>
-                             </div>
-                             <button type="submit" class="btn btn-secondary btn-icon form-submit-btn"><i class="fas fa-paper-plane" aria-hidden="true"></i> Notify Me</button>
-                             <p id="interest-form-response" class="form-response-note mt-md" hidden aria-live="polite"></p>
-                        </form>
-                        <p class="privacy-note text-muted mt-sm"><small>Your email will only be used for coaching updates.</small></p>
-                     </div>
-                 </div>
+
+                <!-- Form directly inside the main content flow, centered -->
+                <form class="coaching-interest-form" id="coachingInterestForm" novalidate>
+                    <div class="form-group mb-md">
+                        <label for="interest-email" class="form-label visually-hidden">Email Address</label>
+                        <input type="email" class="form-control" id="interest-email" name="email" required placeholder="Enter your email..." aria-describedby="interest-email-error interest-form-response" autocomplete="email">
+                        <span class="invalid-feedback" id="interest-email-error" aria-live="polite"></span>
+                    </div>
+                    <button type="submit" class="btn btn-secondary btn-icon form-submit-btn"><i class="fas fa-paper-plane" aria-hidden="true"></i> Notify Me</button>
+                    <p id="interest-form-response" class="form-response-note mt-md" hidden aria-live="polite"></p>
+                </form>
+                <p class="privacy-note text-muted mt-md text-center"><small>Your email will only be used for coaching updates.</small></p>
+
                 <div class="disclaimer text-center mt-xl text-muted">
                     <p><small><strong>Disclaimer:</strong> ROFILID offers financial education and resources, not specific investment advice or regulated products.</small></p>
                 </div>
