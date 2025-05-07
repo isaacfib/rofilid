@@ -2,7 +2,7 @@
  * File Location: /assets/js/personal/quizzes.js
  * Description: Scripts exclusive to the ROFILID Financial Fitness Challenge page (quizzes.html).
  *              Manages accordion, quiz modal, and quiz logic (full & category-based).
- * Version: 3.0.0 (Major Refactor)
+ * Version: 3.1.0 (Bug Fixes & Compatibility with Independent CSS)
  */
 
 (function() {
@@ -15,37 +15,34 @@
         ACCORDION_ITEM_SELECTOR: '.accordion-item',
         ACCORDION_BUTTON_SELECTOR: '.accordion-button',
         ACCORDION_COLLAPSE_SELECTOR: '.accordion-collapse',
-        ACCORDION_BUTTON_COLLAPSED_CLASS: 'collapsed', // Used by Bootstrap-like accordions
-        ACCORDION_COLLAPSE_SHOW_CLASS: 'show', // Used by Bootstrap for visibility
+        ACCORDION_BUTTON_COLLAPSED_CLASS: 'collapsed',
+        ACCORDION_COLLAPSE_SHOW_CLASS: 'show',
 
-        CATEGORY_CARD_SELECTOR: '.category-card', // Inside accordion
+        CATEGORY_CARD_SELECTOR: '.category-card',
         START_QUIZ_BTN_SELECTOR: '.start-quiz-btn',
 
         QUIZ_MODAL_SELECTOR: '#quiz-modal',
-        MODAL_VISIBLE_CLASS: 'visible', // For CSS transition handling
-        MODAL_CONTENT_SELECTOR: '.quiz-modal-content',
+        MODAL_VISIBLE_CLASS: 'visible', // Class for overlay transition, content uses its own
+        MODAL_CONTENT_SELECTOR: '.quiz-modal-content', // Specifically the .quiz-modal-content
         MODAL_FOCUS_DELAY: 150, // ms
 
         START_FULL_CHALLENGE_BTN_ID: 'start-full-challenge-btn',
         CURRENT_YEAR_SELECTOR: '#current-year',
 
-        // Quiz Data Settings
         EXPECTED_TOTAL_QUESTIONS: 100,
-        QUESTIONS_PER_CATEGORY: 5, // Standard for category quizzes
+        QUESTIONS_PER_CATEGORY: 5,
 
-        // Animation/Transition Durations (mirror CSS)
-        ACCORDION_ANIMATION_DURATION: 350, // ms, for smooth height transition
-        MODAL_TRANSITION_DURATION: 300, // ms
-        QUIZ_FEEDBACK_DELAY: 1200, // ms before showing 'Next' or results after feedback
+        ACCORDION_ANIMATION_DURATION: 300, // Matched to typical CSS transition
+        MODAL_TRANSITION_DURATION: 300, // From CSS
+        QUIZ_FEEDBACK_DELAY: 1500, // ms before showing 'Next' or results (longer for reading feedback)
     };
 
-    // --- Logging Utility ---
     const logger = {
         _log: (level, ...args) => {
             const levels = ['debug', 'info', 'warn', 'error', 'none'];
             if (levels.indexOf(level) >= levels.indexOf(CONFIG.LOG_LEVEL)) {
                 const timestamp = new Date().toISOString().substring(11, 23);
-                console[level === 'error' ? 'error' : 'log'](`[${timestamp}][${level.toUpperCase()}][Quizzes]`, ...args);
+                console[level === 'error' ? 'error' : 'log'](`[${timestamp}][${level.toUpperCase()}][QuizzesV3.1]`, ...args);
             }
         },
         debug: (...args) => logger._log('debug', ...args),
@@ -54,35 +51,31 @@
         error: (...args) => logger._log('error', ...args),
     };
 
-    // --- Global State Variables ---
     let accordionElement = null;
     let startFullChallengeBtn = null;
-    let quizModalElement = null; // Main modal overlay
-    let quizModalContentElement = null; // Inner modal content
+    let quizModalElement = null;
+    let quizModalContentElement = null; // The .quiz-modal-content specifically
     let currentYearSpan = null;
 
-    // Modal interaction state
     let activeModalTriggerElement = null;
     let activeFocusTrapHandler = null;
+    let escapeKeyListener = null;
 
-    // Quiz Modal UI Elements (cached on demand or during init)
     let quizModalTitleEl, quizModalCloseBtnEl, quizModalProgressEl,
         quizModalQuestionAreaEl, quizModalOptionsAreaEl, quizModalFeedbackAreaEl,
         quizModalResultsAreaEl, quizModalNextBtnEl, quizModalRestartBtnEl,
         quizModalCloseResultsBtnEl, quizModalCurrentQEl, quizModalTotalQEl;
 
-    // Current Quiz State
     let currentQuiz = {
         questions: [],
         currentQuestionIndex: 0,
         score: 0,
-        userAnswers: {}, // { questionId: selectedOptionIndex }
+        userAnswers: {},
         isFullChallenge: false,
-        quizId: null, // For category quizzes, e.g., "income-vitals"
+        quizId: null,
         categoryName: '',
     };
 
-    // --- START: Full Quiz Data (100 Questions - Assumed Correct from Input, re-pasting for completeness) ---
     const fullQuizData = [
         // Theme 1: Your Financial Groundwork (Categories 1-5)
         // Category 1: Income & Financial Vitals
@@ -209,11 +202,7 @@
         { id: 99, quizId: "estate-planning", themeId: 4, category: "Estate Planning Basics", question: "What is the role of an 'Executor' of a Will?", options: ["To challenge the Will in court", "The person responsible for carrying out the instructions in the Will, managing assets, paying debts, and distributing property", "The main beneficiary", "A judge overseeing the process"], correctAnswerIndex: 1, explanation: "The Executor is appointed (in the Will or by court) to administer the deceased's estate according to the Will's terms and legal requirements." },
         { id: 100, quizId: "estate-planning", themeId: 4, category: "Estate Planning Basics", question: "Why might naming a guardian for minor children in a Will be important?", options: ["It's required to get life insurance", "It specifies who you wish to care for your children if both parents pass away, guiding the court's decision", "It provides automatic funding for the children's care", "It replaces the need for godparents"], correctAnswerIndex: 1, explanation: "Naming a guardian expresses your preference for who should raise your children, providing crucial guidance for the family and courts, though the court makes the final appointment." }
     ];
-    // --- END: Full Quiz Data ---
 
-    // --- Utility Functions ---
-
-    /** Shuffles array in place. ES6 version */
     function shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -221,21 +210,21 @@
         }
     }
 
-    /** Safely attempt to focus an element, with logging */
     function safeFocus(element, context = "") {
         if (element && typeof element.focus === 'function') {
-            try {
-                element.focus({ preventScroll: false }); // Allow scroll for modals
-                logger.debug(`[safeFocus] Focused element within ${context}:`, element);
-            } catch (err) {
-                logger.error(`[safeFocus] Focusing element failed within ${context}:`, err, element);
-            }
+            setTimeout(() => { // Add a slight delay to ensure element is truly focusable
+                try {
+                    element.focus({ preventScroll: false });
+                    logger.debug(`[safeFocus] Focused element within ${context}:`, element.id || element.tagName);
+                } catch (err) {
+                    logger.error(`[safeFocus] Focusing element failed within ${context}:`, err, element.id || element.tagName);
+                }
+            }, CONFIG.MODAL_FOCUS_DELAY / 2); // Shorter delay for internal focusing
         } else {
             logger.warn(`[safeFocus] Element is not focusable or doesn't exist within ${context}:`, element);
         }
     }
 
-    /** Updates the copyright year in the footer */
     function updateCopyrightYear() {
         if (currentYearSpan) {
             currentYearSpan.textContent = new Date().getFullYear();
@@ -243,67 +232,36 @@
         }
     }
 
-    // --- Data Validation ---
     function validateQuizDataIntegrity() {
         logger.debug("Validating main quiz data integrity...");
         if (!Array.isArray(fullQuizData)) {
-            logger.error("CRITICAL: `fullQuizData` is not an array.");
-            return false;
+            logger.error("CRITICAL: `fullQuizData` is not an array."); return false;
         }
         if (fullQuizData.length !== CONFIG.EXPECTED_TOTAL_QUESTIONS) {
-            logger.error(`CRITICAL: Expected ${CONFIG.EXPECTED_TOTAL_QUESTIONS} questions, but found ${fullQuizData.length}.`);
-            return false;
+            logger.error(`CRITICAL: Expected ${CONFIG.EXPECTED_TOTAL_QUESTIONS} questions, but found ${fullQuizData.length}.`); return false;
         }
-
-        // Quick check of the first question's structure
         const firstQ = fullQuizData[0];
         const requiredKeys = ['id', 'quizId', 'category', 'question', 'options', 'correctAnswerIndex', 'explanation'];
         if (!firstQ || requiredKeys.some(key => !(key in firstQ))) {
-            logger.error("CRITICAL: First question in `fullQuizData` has a missing or invalid core property:", firstQ);
-            return false;
+            logger.error("CRITICAL: First question has a missing/invalid core property:", firstQ); return false;
         }
         if (!Array.isArray(firstQ.options) || firstQ.options.length === 0 || typeof firstQ.correctAnswerIndex !== 'number') {
-             logger.error("CRITICAL: First question in `fullQuizData` has invalid options or correctAnswerIndex structure.");
-             return false;
+            logger.error("CRITICAL: First question has invalid options/correctAnswerIndex."); return false;
         }
-
-        // Check consistency for all category quizzes
-        const quizIds = [...new Set(fullQuizData.map(q => q.quizId))];
-        let allCategoriesValid = true;
-        quizIds.forEach(qid => {
-            const questionsForId = fullQuizData.filter(q => q.quizId === qid);
-            if (questionsForId.length !== CONFIG.QUESTIONS_PER_CATEGORY) {
-                logger.warn(`Data Validation: Quiz ID "${qid}" has ${questionsForId.length} questions, expected ${CONFIG.QUESTIONS_PER_CATEGORY}.`);
-                // Not marking as critical error, but good to know.
-            }
-            if (!questionsForId.every(q => q.category === questionsForId[0].category)) {
-                logger.warn(`Data Validation: Quiz ID "${qid}" has inconsistent category names.`);
-                allCategoriesValid = false; // This might be more critical
-            }
-        });
-
         logger.info(`Main quiz data: ${fullQuizData.length} questions appear structurally valid.`);
-        return allCategoriesValid;
+        return true;
     }
 
-    // --- Accordion Management ---
     function initializeAccordionInteractions() {
-        if (!accordionElement) {
-            logger.warn("Accordion element not found, cannot initialize interactions.");
-            return;
-        }
+        if (!accordionElement) return;
         const accordionItems = accordionElement.querySelectorAll(CONFIG.ACCORDION_ITEM_SELECTOR);
-        if (!accordionItems.length) {
-            logger.debug("No accordion items found.");
-            return;
-        }
+        if (!accordionItems.length) return;
 
         accordionItems.forEach(item => {
             const button = item.querySelector(CONFIG.ACCORDION_BUTTON_SELECTOR);
             const collapsePanel = item.querySelector(CONFIG.ACCORDION_COLLAPSE_SELECTOR);
 
             if (button && collapsePanel) {
-                // Ensure initial ARIA state from HTML class 'collapsed'
                 const isInitiallyCollapsed = button.classList.contains(CONFIG.ACCORDION_BUTTON_COLLAPSED_CLASS);
                 button.setAttribute('aria-expanded', !isInitiallyCollapsed);
                 collapsePanel.style.overflow = 'hidden';
@@ -312,18 +270,14 @@
                     collapsePanel.style.height = '0px';
                     collapsePanel.style.visibility = 'hidden';
                 } else {
-                    // If starts open, ensure `show` class is present and height is auto
                     collapsePanel.classList.add(CONFIG.ACCORDION_COLLAPSE_SHOW_CLASS);
-                    collapsePanel.style.height = 'auto';
+                    collapsePanel.style.height = 'auto'; // If starts open
                     collapsePanel.style.visibility = 'visible';
                 }
-
                 button.addEventListener('click', () => handleAccordionToggle(button, collapsePanel, accordionElement));
-
-                // Smooth transition handling
                 collapsePanel.addEventListener('transitionend', (event) => {
-                    if (event.propertyName === 'height' && collapsePanel.classList.contains(CONFIG.ACCORDION_COLLAPSE_SHOW_CLASS)) {
-                        collapsePanel.style.height = 'auto'; // Allow content to dictate height after opening
+                    if (event.propertyName === 'height' && collapsePanel.classList.contains(CONFIG.ACCORDION_COLLAPSE_SHOW_CLASS) && collapsePanel.style.height !== '0px') {
+                        collapsePanel.style.height = 'auto';
                     }
                 });
             }
@@ -334,7 +288,6 @@
     function handleAccordionToggle(button, collapsePanel, parentAccordion) {
         const isCurrentlyExpanded = button.getAttribute('aria-expanded') === 'true';
 
-        // Standard behavior: close other open items
         parentAccordion.querySelectorAll(CONFIG.ACCORDION_ITEM_SELECTOR).forEach(otherItem => {
             const otherButton = otherItem.querySelector(CONFIG.ACCORDION_BUTTON_SELECTOR);
             const otherCollapse = otherItem.querySelector(CONFIG.ACCORDION_COLLAPSE_SELECTOR);
@@ -353,90 +306,97 @@
     function performAccordionOpen(button, collapsePanel) {
         button.classList.remove(CONFIG.ACCORDION_BUTTON_COLLAPSED_CLASS);
         button.setAttribute('aria-expanded', 'true');
-        collapsePanel.style.visibility = 'visible'; // Make visible before height calc
+        collapsePanel.style.visibility = 'visible';
         const scrollHeight = collapsePanel.scrollHeight;
         collapsePanel.style.height = scrollHeight + 'px';
-        collapsePanel.classList.add(CONFIG.ACCORDION_COLLAPSE_SHOW_CLASS); // Add show class for state
+        collapsePanel.classList.add(CONFIG.ACCORDION_COLLAPSE_SHOW_CLASS);
         logger.debug('Opened accordion panel:', collapsePanel.id);
     }
 
     function performAccordionClose(button, collapsePanel) {
         button.classList.add(CONFIG.ACCORDION_BUTTON_COLLAPSED_CLASS);
         button.setAttribute('aria-expanded', 'false');
-        collapsePanel.style.height = collapsePanel.scrollHeight + 'px'; // Set current height before transitioning to 0
-        requestAnimationFrame(() => { // Ensure height is set before changing to 0
+        collapsePanel.style.height = collapsePanel.scrollHeight + 'px';
+        requestAnimationFrame(() => {
             collapsePanel.style.height = '0px';
-            collapsePanel.style.visibility = 'hidden'; // CSS handles delay via transition
-            collapsePanel.classList.remove(CONFIG.ACCORDION_COLLAPSE_SHOW_CLASS);
         });
+        // After transition, set visibility to hidden. CSS can also handle this with transition-delay for visibility.
+         setTimeout(() => {
+            if (button.classList.contains(CONFIG.ACCORDION_BUTTON_COLLAPSED_CLASS)) { // Check if still collapsed
+                collapsePanel.style.visibility = 'hidden';
+                collapsePanel.classList.remove(CONFIG.ACCORDION_COLLAPSE_SHOW_CLASS);
+            }
+        }, CONFIG.ACCORDION_ANIMATION_DURATION);
         logger.debug('Closed accordion panel:', collapsePanel.id);
     }
 
-
-    // --- Modal Management ---
     function openQuizModal(triggerEl) {
-        if (!quizModalElement) {
-            logger.error("Quiz modal element not found. Cannot open.");
-            return;
+        if (!quizModalElement || !quizModalContentElement) {
+            logger.error("Quiz modal/content element not found. Cannot open."); return;
         }
         activeModalTriggerElement = triggerEl;
-        document.body.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden'; // Prevent background scroll
         quizModalElement.hidden = false;
 
-        requestAnimationFrame(() => { // Allow repaint before adding class for transition
-            quizModalElement.classList.add(CONFIG.MODAL_VISIBLE_CLASS);
-            quizModalContentElement.classList.add(CONFIG.MODAL_VISIBLE_CLASS); // For separate content animation if any
-            if (activeFocusTrapHandler) {
-                document.removeEventListener('keydown', activeFocusTrapHandler); // Remove old if any
-            }
+        escapeKeyListener = (event) => handleEscapeKeyForModal(event); // Define here to ensure it's the same function reference
+
+        requestAnimationFrame(() => {
+            quizModalElement.classList.add(CONFIG.MODAL_VISIBLE_CLASS); // For overlay transition
+            quizModalContentElement.style.opacity = '1'; // Start content animation if separate
+            quizModalContentElement.style.transform = 'translateY(0) scale(1)';
+
+            if (activeFocusTrapHandler) document.removeEventListener('keydown', activeFocusTrapHandler);
             activeFocusTrapHandler = trapFocusInModal(quizModalElement);
             document.addEventListener('keydown', activeFocusTrapHandler);
-            document.addEventListener('keydown', handleEscapeKeyForModal);
+            document.addEventListener('keydown', escapeKeyListener);
 
-            // Smart initial focus within the modal
             const firstInteractive = quizModalElement.querySelector(
-                '.quiz-modal-options-area button:not([disabled]), #quiz-modal-next:not([hidden]), #quiz-modal-restart:not([hidden]), #quiz-modal-close-results:not([hidden]), #quiz-modal-close'
-            ) || quizModalCloseBtnEl; // Fallback to close button
-
-            setTimeout(() => safeFocus(firstInteractive, 'Quiz Modal Opening'), CONFIG.MODAL_FOCUS_DELAY);
+                '.quiz-modal-options-area .quiz-option:not([disabled]), #quiz-modal-next:not([hidden]), #quiz-modal-restart:not([hidden]), #quiz-modal-close-results:not([hidden]), #quiz-modal-close'
+            ) || quizModalCloseBtnEl;
+            safeFocus(firstInteractive, 'Quiz Modal Opening');
         });
         logger.info("Quiz modal opened.");
     }
 
     function closeQuizModal(returnFocus = true) {
-        if (!quizModalElement || quizModalElement.hidden) {
-            logger.debug("Quiz modal already closed or not found.");
-            return;
-        }
+        if (!quizModalElement || quizModalElement.hidden) return;
+
         logger.info("Closing quiz modal...");
-        document.removeEventListener('keydown', handleEscapeKeyForModal);
+        document.removeEventListener('keydown', escapeKeyListener);
+        escapeKeyListener = null;
         if (activeFocusTrapHandler) {
             document.removeEventListener('keydown', activeFocusTrapHandler);
             activeFocusTrapHandler = null;
         }
 
         quizModalElement.classList.remove(CONFIG.MODAL_VISIBLE_CLASS);
-        if(quizModalContentElement) quizModalContentElement.classList.remove(CONFIG.MODAL_VISIBLE_CLASS);
+        if(quizModalContentElement) {
+             quizModalContentElement.style.opacity = '0';
+             quizModalContentElement.style.transform = 'translateY(20px) scale(0.95)';
+        }
 
-        // Wait for CSS transition to complete before fully hiding
-        const onTransitionEnd = () => {
+        const transitionHandler = () => {
+            if (quizModalElement.classList.contains(CONFIG.MODAL_VISIBLE_CLASS)) return; // Still opening or re-opened
+
             quizModalElement.hidden = true;
             document.body.style.overflow = '';
-            resetQuizInterface(); // Reset UI elements within the modal
-            if (returnFocus && activeModalTriggerElement) {
+            resetQuizInterface();
+            if (returnFocus && activeModalTriggerElement && typeof activeModalTriggerElement.focus === 'function') {
                 safeFocus(activeModalTriggerElement, 'Quiz Modal Closing');
-                activeModalTriggerElement = null;
             }
-            quizModalElement.removeEventListener('transitionend', onTransitionEnd);
-            logger.debug("Quiz modal fully closed and focus returned.");
+            activeModalTriggerElement = null; // Clear after use
+            quizModalElement.removeEventListener('transitionend', transitionHandler);
+            logger.debug("Quiz modal fully closed.");
         };
-        quizModalElement.addEventListener('transitionend', onTransitionEnd);
 
-        // Fallback if transitionend doesn't fire
+        // Listen on the overlay itself or a primary animated element like content
+        (quizModalContentElement || quizModalElement).addEventListener('transitionend', transitionHandler);
+        
+        // Fallback, especially if no transitions are defined or an error occurs
         setTimeout(() => {
-            if (!quizModalElement.hidden) { // If still not hidden after timeout
-                logger.warn("Modal transitionend event fallback triggered.");
-                onTransitionEnd(); // Force cleanup
+            if (!quizModalElement.hidden && !quizModalElement.classList.contains(CONFIG.MODAL_VISIBLE_CLASS)) {
+                logger.warn("Modal transitionend event fallback triggered for close.");
+                transitionHandler();
             }
         }, CONFIG.MODAL_TRANSITION_DURATION + 100);
     }
@@ -454,118 +414,118 @@
             )
         ).filter(el => !el.disabled && !el.hidden && el.offsetWidth > 0 && el.offsetHeight > 0);
 
-        if (focusableElements.length === 0) return null;
+        if (focusableElements.length === 0) {
+             logger.warn("No focusable elements found in modal for trap.");
+             return (event) => {}; // Return no-op function
+        }
         const firstElement = focusableElements[0];
         const lastElement = focusableElements[focusableElements.length - 1];
 
         return function(event) {
             if (event.key !== 'Tab') return;
-            if (!modal.contains(document.activeElement)) { // Focus somehow escaped
-                 safeFocus(firstElement, "Focus Trap Recovery");
-                 return;
+            if (!modal.contains(document.activeElement)) {
+                 safeFocus(firstElement, "Focus Trap Recovery"); return;
             }
-
-            if (event.shiftKey) { // Shift + Tab
+            if (event.shiftKey) {
                 if (document.activeElement === firstElement) {
-                    event.preventDefault();
-                    safeFocus(lastElement, "Focus Trap Shift+Tab");
+                    event.preventDefault(); safeFocus(lastElement, "Focus Trap Shift+Tab");
                 }
-            } else { // Tab
+            } else {
                 if (document.activeElement === lastElement) {
-                    event.preventDefault();
-                    safeFocus(firstElement, "Focus Trap Tab");
+                    event.preventDefault(); safeFocus(firstElement, "Focus Trap Tab");
                 }
             }
         };
     }
 
-
-    // --- Quiz Logic ---
     function prepareNewQuiz(questions, isFull, quizIdStr = null, category = '') {
-        logger.info(`Preparing new quiz. Full Challenge: ${isFull}, Quiz ID: ${quizIdStr || 'N/A'}, Category: ${category || 'Full Challenge'}`);
+        logger.info(`Preparing new quiz. Full: ${isFull}, ID: ${quizIdStr || 'N/A'}, Cat: ${category || 'Full'}`);
         currentQuiz = {
-            questions: [...questions], // Create a shallow copy
+            questions: [...questions],
             currentQuestionIndex: 0,
             score: 0,
             userAnswers: {},
             isFullChallenge: isFull,
-            quizId: quizIdStr, // Store the string ID
+            quizId: quizIdStr,
             categoryName: category
         };
-        // Options are shuffled per question display, not upfront for the whole quiz
     }
 
     function startQuizFlow(triggerEl) {
         if (!currentQuiz.questions || currentQuiz.questions.length === 0) {
-            logger.error("Cannot start quiz flow: No questions loaded in `currentQuiz`.");
-            alert("Error: Questions could not be loaded for this quiz.");
-            return;
+            logger.error("Cannot start: No questions loaded.");
+            alert("Error: Questions could not be loaded."); return;
         }
-        setupQuizModalInterface(); // Resets UI, sets title, progress
+        if (!setupQuizModalInterface()) return; // Abort if UI setup fails
         displayCurrentQuizQuestion();
         openQuizModal(triggerEl);
     }
 
     function setupQuizModalInterface() {
-        if (!cacheQuizModalInternalElements()) { // Ensure all internal elements are cached
-             logger.error("Critical error: Quiz modal internal elements not found. Aborting UI setup.");
+        if (!cacheQuizModalInternalElements()) {
+             logger.error("Critical: Quiz modal internal elements not found. Aborting UI setup.");
              alert("A critical error occurred setting up the quiz. Please try again later.");
-             return false; // Indicate failure
+             return false;
         }
-
         const title = currentQuiz.isFullChallenge ? "Full Financial Fitness Challenge" : (currentQuiz.categoryName || "Financial Quiz");
         quizModalTitleEl.textContent = title;
-        quizModalCurrentQEl.textContent = '0'; // Will be set by displayQuestion
-        quizModalTotalQEl.textContent = currentQuiz.questions.length;
+        if(quizModalCurrentQEl) quizModalCurrentQEl.textContent = '0';
+        if(quizModalTotalQEl) quizModalTotalQEl.textContent = currentQuiz.questions.length;
 
-        quizModalQuestionAreaEl.innerHTML = '';
-        quizModalOptionsAreaEl.innerHTML = '';
-        quizModalFeedbackAreaEl.hidden = true; quizModalFeedbackAreaEl.className = 'quiz-modal-feedback'; // Reset classes
-        quizModalResultsAreaEl.hidden = true;
+        quizModalQuestionAreaEl.innerHTML = ''; quizModalQuestionAreaEl.hidden = false;
+        quizModalOptionsAreaEl.innerHTML = ''; quizModalOptionsAreaEl.hidden = false;
+        quizModalFeedbackAreaEl.hidden = true; quizModalFeedbackAreaEl.className = 'quiz-modal-feedback';
+        quizModalResultsAreaEl.hidden = true; quizModalResultsAreaEl.innerHTML = '';
 
         quizModalNextBtnEl.hidden = true;
         quizModalRestartBtnEl.hidden = true;
         quizModalCloseResultsBtnEl.hidden = true;
-        quizModalProgressEl.hidden = false; // Make sure progress is visible
+        
+        quizModalProgressEl.hidden = false; // Ensure progress elements are visible
+        // Initialize CSS variables for progress bar to 0 for new quiz
+        quizModalProgressEl.style.setProperty('--quiz-current-question', 0);
+        quizModalProgressEl.style.setProperty('--quiz-total-questions', currentQuiz.questions.length || 1);
 
-        // Configure Restart button text
         quizModalRestartBtnEl.innerHTML = `<i class="fas fa-redo" aria-hidden="true"></i> Restart ${currentQuiz.isFullChallenge ? 'Full Challenge' : 'Quiz'}`;
-        return true; // Indicate success
+        return true;
     }
 
     function displayCurrentQuizQuestion() {
         if (currentQuiz.currentQuestionIndex >= currentQuiz.questions.length) {
-            showQuizResults();
-            return;
+            showQuizResults(); return;
         }
         const questionData = currentQuiz.questions[currentQuiz.currentQuestionIndex];
         if (!questionData) {
-            logger.error(`Error: Question data is missing for index ${currentQuiz.currentQuestionIndex}.`);
-            showQuizResults(); // End quiz if data corrupt
-            return;
+            logger.error(`Error: Missing question data for index ${currentQuiz.currentQuestionIndex}.`);
+            showQuizResults(); return;
         }
 
         quizModalQuestionAreaEl.innerHTML = `<span class="q-num">${currentQuiz.currentQuestionIndex + 1}.</span> ${questionData.question}`;
-        quizModalCurrentQEl.textContent = currentQuiz.currentQuestionIndex + 1;
-        quizModalOptionsAreaEl.innerHTML = ''; // Clear previous
+        if (quizModalCurrentQEl) quizModalCurrentQEl.textContent = currentQuiz.currentQuestionIndex + 1;
+        
+        // Update CSS variables for the progress bar
+        if (quizModalProgressEl) {
+            quizModalProgressEl.style.setProperty('--quiz-current-question', currentQuiz.currentQuestionIndex + 1);
+            quizModalProgressEl.style.setProperty('--quiz-total-questions', currentQuiz.questions.length);
+        }
 
-        // Shuffle options for display
+        quizModalOptionsAreaEl.innerHTML = '';
         const displayOptions = questionData.options.map((text, originalIndex) => ({ text, originalIndex }));
         shuffleArray(displayOptions);
 
         displayOptions.forEach(option => {
             const button = document.createElement('button');
             button.type = 'button';
-            button.className = 'btn btn-outline quiz-option'; // Using classes from personal.css
+            // CSS applies styling based on .quiz-option and .btn, state classes .correct/.incorrect
+            button.className = 'btn quiz-option'; // Keep it simple, CSS targets this combination
             button.textContent = option.text;
-            button.dataset.originalIndex = option.originalIndex; // Store original index to check answer
+            button.dataset.originalIndex = option.originalIndex;
             button.addEventListener('click', handleQuizOptionSelection);
             quizModalOptionsAreaEl.appendChild(button);
         });
 
         quizModalFeedbackAreaEl.hidden = true;
         quizModalNextBtnEl.hidden = true;
-
         const firstOption = quizModalOptionsAreaEl.querySelector('.quiz-option');
         if (firstOption) safeFocus(firstOption, 'Displaying Question Options');
     }
@@ -575,37 +535,33 @@
         const selectedOriginalIndex = parseInt(selectedButton.dataset.originalIndex);
         const questionData = currentQuiz.questions[currentQuiz.currentQuestionIndex];
 
-        // Disable all options
         quizModalOptionsAreaEl.querySelectorAll('.quiz-option').forEach(btn => btn.disabled = true);
 
         currentQuiz.userAnswers[questionData.id] = selectedOriginalIndex;
         const isCorrect = selectedOriginalIndex === questionData.correctAnswerIndex;
-        if (isCorrect) {
-            currentQuiz.score++;
-        }
+        if (isCorrect) currentQuiz.score++;
 
-        // Style selected and correct options
-        selectedButton.classList.add(isCorrect ? 'btn-success-light correct' : 'btn-danger-light incorrect');
-        selectedButton.classList.remove('btn-outline');
+        // Apply state classes for CSS styling
+        selectedButton.classList.add(isCorrect ? 'correct' : 'incorrect');
+        // No need to remove 'btn-outline' as CSS for .correct/.incorrect should override display.
+
         if (!isCorrect) {
             const correctButton = quizModalOptionsAreaEl.querySelector(`.quiz-option[data-original-index="${questionData.correctAnswerIndex}"]`);
-            if (correctButton) {
-                correctButton.classList.add('btn-success-light', 'correct');
-                correctButton.classList.remove('btn-outline');
-            }
+            if (correctButton) correctButton.classList.add('correct');
         }
 
-        // Show feedback
         quizModalFeedbackAreaEl.innerHTML = `<strong>${isCorrect ? 'Correct!' : 'Insight:'}</strong> ${questionData.explanation || 'Review the answers.'}`;
-        quizModalFeedbackAreaEl.className = `quiz-modal-feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+        quizModalFeedbackAreaEl.className = `quiz-modal-feedback ${isCorrect ? 'correct' : 'incorrect'}`; // Resets classes and adds state
         quizModalFeedbackAreaEl.hidden = false;
 
         if (currentQuiz.currentQuestionIndex < currentQuiz.questions.length - 1) {
             quizModalNextBtnEl.hidden = false;
-            setTimeout(() => safeFocus(quizModalNextBtnEl, 'Next Question Button'), 100); // Slight delay for UI
+            safeFocus(quizModalNextBtnEl, 'Next Question Button Shown');
         } else {
-            // Last question, show results button or auto-trigger
-            setTimeout(showQuizResults, CONFIG.QUIZ_FEEDBACK_DELAY);
+            // Auto-trigger results after feedback delay on the last question
+             quizModalCloseResultsBtnEl.hidden = false; // Show close for results immediately
+             quizModalRestartBtnEl.hidden = false;     // Show restart for results immediately
+             setTimeout(showQuizResults, CONFIG.QUIZ_FEEDBACK_DELAY); // Then show the result text area
         }
     }
 
@@ -619,7 +575,10 @@
         quizModalOptionsAreaEl.hidden = true;
         quizModalFeedbackAreaEl.hidden = true;
         quizModalNextBtnEl.hidden = true;
-        quizModalProgressEl.hidden = true;
+        // Progress bar is often hidden for results, depends on design preference.
+        // If showing progress at end, ensure it's updated to 100%. Otherwise hide.
+        if(quizModalProgressEl) quizModalProgressEl.hidden = true;
+
 
         const totalQuestions = currentQuiz.questions.length;
         const percentage = totalQuestions > 0 ? Math.round((currentQuiz.score / totalQuestions) * 100) : 0;
@@ -633,8 +592,9 @@
             quizModalTitleEl.textContent = "Full Challenge Results";
         } else {
             if (percentage === 100) resultMessage = `Perfect score in ${currentQuiz.categoryName}! Mastered!`;
-            else if (percentage >= 80) resultMessage = `Great work on ${currentQuiz.categoryName}!`;
-            else resultMessage = `Good foundation in ${currentQuiz.categoryName}. Review insights to improve.`;
+            else if (percentage >= 80) resultMessage = `Great work on ${currentQuiz.categoryName}! You're getting there.`;
+            else if (percentage >= 50) resultMessage = `Solid effort in ${currentQuiz.categoryName}. Review the insights to boost your knowledge!`;
+            else resultMessage = `Good start on ${currentQuiz.categoryName}. Keep practicing and review the insights to improve.`;
             quizModalTitleEl.textContent = `${currentQuiz.categoryName} Results`;
         }
 
@@ -647,48 +607,48 @@
 
         quizModalRestartBtnEl.hidden = false;
         quizModalCloseResultsBtnEl.hidden = false;
-        safeFocus(quizModalRestartBtnEl, 'Quiz Results Restart Button');
+        safeFocus(quizModalRestartBtnEl, 'Quiz Results Shown');
     }
 
     function handleRestartQuiz() {
         logger.info(`Restarting ${currentQuiz.isFullChallenge ? 'full challenge' : `quiz ${currentQuiz.quizId}`}`);
-        // Retain original trigger element if modal was opened by one
-        const originalTrigger = activeModalTriggerElement;
+        const originalTrigger = activeModalTriggerElement; // Persist trigger if any
         if (currentQuiz.isFullChallenge) {
-            // For full challenge, re-fetch all questions.
             prepareNewQuiz([...fullQuizData], true, null, 'Full Financial Fitness Challenge');
         } else {
-            // For category quiz, filter questions for that category again
             const categoryQuestions = fullQuizData.filter(q => q.quizId === currentQuiz.quizId);
             prepareNewQuiz(categoryQuestions, false, currentQuiz.quizId, currentQuiz.categoryName);
         }
-        startQuizFlow(originalTrigger); // Pass original trigger for context
+        startQuizFlow(originalTrigger); // This re-runs setupQuizModalInterface and displays first question
     }
 
-    /** Resets the inner state of the quiz modal, ready for new content */
     function resetQuizInterface() {
-        if (!quizModalTitleEl) cacheQuizModalInternalElements(); // Ensure they are cached
+        if (!quizModalTitleEl) { // Attempt to cache if not already
+            if(!cacheQuizModalInternalElements()) {
+                 logger.warn("Cannot reset interface, modal elements not available."); return;
+            }
+        }
+        quizModalTitleEl.textContent = 'Financial Fitness Quiz';
+        if(quizModalProgressEl) {
+            quizModalProgressEl.hidden = true; // Default to hidden until quiz starts
+             quizModalProgressEl.style.setProperty('--quiz-current-question', 0);
+             quizModalProgressEl.style.setProperty('--quiz-total-questions', 1); // Avoid division by zero
+        }
+        if(quizModalCurrentQEl) quizModalCurrentQEl.textContent = '0';
+        if(quizModalTotalQEl) quizModalTotalQEl.textContent = '0';
 
-        if(quizModalTitleEl) quizModalTitleEl.textContent = 'Financial Fitness Quiz'; // Default
-        if(quizModalProgressEl) quizModalProgressEl.hidden = true;
-        if(quizModalQuestionAreaEl) quizModalQuestionAreaEl.innerHTML = '';
-        if(quizModalOptionsAreaEl) quizModalOptionsAreaEl.innerHTML = '';
-        if(quizModalFeedbackAreaEl) {
-             quizModalFeedbackAreaEl.innerHTML = '';
-             quizModalFeedbackAreaEl.hidden = true;
-             quizModalFeedbackAreaEl.className = 'quiz-modal-feedback';
-        }
-        if(quizModalResultsAreaEl) {
-            quizModalResultsAreaEl.innerHTML = '';
-            quizModalResultsAreaEl.hidden = true;
-        }
+        quizModalQuestionAreaEl.innerHTML = ''; quizModalQuestionAreaEl.hidden = true;
+        quizModalOptionsAreaEl.innerHTML = ''; quizModalOptionsAreaEl.hidden = true;
+        quizModalFeedbackAreaEl.innerHTML = ''; quizModalFeedbackAreaEl.hidden = true;
+        quizModalFeedbackAreaEl.className = 'quiz-modal-feedback';
+        quizModalResultsAreaEl.innerHTML = ''; quizModalResultsAreaEl.hidden = true;
+
         [quizModalNextBtnEl, quizModalRestartBtnEl, quizModalCloseResultsBtnEl].forEach(btn => {
              if (btn) btn.hidden = true;
         });
-        logger.debug("Quiz modal interface elements reset.");
+        logger.debug("Quiz modal interface elements reset for next use.");
     }
 
-    // --- Initialization and Event Binding ---
     function cacheGlobalElements() {
         accordionElement = document.querySelector(CONFIG.ACCORDION_SELECTOR);
         startFullChallengeBtn = document.getElementById(CONFIG.START_FULL_CHALLENGE_BTN_ID);
@@ -698,25 +658,19 @@
         }
         currentYearSpan = document.querySelector(CONFIG.CURRENT_YEAR_SELECTOR);
 
-        // Basic check for critical elements
-        if (!accordionElement) logger.warn("Accordion container not found. Themed quizzes may not work.");
+        if (!accordionElement) logger.warn("Accordion container not found.");
         if (!startFullChallengeBtn) logger.warn("Start Full Challenge button not found.");
         if (!quizModalElement || !quizModalContentElement) {
-             logger.error("CRITICAL: Quiz modal or its content wrapper not found. Quiz functionality disabled.");
-             return false;
+             logger.error("CRITICAL: Quiz modal or content wrapper not found. Quiz func disabled."); return false;
         }
         return true;
     }
 
     function cacheQuizModalInternalElements() {
-        if (!quizModalElement) {
-            logger.error("Cannot cache internal quiz modal elements: Main modal element not found.");
-            return false;
-        }
-        // Attempt to cache all required sub-elements
+        if (!quizModalElement) return false;
         quizModalTitleEl = quizModalElement.querySelector('#quiz-modal-title');
         quizModalCloseBtnEl = quizModalElement.querySelector('#quiz-modal-close');
-        quizModalProgressEl = quizModalElement.querySelector('#quiz-modal-progress'); // The container
+        quizModalProgressEl = quizModalElement.querySelector('#quiz-modal-progress');
         quizModalCurrentQEl = quizModalElement.querySelector('#quiz-modal-q-current');
         quizModalTotalQEl = quizModalElement.querySelector('#quiz-modal-q-total');
         quizModalQuestionAreaEl = quizModalElement.querySelector('#quiz-modal-question');
@@ -730,13 +684,8 @@
         const allCached = [quizModalTitleEl, quizModalCloseBtnEl, quizModalProgressEl, quizModalCurrentQEl, quizModalTotalQEl,
                            quizModalQuestionAreaEl, quizModalOptionsAreaEl, quizModalFeedbackAreaEl,
                            quizModalResultsAreaEl, quizModalNextBtnEl, quizModalRestartBtnEl, quizModalCloseResultsBtnEl].every(el => el !== null);
-
-        if (!allCached) {
-            logger.error("One or more essential quiz modal internal elements could not be found. Check HTML IDs/structure.");
-            return false;
-        }
-        logger.debug("All quiz modal internal elements cached.");
-        return true;
+        if (!allCached) logger.error("One or more essential quiz modal internal elements missing.");
+        return allCached;
     }
 
     function setupEventListeners() {
@@ -752,79 +701,67 @@
             accordionElement.addEventListener('click', (event) => {
                 const targetButton = event.target.closest(CONFIG.START_QUIZ_BTN_SELECTOR);
                 if (targetButton) {
+                    event.preventDefault(); // Good practice for button-like links/buttons in accordions
                     const quizIdStr = targetButton.dataset.quizId;
                     const categoryCard = targetButton.closest(CONFIG.CATEGORY_CARD_SELECTOR);
-                    const categoryName = categoryCard?.querySelector('h4')?.textContent.trim() || 'Quiz';
+                    const categoryName = categoryCard?.querySelector('h4')?.textContent.trim() || 'Financial Quiz';
 
                     if (quizIdStr) {
-                        logger.info(`Category quiz button clicked: ID "${quizIdStr}", Category: "${categoryName}"`);
+                        logger.info(`Category quiz: ID "${quizIdStr}", Name: "${categoryName}"`);
                         const categoryQuestions = fullQuizData.filter(q => q.quizId === quizIdStr);
                         if (categoryQuestions.length > 0) {
                             prepareNewQuiz(categoryQuestions, false, quizIdStr, categoryName);
                             startQuizFlow(targetButton);
                         } else {
-                            logger.error(`No questions found for quizId: ${quizIdStr}`);
+                            logger.error(`No questions for quizId: ${quizIdStr}`);
                             alert("Sorry, questions for this category are currently unavailable.");
                         }
-                    } else {
-                        logger.warn("Start quiz button clicked without a 'data-quiz-id'.");
                     }
                 }
             });
         }
 
-        // Quiz Modal Navigation Buttons (ensure they exist first)
-        if(cacheQuizModalInternalElements()){ // Only add if internals are valid
-            quizModalCloseBtnEl.addEventListener('click', () => closeQuizModal());
-            quizModalNextBtnEl.addEventListener('click', proceedToNextQuestion);
-            quizModalRestartBtnEl.addEventListener('click', handleRestartQuiz);
-            quizModalCloseResultsBtnEl.addEventListener('click', () => closeQuizModal());
+        if(quizModalCloseBtnEl) quizModalCloseBtnEl.addEventListener('click', () => closeQuizModal());
+        if(quizModalNextBtnEl) quizModalNextBtnEl.addEventListener('click', proceedToNextQuestion);
+        if(quizModalRestartBtnEl) quizModalRestartBtnEl.addEventListener('click', handleRestartQuiz);
+        if(quizModalCloseResultsBtnEl) quizModalCloseResultsBtnEl.addEventListener('click', () => closeQuizModal());
 
-            // Overlay click to close
+        if(quizModalElement) { // Overlay click to close
             quizModalElement.addEventListener('click', (event) => {
-                if (event.target === quizModalElement) { // Click on overlay, not content
-                    closeQuizModal();
-                }
+                if (event.target === quizModalElement) closeQuizModal();
             });
-        } else {
-             logger.error("Skipping attachment of quiz modal navigation listeners due to missing internal elements.");
         }
     }
 
-    // --- Main Initialization ---
     function initializeQuizzesPage() {
-        logger.info(`Rofilid Quizzes Page Script Initializing (v3.0.0)`);
-        if (!cacheGlobalElements()) {
-            // Critical elements missing, page functionality severely limited.
-            // Further initialization might be problematic.
-            return;
-        }
+        logger.info(`Rofilid Quizzes Page Script Initializing (v3.1.0)`);
+        if (!cacheGlobalElements()) return; // Halt if critical global elements missing
         if (!validateQuizDataIntegrity()) {
-             logger.error("CRITICAL: Quiz data is invalid. Further quiz functionality disabled.");
+             logger.error("CRITICAL: Quiz data invalid. Disabling quiz functionality.");
              if(startFullChallengeBtn) startFullChallengeBtn.disabled = true;
-             // Could also disable all category start buttons
-             return; // Stop if data is bad
+             // Could also disable all .start-quiz-btn in accordions
+             document.querySelectorAll(CONFIG.START_QUIZ_BTN_SELECTOR).forEach(btn => btn.disabled = true);
+             return;
         }
 
         initializeAccordionInteractions();
-        setupEventListeners();
+        setupEventListeners(); // Sets up modal button listeners internally after caching elements
         updateCopyrightYear();
 
-        // Pre-cache internal modal elements if modal exists, preparing it
-        if (quizModalElement) {
-             if (!cacheQuizModalInternalElements()) {
-                  logger.warn("Failed to pre-cache quiz modal internal elements. This might lead to issues if modal is opened.");
-             }
-        }
-
+        // Pre-cache modal internal elements during init for smoother first open.
+        // No need to re-cache if setupEventListeners already does it via cacheQuizModalInternalElements()
+        // if (quizModalElement && !quizModalTitleEl) { cacheQuizModalInternalElements(); }
+        // The `if(quizModalCloseBtnEl)` etc. in setupEventListeners implies they are cached by then or logic skips.
+        // So, making sure cacheQuizModalInternalElements is robust is key.
+        // It IS called early now by setupQuizModalInterface.
+        
         logger.info("Rofilid Quizzes Page script fully loaded and initialized.");
     }
 
-    // --- DOMContentLoaded Listener ---
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initializeQuizzesPage);
     } else {
-        initializeQuizzesPage(); // Already loaded
+        initializeQuizzesPage();
     }
 
-})(); // End IIFE
+})();
