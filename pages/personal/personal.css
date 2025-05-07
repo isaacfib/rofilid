@@ -1967,16 +1967,15 @@ nav[aria-label="Main navigation"] {
    11. Coaching Section
    ========================================================================== */
 
-
 #personal-coaching {
    border-bottom: 1px solid var(--pp-color-border-light);
 }
 
+.coaching-container {
+    max-width: var(--container-narrow); /* Limits overall width, form centers within this */
+}
 
-.coaching-container { max-width: var(--container-narrow); }
-
-
-.coaching-container > .text-center > i.fas {
+.coaching-container > .text-center > i.fas { /* Icon above section title */
     font-size: 3rem;
     color: var(--pp-color-primary);
     margin-bottom: var(--space-md);
@@ -1987,55 +1986,6 @@ nav[aria-label="Main navigation"] {
     border: 2px solid var(--pp-color-primary-light);
 }
 
-
-.coaching-content-redesigned {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-xl);
-    margin-top: var(--space-xl);
-    align-items: center;
-}
-@media (min-width: 768px) {
-    .coaching-content-redesigned {
-        grid-template-columns: 1fr 1fr; /* Maintain 2 columns on larger screens */
-        gap: var(--space-2xl);
-         /* align-items: start; Default behavior is stretch. Start could work.
-            Using `align-items:center` might be visually better if content heights differ. */
-    }
-    .coaching-info {
-        display: flex;
-        flex-direction: column;
-        justify-content: center; /* Centers content vertically in its cell */
-        align-items: center; /* Centers content horizontally IF it's narrower than cell */
-        text-align: center; /* Center text content */
-    }
-    .coaching-interest {
-        display: flex;
-        flex-direction: column;
-        justify-content: center; /* Centers form vertically if cell is taller */
-        align-items: center; /* This centers the form horizontally within the .coaching-interest container */
-    }
-     /* .coaching-interest-form is already margin-inline: auto which should center it within its parent (.coaching-interest) if the parent allows.
-        The align-items:center on .coaching-interest does this explicitly.
-     */
-}
-
-
-.coaching-info h3, .coaching-interest h3 {
-    color: var(--pp-color-primary);
-    margin-bottom: var(--space-md);
-}
-
-
-.coaching-info ul {
-    list-style: none; padding-left: 0; margin: var(--space-lg) 0;
-    display: flex; flex-direction: column; gap: var(--space-md);
-}
-.coaching-info li { display: flex; align-items: flex-start; gap: var(--space-sm); }
-.coaching-info li i.fa-check { color: var(--pp-color-secondary); margin-top: 0.3rem; flex-shrink: 0; }
-
-
-.coaching-interest { display: flex; flex-direction: column; }
 .coaching-interest-form {
     background: var(--rofilid-white);
     border: 1px solid var(--pp-color-border);
@@ -2043,25 +1993,33 @@ nav[aria-label="Main navigation"] {
     border-radius: var(--radius-lg);
     padding: var(--space-xl);
     width: 100%;
-    max-width: 450px;
-    margin-inline: auto; /* Ensures centering within parent if parent allows space */
+    max-width: 450px; /* Crucial for centering */
+    margin-inline: auto; /* Crucial for centering */
+    margin-top: var(--space-xl); /* Spacing after section description */
     display: flex;
     flex-direction: column;
-    align-items: stretch;
+    align-items: stretch; /* Makes button full-width within form padding */
 }
-.coaching-interest-form .form-group { width: 100%; margin-bottom: var(--space-lg); }
-.coaching-interest-form button[type="submit"] { width: 100%; }
 
+.coaching-interest-form .form-group {
+    width: 100%;
+    margin-bottom: var(--space-lg);
+}
+
+.coaching-interest-form button[type="submit"] {
+    width: 100%; /* Full width of the padded form area */
+}
 
 .privacy-note {
    font-size: var(--font-size-sm);
    color: var(--pp-color-text-muted);
    margin-top: var(--space-md);
-   text-align: center;
-   max-width: 450px;
-   width: 100%;
-   margin-inline: auto;
+   text-align: center; /* Centers the text within the P tag */
+   max-width: 450px; /* To align with form, if desired */
+   width: 100%; /* Take full width up to max-width */
+   margin-inline: auto; /* Centers the P tag block */
 }
+
 .disclaimer {
    font-size: var(--font-size-sm);
    color: var(--pp-color-text-secondary);
@@ -2073,11 +2031,12 @@ nav[aria-label="Main navigation"] {
    padding-inline: var(--space-md);
    padding-bottom: var(--space-lg);
    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-   /* Consider if this should expand full width only if inside a specific nested container */
-   /* margin-inline: calc(-1 * var(--container-padding, var(--space-lg))); */
 }
-.disclaimer p { margin-bottom: 0; line-height: 1.5; }
 
+.disclaimer p {
+    margin-bottom: 0;
+    line-height: 1.5;
+}
 
 /* ==========================================================================
    12. Feedback Section & Forms
