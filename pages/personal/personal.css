@@ -1378,9 +1378,9 @@ nav[aria-label="Main navigation"] {
   gap: var(--space-xl);
 }
 
-@media (min-width: 1024px) { /* Desktop: Force 4 columns */
+@media (min-width: 1024px) { /* Desktop: Force 3 columns */
     .category-grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
@@ -1741,9 +1741,9 @@ nav[aria-label="Main navigation"] {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Default for smaller screens */
   gap: var(--space-xl);
 }
-@media (min-width: 1200px) { /* For wider desktops, aim for 4 columns */
+@media (min-width: 1200px) { /* For wider desktops, aim for 3 columns */
     .template-grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 @media (min-width: 992px) and (max-width: 1199px) { /* For standard desktops, aim for 3 columns */
