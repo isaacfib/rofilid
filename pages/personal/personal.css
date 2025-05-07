@@ -101,7 +101,7 @@
 
 
   /* --- Layout --- */
-  --container-max-width: 1280px;
+  --container-max-width: 1200px;
   --container-narrow: 1024px;
   --header-height: 70px; /* Kept standard height */
 
