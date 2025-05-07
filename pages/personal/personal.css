@@ -103,7 +103,6 @@
   /* --- Layout --- */
   --container-max-width: 1280px;
   --container-narrow: 1024px;
-  --content-viewport-percentage: 75%; /* Content area as percentage of viewport */
   --header-height: 70px; /* Kept standard height */
 
 
@@ -359,14 +358,22 @@ p:last-child { margin-bottom: 0; } /* Common cleanup */
 
 /* --- Container & Layout Utilities --- */
 .container {
-  width: var(--content-viewport-percentage); /* MODIFIED: Use percentage width */
+  width: 100%;
   max-width: var(--container-max-width);
   margin-inline: auto;
   padding-inline: var(--space-lg);
 }
+@media (max-width: 768px) {
+    .container { padding-inline: var(--space-md); }
+}
+
 
 .section-padding { padding-block: var(--space-2xl); }
 .section-padding--large { padding-block: var(--space-3xl); }
+@media (max-width: 768px) {
+    .section-padding { padding-block: var(--space-xl); }
+    .section-padding--large { padding-block: var(--space-2xl); }
+}
 
 
 /* Section Title - Refined Underline */
@@ -718,8 +725,6 @@ p:last-child { margin-bottom: 0; } /* Common cleanup */
 
 
 .header-container {
-  /* width: 100%; MODIFIED: Removed direct width: 100% */
-  width: var(--content-viewport-percentage); /* MODIFIED: Use percentage width */
   max-width: var(--container-max-width);
   margin-inline: auto;
   padding-inline: var(--space-lg);
@@ -2097,18 +2102,8 @@ nav[aria-label="Main navigation"] {
    padding-inline: var(--space-md);
    padding-bottom: var(--space-lg);
    border-radius: 0 0 var(--radius-lg) var(--radius-lg); /* Round bottom if section ends */
-   /* This margin assumes the .disclaimer is directly inside a .container like element */
-   /* To make it truly full-bleed from a 75% container, specific adjustments or different markup may be needed. */
-   /* For now, this will make it stretch relative to its parent container padding */
-   margin-inline: calc(-1 * var(--space-lg)); /* Default container padding */
+   margin-inline: calc(-1 * var(--container-padding, var(--space-lg))); /* Stretch if inside container */
 }
-@media (max-width: 768px) {
-    .disclaimer { margin-inline: calc(-1 * var(--space-md)); } /* Adjust for mobile container padding */
-}
-@media (max-width: 480px) {
-    .disclaimer { margin-inline: calc(-1 * var(--space-sm)); } /* Adjust for smaller mobile container padding */
-}
-
 .disclaimer p { margin-bottom: 0; line-height: 1.5; }
 
 
@@ -2794,7 +2789,7 @@ fieldset.is-invalid-check-group legend { color: var(--pp-color-danger); } /* Col
 .deco-blur {
   position: fixed; /* Fixed position so they stay while scrolling */
   width: 40vw; min-width: 300px; max-width: 500px;
-  height: 40vw; min-height: 300px; max-width: 500px;
+  height: 40vw; min-height: 300px; max-height: 500px;
   filter: blur(150px); /* More blur */
   border-radius: 50%;
   z-index: 0; /* Behind main content */
@@ -2852,39 +2847,19 @@ fieldset.is-invalid-check-group legend { color: var(--pp-color-danger); } /* Col
 
 /* --- Desktop First: Base styles are desktop, overrides below --- */
 
-/* MODIFICATION POINT for .container width at smaller screens (e.g. tablet) */
-/* Before typical mobile overrides, ensure 75% is not too narrow for tablets */
-@media (max-width: 1024px) { /* Example tablet breakpoint, adjust as needed */
-    .container, .header-container {
-      /* If 75% is too restrictive for tablets, adjust here.
-         e.g., width: 90%; or width: 100% (like mobile) */
-      /* For now, we'll let it be 75% and see. It can be overridden further down */
-    }
+
+/* --- Tablet & Smaller (Max Width: 1024px) --- */
+@media (max-width: 1024px) {
     #primary-navigation { gap: var(--space-lg); } /* Slightly less gap */
     .template-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
     .journey-node { min-width: 110px; } /* Slightly narrower node */
     .journey-connector { min-width: 40px; }
 }
 
+
 /* --- Mobile Screens (Max Width: 768px) --- */
 @media (max-width: 768px) {
   html { font-size: 15px; scroll-padding-top: calc(var(--header-height) + 15px); }
-
-  /* MODIFIED: Container width for mobile */
-  .container, .header-container {
-    width: 100%; /* Override the 75% for mobile to be full-width (respecting padding) */
-    padding-inline: var(--space-md);
-  }
-  /* Note: .header-container was not previously explicitly targeted at this breakpoint for padding,
-     but it makes sense for consistency if its width behavior is to match .container.
-     If header-container specific padding is needed, target it directly.
-     The existing rule `.header-container { padding-inline: var(--space-lg); }` will apply
-     unless overridden here. For now, let it keep its --space-lg or match .container.
-     To ensure they match for this example: */
-  .header-container {
-      padding-inline: var(--space-md); /* Match general container mobile padding */
-  }
-
 
   /* Section Padding adjustments */
   .section-padding { padding-block: var(--space-xl); }
@@ -2893,6 +2868,9 @@ fieldset.is-invalid-check-group legend { color: var(--pp-color-danger); } /* Col
   /* Heading size adjustments */
   h1 { font-size: 2.2rem; }
   h2 { font-size: 1.8rem; }
+
+  /* Header container padding */
+  .header-container { padding-inline: var(--space-md); gap: var(--space-md); }
 
   /* --- MOBILE NAVIGATION --- */
   .mobile-menu-toggle { display: flex; } /* Show hamburger toggle */
@@ -3017,11 +2995,7 @@ fieldset.is-invalid-check-group legend { color: var(--pp-color-danger); } /* Col
 /* --- Extra Small Screens (Max Width: 480px) --- */
 @media (max-width: 480px) {
   html { font-size: 14px; }
-  /* MODIFIED: Container width for extra small screens */
-  .container, .header-container {
-    padding-inline: var(--space-sm); /* Already width: 100% from above breakpoint */
-  }
-
+  .container { padding-inline: var(--space-sm); }
   .btn { padding: 0.7rem 1.4rem; font-size: var(--font-size-sm); }
   .btn-large { padding: 0.9rem 1.8rem; font-size: var(--font-size-base); }
   .hero-actions { gap: var(--space-md); }
@@ -3113,9 +3087,7 @@ fieldset.is-invalid-check-group legend { color: var(--pp-color-danger); } /* Col
 
   html, body { width: auto !important; height: auto !important; overflow: visible !important; font-size: 10pt !important; }
   main#main-content { flex-grow: 0 !important; overflow: visible !important; }
-  .container, .header-container { /* Ensure consistent print container styling */
-     width: 100% !important; max-width: 100% !important; padding: 0 !important; margin: 0 !important;
-  }
+  .container { width: 100% !important; max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
   h1, h2, h3, h4, h5, h6 { color: #000 !important; page-break-after: avoid !important; font-family: inherit !important; font-weight: bold !important; line-height: 1.2 !important; margin-bottom: 0.5cm; }
   h1 { font-size: 18pt; } h2 { font-size: 16pt; } h3 { font-size: 14pt; } h4 { font-size: 12pt; }
   p, ul, li { color: #000 !important; page-break-inside: avoid !important; font-size: 10pt; line-height: 1.3; margin-bottom: 0.4cm; }
