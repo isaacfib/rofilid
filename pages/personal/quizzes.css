@@ -1,374 +1,1048 @@
 /* ==========================================================================
    ROFILID Quizzes Page Styles
    Location: /pages/personal/quizzes.css
-   Description: Styles specific to the Quizzes page (quizzes.html).
    Dependencies: personal.css (for base styles, variables, utilities)
    ========================================================================== */
 
-/* --- Global Variables (Quiz Page Specific if needed) --- */
+/* --- Modern Design System Variables --- */
 :root {
-    --quiz-intro-padding-bottom-mb: var(--space-2xl); /* Slightly more padding for mobile */
-    --accordion-btn-hover-bg: var(--pp-color-primary-lightest);
-    --accordion-btn-hover-color: var(--pp-color-primary-dark);
-    --accordion-icon-color: var(--pp-color-text-muted);
-    --accordion-active-icon-color: var(--pp-color-secondary-dark);
+    /* Primary palette - refined with more depth and modern tones */
+    --quiz-primary: #0a5d75;
+    --quiz-primary-light: #1a8aa6;
+    --quiz-primary-lighter: #e6f3f7;
+    --quiz-primary-dark: #084352;
+    --quiz-primary-gradient: linear-gradient(135deg, var(--quiz-primary-light) 0%, var(--quiz-primary) 100%);
+    
+    /* Secondary palette - vibrant and complementary */
+    --quiz-secondary: #ff7e50;
+    --quiz-secondary-light: #ff9a73;
+    --quiz-secondary-lighter: #ffebe3;
+    --quiz-secondary-dark: #e55d2f;
+    
+    /* Neutral palette - for sophisticated UI elements */
+    --quiz-gray-100: #f8f9fa;
+    --quiz-gray-200: #e9ecef;
+    --quiz-gray-300: #dee2e6;
+    --quiz-gray-400: #ced4da;
+    --quiz-gray-500: #adb5bd;
+    --quiz-gray-600: #6c757d;
+    --quiz-gray-700: #495057;
+    --quiz-gray-800: #343a40;
+    --quiz-gray-900: #212529;
+    
+    /* Surface colors */
+    --quiz-surface: #ffffff;
+    --quiz-surface-alt: #f6f9fc; /* Used for section bg-light */
+    
+    /* Success/Error feedback colors */
+    --quiz-success: #22c55e;
+    --quiz-success-light: #dcfce7;
+    --quiz-error: #ef4444;
+    --quiz-error-light: #fee2e2;
+    
+    /* Spacing scale */
+    --quiz-space-3xs: 0.25rem;   /* 4px */
+    --quiz-space-2xs: 0.5rem;    /* 8px */
+    --quiz-space-xs: 0.75rem;    /* 12px */
+    --quiz-space-sm: 1rem;       /* 16px */
+    --quiz-space-md: 1.5rem;     /* 24px */
+    --quiz-space-lg: 2rem;       /* 32px */
+    --quiz-space-xl: 3rem;       /* 48px */
+    --quiz-space-2xl: 4rem;      /* 64px */
+    --quiz-space-3xl: 6rem;      /* 96px */
+    
+    /* Typography */
+    --quiz-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --quiz-font-size-xs: 0.75rem;   /* 12px */
+    --quiz-font-size-sm: 0.875rem;  /* 14px */
+    --quiz-font-size-base: 1rem;    /* 16px */
+    --quiz-font-size-md: 1.125rem;  /* 18px */
+    --quiz-font-size-lg: 1.25rem;   /* 20px */
+    --quiz-font-size-xl: 1.5rem;    /* 24px */
+    --quiz-font-size-2xl: 1.875rem; /* 30px */
+    --quiz-font-size-3xl: 2.25rem;  /* 36px */
+    --quiz-font-size-4xl: 3rem;     /* 48px */
+    
+    /* Border radiuses */
+    --quiz-radius-sm: 0.25rem;  /* 4px */
+    --quiz-radius-md: 0.5rem;   /* 8px */
+    --quiz-radius-lg: 0.75rem;  /* 12px */
+    --quiz-radius-xl: 1rem;     /* 16px */
+    --quiz-radius-2xl: 1.5rem;  /* 24px */
+    --quiz-radius-full: 9999px; /* Pill shape */
+    
+    /* Shadows */
+    --quiz-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --quiz-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --quiz-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --quiz-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --quiz-shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+    --quiz-shadow-focus: 0 0 0 3px rgba(26, 138, 166, 0.45); /* Using a lighter shade of quiz-primary for focus */
+    
+    /* Transitions */
+    --quiz-transition-fast: 150ms ease;
+    --quiz-transition-normal: 300ms ease;
+    --quiz-transition-slow: 500ms ease;
+    
+    /* Z-index scale */
+    --quiz-z-below: -1;
+    --quiz-z-normal: 1;
+    --quiz-z-above: 10;
+    --quiz-z-deco: 0; /* For decorative elements, above background but below content */
+    --quiz-z-modal: 100;
+    --quiz-z-overlay: 200;
+    --quiz-z-tooltip: 300;
 }
 
-/* --- Quiz Page Introduction Section (Using .hero-section base) --- */
-.quiz-page-intro.hero-section {
-    /* Use a gradient consistent with personal.css theme options */
-    background: linear-gradient(170deg, var(--pp-color-bg-light) 0%, var(--pp-color-primary-lightest) 30%, var(--rofilid-white) 100%);
-    padding-block: var(--space-3xl) var(--space-2xl); /* Generous padding */
-    border-bottom: 1px solid var(--pp-color-border-light);
+/* --- Global Resets & Base Styles --- */
+.quiz-page { /* Applied to <html> and <body> */
+    font-family: var(--quiz-font-sans);
+    color: var(--quiz-gray-800);
+    background-color: var(--quiz-surface);
+    scroll-behavior: smooth;
+    position: relative; /* For positioning decorative elements */
+    overflow-x: hidden; /* Prevent horizontal scroll from decorative elements */
 }
 
-.quiz-page-intro .hero-container {
-    /* Using existing .hero-container which centers content by default */
-    text-align: center; /* Ensure all content within is centered */
+/* Base section padding (if not defined in personal.css or needs override) */
+.quiz-page .section-padding {
+    padding-top: var(--quiz-space-2xl);
+    padding-bottom: var(--quiz-space-2xl);
+}
+.quiz-page .section-padding--large {
+    padding-top: var(--quiz-space-3xl);
+    padding-bottom: var(--quiz-space-3xl);
+}
+.quiz-page .bg-light {
+    background-color: var(--quiz-surface-alt);
 }
 
-.quiz-page-intro .hero-content h1 {
-    /* Styles from personal.css .hero-content h1 apply */
-    color: var(--pp-color-primary-dark); /* Slightly darker for this page for emphasis */
+/* Active Nav Link Style */
+.quiz-page .site-header .nav-link.active-page {
+    color: var(--quiz-primary);
+    font-weight: 700;
+    position: relative;
 }
 
-.quiz-page-intro .subheadline {
-    /* Styles from personal.css apply, ensure centered */
-    margin-inline: auto;
-    max-width: 65ch; /* Consistent with personal.css */
-    margin-bottom: var(--space-xl); /* More space before actions */
+.quiz-page .site-header .nav-link.active-page::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; /* Adjust as needed */
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--quiz-primary);
 }
 
-.quiz-page-intro .hero-actions {
-    /* Styles from personal.css .hero-actions apply (flex, gap, justify-content) */
-    margin-top: var(--space-xl); /* Standard spacing */
+
+/* --- Decorative Background Elements --- */
+.quiz-page .deco-blur {
+    position: absolute; /* Changed from fixed to scroll with page */
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: var(--quiz-z-deco); /* Ensure it's behind content */
+    opacity: 0.6; /* Adjusted for subtlety */
 }
 
-.quiz-page-intro .hero-actions .btn {
-    min-width: 240px; /* Ensure buttons are substantial */
-}
-/* Optional: specific hover/focus for intro buttons if needed, but base styles should be good */
-
-
-/* --- Accordion Styles (Refined & Enhanced) --- */
-.accordion {
-    max-width: 900px; /* Consistent max-width for content readability */
-    margin-inline: auto; /* Center accordion on page */
+.quiz-page .deco-blur.blur-1 {
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, var(--quiz-primary-lighter) 0%, transparent 65%);
+    filter: blur(120px);
+    top: 5vh;
+    left: -100px;
 }
 
-.accordion-item {
-    background-color: var(--rofilid-white);
-    border: var(--border-width) solid var(--pp-color-border-light);
-    border-radius: var(--radius-lg);
-    margin-bottom: var(--space-lg);
-    box-shadow: var(--shadow-sm);
-    transition: box-shadow var(--transition-normal), border-color var(--transition-normal);
-    overflow: hidden; /* Essential for collapse animation */
+.quiz-page .deco-blur.blur-2 {
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, var(--quiz-secondary-lighter) 0%, transparent 70%);
+    filter: blur(150px);
+    top: 50vh; /* Position further down */
+    right: -150px;
+    opacity: 0.4;
 }
 
-.accordion-item:last-of-type {
-    margin-bottom: 0;
+.quiz-page .deco-blur.blur-3 {
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, var(--quiz-primary-light) 0%, transparent 60%);
+    filter: blur(100px);
+    bottom: 10vh; /* Relative to viewport bottom before scrolling */
+    left: 5vw;
+    opacity: 0.3;
 }
 
-.accordion-item:hover {
-    box-shadow: var(--shadow-md);
-    border-color: var(--pp-color-border);
+
+/* --- Enhanced Buttons --- */
+.quiz-page .btn {
+    font-weight: 600;
+    border-radius: var(--quiz-radius-md);
+    padding: var(--quiz-space-xs) var(--quiz-space-md);
+    transition: all var(--quiz-transition-normal);
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--quiz-shadow-md);
+    text-transform: none;
+    letter-spacing: 0.01em;
+    border: none; /* Ensuring base buttons don't have default borders unless specified */
+    cursor: pointer;
+    text-decoration: none; /* For <a> tags styled as buttons */
+    display: inline-flex; /* For icon alignment */
+    align-items: center;
+    justify-content: center;
 }
 
-.accordion-header {
-    margin-bottom: 0; /* Remove default h3 margin */
-    position: relative; /* For icon positioning if done via pseudo-elements */
+.quiz-page .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(100%);
+    transition: transform var(--quiz-transition-normal);
+    z-index: var(--quiz-z-normal); /* Changed from below, to be above button bg but below text */
 }
 
-.accordion-button {
+.quiz-page .btn:hover::before {
+    transform: translateY(0);
+}
+
+.quiz-page .btn-primary {
+    background: var(--quiz-primary-gradient);
+    color: white;
+}
+
+.quiz-page .btn-primary:hover {
+    box-shadow: var(--quiz-shadow-lg);
+    transform: translateY(-2px);
+}
+
+.quiz-page .btn-secondary {
+    background-color: var(--quiz-secondary);
+    color: white;
+}
+
+.quiz-page .btn-secondary:hover {
+    background-color: var(--quiz-secondary-light);
+    box-shadow: var(--quiz-shadow-lg);
+    transform: translateY(-2px);
+}
+
+.quiz-page .btn-outline {
+    background-color: transparent;
+    border: 2px solid var(--quiz-primary);
+    color: var(--quiz-primary);
+}
+
+.quiz-page .btn-outline:hover {
+    background-color: var(--quiz-primary-lighter);
+    border-color: var(--quiz-primary-light);
+    color: var(--quiz-primary-dark);
+}
+
+/* Specific class for hero button that should not fill on hover */
+.quiz-page .btn-outline-no-fill-hover:hover {
+    background-color: transparent; /* Override fill */
+    color: var(--quiz-primary-dark);
+    border-color: var(--quiz-primary-light); /* Keep border change */
+    transform: translateY(-2px); /* Keep slight lift if desired */
+    box-shadow: var(--quiz-shadow-md); /* Standard shadow */
+}
+.quiz-page .btn-outline-no-fill-hover:hover::before {
+    transform: translateY(100%); /* Prevent the white sheen */
+}
+
+
+.quiz-page .btn-icon {
+    display: inline-flex; /* Ensure this is explicitly set */
+    align-items: center;
+    gap: var(--quiz-space-xs);
+}
+.quiz-page .btn-icon i { /* Ensure icon is not affected by button's ::before z-index if it was an issue */
+    position: relative;
+    z-index: var(--quiz-z-above); /* Ensure icon text is above the ::before sheen */
+}
+
+
+.quiz-page .btn-large {
+    padding: var(--quiz-space-sm) var(--quiz-space-lg);
+    font-size: var(--quiz-font-size-md);
+}
+
+/* --- Modern Hero Section --- */
+.quiz-page .hero-section {
+    position: relative;
+    padding: var(--quiz-space-3xl) 0;
+    background: var(--quiz-surface);
+    overflow: hidden;
+}
+
+.quiz-page .hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--quiz-primary-lighter) 0%, var(--quiz-surface) 70%); /* Adjusted gradient */
+    z-index: var(--quiz-z-deco); /* Changed from below, to be consistent with deco blur z-index */
+}
+
+.quiz-page .hero-section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60%;
+    height: 100%;
+    background-image: url('../../assets/images/personal/quiz-pattern.svg');
+    background-repeat: no-repeat;
+    background-position: top right;
+    background-size: contain;
+    opacity: 0.08;
+    z-index: var(--quiz-z-deco); /* Consistent z-index */
+}
+
+.quiz-page .hero-content {
+    position: relative;
+    z-index: var(--quiz-z-normal);
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 0 var(--quiz-space-md);
+}
+
+.quiz-page .hero-badge {
+    display: inline-block;
+    background-color: var(--quiz-primary-lighter);
+    color: var(--quiz-primary-dark);
+    font-weight: 600;
+    font-size: var(--quiz-font-size-sm);
+    padding: var(--quiz-space-xs) var(--quiz-space-sm);
+    border-radius: var(--quiz-radius-full);
+    margin-bottom: var(--quiz-space-md);
+    box-shadow: var(--quiz-shadow-sm);
+    transform: translateY(0);
+    transition: transform var(--quiz-transition-normal), box-shadow var(--quiz-transition-normal);
+}
+
+.quiz-page .hero-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--quiz-shadow-md);
+}
+
+.quiz-page .hero-content h1 {
+    color: var(--quiz-primary-dark);
+    font-size: var(--quiz-font-size-4xl);
+    font-weight: 800;
+    margin-bottom: var(--quiz-space-md);
+    line-height: 1.1;
+}
+
+.quiz-page .subheadline {
+    color: var(--quiz-gray-600);
+    font-size: var(--quiz-font-size-lg);
+    line-height: 1.5;
+    margin-bottom: var(--quiz-space-lg);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.quiz-page .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--quiz-space-md);
+    justify-content: center;
+    margin-top: var(--quiz-space-lg);
+}
+
+/* --- Redesigned Accordion --- */
+.quiz-page .quiz-accordion-container {
+    max-width: 1000px;
+    margin: var(--quiz-space-xl) auto; /* Added top/bottom margin */
+    padding: 0 var(--quiz-space-md);
+}
+
+.quiz-page .section-title {
+    color: var(--quiz-primary-dark);
+    font-size: var(--quiz-font-size-2xl);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: var(--quiz-space-sm);
+}
+
+.quiz-page .section-description {
+    color: var(--quiz-gray-600);
+    font-size: var(--quiz-font-size-md);
+    line-height: 1.5;
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto var(--quiz-space-xl);
+}
+
+.quiz-page .accordion {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.quiz-page .accordion-item {
+    background-color: var(--quiz-surface);
+    border-radius: var(--quiz-radius-lg);
+    margin-bottom: var(--quiz-space-md);
+    overflow: hidden;
+    box-shadow: var(--quiz-shadow-md);
+    transition: box-shadow var(--quiz-transition-normal), transform var(--quiz-transition-normal);
+    border: 1px solid var(--quiz-gray-200);
+}
+
+.quiz-page .accordion-item:hover {
+    box-shadow: var(--quiz-shadow-lg);
+    transform: translateY(-3px);
+}
+
+.quiz-page .accordion-header {
+    margin: 0;
+}
+
+.quiz-page .accordion-button {
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Push icon to the right */
+    justify-content: space-between;
     width: 100%;
-    padding: var(--space-lg);
-    font-size: var(--font-size-lg); /* Make theme titles prominent */
-    font-weight: var(--font-weight-semibold);
-    color: var(--pp-color-primary);
-    text-align: left;
-    background-color: var(--rofilid-white);
+    padding: var(--quiz-space-lg);
+    font-size: var(--quiz-font-size-lg);
+    font-weight: 600;
+    color: var(--quiz-primary-dark);
+    background-color: var(--quiz-surface); /* Changed from var(--quiz-surface) to var(--quiz-surface) - no change, was fine */
     border: none;
-    border-radius: 0; /* Button itself has no radius; item handles it */
     cursor: pointer;
-    transition: background-color var(--transition-fast), color var(--transition-fast);
-    line-height: 1.4; /* Improve text wrapping */
+    transition: background-color var(--quiz-transition-normal), color var(--quiz-transition-normal);
+    text-align: left;
+    line-height: 1.4;
+    border-radius: 0; /* Buttons inside item should not have individual radius if item has overflow:hidden */
 }
-.accordion-button::after { /* Styling for the chevron icon via CSS */
+
+.quiz-page .accordion-button::after {
     content: '\f078'; /* Font Awesome chevron-down */
     font-family: 'Font Awesome 6 Free';
-    font-weight: 900; /* FA Solid */
-    font-size: 0.8em; /* Adjust size relative to button font */
-    color: var(--accordion-icon-color);
-    margin-left: var(--space-md);
-    transition: transform var(--transition-normal) ease-in-out, color var(--transition-normal);
-    flex-shrink: 0; /* Prevent icon from shrinking */
+    font-weight: 900;
+    font-size: 0.8em;
+    margin-left: var(--quiz-space-md);
+    transition: transform var(--quiz-transition-normal);
+    color: var(--quiz-primary);
+    flex-shrink: 0;
 }
 
-.accordion-button:hover {
-    background-color: var(--accordion-btn-hover-bg);
-    color: var(--accordion-btn-hover-color);
-}
-.accordion-button:hover::after {
-    color: var(--accordion-btn-hover-color);
+.quiz-page .accordion-button:hover {
+    background-color: var(--quiz-primary-lighter);
 }
 
-.accordion-button:focus { outline: none; } /* Handled by focus-visible */
-.accordion-button:focus-visible {
-    z-index: 1;
+.quiz-page .accordion-button:focus {
     outline: none;
-    box-shadow: var(--shadow-focus); /* Use global focus shadow */
-    /* Ensure focus visible style covers the button well */
-    border-radius: var(--radius-sm); /* Apply radius for focus on button itself */
 }
 
-/* When expanded (button not collapsed) */
-.accordion-button:not(.collapsed) {
-    background-color: var(--pp-color-primary-lightest);
-    color: var(--pp-color-primary-dark);
-    /* Add subtle bottom border to separate from content visually */
-    box-shadow: inset 0 -1px 0 var(--pp-color-border-light);
+.quiz-page .accordion-button:focus-visible {
+    box-shadow: var(--quiz-shadow-focus);
+    z-index: var(--quiz-z-above); /* Ensure focus outline is visible */
 }
-.accordion-button:not(.collapsed)::after {
+
+.quiz-page .accordion-button:not(.collapsed) {
+    background-color: var(--quiz-primary-lighter);
+    color: var(--quiz-primary-dark);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05) inset; /* subtle separator from content */
+}
+
+.quiz-page .accordion-button:not(.collapsed)::after {
     transform: rotate(-180deg);
-    color: var(--accordion-active-icon-color);
+    color: var(--quiz-primary);
 }
 
-/* Accordion Collapse Panel */
-.accordion-collapse {
+.quiz-page .accordion-collapse {
     overflow: hidden;
-    transition: height 0.35s ease-in-out, visibility 0s linear 0.35s;
     height: 0;
     visibility: hidden;
-    will-change: height; /* Hint for performance */
+    transition: height var(--quiz-transition-normal) cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear var(--quiz-transition-normal); /* Smoother cubic-bezier */
+    will-change: height;
 }
-.accordion-collapse.show {
-    height: auto; /* This will be overridden by JS to scrollHeight, then back to auto */
+
+.quiz-page .accordion-collapse.show {
+    height: auto; /* JS will set specific height during transition, then auto */
     visibility: visible;
-    transition: height 0.35s ease-in-out, visibility 0s linear 0s;
+    transition: height var(--quiz-transition-normal) cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0s;
 }
 
-.accordion-body {
-    padding: var(--space-lg);
-    background-color: var(--rofilid-white); /* Ensure distinct background for content */
-    /* No top border needed if accordion-button:not(.collapsed) has box-shadow */
+.quiz-page .accordion-body {
+    padding: var(--quiz-space-lg);
+    background-color: var(--quiz-surface-alt); /* Slightly different background for content area */
+    border-top: 1px solid var(--quiz-gray-200); /* Separator line */
 }
 
-/* Styles for category grid within accordion body, inherit from personal.css */
-.accordion-body .category-grid {
-    gap: var(--space-lg); /* Consistent gap for category cards */
+/* --- Redesigned Category Cards --- */
+.quiz-page .category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--quiz-space-md);
 }
 
-/* Style category cards inside accordion (can reuse from personal.css) */
-.accordion-body .category-card {
-    /* Most styles (.card, .category-icon, h4, p, .btn) come from personal.css */
-    /* Subtle adjustments if needed */
-    box-shadow: var(--shadow-sm); /* Lighter shadow inside accordion */
-    padding: var(--space-lg); /* Default card padding is fine */
+.quiz-page .category-card {
+    background-color: var(--quiz-surface);
+    border-radius: var(--quiz-radius-lg);
+    box-shadow: var(--quiz-shadow-md);
+    transition: transform var(--quiz-transition-normal), box-shadow var(--quiz-transition-normal);
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--quiz-gray-200);
+    height: 100%; /* Ensure cards in a row are same height if content varies slightly */
+    display: flex; /* Added for better internal layout control */
+    flex-direction: column; /* Added */
 }
-.accordion-body .category-card:hover {
-    transform: translateY(-4px) scale(1.01); /* Less pronounced hover effect */
-    box-shadow: var(--shadow-md);
+
+.quiz-page .category-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--quiz-primary-gradient);
+    z-index: 1;
+    opacity: 0.8;
+    transition: height var(--quiz-transition-normal), opacity var(--quiz-transition-normal);
 }
-.accordion-body .category-card h4 {
-    font-size: var(--font-size-md); /* Slightly smaller heading inside accordion cards */
-    margin-bottom: var(--space-sm);
+
+.quiz-page .category-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--quiz-shadow-lg);
+    border-color: var(--quiz-primary-lighter); /* Match ::before on hover */
 }
-.accordion-body .category-card p {
-    font-size: var(--font-size-sm);
-    margin-bottom: var(--space-md); /* Adequate space before button */
+
+.quiz-page .category-card:hover::before {
+    height: 6px;
+    opacity: 1;
+}
+
+.quiz-page .card-content { /* Renamed from .category-card .card-content to be more general if needed */
+    padding: var(--quiz-space-lg);
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Ensure content takes full height of card */
+    flex-grow: 1; /* Allows this to take space if card is flex container */
+}
+
+.quiz-page .category-icon {
+    font-size: 1.75rem; /* 28px */
+    color: var(--quiz-primary);
+    margin-bottom: var(--quiz-space-sm);
+    background-color: var(--quiz-primary-lighter);
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--quiz-radius-md);
+    transition: transform var(--quiz-transition-fast), background-color var(--quiz-transition-normal), color var(--quiz-transition-normal);
+}
+
+.quiz-page .category-card:hover .category-icon {
+    transform: scale(1.1);
+    background-color: var(--quiz-primary-light);
+    color: white;
+}
+
+.quiz-page .category-card h4 {
+    font-size: var(--quiz-font-size-md);
+    font-weight: 600;
+    color: var(--quiz-primary-dark);
+    margin-bottom: var(--quiz-space-xs);
+    transition: color var(--quiz-transition-normal);
+}
+
+.quiz-page .category-card:hover h4 {
+    color: var(--quiz-primary);
+}
+
+.quiz-page .category-card p {
+    color: var(--quiz-gray-600);
+    font-size: var(--quiz-font-size-sm);
     line-height: 1.5;
-    min-height: 3em; /* Ensure a minimum height for text consistency */
-}
-.accordion-body .category-card .start-quiz-btn {
-    width: 100%; /* Make buttons full width within the card for touch targets */
-    font-size: var(--font-size-sm);
-    padding: var(--space-sm) var(--space-md);
+    margin-bottom: var(--quiz-space-md);
+    flex-grow: 1; /* Allows paragraph to push button down */
 }
 
-/* --- Responsive Adjustments for Accordion & Quiz Page Specifics --- */
-@media (max-width: 991px) { /* Tablet */
-    .accordion {
-        max-width: 720px;
+.quiz-page .start-quiz-btn { /* This is a specific button class within category cards */
+    margin-top: auto; /* Pushes button to the bottom */
+    align-self: stretch; /* Makes button full width of its container if context allows */
+    padding: var(--quiz-space-sm) var(--quiz-space-md);
+    font-size: var(--quiz-font-size-sm);
+    border-radius: var(--quiz-radius-md);
+    background-color: var(--quiz-secondary); /* Already styled as a btn-secondary essentially */
+    color: white;
+    border: none; /* Explicitly no border */
+    transition: all var(--quiz-transition-normal);
+}
+
+.quiz-page .start-quiz-btn:hover {
+    background-color: var(--quiz-secondary-light);
+    transform: translateY(-2px);
+    box-shadow: var(--quiz-shadow-md); /* Add subtle shadow on hover */
+}
+
+/* --- Redesigned Quiz Modal --- */
+.quiz-page .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(33, 37, 41, 0.7); /* Using --quiz-gray-900 with alpha */
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: var(--quiz-z-overlay);
+    padding: var(--quiz-space-md);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--quiz-transition-normal), visibility 0s linear var(--quiz-transition-normal);
+}
+
+.quiz-page .modal-overlay:not([hidden]) { /* .visible class from JS for transitions */
+    opacity: 1;
+    visibility: visible;
+    transition: opacity var(--quiz-transition-normal), visibility 0s linear 0s;
+}
+
+.quiz-page .modal-content {
+    background-color: var(--quiz-surface);
+    border-radius: var(--quiz-radius-lg);
+    box-shadow: var(--quiz-shadow-xl);
+    width: 100%;
+    max-width: 600px;
+    padding: var(--quiz-space-lg);
+    position: relative;
+    transform: translateY(20px) scale(0.98); /* Added scale for entry animation */
+    opacity: 0;
+    transition: transform var(--quiz-transition-normal) cubic-bezier(0.4, 0, 0.2, 1), opacity var(--quiz-transition-normal) cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden; /* Clip any internal overflows initially */
+}
+
+.quiz-page .modal-overlay:not([hidden]) .modal-content { /* .visible class from JS for transitions */
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+.quiz-page .modal-close-btn {
+    position: absolute;
+    top: var(--quiz-space-sm);
+    right: var(--quiz-space-sm);
+    background-color: transparent;
+    border: none;
+    color: var(--quiz-gray-500);
+    font-size: var(--quiz-font-size-lg);
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--quiz-radius-full);
+    transition: all var(--quiz-transition-normal);
+    z-index: var(--quiz-z-above); /* Ensure it's above other modal content if overlapping */
+}
+
+.quiz-page .modal-close-btn:hover {
+    background-color: var(--quiz-gray-200);
+    color: var(--quiz-gray-800);
+    transform: rotate(90deg); /* Fun little rotation on hover */
+}
+
+.quiz-page .modal-title {
+    font-size: var(--quiz-font-size-xl);
+    font-weight: 700;
+    color: var(--quiz-primary-dark);
+    margin-bottom: var(--quiz-space-md);
+    text-align: center;
+}
+
+/* Assuming CSS variables --quiz-current-question and --quiz-total-questions will be set by JS on this element or an ancestor */
+.quiz-page .quiz-modal-progress { /* This is the BAR TRACK */
+    position: relative;
+    width: 100%;
+    height: 8px; /* Slightly thicker bar */
+    background-color: var(--quiz-gray-200);
+    border-radius: var(--quiz-radius-full);
+    margin-bottom: var(--quiz-space-xs); /* Reduced margin as text is separate */
+    overflow: hidden;
+}
+
+.quiz-page .quiz-modal-progress::before { /* This is the BAR FILL */
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: var(--quiz-primary-gradient);
+    border-radius: var(--quiz-radius-full); /* Ensure fill is also rounded */
+    width: calc((var(--quiz-current-question, 0) / var(--quiz-total-questions, 1)) * 100%); /* Default to 0/1 to prevent calc error if vars not set */
+    transition: width var(--quiz-transition-normal) ease-out;
+}
+
+.quiz-page .quiz-modal-progress-text { /* This is the "Question X of Y" text container */
+    font-size: var(--quiz-font-size-sm);
+    color: var(--quiz-gray-600);
+    text-align: center;
+    margin-bottom: var(--quiz-space-md); /* Existing style */
+}
+/* Style for the actual numbers if needed */
+.quiz-page .quiz-modal-progress-text strong {
+    color: var(--quiz-primary-dark);
+}
+
+
+.quiz-page .quiz-modal-question-area {
+    font-size: var(--quiz-font-size-lg);
+    font-weight: 600;
+    color: var(--quiz-gray-800);
+    margin-bottom: var(--quiz-space-lg);
+    line-height: 1.4;
+    text-align: center; /* Centering question text */
+}
+.quiz-page .quiz-modal-question-area .q-num {
+    color: var(--quiz-primary);
+    font-weight: 700;
+    margin-right: var(--quiz-space-2xs);
+}
+
+.quiz-page .quiz-modal-options-area {
+    display: grid;
+    gap: var(--quiz-space-sm);
+    margin-bottom: var(--quiz-space-lg);
+}
+
+/* Changed .quiz-option-btn to .quiz-option to match HTML/JS */
+.quiz-page .quiz-option {
+    background-color: var(--quiz-surface);
+    border: 2px solid var(--quiz-gray-300);
+    border-radius: var(--quiz-radius-md);
+    padding: var(--quiz-space-md);
+    text-align: left;
+    font-size: var(--quiz-font-size-md);
+    color: var(--quiz-gray-700);
+    transition: all var(--quiz-transition-normal);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden; /* For ::before if any fancy effects added */
+    font-weight: 500; /* Standard weight */
+}
+
+.quiz-page .quiz-option:hover {
+    border-color: var(--quiz-primary-light);
+    background-color: var(--quiz-primary-lighter);
+    color: var(--quiz-primary-dark);
+}
+.quiz-page .quiz-option:focus-visible {
+    box-shadow: var(--quiz-shadow-focus);
+    outline: none;
+}
+
+.quiz-page .quiz-option.selected {
+    border-color: var(--quiz-primary);
+    background-color: var(--quiz-primary-lighter);
+    color: var(--quiz-primary-dark);
+    font-weight: 600; /* Bolder when selected */
+}
+
+.quiz-page .quiz-option.correct {
+    border-color: var(--quiz-success) !important; /* Ensure override */
+    background-color: var(--quiz-success-light) !important;
+    color: var(--quiz-gray-800) !important; /* Darker text for readability on light green */
+    font-weight: 600;
+}
+
+.quiz-page .quiz-option.incorrect {
+    border-color: var(--quiz-error) !important; /* Ensure override */
+    background-color: var(--quiz-error-light) !important;
+    color: var(--quiz-gray-800) !important; /* Darker text for readability on light red */
+    font-weight: 600;
+}
+
+/* Decorative bar for selected/correct/incorrect states */
+.quiz-page .quiz-option::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0; /* ensure it spans full height */
+    height: 100%;
+    width: 5px; /* Thicker bar */
+    background-color: transparent;
+    transition: background-color var(--quiz-transition-normal);
+    border-top-left-radius: var(--quiz-radius-md); /* Match button radius */
+    border-bottom-left-radius: var(--quiz-radius-md);
+}
+
+.quiz-page .quiz-option.selected::before {
+    background-color: var(--quiz-primary);
+}
+
+.quiz-page .quiz-option.correct::before {
+    background-color: var(--quiz-success);
+}
+
+.quiz-page .quiz-option.incorrect::before {
+    background-color: var(--quiz-error);
+}
+/* Adjust padding for text with the ::before bar */
+.quiz-page .quiz-option {
+    padding-left: calc(var(--quiz-space-md) + 5px + var(--quiz-space-xs)); /* Original padding + bar width + some space */
+}
+
+
+.quiz-page .quiz-modal-feedback {
+    padding: var(--quiz-space-md);
+    border-radius: var(--quiz-radius-md);
+    margin-bottom: var(--quiz-space-lg);
+    font-size: var(--quiz-font-size-md);
+    line-height: 1.5;
+    background-color: var(--quiz-primary-lighter);
+    border-left: 4px solid var(--quiz-primary);
+    animation: fadeIn var(--quiz-transition-normal) ease-out; /* Added ease-out */
+}
+
+.quiz-page .quiz-modal-feedback.correct {
+    background-color: var(--quiz-success-light);
+    border-left-color: var(--quiz-success);
+    color: var(--quiz-gray-800); /* Ensure text is readable */
+}
+
+.quiz-page .quiz-modal-feedback.incorrect {
+    background-color: var(--quiz-error-light);
+    border-left-color: var(--quiz-error);
+    color: var(--quiz-gray-800); /* Ensure text is readable */
+}
+.quiz-page .quiz-modal-feedback strong {
+    font-weight: 700;
+}
+
+.quiz-page .quiz-modal-results {
+    text-align: center;
+    animation: fadeIn var(--quiz-transition-normal) ease-out; /* Added ease-out */
+}
+
+/* Changed .quiz-result-score to .quiz-final-score to match HTML/JS */
+.quiz-page .quiz-final-score {
+    font-size: var(--quiz-font-size-3xl);
+    font-weight: 700;
+    color: var(--quiz-primary-dark);
+    margin-bottom: var(--quiz-space-md);
+}
+.quiz-page .quiz-final-score strong {
+    color: var(--quiz-primary); /* Highlight the score numbers */
+}
+
+/* Changed .quiz-result-message to .quiz-feedback-message to match HTML/JS */
+.quiz-page .quiz-feedback-message {
+    font-size: var(--quiz-font-size-lg);
+    color: var(--quiz-gray-700);
+    margin-bottom: var(--quiz-space-lg);
+    line-height: 1.5;
+}
+
+.quiz-page .quiz-modal-navigation {
+    display: flex;
+    justify-content: center;
+    gap: var(--quiz-space-md);
+    margin-top: var(--quiz-space-lg);
+}
+
+.quiz-page .quiz-modal-navigation .btn {
+    min-width: 140px;
+}
+
+/* --- Animations --- */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
     }
-    .accordion-button {
-        font-size: var(--font-size-md);
-    }
-    .accordion-body .category-grid {
-        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-    }
-    .accordion-body .category-card p {
-        min-height: 3.5em;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
-@media (max-width: 767px) { /* Mobile */
-    .quiz-page-intro.hero-section {
-        padding-block: var(--space-2xl) var(--space-xl);
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: var(--quiz-shadow-md);
     }
-    .quiz-page-intro .hero-actions .btn {
-        width: 100%; /* Full width buttons on mobile for intro */
-        min-width: unset;
+    50% {
+        transform: scale(1.03); /* Subtler pulse */
+        box-shadow: var(--quiz-shadow-lg);
     }
-
-    .accordion {
-        margin-bottom: var(--space-xl); /* Add some bottom margin if it's the last element */
-    }
-    .accordion-item {
-        margin-bottom: var(--space-md);
-    }
-    .accordion-button {
-        padding: var(--space-md);
-        font-size: var(--font-size-base); /* Readable on mobile */
-    }
-    .accordion-body {
-        padding: var(--space-md);
-    }
-    .accordion-body .category-grid {
-        grid-template-columns: 1fr; /* Stack category cards on small mobile */
-        gap: var(--space-md);
-    }
-     @media (min-width: 480px) and (max-width: 767px) {
-        .accordion-body .category-grid {
-             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* 2-col for mid-mobile */
-        }
-    }
-    .accordion-body .category-card {
-        padding: var(--space-md);
-    }
-    .accordion-body .category-card p {
-        min-height: auto; /* Allow natural height on mobile stack */
-        margin-bottom: var(--space-sm);
+    100% {
+        transform: scale(1);
+        box-shadow: var(--quiz-shadow-md);
     }
 }
 
-/* --- Quiz Modal Overrides (IF any needed, currently reusing personal.css modal styles) --- */
-/*
-.quiz-modal-content {
-    Example: max-width: 800px; for wider modal specifically on this page
+.quiz-page .pulse-animation {
+    animation: pulse 1.5s infinite ease-in-out;
 }
-*/
 
-
-/* --- Print Styles (Significantly Improved for Clarity) --- */
-@media print {
-    body { /* Ensure base print from personal.css is active */
-        font-family: 'Times New Roman', Times, serif !important;
-        font-size: 10pt !important;
-        line-height: 1.3 !important;
-        color: #000 !important;
-        background: #fff !important;
-        margin: 1cm !important;
+/* --- Media Queries --- */
+@media (max-width: 991px) { /* Approx tablet breakpoint */
+    .quiz-page .hero-content h1 {
+        font-size: var(--quiz-font-size-3xl);
     }
-    .site-header, .site-footer, .deco-blur, /* Common hidden elements */
-    .quiz-page-intro, /* Hide entire intro section */
-    #full-financial-challenge > .container > .section-title,
-    #full-financial-challenge > .container > .section-description,
-    .accordion-button, /* Hide interactive accordion buttons */
-    .start-quiz-btn, /* Hide all quiz start buttons */
-    .category-icon,  /* Hide icons in category cards */
-    #quiz-modal /* Hide modal itself */
-    {
-        display: none !important;
-        visibility: hidden !important;
+    
+    .quiz-page .subheadline {
+        font-size: var(--quiz-font-size-md);
+    }
+    
+    .quiz-page .accordion-button {
+        font-size: var(--quiz-font-size-md);
+        padding: var(--quiz-space-md) var(--quiz-space-lg); /* Adjust padding */
+    }
+    
+    .quiz-page .category-grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     }
 
-    main#main-content {
-        padding-top: 0 !important;
+    .quiz-page .modal-content {
+        max-width: 90vw; /* Allow modal to use more viewport width */
+    }
+}
+
+@media (max-width: 767px) { /* Approx mobile breakpoint */
+    .quiz-page .section-padding {
+        padding-top: var(--quiz-space-xl);
+        padding-bottom: var(--quiz-space-xl);
+    }
+    .quiz-page .section-padding--large {
+        padding-top: var(--quiz-space-2xl);
+        padding-bottom: var(--quiz-space-2xl);
     }
 
-    .accordion {
-        max-width: 100% !important;
-        margin: 0 !important;
+    .quiz-page .hero-section {
+        padding: var(--quiz-space-xl) 0;
+    }
+    
+    .quiz-page .hero-content h1 {
+        font-size: var(--quiz-font-size-2xl);
+    }
+    
+    .quiz-page .subheadline {
+        font-size: var(--quiz-font-size-base);
+    }
+    
+    .quiz-page .hero-actions {
+        flex-direction: column;
+        /* width: 100%; Handled by button width below */
+    }
+    
+    .quiz-page .hero-actions .btn {
+        width: 100%; /* Make hero buttons full width */
+        max-width: 350px; /* But not too wide */
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .quiz-page .section-title {
+        font-size: var(--quiz-font-size-xl);
+    }
+    
+    .quiz-page .section-description {
+        font-size: var(--quiz-font-size-base);
+    }
+    
+    .quiz-page .accordion-button {
+        padding: var(--quiz-space-md);
+        font-size: var(--quiz-font-size-base);
+    }
+    
+    .quiz-page .accordion-body {
+        padding: var(--quiz-space-md);
+    }
+    
+    .quiz-page .category-grid {
+        grid-template-columns: 1fr; /* Stack cards on mobile */
+    }
+    
+    .quiz-page .modal-content {
+        padding: var(--quiz-space-md);
+        width: 95vw; /* More width for modal on small screens */
+        max-height: 90vh;
+        overflow-y: auto; /* Allow scrolling within modal if content overflows */
+    }
+    
+    .quiz-page .modal-title {
+        font-size: var(--quiz-font-size-lg);
+    }
+    
+    .quiz-page .quiz-modal-question-area {
+        font-size: var(--quiz-font-size-md);
+    }
+    
+    .quiz-page .quiz-option { /* Adjusted from .quiz-option-btn */
+        padding: var(--quiz-space-sm) calc(var(--quiz-space-sm) + 5px + var(--quiz-space-xs)); /* Adjust padding for mobile */
+        font-size: var(--quiz-font-size-base);
+    }
+    
+    .quiz-page .quiz-modal-navigation {
+        flex-direction: column;
+    }
+    .quiz-page .quiz-modal-navigation .btn {
+        width: 100%; /* Full width navigation buttons in modal on mobile */
     }
 
-    .accordion-item {
-        border: none !important;
-        box-shadow: none !important;
-        margin-bottom: 1.5cm !important; /* Space between printed themes */
-        page-break-inside: avoid !important;
-        overflow: visible !important;
+    .quiz-page .deco-blur.blur-1 {
+        width: 200px; height: 200px; filter: blur(80px); left: -50px;
+    }
+    .quiz-page .deco-blur.blur-2 {
+        width: 250px; height: 250px; filter: blur(100px); right: -80px;
+    }
+    .quiz-page .deco-blur.blur-3 {
+        width: 180px; height: 180px; filter: blur(70px);
+    }
+}
+
+@media (max-width: 480px) { /* Extra small screens */
+    :root { /* Scale down some spacing and font sizes for very small screens */
+        --quiz-font-size-base: 0.9rem; /* 14.4px */
+        --quiz-font-size-md: 1rem;    /* 16px */
+        --quiz-font-size-lg: 1.1rem;   /* 17.6px */
+        --quiz-font-size-xl: 1.25rem;  /* 20px */
+        --quiz-font-size-2xl: 1.5rem; /* 24px */
+
+        --quiz-space-sm: 0.75rem; /* 12px */
+        --quiz-space-md: 1rem;   /* 16px */
+        --quiz-space-lg: 1.5rem; /* 24px */
     }
 
-    .accordion-button { /* Hidden, but if for some reason it appears, ensure no bg */
-        background: none !important;
+    .quiz-page .hero-content h1 {
+        font-size: var(--quiz-font-size-xl); /* Using the adjusted XL for small screens */
     }
-    .accordion-button::after { /* Hide CSS-generated icon */
-        display: none !important;
+    .quiz-page .subheadline {
+        font-size: var(--quiz-font-size-sm); /* Adjusted SM */
     }
-
-    /* Theme Title for Print */
-    .accordion-header::before { /* Use header text if button hidden, or override to be safe */
-        content: "" !important; /* Clear default if any */
+    .quiz-page .section-title {
+        font-size: var(--quiz-font-size-lg); /* Adjusted LG */
     }
-    .accordion-item[data-theme-id="1"] .accordion-header::before { content: 'Theme 1: Your Financial Groundwork'; }
-    .accordion-item[data-theme-id="2"] .accordion-header::before { content: 'Theme 2: Building Your Financial Future'; }
-    .accordion-item[data-theme-id="3"] .accordion-header::before { content: 'Theme 3: Investing & Growth'; }
-    .accordion-item[data-theme-id="4"] .accordion-header::before { content: 'Theme 4: Protection & Long-Term Security'; }
-
-    .accordion-header::before { /* Common styling for generated theme titles */
-        display: block;
-        font-size: 14pt;
-        font-weight: bold;
-        color: #000;
-        margin-bottom: 0.7cm;
-        padding-bottom: 0.2cm;
-        border-bottom: 1px solid #666;
-        page-break-after: avoid; /* Don't break after title */
+    .quiz-page .modal-title {
+        font-size: var(--quiz-font-size-md); /* Adjusted MD */
     }
-
-
-    .accordion-collapse, .accordion-collapse.show {
-        display: block !important; /* Ensure visibility */
-        height: auto !important;
-        visibility: visible !important;
-        overflow: visible !important;
-        background: none !important;
+    .quiz-page .quiz-modal-question-area {
+        font-size: var(--quiz-font-size-sm);
     }
-
-    .accordion-body {
-        padding: 0 !important; /* Remove padding */
-        border: none !important; /* Remove body border */
-        background: none !important;
-    }
-
-    .accordion-body .category-grid {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr !important; /* Two columns for categories */
-        gap: 0.8cm 0.5cm !important; /* Row and column gap */
-        margin-top: 0 !important;
-    }
-
-    .accordion-body .category-card.card {
-        page-break-inside: avoid !important;
-        border: 1px solid #ccc !important; /* Light border for cards */
-        padding: 0.4cm !important;
-        background: #fff !important;
-        box-shadow: none !important;
-        margin-bottom: 0 !important;
-        display: block !important; /* Ensure block display for consistent rendering */
-        height: auto !important;
-        width: auto !important;
-    }
-    .accordion-body .category-card .card-content {
-         padding: 0 !important;
-    }
-
-    .accordion-body .category-card h4 {
-        font-size: 10pt !important;
-        font-weight: bold !important;
-        margin-bottom: 0.2cm !important;
-        color: #000 !important;
-    }
-    .accordion-body .category-card p {
-        font-size: 9pt !important;
-        margin-bottom: 0 !important;
-        color: #333 !important;
-        line-height: 1.2 !important;
-        min-height: 0 !important; /* Reset min-height */
+    .quiz-page .quiz-option {
+         font-size: var(--quiz-font-size-sm);
+         padding-top: var(--quiz-space-2xs); /* Further reduce padding */
+         padding-bottom: var(--quiz-space-2xs);
     }
 }
