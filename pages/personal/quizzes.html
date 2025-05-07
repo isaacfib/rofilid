@@ -98,7 +98,7 @@
                          <div id="theme-content-1" class="accordion-collapse" role="region" aria-labelledby="theme-header-1">
                             <div class="accordion-body">
                                 <div class="category-grid">
-                                    {/* Card structure unchanged, styling via CSS */}
+                                    <!-- Card structure unchanged, styling via CSS -->
                                     <article class="category-card card" data-category-id="income-vitals" aria-labelledby="category-title-1"> <div class="card-content"> <i class="fas fa-piggy-bank category-icon" aria-hidden="true"></i> <h4 id="category-title-1">Income & Vitals</h4> <p>Know your financial start point.</p> <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" data-quiz-id="income-vitals"><i class="fas fa-play" aria-hidden="true"></i> Start Quiz</button> </div> </article>
                                     <article class="category-card card" data-category-id="savings-essentials" aria-labelledby="category-title-2"> <div class="card-content"> <i class="fas fa-sack-dollar category-icon" aria-hidden="true"></i> <h4 id="category-title-2">Savings Essentials</h4> <p>Fundamentals of building savings.</p> <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" data-quiz-id="savings-essentials"><i class="fas fa-play" aria-hidden="true"></i> Start Quiz</button> </div> </article>
                                     <article class="category-card card" data-category-id="budgeting-basics" aria-labelledby="category-title-3"> <div class="card-content"> <i class="fas fa-calculator category-icon" aria-hidden="true"></i> <h4 id="category-title-3">Budgeting Basics</h4> <p>The art of planning your money.</p> <button type="button" class="btn btn-secondary btn-icon start-quiz-btn" data-quiz-id="budgeting-basics"><i class="fas fa-play" aria-hidden="true"></i> Start Quiz</button> </div> </article>
@@ -175,25 +175,25 @@
 
     <!-- Quiz Modal (Structure kept, styling via quizzes.css) -->
     <div id="quiz-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="quiz-modal-title" aria-describedby="quiz-modal-progress-description" hidden>
-        {/* Note: aria-describedby might better point to a descriptive text if the progress bar itself isn't descriptive enough */}
+        <!-- Note: aria-describedby might better point to a descriptive text if the progress bar itself isn't descriptive enough -->
         <div class="modal-content quiz-modal-content">
             <button type="button" id="quiz-modal-close" class="modal-close-btn" aria-label="Close Quiz"><i class="fas fa-times" aria-hidden="true"></i></button>
             <h3 id="quiz-modal-title" class="modal-title text-center mb-md">Financial Fitness Quiz</h3>
 
-             {/* Updated Progress Area */}
-            <div id="quiz-modal-progress-container" class="mb-md"> {/* Wrapper for text + bar */}
-                 <div id="quiz-modal-progress" class="quiz-modal-progress-bar" aria-hidden="true"></div> {/* Visual bar */}
-                 <p id="quiz-modal-progress-description" class="text-center text-muted" aria-live="polite"> {/* Descriptive text */}
+             <!-- Updated Progress Area -->
+            <div id="quiz-modal-progress-container" class="mb-md"> <!-- Wrapper for text + bar -->
+                 <div id="quiz-modal-progress" class="quiz-modal-progress-bar" aria-hidden="true"></div> <!-- Visual bar -->
+                 <p id="quiz-modal-progress-description" class="text-center text-muted" aria-live="polite"> <!-- Descriptive text -->
                      Question <span id="quiz-modal-q-current">1</span> of <span id="quiz-modal-q-total">5</span>
                  </p>
              </div>
-             {/* End Updated Progress Area */}
+             <!-- End Updated Progress Area -->
 
             <div id="quiz-modal-question" class="quiz-modal-question-area h4 mb-lg" aria-live="polite">
                 <!-- Question text injected by JS -->
             </div>
             <div id="quiz-modal-options" class="quiz-modal-options-area d-grid gap-md mb-lg" role="radiogroup" aria-labelledby="quiz-modal-question">
-                {/* Option buttons injected by JS - structure uses `.btn .quiz-option` */}
+                <!-- Option buttons injected by JS - structure uses .btn .quiz-option -->
             </div>
             <div id="quiz-modal-feedback" class="quiz-modal-feedback" hidden aria-live="polite">
                  <!-- Feedback text injected by JS -->
@@ -213,7 +213,7 @@
     <footer class="site-footer" id="footer-contact" role="contentinfo">
         <div class="container">
              <div class="footer-content">
-                 {/* Column structure unchanged */}
+                 <!-- Column structure unchanged -->
                  <div class="footer-column">
                      <h4>Personal Finance</h4>
                     <ul class="list-unstyled">
