@@ -1,874 +1,639 @@
 /* ==========================================================================
-   ROFILID Quizzes Page Styles
+   ROFILID Financial Fitness Challenge - Quizzes Page Styles
+   Version: 2.0.0 (Independent & Refined)
    Location: /pages/personal/quizzes.css
-   Dependencies: personal.css (for base styles, variables, utilities)
+   Description: Fully independent stylesheet for quizzes.html.
+                Includes base styles, layout, header, footer,
+                and all quiz-specific component styling.
    ========================================================================== */
 
-/* --- Modern Design System Variables --- */
+/* --- [SECTION 1] Design System & Global Variables --- */
 :root {
-    /* Primary palette - refined with more depth and modern tones */
-    --quiz-primary: #0a5d75;
-    --quiz-primary-light: #1a8aa6;
-    --quiz-primary-lighter: #e6f3f7;
-    --quiz-primary-dark: #084352;
-    --quiz-primary-gradient: linear-gradient(135deg, var(--quiz-primary-light) 0%, var(--quiz-primary) 100%);
-    
-    /* Secondary palette - vibrant and complementary */
-    --quiz-secondary: #ff7e50;
-    --quiz-secondary-light: #ff9a73;
-    --quiz-secondary-lighter: #ffebe3;
-    --quiz-secondary-dark: #e55d2f;
-    
-    /* Neutral palette - for sophisticated UI elements */
-    --quiz-gray-100: #f8f9fa;
-    --quiz-gray-200: #e9ecef;
-    --quiz-gray-300: #dee2e6;
-    --quiz-gray-400: #ced4da;
-    --quiz-gray-500: #adb5bd;
-    --quiz-gray-600: #6c757d;
-    --quiz-gray-700: #495057;
-    --quiz-gray-800: #343a40;
-    --quiz-gray-900: #212529;
-    
-    /* Surface colors */
-    --quiz-surface: #ffffff;
-    --quiz-surface-alt: #f6f9fc; /* Used for section bg-light */
-    
-    /* Success/Error feedback colors */
-    --quiz-success: #22c55e;
-    --quiz-success-light: #dcfce7;
-    --quiz-error: #ef4444;
-    --quiz-error-light: #fee2e2;
-    
-    /* Spacing scale */
-    --quiz-space-3xs: 0.25rem;   /* 4px */
-    --quiz-space-2xs: 0.5rem;    /* 8px */
-    --quiz-space-xs: 0.75rem;    /* 12px */
-    --quiz-space-sm: 1rem;       /* 16px */
-    --quiz-space-md: 1.5rem;     /* 24px */
-    --quiz-space-lg: 2rem;       /* 32px */
-    --quiz-space-xl: 3rem;       /* 48px */
-    --quiz-space-2xl: 4rem;      /* 64px */
-    --quiz-space-3xl: 6rem;      /* 96px */
-    
+    /* Core Brand Palette (Adapted from Rofilid Standards) */
+    --qds-brand-teal: #0c343d;
+    --qds-brand-teal-light: #1a4954;
+    --qds-brand-teal-lighter: #2a5b66;
+    --qds-brand-teal-dark: #092830;
+    --qds-brand-mint: #3bbeac;
+    --qds-brand-mint-light: #64d1c2;
+    --qds-brand-mint-dark: #2a9e8f;
+    --qds-brand-gold: #d4af37;
+    --qds-brand-white: #ffffff;
+
+    /* UI Interaction & Semantic Colors */
+    --qds-primary: var(--qds-brand-teal); /* Primary interactive elements, text */
+    --qds-primary-light: var(--qds-brand-teal-light);
+    --qds-primary-lighter: #e6f3f7; /* Very light shade for backgrounds/hovers */
+    --qds-primary-dark: var(--qds-brand-teal-dark);
+    --qds-primary-text-on-dark: var(--qds-brand-white);
+    --qds-primary-text-on-light: var(--qds-brand-teal-dark);
+
+
+    --qds-secondary: var(--qds-brand-mint); /* Secondary accents, calls to action */
+    --qds-secondary-light: var(--qds-brand-mint-light);
+    --qds-secondary-lighter: #e9f8f6;
+    --qds-secondary-dark: var(--qds-brand-mint-dark);
+    --qds-secondary-text: var(--qds-brand-teal-dark);
+
+    --qds-accent: var(--qds-brand-gold); /* Tertiary accents, highlights */
+    --qds-accent-light: #e0c56a;
+    --qds-accent-dark: #b89320;
+
+    /* Neutral Grayscale Palette (Crucial for UI elements, text, borders) */
+    --qds-gray-50: #f9fafb;   /* Almost white, for subtle backgrounds */
+    --qds-gray-100: #f3f4f6;  /* Lightest gray, good for backgrounds */
+    --qds-gray-200: #e5e7eb;  /* Light gray, for borders, dividers */
+    --qds-gray-300: #d1d5db;  /* Medium-light gray, for icons, disabled text */
+    --qds-gray-400: #9ca3af;  /* Medium gray, for secondary text */
+    --qds-gray-500: #6b7280;  /* Dark-medium gray, for placeholder text, muted info */
+    --qds-gray-600: #4b5563;  /* Strong gray, for body text */
+    --qds-gray-700: #374151;  /* Darker gray, for secondary headings */
+    --qds-gray-800: #1f2937;  /* Very dark gray, for primary headings, strong text */
+    --qds-gray-900: #111827;  /* Almost black, for high contrast text */
+
+    /* Surface & Background Colors */
+    --qds-body-bg: var(--qds-brand-white);
+    --qds-surface-primary: var(--qds-brand-white); /* Cards, modals */
+    --qds-surface-secondary: var(--qds-gray-50);  /* Section backgrounds */
+    --qds-surface-tertiary: var(--qds-gray-100); /* Subtle containers */
+
+    /* Feedback Colors (Semantic states) */
+    --qds-success: #10b981;        /* Emerald-500 */
+    --qds-success-bg: #ecfdf5;     /* Emerald-50 */
+    --qds-success-border: #a7f3d0; /* Emerald-200 */
+    --qds-warning: #f59e0b;        /* Amber-500 */
+    --qds-warning-bg: #fffbeb;     /* Amber-50 */
+    --qds-error: #ef4444;          /* Red-500 */
+    --qds-error-bg: #fee2e2;       /* Red-50 */
+    --qds-error-border: #fecaca;   /* Red-200 */
+    --qds-info: #3b82f6;           /* Blue-500 */
+    --qds-info-bg: #eff6ff;        /* Blue-50 */
+
     /* Typography */
-    --quiz-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --quiz-font-size-xs: 0.75rem;   /* 12px */
-    --quiz-font-size-sm: 0.875rem;  /* 14px */
-    --quiz-font-size-base: 1rem;    /* 16px */
-    --quiz-font-size-md: 1.125rem;  /* 18px */
-    --quiz-font-size-lg: 1.25rem;   /* 20px */
-    --quiz-font-size-xl: 1.5rem;    /* 24px */
-    --quiz-font-size-2xl: 1.875rem; /* 30px */
-    --quiz-font-size-3xl: 2.25rem;  /* 36px */
-    --quiz-font-size-4xl: 3rem;     /* 48px */
-    
-    /* Border radiuses */
-    --quiz-radius-sm: 0.25rem;  /* 4px */
-    --quiz-radius-md: 0.5rem;   /* 8px */
-    --quiz-radius-lg: 0.75rem;  /* 12px */
-    --quiz-radius-xl: 1rem;     /* 16px */
-    --quiz-radius-2xl: 1.5rem;  /* 24px */
-    --quiz-radius-full: 9999px; /* Pill shape */
-    
-    /* Shadows */
-    --quiz-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --quiz-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --quiz-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    --quiz-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    --quiz-shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
-    --quiz-shadow-focus: 0 0 0 3px rgba(26, 138, 166, 0.45); /* Using a lighter shade of quiz-primary for focus */
-    
-    /* Transitions */
-    --quiz-transition-fast: 150ms ease;
-    --quiz-transition-normal: 300ms ease;
-    --quiz-transition-slow: 500ms ease;
-    
-    /* Z-index scale */
-    --quiz-z-below: -1;
-    --quiz-z-normal: 1;
-    --quiz-z-above: 10;
-    --quiz-z-deco: 0; /* For decorative elements, above background but below content */
-    --quiz-z-modal: 100;
-    --quiz-z-overlay: 200;
-    --quiz-z-tooltip: 300;
-}
+    --qds-font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    --qds-font-secondary: 'Roboto', sans-serif; /* For headings or special text */
 
-/* --- Global Resets & Base Styles --- */
-.quiz-page { /* Applied to <html> and <body> */
-    font-family: var(--quiz-font-sans);
-    color: var(--quiz-gray-800);
-    background-color: var(--quiz-surface);
-    scroll-behavior: smooth;
-    position: relative; /* For positioning decorative elements */
-    overflow-x: hidden; /* Prevent horizontal scroll from decorative elements */
-}
+    --qds-font-size-xs: 0.75rem;   /* 12px */
+    --qds-font-size-sm: 0.875rem;  /* 14px */
+    --qds-font-size-base: 1rem;    /* 16px */
+    --qds-font-size-md: 1.125rem;  /* 18px */
+    --qds-font-size-lg: 1.25rem;   /* 20px */
+    --qds-font-size-xl: 1.5rem;    /* 24px */
+    --qds-font-size-2xl: 1.875rem; /* 30px */
+    --qds-font-size-3xl: 2.25rem;  /* 36px */
+    --qds-font-size-4xl: 3rem;     /* 48px */
+    --qds-font-size-5xl: 3.75rem;  /* 60px */
 
-/* Base section padding (if not defined in personal.css or needs override) */
-.quiz-page .section-padding {
-    padding-top: var(--quiz-space-2xl);
-    padding-bottom: var(--quiz-space-2xl);
-}
-.quiz-page .section-padding--large {
-    padding-top: var(--quiz-space-3xl);
-    padding-bottom: var(--quiz-space-3xl);
-}
-.quiz-page .bg-light {
-    background-color: var(--quiz-surface-alt);
-}
+    --qds-line-height-tight: 1.25;
+    --qds-line-height-snug: 1.375;
+    --qds-line-height-normal: 1.5;
+    --qds-line-height-relaxed: 1.625;
 
-/* Active Nav Link Style */
-.quiz-page .site-header .nav-link.active-page {
-    color: var(--quiz-primary);
-    font-weight: 700;
-    position: relative;
-}
+    --qds-font-weight-light: 300;
+    --qds-font-weight-normal: 400;
+    --qds-font-weight-medium: 500;
+    --qds-font-weight-semibold: 600;
+    --qds-font-weight-bold: 700;
+    --qds-font-weight-extrabold: 800;
 
-.quiz-page .site-header .nav-link.active-page::after {
-    content: '';
-    position: absolute;
-    bottom: -4px; /* Adjust as needed */
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: var(--quiz-primary);
-}
+    /* Spacing Scale (Consistent rhythm) */
+    --qds-space-1: 0.25rem;   /* 4px */
+    --qds-space-2: 0.5rem;    /* 8px */
+    --qds-space-3: 0.75rem;   /* 12px */
+    --qds-space-4: 1rem;      /* 16px (base) */
+    --qds-space-5: 1.25rem;   /* 20px */
+    --qds-space-6: 1.5rem;    /* 24px */
+    --qds-space-8: 2rem;      /* 32px */
+    --qds-space-10: 2.5rem;   /* 40px */
+    --qds-space-12: 3rem;     /* 48px */
+    --qds-space-16: 4rem;     /* 64px */
+    --qds-space-20: 5rem;     /* 80px */
+    --qds-space-24: 6rem;     /* 96px */
+
+    /* Borders & Radii */
+    --qds-radius-sm: 0.25rem;    /* 4px */
+    --qds-radius-md: 0.375rem;   /* 6px */
+    --qds-radius-lg: 0.5rem;     /* 8px */
+    --qds-radius-xl: 0.75rem;    /* 12px */
+    --qds-radius-2xl: 1rem;      /* 16px */
+    --qds-radius-3xl: 1.5rem;    /* 24px */
+    --qds-radius-full: 9999px;   /* Pill shape */
+
+    --qds-border-width: 1px;
+    --qds-border-width-lg: 2px;
+    --qds-border-color: var(--qds-gray-200);
+    --qds-border-color-strong: var(--qds-gray-300);
+
+    /* Shadows (Subtle, for depth) */
+    --qds-shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+    --qds-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.07), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+    --qds-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    --qds-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+    --qds-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    --qds-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+    --qds-shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.04);
+    --qds-focus-ring-color: var(--qds-secondary-light);
+    --qds-shadow-focus: 0 0 0 3px color-mix(in srgb, var(--qds-focus-ring-color) 40%, transparent);
 
 
-/* --- Decorative Background Elements --- */
-.quiz-page .deco-blur {
-    position: absolute; /* Changed from fixed to scroll with page */
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: var(--quiz-z-deco); /* Ensure it's behind content */
-    opacity: 0.6; /* Adjusted for subtlety */
-}
+    /* Transitions & Animations */
+    --qds-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --qds-transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    --qds-transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
 
-.quiz-page .deco-blur.blur-1 {
-    width: 350px;
-    height: 350px;
-    background: radial-gradient(circle, var(--quiz-primary-lighter) 0%, transparent 65%);
-    filter: blur(120px);
-    top: 5vh;
-    left: -100px;
-}
+    /* Layout Specifics */
+    --qds-header-height: 70px;
+    --qds-container-max-width: 1140px;
+    --qds-container-padding-x: var(--qds-space-6); /* 24px */
 
-.quiz-page .deco-blur.blur-2 {
-    width: 450px;
-    height: 450px;
-    background: radial-gradient(circle, var(--quiz-secondary-lighter) 0%, transparent 70%);
-    filter: blur(150px);
-    top: 50vh; /* Position further down */
-    right: -150px;
-    opacity: 0.4;
-}
+    /* Z-Index Scale */
+    --qds-z-background: -1;    /* For elements truly in the background */
+    --qds-z-base: 1;           /* Default stacking context */
+    --qds-z-deco: 5;           /* Decorative elements like blurs */
+    --qds-z-sticky: 100;       /* Sticky elements like header */
+    --qds-z-modal-backdrop: 1040;
+    --qds-z-modal: 1050;       /* Modals */
+    --qds-z-popover: 1060;     /* Popovers, tooltips */
+    --qds-z-toast: 1070;       /* Notifications */
 
-.quiz-page .deco-blur.blur-3 {
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, var(--quiz-primary-light) 0%, transparent 60%);
-    filter: blur(100px);
-    bottom: 10vh; /* Relative to viewport bottom before scrolling */
-    left: 5vw;
-    opacity: 0.3;
+    /* Gradients */
+    --qds-gradient-primary: linear-gradient(135deg, var(--qds-primary-light) 0%, var(--qds-primary) 100%);
+    --qds-gradient-secondary: linear-gradient(135deg, var(--qds-secondary-light) 0%, var(--qds-secondary) 100%);
+    --qds-gradient-accent: linear-gradient(135deg, var(--qds-accent-light) 0%, var(--qds-accent) 100%);
+    --qds-gradient-hero: linear-gradient(160deg, var(--qds-primary-lighter) 0%, var(--qds-surface-primary) 60%);
+    --qds-gradient-underline: linear-gradient(90deg, var(--qds-primary) 0%, var(--qds-secondary) 50%, var(--qds-accent) 100%);
+
+    /* Specific to quiz interaction if needed from original */
+    --quiz-current-question: 0;
+    --quiz-total-questions: 1;
 }
 
 
-/* --- Enhanced Buttons --- */
-.quiz-page .btn {
-    font-weight: 600;
-    border-radius: var(--quiz-radius-md);
-    padding: var(--quiz-space-xs) var(--quiz-space-md);
-    transition: all var(--quiz-transition-normal);
-    position: relative;
-    overflow: hidden;
-    box-shadow: var(--quiz-shadow-md);
-    text-transform: none;
-    letter-spacing: 0.01em;
-    border: none; /* Ensuring base buttons don't have default borders unless specified */
-    cursor: pointer;
-    text-decoration: none; /* For <a> tags styled as buttons */
-    display: inline-flex; /* For icon alignment */
-    align-items: center;
-    justify-content: center;
+/* --- [SECTION 2] Global Resets & Base Styles --- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border-width: 0; /* From Tailwind preflight, useful reset */
+  border-style: solid; /* From Tailwind preflight */
+  border-color: var(--qds-border-color); /* From Tailwind preflight */
 }
 
-.quiz-page .btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.1);
-    transform: translateY(100%);
-    transition: transform var(--quiz-transition-normal);
-    z-index: var(--quiz-z-normal); /* Changed from below, to be above button bg but below text */
+html,
+.quiz-page { /* Apply to html and specific body class */
+  line-height: var(--qds-line-height-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: var(--qds-font-primary);
+  color: var(--qds-gray-700);
+  background-color: var(--qds-body-bg);
+  scroll-behavior: smooth;
+  font-size: var(--qds-font-size-base); /* Base font size */
 }
 
-.quiz-page .btn:hover::before {
-    transform: translateY(0);
+html.quiz-page {
+  position: relative; /* For positioning decorative elements if on html */
+  overflow-x: hidden; /* Prevent horizontal scroll from decorative elements */
 }
 
-.quiz-page .btn-primary {
-    background: var(--quiz-primary-gradient);
-    color: white;
-}
-
-.quiz-page .btn-primary:hover {
-    box-shadow: var(--quiz-shadow-lg);
-    transform: translateY(-2px);
-}
-
-.quiz-page .btn-secondary {
-    background-color: var(--quiz-secondary);
-    color: white;
-}
-
-.quiz-page .btn-secondary:hover {
-    background-color: var(--quiz-secondary-light);
-    box-shadow: var(--quiz-shadow-lg);
-    transform: translateY(-2px);
-}
-
-.quiz-page .btn-outline {
-    background-color: transparent;
-    border: 2px solid var(--quiz-primary);
-    color: var(--quiz-primary);
-}
-
-.quiz-page .btn-outline:hover {
-    background-color: var(--quiz-primary-lighter);
-    border-color: var(--quiz-primary-light);
-    color: var(--quiz-primary-dark);
-}
-
-/* Specific class for hero button that should not fill on hover */
-.quiz-page .btn-outline-no-fill-hover:hover {
-    background-color: transparent; /* Override fill */
-    color: var(--quiz-primary-dark);
-    border-color: var(--quiz-primary-light); /* Keep border change */
-    transform: translateY(-2px); /* Keep slight lift if desired */
-    box-shadow: var(--quiz-shadow-md); /* Standard shadow */
-}
-.quiz-page .btn-outline-no-fill-hover:hover::before {
-    transform: translateY(100%); /* Prevent the white sheen */
-}
-
-
-.quiz-page .btn-icon {
-    display: inline-flex; /* Ensure this is explicitly set */
-    align-items: center;
-    gap: var(--quiz-space-xs);
-}
-.quiz-page .btn-icon i { /* Ensure icon is not affected by button's ::before z-index if it was an issue */
-    position: relative;
-    z-index: var(--quiz-z-above); /* Ensure icon text is above the ::before sheen */
-}
-
-
-.quiz-page .btn-large {
-    padding: var(--quiz-space-sm) var(--quiz-space-lg);
-    font-size: var(--quiz-font-size-md);
-}
-
-/* --- Modern Hero Section --- */
-.quiz-page .hero-section {
-    position: relative;
-    padding: var(--quiz-space-3xl) 0;
-    background: var(--quiz-surface);
-    overflow: hidden;
-}
-
-.quiz-page .hero-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, var(--quiz-primary-lighter) 0%, var(--quiz-surface) 70%); /* Adjusted gradient */
-    z-index: var(--quiz-z-deco); /* Changed from below, to be consistent with deco blur z-index */
-}
-
-.quiz-page .hero-section::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 60%;
-    height: 100%;
-    background-image: url('../../assets/images/personal/quiz-pattern.svg');
-    background-repeat: no-repeat;
-    background-position: top right;
-    background-size: contain;
-    opacity: 0.08;
-    z-index: var(--quiz-z-deco); /* Consistent z-index */
-}
-
-.quiz-page .hero-content {
-    position: relative;
-    z-index: var(--quiz-z-normal);
-    max-width: 700px;
-    margin: 0 auto;
-    text-align: center;
-    padding: 0 var(--quiz-space-md);
-}
-
-.quiz-page .hero-badge {
-    display: inline-block;
-    background-color: var(--quiz-primary-lighter);
-    color: var(--quiz-primary-dark);
-    font-weight: 600;
-    font-size: var(--quiz-font-size-sm);
-    padding: var(--quiz-space-xs) var(--quiz-space-sm);
-    border-radius: var(--quiz-radius-full);
-    margin-bottom: var(--quiz-space-md);
-    box-shadow: var(--quiz-shadow-sm);
-    transform: translateY(0);
-    transition: transform var(--quiz-transition-normal), box-shadow var(--quiz-transition-normal);
-}
-
-.quiz-page .hero-badge:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--quiz-shadow-md);
-}
-
-.quiz-page .hero-content h1 {
-    color: var(--quiz-primary-dark);
-    font-size: var(--quiz-font-size-4xl);
-    font-weight: 800;
-    margin-bottom: var(--quiz-space-md);
-    line-height: 1.1;
-}
-
-.quiz-page .subheadline {
-    color: var(--quiz-gray-600);
-    font-size: var(--quiz-font-size-lg);
-    line-height: 1.5;
-    margin-bottom: var(--quiz-space-lg);
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.quiz-page .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--quiz-space-md);
-    justify-content: center;
-    margin-top: var(--quiz-space-lg);
-}
-
-/* --- Redesigned Accordion --- */
-.quiz-page .quiz-accordion-container {
-    max-width: 1000px;
-    margin: var(--quiz-space-xl) auto; /* Added top/bottom margin */
-    padding: 0 var(--quiz-space-md);
-}
-
-.quiz-page .section-title {
-    color: var(--quiz-primary-dark);
-    font-size: var(--quiz-font-size-2xl);
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: var(--quiz-space-sm);
-}
-
-.quiz-page .section-description {
-    color: var(--quiz-gray-600);
-    font-size: var(--quiz-font-size-md);
-    line-height: 1.5;
-    text-align: center;
-    max-width: 700px;
-    margin: 0 auto var(--quiz-space-xl);
-}
-
-.quiz-page .accordion {
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-.quiz-page .accordion-item {
-    background-color: var(--quiz-surface);
-    border-radius: var(--quiz-radius-lg);
-    margin-bottom: var(--quiz-space-md);
-    overflow: hidden;
-    box-shadow: var(--quiz-shadow-md);
-    transition: box-shadow var(--quiz-transition-normal), transform var(--quiz-transition-normal);
-    border: 1px solid var(--quiz-gray-200);
-}
-
-.quiz-page .accordion-item:hover {
-    box-shadow: var(--quiz-shadow-lg);
-    transform: translateY(-3px);
-}
-
-.quiz-page .accordion-header {
-    margin: 0;
-}
-
-.quiz-page .accordion-button {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding: var(--quiz-space-lg);
-    font-size: var(--quiz-font-size-lg);
-    font-weight: 600;
-    color: var(--quiz-primary-dark);
-    background-color: var(--quiz-surface); /* Changed from var(--quiz-surface) to var(--quiz-surface) - no change, was fine */
-    border: none;
-    cursor: pointer;
-    transition: background-color var(--quiz-transition-normal), color var(--quiz-transition-normal);
-    text-align: left;
-    line-height: 1.4;
-    border-radius: 0; /* Buttons inside item should not have individual radius if item has overflow:hidden */
-}
-
-.quiz-page .accordion-button::after {
-    content: '\f078'; /* Font Awesome chevron-down */
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    font-size: 0.8em;
-    margin-left: var(--quiz-space-md);
-    transition: transform var(--quiz-transition-normal);
-    color: var(--quiz-primary);
-    flex-shrink: 0;
-}
-
-.quiz-page .accordion-button:hover {
-    background-color: var(--quiz-primary-lighter);
-}
-
-.quiz-page .accordion-button:focus {
-    outline: none;
-}
-
-.quiz-page .accordion-button:focus-visible {
-    box-shadow: var(--quiz-shadow-focus);
-    z-index: var(--quiz-z-above); /* Ensure focus outline is visible */
-}
-
-.quiz-page .accordion-button:not(.collapsed) {
-    background-color: var(--quiz-primary-lighter);
-    color: var(--quiz-primary-dark);
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05) inset; /* subtle separator from content */
-}
-
-.quiz-page .accordion-button:not(.collapsed)::after {
-    transform: rotate(-180deg);
-    color: var(--quiz-primary);
-}
-
-.quiz-page .accordion-collapse {
-    overflow: hidden;
-    height: 0;
-    visibility: hidden;
-    transition: height var(--quiz-transition-normal) cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear var(--quiz-transition-normal); /* Smoother cubic-bezier */
-    will-change: height;
-}
-
-.quiz-page .accordion-collapse.show {
-    height: auto; /* JS will set specific height during transition, then auto */
-    visibility: visible;
-    transition: height var(--quiz-transition-normal) cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0s;
-}
-
-.quiz-page .accordion-body {
-    padding: var(--quiz-space-lg);
-    background-color: var(--quiz-surface-alt); /* Slightly different background for content area */
-    border-top: 1px solid var(--quiz-gray-200); /* Separator line */
-}
-
-/* --- Redesigned Category Cards --- */
-.quiz-page .category-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: var(--quiz-space-md);
-}
-
-.quiz-page .category-card {
-    background-color: var(--quiz-surface);
-    border-radius: var(--quiz-radius-lg);
-    box-shadow: var(--quiz-shadow-md);
-    transition: transform var(--quiz-transition-normal), box-shadow var(--quiz-transition-normal);
-    overflow: hidden;
-    position: relative;
-    border: 1px solid var(--quiz-gray-200);
-    height: 100%; /* Ensure cards in a row are same height if content varies slightly */
-    display: flex; /* Added for better internal layout control */
-    flex-direction: column; /* Added */
-}
-
-.quiz-page .category-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: var(--quiz-primary-gradient);
-    z-index: 1;
-    opacity: 0.8;
-    transition: height var(--quiz-transition-normal), opacity var(--quiz-transition-normal);
-}
-
-.quiz-page .category-card:hover {
-    transform: translateY(-6px);
-    box-shadow: var(--quiz-shadow-lg);
-    border-color: var(--quiz-primary-lighter); /* Match ::before on hover */
-}
-
-.quiz-page .category-card:hover::before {
-    height: 6px;
-    opacity: 1;
-}
-
-.quiz-page .card-content { /* Renamed from .category-card .card-content to be more general if needed */
-    padding: var(--quiz-space-lg);
+body.quiz-page {
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    height: 100%; /* Ensure content takes full height of card */
-    flex-grow: 1; /* Allows this to take space if card is flex container */
+    position: relative; /* For decorative elements if scoped to body */
+    overflow-x: hidden;
 }
 
-.quiz-page .category-icon {
-    font-size: 1.75rem; /* 28px */
-    color: var(--quiz-primary);
-    margin-bottom: var(--quiz-space-sm);
-    background-color: var(--quiz-primary-lighter);
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--quiz-radius-md);
-    transition: transform var(--quiz-transition-fast), background-color var(--quiz-transition-normal), color var(--quiz-transition-normal);
+body.quiz-page::-webkit-scrollbar {
+    width: 10px;
+}
+body.quiz-page::-webkit-scrollbar-track {
+    background: var(--qds-gray-100);
+}
+body.quiz-page::-webkit-scrollbar-thumb {
+    background-color: var(--qds-gray-300);
+    border-radius: var(--qds-radius-full);
+    border: 2px solid var(--qds-gray-100);
+}
+body.quiz-page::-webkit-scrollbar-thumb:hover {
+    background-color: var(--qds-gray-400);
 }
 
-.quiz-page .category-card:hover .category-icon {
-    transform: scale(1.1);
-    background-color: var(--quiz-primary-light);
-    color: white;
+/* Main content area flex grow */
+.quiz-page main#main-content {
+  flex-grow: 1;
+  width: 100%;
+  position: relative; /* For internal absolute positioning context */
+  z-index: var(--qds-z-base);
 }
 
-.quiz-page .category-card h4 {
-    font-size: var(--quiz-font-size-md);
-    font-weight: 600;
-    color: var(--quiz-primary-dark);
-    margin-bottom: var(--quiz-space-xs);
-    transition: color var(--quiz-transition-normal);
+img, svg, video, canvas, audio, iframe, embed, object {
+  display: block;
+  vertical-align: middle;
+  max-width: 100%;
+  height: auto;
 }
 
-.quiz-page .category-card:hover h4 {
-    color: var(--quiz-primary);
+p {
+  margin-bottom: var(--qds-space-4);
 }
-
-.quiz-page .category-card p {
-    color: var(--quiz-gray-600);
-    font-size: var(--quiz-font-size-sm);
-    line-height: 1.5;
-    margin-bottom: var(--quiz-space-md);
-    flex-grow: 1; /* Allows paragraph to push button down */
-}
-
-.quiz-page .start-quiz-btn { /* This is a specific button class within category cards */
-    margin-top: auto; /* Pushes button to the bottom */
-    align-self: stretch; /* Makes button full width of its container if context allows */
-    padding: var(--quiz-space-sm) var(--quiz-space-md);
-    font-size: var(--quiz-font-size-sm);
-    border-radius: var(--quiz-radius-md);
-    background-color: var(--quiz-secondary); /* Already styled as a btn-secondary essentially */
-    color: white;
-    border: none; /* Explicitly no border */
-    transition: all var(--quiz-transition-normal);
-}
-
-.quiz-page .start-quiz-btn:hover {
-    background-color: var(--quiz-secondary-light);
-    transform: translateY(-2px);
-    box-shadow: var(--quiz-shadow-md); /* Add subtle shadow on hover */
-}
-
-/* --- Redesigned Quiz Modal --- */
-.quiz-page .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(33, 37, 41, 0.7); /* Using --quiz-gray-900 with alpha */
-    backdrop-filter: blur(4px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: var(--quiz-z-overlay);
-    padding: var(--quiz-space-md);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity var(--quiz-transition-normal), visibility 0s linear var(--quiz-transition-normal);
-}
-
-.quiz-page .modal-overlay:not([hidden]) { /* .visible class from JS for transitions */
-    opacity: 1;
-    visibility: visible;
-    transition: opacity var(--quiz-transition-normal), visibility 0s linear 0s;
-}
-
-.quiz-page .modal-content {
-    background-color: var(--quiz-surface);
-    border-radius: var(--quiz-radius-lg);
-    box-shadow: var(--quiz-shadow-xl);
-    width: 100%;
-    max-width: 600px;
-    padding: var(--quiz-space-lg);
-    position: relative;
-    transform: translateY(20px) scale(0.98); /* Added scale for entry animation */
-    opacity: 0;
-    transition: transform var(--quiz-transition-normal) cubic-bezier(0.4, 0, 0.2, 1), opacity var(--quiz-transition-normal) cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: hidden; /* Clip any internal overflows initially */
-}
-
-.quiz-page .modal-overlay:not([hidden]) .modal-content { /* .visible class from JS for transitions */
-    transform: translateY(0) scale(1);
-    opacity: 1;
-}
-
-.quiz-page .modal-close-btn {
-    position: absolute;
-    top: var(--quiz-space-sm);
-    right: var(--quiz-space-sm);
-    background-color: transparent;
-    border: none;
-    color: var(--quiz-gray-500);
-    font-size: var(--quiz-font-size-lg);
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--quiz-radius-full);
-    transition: all var(--quiz-transition-normal);
-    z-index: var(--quiz-z-above); /* Ensure it's above other modal content if overlapping */
-}
-
-.quiz-page .modal-close-btn:hover {
-    background-color: var(--quiz-gray-200);
-    color: var(--quiz-gray-800);
-    transform: rotate(90deg); /* Fun little rotation on hover */
-}
-
-.quiz-page .modal-title {
-    font-size: var(--quiz-font-size-xl);
-    font-weight: 700;
-    color: var(--quiz-primary-dark);
-    margin-bottom: var(--quiz-space-md);
-    text-align: center;
-}
-
-/* Assuming CSS variables --quiz-current-question and --quiz-total-questions will be set by JS on this element or an ancestor */
-.quiz-page .quiz-modal-progress { /* This is the BAR TRACK */
-    position: relative;
-    width: 100%;
-    height: 8px; /* Slightly thicker bar */
-    background-color: var(--quiz-gray-200);
-    border-radius: var(--quiz-radius-full);
-    margin-bottom: var(--quiz-space-xs); /* Reduced margin as text is separate */
-    overflow: hidden;
-}
-
-.quiz-page .quiz-modal-progress::before { /* This is the BAR FILL */
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    background: var(--quiz-primary-gradient);
-    border-radius: var(--quiz-radius-full); /* Ensure fill is also rounded */
-    width: calc((var(--quiz-current-question, 0) / var(--quiz-total-questions, 1)) * 100%); /* Default to 0/1 to prevent calc error if vars not set */
-    transition: width var(--quiz-transition-normal) ease-out;
-}
-
-.quiz-page .quiz-modal-progress-text { /* This is the "Question X of Y" text container */
-    font-size: var(--quiz-font-size-sm);
-    color: var(--quiz-gray-600);
-    text-align: center;
-    margin-bottom: var(--quiz-space-md); /* Existing style */
-}
-/* Style for the actual numbers if needed */
-.quiz-page .quiz-modal-progress-text strong {
-    color: var(--quiz-primary-dark);
-}
+p:last-child { margin-bottom: 0; }
 
 
-.quiz-page .quiz-modal-question-area {
-    font-size: var(--quiz-font-size-lg);
-    font-weight: 600;
-    color: var(--quiz-gray-800);
-    margin-bottom: var(--quiz-space-lg);
-    line-height: 1.4;
-    text-align: center; /* Centering question text */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--qds-font-secondary); /* Heading font */
+  font-weight: var(--qds-font-weight-bold);
+  line-height: var(--qds-line-height-tight);
+  color: var(--qds-primary-dark);
+  margin-bottom: var(--qds-space-4);
+  letter-spacing: -0.01em;
 }
-.quiz-page .quiz-modal-question-area .q-num {
-    color: var(--quiz-primary);
-    font-weight: 700;
-    margin-right: var(--quiz-space-2xs);
-}
+h1 { font-size: var(--qds-font-size-4xl); letter-spacing: -0.025em; margin-bottom: var(--qds-space-6); }
+h2 { font-size: var(--qds-font-size-3xl); letter-spacing: -0.02em; margin-bottom: var(--qds-space-5); }
+h3 { font-size: var(--qds-font-size-2xl); margin-bottom: var(--qds-space-4); }
+h4 { font-size: var(--qds-font-size-xl); margin-bottom: var(--qds-space-3); }
+h5 { font-size: var(--qds-font-size-lg); margin-bottom: var(--qds-space-2); }
+h6 { font-size: var(--qds-font-size-md); margin-bottom: var(--qds-space-2); }
 
-.quiz-page .quiz-modal-options-area {
-    display: grid;
-    gap: var(--quiz-space-sm);
-    margin-bottom: var(--quiz-space-lg);
-}
 
-/* Changed .quiz-option-btn to .quiz-option to match HTML/JS */
-.quiz-page .quiz-option {
-    background-color: var(--quiz-surface);
-    border: 2px solid var(--quiz-gray-300);
-    border-radius: var(--quiz-radius-md);
-    padding: var(--quiz-space-md);
-    text-align: left;
-    font-size: var(--quiz-font-size-md);
-    color: var(--quiz-gray-700);
-    transition: all var(--quiz-transition-normal);
-    cursor: pointer;
-    position: relative;
-    overflow: hidden; /* For ::before if any fancy effects added */
-    font-weight: 500; /* Standard weight */
+a {
+  color: var(--qds-primary);
+  text-decoration: none; /* Or underline if preferred globally */
+  transition: color var(--qds-transition-fast);
 }
-
-.quiz-page .quiz-option:hover {
-    border-color: var(--quiz-primary-light);
-    background-color: var(--quiz-primary-lighter);
-    color: var(--quiz-primary-dark);
+a:hover {
+  color: var(--qds-primary-dark);
+  text-decoration: underline;
 }
-.quiz-page .quiz-option:focus-visible {
-    box-shadow: var(--quiz-shadow-focus);
+a:focus { outline: none; }
+a:focus-visible {
     outline: none;
+    border-radius: var(--qds-radius-sm);
+    box-shadow: var(--qds-shadow-focus);
 }
 
-.quiz-page .quiz-option.selected {
-    border-color: var(--quiz-primary);
-    background-color: var(--quiz-primary-lighter);
-    color: var(--quiz-primary-dark);
-    font-weight: 600; /* Bolder when selected */
+ul, ol {
+    list-style: none; /* Base style: no bullets/numbers unless specified */
 }
 
-.quiz-page .quiz-option.correct {
-    border-color: var(--quiz-success) !important; /* Ensure override */
-    background-color: var(--quiz-success-light) !important;
-    color: var(--quiz-gray-800) !important; /* Darker text for readability on light green */
-    font-weight: 600;
+
+/* --- [SECTION 3] Layout Utilities --- */
+.quiz-page .container {
+  width: 100%;
+  max-width: var(--qds-container-max-width);
+  margin-inline: auto;
+  padding-inline: var(--qds-container-padding-x);
 }
 
-.quiz-page .quiz-option.incorrect {
-    border-color: var(--quiz-error) !important; /* Ensure override */
-    background-color: var(--quiz-error-light) !important;
-    color: var(--quiz-gray-800) !important; /* Darker text for readability on light red */
-    font-weight: 600;
+.quiz-page .section-padding {
+    padding-block: var(--qds-space-16); /* 64px */
+}
+.quiz-page .section-padding--large {
+    padding-block: var(--qds-space-24); /* 96px */
 }
 
-/* Decorative bar for selected/correct/incorrect states */
-.quiz-page .quiz-option::before {
+.quiz-page .bg-light {
+    background-color: var(--qds-surface-secondary);
+}
+.quiz-page .bg-lighter {
+    background-color: var(--qds-surface-tertiary);
+}
+
+/* Basic Flex and Grid utilities used in HTML */
+.quiz-page .d-flex { display: flex; }
+.quiz-page .d-grid { display: grid; }
+.quiz-page .flex-wrap { flex-wrap: wrap; }
+.quiz-page .justify-content-center { justify-content: center; }
+.quiz-page .gap-sm { gap: var(--qds-space-2); }
+.quiz-page .gap-md { gap: var(--qds-space-4); }
+.quiz-page .gap-lg { gap: var(--qds-space-6); }
+.quiz-page .text-center { text-align: center; }
+.quiz-page .text-muted { color: var(--qds-gray-500); }
+.quiz-page .h4 { /* For mimicking h4 styling if used as a class */
+    font-size: var(--qds-font-size-xl);
+    font-weight: var(--qds-font-weight-bold);
+    line-height: var(--qds-line-height-tight);
+    color: var(--qds-primary-dark);
+}
+.quiz-page .list-unstyled { list-style: none; padding: 0; margin: 0; }
+
+/* Basic margin utilities from HTML */
+.quiz-page .mb-md { margin-bottom: var(--qds-space-4) !important; }
+.quiz-page .mb-lg { margin-bottom: var(--qds-space-6) !important; }
+.quiz-page .mt-xl { margin-top: var(--qds-space-10) !important; } /* 40px */
+.quiz-page .pt-md { padding-top: var(--qds-space-4) !important; }
+.quiz-page .mt-lg { margin-top: var(--qds-space-6) !important; }
+
+
+/* --- [SECTION 4] Button Styles --- */
+.quiz-page .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--qds-space-2); /* 8px */
+  padding: var(--qds-space-3) var(--qds-space-5); /* 12px 20px */
+  border-radius: var(--qds-radius-lg); /* 8px */
+  font-family: var(--qds-font-primary);
+  font-weight: var(--qds-font-weight-semibold);
+  font-size: var(--qds-font-size-base); /* 16px */
+  line-height: var(--qds-line-height-normal);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  border: var(--qds-border-width-lg) solid transparent; /* 2px border */
+  transition: all var(--qds-transition-normal);
+  -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
+  position: relative; /* For pseudo-elements like ripple or sheen */
+  overflow: hidden; /* If using sheen effects */
+}
+
+.quiz-page .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--qds-shadow-lg);
+}
+.quiz-page .btn:active {
+  transform: translateY(0px);
+  box-shadow: var(--qds-shadow-md);
+}
+.quiz-page .btn:focus { outline: none; }
+.quiz-page .btn:focus-visible {
+  outline: none;
+  box-shadow: var(--qds-shadow-md), var(--qds-shadow-focus);
+}
+.quiz-page .btn:disabled, .quiz-page .btn[disabled] {
+  opacity: 0.65;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+  filter: saturate(0.5);
+}
+
+/* Primary Button */
+.quiz-page .btn-primary {
+  background-color: var(--qds-primary);
+  color: var(--qds-primary-text-on-dark);
+  border-color: var(--qds-primary);
+  box-shadow: var(--qds-shadow-md);
+}
+.quiz-page .btn-primary:hover {
+  background-color: var(--qds-primary-dark);
+  border-color: var(--qds-primary-dark);
+}
+
+/* Secondary Button */
+.quiz-page .btn-secondary {
+  background-color: var(--qds-secondary);
+  color: var(--qds-secondary-text);
+  border-color: var(--qds-secondary);
+  box-shadow: var(--qds-shadow-md);
+}
+.quiz-page .btn-secondary:hover {
+  background-color: var(--qds-secondary-dark);
+  border-color: var(--qds-secondary-dark);
+  color: var(--qds-brand-white);
+}
+
+/* Outline Button */
+.quiz-page .btn-outline {
+  background-color: transparent;
+  border-color: var(--qds-primary);
+  color: var(--qds-primary);
+}
+.quiz-page .btn-outline:hover {
+  background-color: var(--qds-primary-lighter);
+  border-color: var(--qds-primary);
+  color: var(--qds-primary-dark);
+}
+.quiz-page .btn-outline:focus-visible {
+    box-shadow: none, var(--qds-shadow-focus);
+}
+.quiz-page .btn-outline-no-fill-hover:hover {
+    background-color: transparent;
+    color: var(--qds-primary-dark);
+    border-color: var(--qds-primary-light);
+    box-shadow: var(--qds-shadow-sm); /* Add a subtle shadow still */
+}
+
+/* Button with Icon */
+.quiz-page .btn-icon i {
+  line-height: 0; /* Better vertical alignment for Font Awesome */
+  font-size: 1.125em; /* Slightly larger icon relative to button text */
+  margin-inline-end: var(--qds-space-1); /* Consistent small gap, main gap via parent .btn */
+}
+/* This already defined: .quiz-page .btn-icon ensures icon and text have spacing due to .btn's gap */
+
+/* Button Sizes */
+.quiz-page .btn-large {
+  padding: var(--qds-space-4) var(--qds-space-8); /* 16px 32px */
+  font-size: var(--qds-font-size-md); /* 18px */
+}
+.quiz-page .btn-small {
+  padding: var(--qds-space-2) var(--qds-space-4); /* 8px 16px */
+  font-size: var(--qds-font-size-sm); /* 14px */
+  font-weight: var(--qds-font-weight-medium);
+  border-width: var(--qds-border-width);
+}
+
+/* Specific button type from header in quizzes.html (Tools button) */
+.quiz-page .header-tool-btn {
+    /* Styles identical to quiz-page .btn-primary with .btn-icon */
+}
+
+
+/* --- [SECTION 5] Header Styles --- */
+.quiz-page .site-header {
+  background-color: color-mix(in srgb, var(--qds-surface-primary) 92%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding-block: var(--qds-space-2);
+  position: sticky;
+  top: 0;
+  z-index: var(--qds-z-sticky);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03), 0 2px 4px rgba(0, 0, 0, 0.03);
+  height: var(--qds-header-height);
+  width: 100%;
+  border-bottom: 1px solid var(--qds-border-color);
+}
+
+.quiz-page .header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--qds-space-6);
+  height: 100%;
+}
+
+.quiz-page .logo a { display: block; line-height: 0; }
+.quiz-page .logo img { height: 38px; width: auto; } /* Dimensions from HTML */
+
+.quiz-page nav[aria-label="Main navigation"] {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center; /* Centers nav items for desktop */
+}
+
+.quiz-page #primary-navigation {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: var(--qds-space-8); /* Increased gap between nav items */
+}
+
+.quiz-page #primary-navigation .nav-link {
+  color: var(--qds-gray-700);
+  font-weight: var(--qds-font-weight-medium);
+  font-size: var(--qds-font-size-sm); /* Slightly smaller nav links */
+  padding-block: var(--qds-space-2);
+  position: relative;
+  text-decoration: none;
+  transition: color var(--qds-transition-fast);
+  letter-spacing: 0.01em;
+}
+.quiz-page #primary-navigation .nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--qds-secondary);
+  transition: width var(--qds-transition-normal);
+}
+.quiz-page #primary-navigation .nav-link:hover,
+.quiz-page #primary-navigation .nav-link:focus,
+.quiz-page #primary-navigation .nav-link.active-page  { /* active-page comes from quizzes.css */
+  color: var(--qds-primary-dark);
+}
+.quiz-page #primary-navigation .nav-link:hover::after,
+.quiz-page #primary-navigation .nav-link.active-page::after {
+  width: 100%;
+}
+.quiz-page #primary-navigation .nav-link.active-page {
+    font-weight: var(--qds-font-weight-semibold); /* Quizzes.css also adds this. Consolidated */
+}
+
+.quiz-page .mobile-menu-toggle { display: none; } /* Hide by default, show in media query */
+.quiz-page .nav-item.mobile-only { display: none; }
+
+
+/* --- [SECTION 6] Footer Styles --- */
+.quiz-page .site-footer {
+  background-color: var(--qds-primary-dark);
+  color: var(--qds-gray-300); /* Light gray for text on dark bg */
+  padding: var(--qds-space-16) 0 var(--qds-space-12);
+  font-size: var(--qds-font-size-sm);
+  line-height: var(--qds-line-height-relaxed);
+}
+
+.quiz-page .footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--qds-space-10);
+  margin-bottom: var(--qds-space-12);
+}
+
+.quiz-page .footer-column h4 {
+  color: var(--qds-brand-white);
+  margin-bottom: var(--qds-space-5);
+  font-size: var(--qds-font-size-md);
+  font-weight: var(--qds-font-weight-semibold);
+  padding-bottom: var(--qds-space-2);
+  border-bottom: 1px solid var(--qds-primary-light);
+}
+
+.quiz-page .footer-column ul li {
+  margin-bottom: var(--qds-space-3);
+}
+.quiz-page .footer-column a:not(.social-link) {
+  color: var(--qds-gray-300);
+  transition: color var(--qds-transition-fast), padding-left var(--qds-transition-fast);
+}
+.quiz-page .footer-column a:not(.social-link):hover {
+  color: var(--qds-brand-white);
+  padding-left: var(--qds-space-1);
+}
+
+.quiz-page .footer-contact-info li { display: flex; align-items: center; gap: var(--qds-space-3); }
+.quiz-page .footer-contact-info i {
+   width: 1.2em; text-align: center; color: var(--qds-secondary-light); flex-shrink: 0;
+}
+
+.quiz-page .footer-connect-title {
+   font-weight: var(--qds-font-weight-medium);
+   color: var(--qds-gray-200);
+   margin-top: var(--qds-space-6); /* As per HTML .mt-md with adjusted scale */
+   margin-bottom: var(--qds-space-3);
+}
+
+.quiz-page .social-links {
+    display: flex; flex-wrap: wrap; gap: var(--qds-space-4); /* As per HTML */
+}
+.quiz-page .social-link {
+  color: var(--qds-gray-400);
+  font-size: var(--qds-font-size-lg); /* Larger social icons */
+  transition: color var(--qds-transition-fast), transform var(--qds-transition-fast);
+}
+.quiz-page .social-link:hover {
+  color: var(--qds-brand-white);
+  transform: translateY(-2px) scale(1.1);
+}
+
+.quiz-page .copyright {
+  text-align: center;
+  font-size: var(--qds-font-size-sm);
+  color: var(--qds-gray-400);
+  margin-top: var(--qds-space-10); /* from mt-xl */
+  padding-top: var(--qds-space-4);  /* from pt-md */
+  border-top: 1px solid var(--qds-primary-light);
+}
+
+
+/* --- [SECTION 7A] Enhanced Hero Section (Quiz Page Intro) --- */
+.quiz-page .hero-section.quiz-page-intro {
+    position: relative;
+    background-color: var(--qds-primary-dark);
+    color: var(--qds-brand-white);
+    padding: var(--qds-space-20) 0 var(--qds-space-24); /* More vertical padding */
+    overflow: hidden;
+    min-height: 60vh; /* Ensure it has some decent height */
+    display: flex;
+    align-items: center;
+}
+
+.quiz-page .hero-section.quiz-page-intro::before { /* Bottom darker wave/gradient */
     content: '';
     position: absolute;
+    bottom: 0;
     left: 0;
-    top: 0;
-    bottom: 0; /* ensure it spans full height */
-    height: 100%;
-    width: 5px; /* Thicker bar */
-    background-color: transparent;
-    transition: background-color var(--quiz-transition-normal);
-    border-top-left-radius: var(--quiz-radius-md); /* Match button radius */
-    border-bottom-left-radius: var(--quiz-radius-md);
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
+    z-index: 1;
+    pointer-events: none;
 }
 
-.quiz-page .quiz-option.selected::before {
-    background-color: var(--quiz-primary);
+.quiz-page .hero-section.quiz-page-intro .hero-container {
+    position: relative;
+    z-index: 2; /* Above pseudo-elements */
 }
 
-.quiz-page .quiz-option.correct::before {
-    background-color: var(--quiz-success);
-}
-
-.quiz-page .quiz-option.incorrect::before {
-    background-color: var(--quiz-error);
-}
-/* Adjust padding for text with the ::before bar */
-.quiz-page .quiz-option {
-    padding-left: calc(var(--quiz-space-md) + 5px + var(--quiz-space-xs)); /* Original padding + bar width + some space */
-}
-
-
-.quiz-page .quiz-modal-feedback {
-    padding: var(--quiz-space-md);
-    border-radius: var(--quiz-radius-md);
-    margin-bottom: var(--quiz-space-lg);
-    font-size: var(--quiz-font-size-md);
-    line-height: 1.5;
-    background-color: var(--quiz-primary-lighter);
-    border-left: 4px solid var(--quiz-primary);
-    animation: fadeIn var(--quiz-transition-normal) ease-out; /* Added ease-out */
-}
-
-.quiz-page .quiz-modal-feedback.correct {
-    background-color: var(--quiz-success-light);
-    border-left-color: var(--quiz-success);
-    color: var(--quiz-gray-800); /* Ensure text is readable */
-}
-
-.quiz-page .quiz-modal-feedback.incorrect {
-    background-color: var(--quiz-error-light);
-    border-left-color: var(--quiz-error);
-    color: var(--quiz-gray-800); /* Ensure text is readable */
-}
-.quiz-page .quiz-modal-feedback strong {
-    font-weight: 700;
-}
-
-.quiz-page .quiz-modal-results {
+.quiz-page .hero-section.quiz-page-intro .hero-content {
+    max-width: 750px; /* Slightly wider for impact */
+    margin: 0 auto;
     text-align: center;
-    animation: fadeIn var(--quiz-transition-normal) ease-out; /* Added ease-out */
+    animation: heroContentFadeInUp 1s var(--qds-transition-normal) forwards;
+    opacity: 0;
 }
 
-/* Changed .quiz-result-score to .quiz-final-score to match HTML/JS */
-.quiz-page .quiz-final-score {
-    font-size: var(--quiz-font-size-3xl);
-    font-weight: 700;
-    color: var(--quiz-primary-dark);
-    margin-bottom: var(--quiz-space-md);
-}
-.quiz-page .quiz-final-score strong {
-    color: var(--quiz-primary); /* Highlight the score numbers */
-}
-
-/* Changed .quiz-result-message to .quiz-feedback-message to match HTML/JS */
-.quiz-page .quiz-feedback-message {
-    font-size: var(--quiz-font-size-lg);
-    color: var(--quiz-gray-700);
-    margin-bottom: var(--quiz-space-lg);
-    line-height: 1.5;
-}
-
-.quiz-page .quiz-modal-navigation {
-    display: flex;
-    justify-content: center;
-    gap: var(--quiz-space-md);
-    margin-top: var(--quiz-space-lg);
-}
-
-.quiz-page .quiz-modal-navigation .btn {
-    min-width: 140px;
-}
-
-/* --- Animations --- */
-@keyframes fadeIn {
+@keyframes heroContentFadeInUp {
     from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(30px);
     }
     to {
         opacity: 1;
@@ -876,173 +641,846 @@
     }
 }
 
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-        box-shadow: var(--quiz-shadow-md);
+.quiz-page .hero-section.quiz-page-intro .hero-badge {
+    display: inline-block;
+    background-color: var(--qds-secondary);
+    color: var(--qds-secondary-text);
+    font-weight: var(--qds-font-weight-semibold);
+    font-size: var(--qds-font-size-sm);
+    padding: var(--qds-space-2) var(--qds-space-4);
+    border-radius: var(--qds-radius-full);
+    margin-bottom: var(--qds-space-5); /* More space below badge */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    animation: heroBadgePulse 2s infinite ease-in-out;
+    animation-delay: 0.5s; /* Start after content fades in */
+}
+
+@keyframes heroBadgePulse {
+    0% { transform: scale(1); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    50% { transform: scale(1.05); box-shadow: 0 4px 10px color-mix(in srgb, var(--qds-secondary) 40%, transparent); }
+    100% { transform: scale(1); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+}
+
+.quiz-page .hero-section.quiz-page-intro #quiz-intro-heading {
+    color: var(--qds-brand-white);
+    font-size: var(--qds-font-size-5xl); /* Larger heading */
+    font-weight: var(--qds-font-weight-extrabold);
+    margin-bottom: var(--qds-space-5);
+    line-height: 1.1;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.quiz-page .hero-section.quiz-page-intro .subheadline {
+    color: var(--qds-gray-200); /* Lighter subheadline for contrast */
+    font-size: var(--qds-font-size-lg);
+    line-height: var(--qds-line-height-relaxed);
+    margin-bottom: var(--qds-space-8); /* More space before actions */
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.quiz-page .hero-section.quiz-page-intro .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--qds-space-5); /* Generous gap */
+    justify-content: center;
+    margin-top: var(--qds-space-6);
+}
+.quiz-page .hero-section.quiz-page-intro .hero-actions .btn {
+    padding: var(--qds-space-4) var(--qds-space-8); /* Ensure large buttons are large */
+    font-size: var(--qds-font-size-md);
+    min-width: 220px; /* Give buttons some width */
+    box-shadow: var(--qds-shadow-lg);
+}
+.quiz-page .hero-section.quiz-page-intro .hero-actions .btn-primary {
+    background-color: var(--qds-secondary);
+    color: var(--qds-secondary-text);
+    border-color: var(--qds-secondary);
+}
+.quiz-page .hero-section.quiz-page-intro .hero-actions .btn-primary:hover {
+    background-color: var(--qds-secondary-dark);
+    border-color: var(--qds-secondary-dark);
+    color: var(--qds-brand-white);
+}
+.quiz-page .hero-section.quiz-page-intro .hero-actions .btn-outline {
+    border-color: var(--qds-secondary-light);
+    color: var(--qds-secondary-light);
+}
+.quiz-page .hero-section.quiz-page-intro .hero-actions .btn-outline:hover {
+    background-color: color-mix(in srgb, var(--qds-secondary-light) 15%, transparent);
+    border-color: var(--qds-brand-white);
+    color: var(--qds-brand-white);
+}
+
+/* Decorative shapes for hero (optional, can be complex) */
+.quiz-page .hero-section.quiz-page-intro::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        radial-gradient(circle at 15% 25%, color-mix(in srgb, var(--qds-secondary) 20%, transparent) 0%, transparent 40%),
+        radial-gradient(circle at 85% 65%, color-mix(in srgb, var(--qds-primary-light) 15%, transparent) 0%, transparent 35%);
+    background-repeat: no-repeat;
+    z-index: 0;
+    opacity: 0.7;
+    mix-blend-mode: overlay;
+    animation: heroBgShapes 20s infinite alternate ease-in-out;
+}
+
+@keyframes heroBgShapes {
+    0% { transform: scale(1) translate(0,0) rotate(0deg); opacity: 0.7; }
+    50% { transform: scale(1.1) translate(20px, -10px) rotate(5deg); opacity: 0.5; }
+    100% { transform: scale(1) translate(0,0) rotate(0deg); opacity: 0.7; }
+}
+
+
+/* --- [SECTION 7B] Accordion & Category Cards --- */
+/* Main accordion section titles */
+.quiz-page .quiz-accordion-container .section-title {
+    color: var(--qds-primary-dark);
+    font-size: var(--qds-font-size-3xl); /* Adjusted to standard heading scale */
+    font-weight: var(--qds-font-weight-bold);
+    text-align: center;
+    margin-bottom: var(--qds-space-3);
+    padding-bottom: var(--qds-space-4); /* Space for underline */
+    position: relative;
+}
+.quiz-page .quiz-accordion-container .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px; /* Fixed width underline for section titles */
+    height: 4px;
+    background: var(--qds-gradient-underline);
+    background-size: 200% 100%;
+    border-radius: var(--qds-radius-full);
+    animation: qdsGradientShift 5s infinite linear;
+}
+@keyframes qdsGradientShift { /* Reusable gradient animation */
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.quiz-page .quiz-accordion-container .section-description {
+    color: var(--qds-gray-600);
+    font-size: var(--qds-font-size-md);
+    line-height: var(--qds-line-height-relaxed);
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto var(--qds-space-10); /* Space below description */
+}
+
+.quiz-page .quiz-accordion-container {
+    max-width: 1000px; /* Ensure this is larger than accordion to provide padding */
+    margin: var(--qds-space-12) auto; /* Add top/bottom margin */
+    padding: 0 var(--qds-space-6); /* Horizontal padding */
+}
+
+.quiz-page .accordion {
+    max-width: 900px; /* Max width for accordion itself */
+    margin: 0 auto;
+}
+
+.quiz-page .accordion-item {
+    background-color: var(--qds-surface-primary);
+    border-radius: var(--qds-radius-xl); /* More rounded */
+    margin-bottom: var(--qds-space-5);
+    overflow: hidden; /* Crucial for rounded corners with borders */
+    box-shadow: var(--qds-shadow-md);
+    transition: box-shadow var(--qds-transition-normal), transform var(--qds-transition-normal);
+    border: 1px solid var(--qds-border-color);
+}
+.quiz-page .accordion-item:hover {
+    box-shadow: var(--qds-shadow-lg);
+    transform: translateY(-4px);
+}
+.quiz-page .accordion-item:last-child {
+    margin-bottom: 0;
+}
+
+.quiz-page .accordion-header { margin: 0; }
+
+.quiz-page .accordion-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Pushes ::after icon to the right */
+    width: 100%;
+    padding: var(--qds-space-5) var(--qds-space-6); /* Generous padding */
+    font-size: var(--qds-font-size-lg); /* Clear, readable size */
+    font-weight: var(--qds-font-weight-semibold);
+    color: var(--qds-primary-dark);
+    background-color: var(--qds-surface-primary);
+    border: none; /* Reset border */
+    cursor: pointer;
+    transition: background-color var(--qds-transition-normal), color var(--qds-transition-normal);
+    text-align: left;
+    line-height: var(--qds-line-height-snug);
+}
+
+.quiz-page .accordion-button::after {
+    content: '\f078'; /* Font Awesome chevron-down */
+    font-family: 'Font Awesome 6 Free'; /* Ensure correct font family */
+    font-weight: 900; /* FA Solid */
+    font-size: 0.8em;
+    margin-left: var(--qds-space-4); /* Space between text and icon */
+    transition: transform var(--qds-transition-normal);
+    color: var(--qds-primary);
+    flex-shrink: 0; /* Prevent icon from shrinking */
+}
+
+.quiz-page .accordion-button:hover {
+    background-color: var(--qds-primary-lighter);
+}
+.quiz-page .accordion-button:focus { outline: none; }
+.quiz-page .accordion-button:focus-visible {
+    box-shadow: var(--qds-shadow-focus);
+    z-index: var(--qds-z-base);
+}
+
+.quiz-page .accordion-button:not(.collapsed) {
+    background-color: var(--qds-primary-lighter);
+    color: var(--qds-primary-dark);
+    border-bottom: 1px solid var(--qds-border-color); /* Only add border when expanded if needed */
+}
+.quiz-page .accordion-button:not(.collapsed)::after {
+    transform: rotate(-180deg);
+}
+
+.quiz-page .accordion-collapse {
+    overflow: hidden;
+    /* JS will handle height:0 and visibility for transitions */
+    transition: height var(--qds-transition-normal) cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: height;
+}
+/* .show class added by JS will trigger the height transition */
+/* visibility also handled by JS inline styles if needed for transition start/end */
+
+.quiz-page .accordion-body {
+    padding: var(--qds-space-6) var(--qds-space-8); /* More padding inside */
+    background-color: var(--qds-surface-secondary); /* Slightly different bg */
+}
+
+
+/* Category Cards within Accordion */
+.quiz-page .category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); /* Slightly wider min for cards */
+    gap: var(--qds-space-6);
+}
+
+.quiz-page .category-card.card { /* HTML uses both classes */
+    background-color: var(--qds-surface-primary);
+    border-radius: var(--qds-radius-lg); /* Consistent radius */
+    box-shadow: var(--qds-shadow-sm); /* Softer initial shadow */
+    transition: transform var(--qds-transition-normal), box-shadow var(--qds-transition-normal);
+    border: 1px solid var(--qds-border-color);
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Ensure cards align if content varies */
+}
+
+.quiz-page .category-card.card::before { /* Top accent bar */
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: var(--qds-gradient-secondary);
+    opacity: 0;
+    transition: height var(--qds-transition-normal), opacity var(--qds-transition-normal);
+    border-top-left-radius: var(--qds-radius-lg); /* Match card radius */
+    border-top-right-radius: var(--qds-radius-lg);
+}
+
+.quiz-page .category-card.card:hover {
+    transform: translateY(-6px) scale(1.02); /* More pronounced hover */
+    box-shadow: var(--qds-shadow-lg);
+    border-color: var(--qds-secondary-light);
+}
+.quiz-page .category-card.card:hover::before {
+    height: 6px;
+    opacity: 1;
+}
+
+.quiz-page .category-card .card-content {
+    padding: var(--qds-space-6);
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content for card aesthetic */
+    text-align: center;
+    flex-grow: 1; /* Take available space */
+}
+
+.quiz-page .category-card .category-icon {
+    font-size: 2rem; /* Slightly smaller */
+    color: var(--qds-secondary);
+    margin-bottom: var(--qds-space-4);
+    background-color: var(--qds-secondary-lighter);
+    width: 60px; /* Larger icon container */
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--qds-radius-full); /* Circle */
+    transition: transform var(--qds-transition-fast), background-color var(--qds-transition-normal), color var(--qds-transition-normal);
+}
+.quiz-page .category-card:hover .category-icon {
+    transform: scale(1.15) rotate(-5deg);
+    background-color: var(--qds-secondary);
+    color: var(--qds-brand-white);
+}
+
+.quiz-page .category-card h4 { /* ID is category-title-X */
+    font-size: var(--qds-font-size-lg); /* Clear title size */
+    font-weight: var(--qds-font-weight-semibold);
+    color: var(--qds-primary-dark);
+    margin-bottom: var(--qds-space-2);
+    transition: color var(--qds-transition-normal);
+}
+.quiz-page .category-card:hover h4 {
+    color: var(--qds-primary);
+}
+
+.quiz-page .category-card p {
+    color: var(--qds-gray-600);
+    font-size: var(--qds-font-size-sm);
+    line-height: var(--qds-line-height-relaxed);
+    margin-bottom: var(--qds-space-5);
+    flex-grow: 1; /* Allow paragraph to push button down */
+    max-width: 40ch; /* Control text width for readability */
+}
+
+.quiz-page .category-card .start-quiz-btn {
+    margin-top: auto; /* Pushes button to the bottom */
+    width: 100%; /* Full width within padding */
+    max-width: 220px; /* Control max button width */
+}
+.quiz-page .category-card .start-quiz-btn.btn-secondary { /* Uses specific class for Start Quiz button */
+    /* Styles inherited from .btn and .btn-secondary */
+}
+
+
+/* --- [SECTION 8] Quiz Modal --- */
+.quiz-page .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(17, 24, 39, 0.8); /* Using qds-gray-900 with alpha */
+    backdrop-filter: blur(5px); /* Refined blur */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: var(--qds-z-modal-backdrop);
+    padding: var(--qds-space-4); /* Base padding for overlay */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--qds-transition-normal), visibility 0s linear var(--qds-transition-normal);
+}
+.quiz-page .modal-overlay:not([hidden]) { /* JS uses :not([hidden]) instead of .visible */
+    opacity: 1;
+    visibility: visible;
+    transition: opacity var(--qds-transition-normal), visibility 0s linear 0s;
+}
+
+.quiz-page .quiz-modal-content { /* Specific to quiz modal */
+    background-color: var(--qds-surface-primary);
+    border-radius: var(--qds-radius-xl); /* More rounding */
+    box-shadow: var(--qds-shadow-2xl); /* Stronger shadow for modal */
+    width: 100%;
+    max-width: 650px; /* Slightly wider modal */
+    padding: var(--qds-space-8) var(--qds-space-6); /* More padding */
+    position: relative;
+    transform: translateY(20px) scale(0.95);
+    opacity: 0;
+    transition: transform var(--qds-transition-normal) cubic-bezier(0.4, 0, 0.2, 1),
+                opacity var(--qds-transition-normal) cubic-bezier(0.4, 0, 0.2, 1);
+    max-height: 90vh; /* Ensure modal doesn't exceed viewport height */
+    overflow-y: auto; /* Scroll content if it overflows */
+}
+.quiz-page .quiz-modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+.quiz-page .quiz-modal-content::-webkit-scrollbar-track {
+    background: var(--qds-gray-100);
+    border-radius: var(--qds-radius-full);
+}
+.quiz-page .quiz-modal-content::-webkit-scrollbar-thumb {
+    background-color: var(--qds-gray-300);
+    border-radius: var(--qds-radius-full);
+}
+
+.quiz-page .modal-overlay:not([hidden]) .quiz-modal-content {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+.quiz-page .modal-close-btn {
+    position: absolute;
+    top: var(--qds-space-4); /* Adjusted positioning */
+    right: var(--qds-space-4);
+    background-color: transparent;
+    border: none;
+    color: var(--qds-gray-500);
+    font-size: var(--qds-font-size-xl);
+    cursor: pointer;
+    width: 44px; /* Standard touch target size */
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--qds-radius-full);
+    transition: all var(--qds-transition-fast);
+    z-index: var(--qds-z-modal); /* Ensure it's above modal content */
+}
+.quiz-page .modal-close-btn:hover {
+    background-color: var(--qds-gray-100);
+    color: var(--qds-gray-800);
+    transform: rotate(90deg) scale(1.1); /* Fun rotation */
+}
+.quiz-page .modal-close-btn:focus-visible {
+    box-shadow: var(--qds-shadow-focus);
+}
+
+.quiz-page #quiz-modal-title {
+    font-size: var(--qds-font-size-2xl);
+    font-weight: var(--qds-font-weight-bold);
+    color: var(--qds-primary-dark);
+    margin-bottom: var(--qds-space-3); /* Reduced from mb-md in HTML via var change */
+    text-align: center;
+}
+
+/* Visual Progress Bar Track */
+.quiz-page #quiz-modal-progress { /* This is the container DIV */
+    position: relative;
+    width: 100%;
+    height: 10px; /* Thicker bar */
+    background-color: var(--qds-gray-200);
+    border-radius: var(--qds-radius-full);
+    margin-bottom: var(--qds-space-2); /* Space before the text */
+    overflow: hidden; /* Clip the ::before pseudo-element */
+}
+/* Visual Progress Bar Fill - Animated with JS variable */
+.quiz-page #quiz-modal-progress::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: var(--qds-gradient-secondary);
+    border-radius: var(--qds-radius-full);
+    width: calc((var(--quiz-current-question, 0) / var(--quiz-total-questions, 1)) * 100%);
+    transition: width var(--qds-transition-slow) ease-out; /* Smooth width transition */
+}
+
+/* "Question X of Y" text */
+.quiz-page #quiz-modal-progress span { /* Specifically target spans within the progress div */
+    display: inline-block; /* For proper rendering and if styling needed */
+}
+.quiz-page #quiz-modal-progress .text-center.text-muted { /* Targets the main div */
+    font-size: var(--qds-font-size-sm);
+    color: var(--qds-gray-500);
+    text-align: center;
+    margin-bottom: var(--qds-space-5); /* Existing mb-md */
+    /* Remove direct height/background/border styling for the text part here if not used as a bar */
+    height: auto;
+    background-color: transparent;
+    border-radius: 0;
+    /* Removed overflow: hidden unless specific parts were intended to be a visual bar */
+}
+
+.quiz-page #quiz-modal-question { /* HTML uses .h4 class here */
+    font-size: var(--qds-font-size-lg); /* Make it less like h4, more like text */
+    font-weight: var(--qds-font-weight-semibold);
+    color: var(--qds-gray-800);
+    margin-bottom: var(--qds-space-6); /* Was mb-lg in HTML */
+    line-height: var(--qds-line-height-snug);
+    text-align: center;
+    min-height: 3em; /* Ensure space for question text */
+}
+.quiz-page #quiz-modal-question .q-num { /* Specific styling for question number prefix */
+    color: var(--qds-primary);
+    font-weight: var(--qds-font-weight-bold);
+    margin-right: var(--qds-space-1);
+}
+
+.quiz-page #quiz-modal-options { /* HTML uses .d-grid.gap-md.mb-lg */
+    display: grid;
+    gap: var(--qds-space-4);
+    margin-bottom: var(--qds-space-6);
+}
+
+.quiz-page .quiz-option.btn { /* Targeting buttons inside options area */
+    width: 100%; /* Make options full-width within their grid cell */
+    justify-content: flex-start; /* Align text to left */
+    text-align: left;
+    font-size: var(--qds-font-size-base);
+    color: var(--qds-gray-700);
+    border: var(--qds-border-width-lg) solid var(--qds-gray-300); /* Clearer border */
+    background-color: var(--qds-surface-primary);
+    padding: var(--qds-space-4); /* Consistent padding */
+    line-height: var(--qds-line-height-snug); /* For multi-line options */
+    white-space: normal; /* Allow text to wrap */
+    height: auto; /* Allow dynamic height based on content */
+    min-height: 50px; /* Ensure decent touch target */
+    position: relative; /* For the ::before bar */
+    padding-left: calc(var(--qds-space-4) + 5px + var(--qds-space-2)); /* Adjust for ::before bar */
+}
+.quiz-page .quiz-option.btn::before { /* Decorative bar */
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    height: 100%; width: 5px;
+    background-color: transparent;
+    transition: background-color var(--qds-transition-normal);
+    border-top-left-radius: calc(var(--qds-radius-lg) - var(--qds-border-width-lg)); /* Match button inner radius */
+    border-bottom-left-radius: calc(var(--qds-radius-lg) - var(--qds-border-width-lg));
+}
+.quiz-page .quiz-option.btn:hover {
+    border-color: var(--qds-secondary-light);
+    background-color: var(--qds-secondary-lighter);
+    color: var(--qds-secondary-dark);
+    transform: none; /* Prevent lift on hover for these options if desired */
+    box-shadow: var(--qds-shadow-sm);
+}
+.quiz-page .quiz-option.btn.selected { /* When JS adds .selected */
+    border-color: var(--qds-primary);
+    background-color: var(--qds-primary-lighter);
+    color: var(--qds-primary-dark);
+    font-weight: var(--qds-font-weight-semibold);
+}
+.quiz-page .quiz-option.btn.selected::before { background-color: var(--qds-primary); }
+
+.quiz-page .quiz-option.btn.correct {
+    border-color: var(--qds-success) !important;
+    background-color: var(--qds-success-bg) !important;
+    color: var(--qds-gray-800) !important; /* Readable text */
+    font-weight: var(--qds-font-weight-semibold);
+}
+.quiz-page .quiz-option.btn.correct::before { background-color: var(--qds-success) !important; }
+
+.quiz-page .quiz-option.btn.incorrect {
+    border-color: var(--qds-error) !important;
+    background-color: var(--qds-error-bg) !important;
+    color: var(--qds-gray-800) !important; /* Readable text */
+    font-weight: var(--qds-font-weight-semibold);
+}
+.quiz-page .quiz-option.btn.incorrect::before { background-color: var(--qds-error) !important; }
+
+.quiz-page .quiz-option.btn:disabled {
+    opacity: 0.8;
+    cursor: default;
+}
+.quiz-page .quiz-option.btn:disabled:hover { /* Prevent hover styles on disabled */
+    border-color: var(--qds-gray-300);
+    background-color: var(--qds-surface-primary);
+    color: var(--qds-gray-700);
+    /* Or if it was selected and then disabled: */
+    /* Adjust as per the logic of when disabled is applied */
+}
+.quiz-page .quiz-option.btn.selected:disabled:hover {
+    border-color: var(--qds-primary);
+    background-color: var(--qds-primary-lighter);
+    color: var(--qds-primary-dark);
+}
+
+
+.quiz-page #quiz-modal-feedback {
+    padding: var(--qds-space-4);
+    border-radius: var(--qds-radius-lg);
+    margin-bottom: var(--qds-space-6);
+    font-size: var(--qds-font-size-base);
+    line-height: var(--qds-line-height-relaxed);
+    border-left-width: 5px; /* Use left border as accent */
+    animation: qdsFadeIn var(--qds-transition-normal) ease-out;
+}
+.quiz-page #quiz-modal-feedback.correct {
+    background-color: var(--qds-success-bg);
+    border-left-color: var(--qds-success);
+    color: var(--qds-gray-800); /* Readable on light green */
+}
+.quiz-page #quiz-modal-feedback.incorrect {
+    background-color: var(--qds-error-bg);
+    border-left-color: var(--qds-error);
+    color: var(--qds-gray-800); /* Readable on light red */
+}
+.quiz-page #quiz-modal-feedback strong {
+    font-weight: var(--qds-font-weight-bold);
+    display: block; margin-bottom: var(--qds-space-1);
+}
+@keyframes qdsFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.quiz-page #quiz-modal-results { /* HTML uses .text-center */
+    text-align: center;
+    animation: qdsFadeIn var(--qds-transition-normal) ease-out;
+    padding: var(--qds-space-4) 0; /* Add some padding if content is sparse */
+}
+.quiz-page .quiz-final-score { /* From JS, within #quiz-modal-results */
+    font-size: var(--qds-font-size-4xl);
+    font-weight: var(--qds-font-weight-extrabold);
+    color: var(--qds-primary-dark);
+    margin-bottom: var(--qds-space-3);
+}
+.quiz-page .quiz-final-score strong {
+    color: var(--qds-secondary-dark); /* Highlight the score */
+}
+.quiz-page .quiz-feedback-message { /* From JS, within #quiz-modal-results */
+    font-size: var(--qds-font-size-lg);
+    color: var(--qds-gray-700);
+    margin-bottom: var(--qds-space-6);
+    line-height: var(--qds-line-height-relaxed);
+}
+
+.quiz-page .quiz-modal-navigation { /* HTML: d-flex flex-wrap justify-content-center gap-md mt-lg */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--qds-space-4);
+    margin-top: var(--qds-space-6);
+    padding-top: var(--qds-space-5); /* Add padding above buttons */
+    border-top: 1px solid var(--qds-border-color); /* Separator line */
+}
+.quiz-page .quiz-modal-navigation .btn {
+    min-width: 160px; /* Ensure buttons have a good size */
+}
+/* Ensuring specific modal navigation button styles are correct */
+.quiz-page #quiz-modal-next.btn-secondary { /* Uses .btn-small in HTML */
+    /* Base .btn-secondary and .btn-small styles apply */
+}
+.quiz-page #quiz-modal-restart.btn-outline,
+.quiz-page #quiz-modal-close-results.btn-outline { /* Uses .btn-small in HTML */
+    /* Base .btn-outline and .btn-small styles apply */
+    border-color: var(--qds-gray-400);
+    color: var(--qds-gray-600);
+}
+.quiz-page #quiz-modal-restart.btn-outline:hover,
+.quiz-page #quiz-modal-close-results.btn-outline:hover {
+    background-color: var(--qds-gray-100);
+    border-color: var(--qds-gray-500);
+    color: var(--qds-gray-700);
+}
+
+
+/* --- [SECTION 9] Decorative Background Elements --- */
+.quiz-page .deco-blur {
+    position: absolute; /* Scrolls with page, relative to quiz-page body */
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: var(--qds-z-deco);
+    opacity: 0.6;
+    mix-blend-mode: screen; /* Or overlay, lighten for subtle effect */
+    will-change: transform; /* Hint for animation */
+}
+
+.quiz-page .deco-blur.blur-1 {
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, var(--qds-primary-lighter) 0%, transparent 65%);
+    filter: blur(120px);
+    top: 10vh; left: -100px;
+    animation: qdsFloat 25s infinite alternate ease-in-out;
+}
+.quiz-page .deco-blur.blur-2 {
+    width: 450px; height: 450px;
+    background: radial-gradient(circle, var(--qds-secondary-lighter) 0%, transparent 70%);
+    filter: blur(150px);
+    top: 60vh; right: -150px;
+    opacity: 0.45;
+    animation: qdsFloat 30s infinite alternate-reverse ease-in-out;
+}
+.quiz-page .deco-blur.blur-3 {
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, var(--qds-accent-light) 0%, transparent 60%);
+    filter: blur(100px);
+    bottom: 15vh; left: 5vw;
+    opacity: 0.35;
+    animation: qdsFloat 35s infinite alternate ease-in-out;
+}
+
+@keyframes qdsFloat {
+    0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+    25% { transform: translate(20px, -15px) scale(1.05) rotate(10deg); }
+    50% { transform: translate(-10px, 10px) scale(0.95) rotate(-5deg); }
+    75% { transform: translate(15px, 20px) scale(1.02) rotate(5deg); }
+    100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+}
+
+
+/* --- [SECTION 10] Responsive Design --- */
+@media (max-width: 991px) { /* Tablet Breakpoint */
+    :root { /* Slightly smaller base fonts for tablet */
+        --qds-font-size-base: 0.9375rem; /* 15px */
+        --qds-font-size-5xl: 3.25rem; /* Adjust largest hero heading */
+        --qds-font-size-4xl: 2.5rem;
     }
-    50% {
-        transform: scale(1.03); /* Subtler pulse */
-        box-shadow: var(--quiz-shadow-lg);
+    .quiz-page .container { padding-inline: var(--qds-space-5); }
+    .quiz-page .section-padding { padding-block: var(--qds-space-12); }
+    .quiz-page .section-padding--large { padding-block: var(--qds-space-20); }
+
+    /* Header on Tablet */
+    .quiz-page #primary-navigation { gap: var(--qds-space-5); }
+    .quiz-page #primary-navigation .nav-link { font-size: var(--qds-font-size-xs); }
+
+    /* Hero on Tablet */
+    .quiz-page .hero-section.quiz-page-intro { min-height: 50vh; padding: var(--qds-space-16) 0 var(--qds-space-20); }
+    .quiz-page .hero-section.quiz-page-intro #quiz-intro-heading { font-size: var(--qds-font-size-4xl); }
+    .quiz-page .hero-section.quiz-page-intro .subheadline { font-size: var(--qds-font-size-lg); }
+
+    /* Accordion on Tablet */
+    .quiz-page .quiz-accordion-container { padding: 0 var(--qds-space-4); }
+    .quiz-page .accordion-button { padding: var(--qds-space-4) var(--qds-space-5); font-size: var(--qds-font-size-md); }
+    .quiz-page .accordion-body { padding: var(--qds-space-5); }
+    .quiz-page .category-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--qds-space-5); }
+
+    /* Modal on Tablet */
+    .quiz-page .quiz-modal-content { max-width: 90vw; padding: var(--qds-space-6); }
+    .quiz-page #quiz-modal-options { grid-template-columns: 1fr; } /* Stack options earlier */
+}
+
+@media (max-width: 767px) { /* Mobile Breakpoint */
+    :root { /* Even smaller base for mobile */
+        --qds-font-size-base: 0.875rem; /* 14px */
+        --qds-font-size-5xl: 2.5rem; /* Hero heading */
+        --qds-font-size-4xl: 2rem;
+        --qds-font-size-3xl: 1.75rem; /* Section titles */
+        --qds-header-height: 60px; /* Slightly smaller header */
     }
-    100% {
-        transform: scale(1);
-        box-shadow: var(--quiz-shadow-md);
+    .quiz-page .section-padding { padding-block: var(--qds-space-10); }
+    .quiz-page .section-padding--large { padding-block: var(--qds-space-16); }
+
+    /* Header on Mobile */
+    .quiz-page .site-header { height: var(--qds-header-height); }
+    .quiz-page .header-container { padding-inline: var(--qds-space-4); }
+    .quiz-page .logo img { height: 32px; }
+    .quiz-page nav[aria-label="Main navigation"] { display: none; } /* Hide desktop nav */
+    .quiz-page .header-tool-btn.btn-icon { display: none; } /* Hide desktop tools button */
+    .quiz-page .mobile-menu-toggle {
+        display: flex; /* Show hamburger */
+        font-size: 1.5rem; color: var(--qds-primary-dark);
+        background: none; border: none; cursor: pointer; z-index: var(--qds-z-modal); /* above nav */
+        padding: var(--qds-space-2); margin-left: auto;
+        width: 40px; height: 40px; align-items: center; justify-content: center;
+        position: relative;
+    }
+    .quiz-page .mobile-menu-toggle .open-icon,
+    .quiz-page .mobile-menu-toggle .close-icon {
+        transition: transform var(--qds-transition-normal), opacity var(--qds-transition-normal);
+        position: absolute;
+    }
+    .quiz-page .mobile-menu-toggle .open-icon { opacity: 1; transform: rotate(0deg) scale(1); }
+    .quiz-page .mobile-menu-toggle .close-icon { opacity: 0; transform: rotate(-45deg) scale(0.8); }
+    .quiz-page .mobile-menu-toggle.active .open-icon { opacity: 0; transform: rotate(45deg) scale(0.8); }
+    .quiz-page .mobile-menu-toggle.active .close-icon { opacity: 1; transform: rotate(0deg) scale(1); }
+
+    .quiz-page #primary-navigation { /* Mobile navigation panel */
+        display: flex; flex-direction: column;
+        position: fixed;
+        top: var(--qds-header-height); right: 0; bottom: 0; left: 0;
+        background-color: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        transform: translateX(100%);
+        opacity: 0; visibility: hidden;
+        transition: transform var(--qds-transition-normal), opacity var(--qds-transition-normal), visibility 0s var(--qds-transition-normal);
+        z-index: var(--qds-z-sticky); /* Below toggle, above content */
+        overflow-y: auto;
+        padding: var(--qds-space-6) 0; gap: 0;
+    }
+    .quiz-page #primary-navigation.active {
+        transform: translateX(0); opacity: 1; visibility: visible;
+        transition-delay: 0s;
+    }
+    .quiz-page #primary-navigation .nav-item { width: 100%; }
+    .quiz-page #primary-navigation .nav-link {
+        display: block; padding: var(--qds-space-4) var(--qds-space-6);
+        font-size: var(--qds-font-size-md); font-weight: var(--qds-font-weight-medium);
+        border-bottom: 1px solid var(--qds-border-color);
+        color: var(--qds-gray-800);
+    }
+    .quiz-page #primary-navigation .nav-link::after { display: none; }
+    .quiz-page #primary-navigation .nav-link.active-page {
+        background-color: var(--qds-primary-lighter); color: var(--qds-primary-dark);
+        border-left: 4px solid var(--qds-secondary); padding-left: calc(var(--qds-space-6) - 4px);
+    }
+    .quiz-page .nav-item.mobile-only { display: block; margin: var(--qds-space-6) var(--qds-space-6) 0; }
+    .quiz-page .nav-item.mobile-only .header-tool-btn.btn {
+        display: flex !important; /* ensure it shows as flex to center icon */
+        width: 100%; justify-content: center;
+    }
+
+
+    /* Hero on Mobile */
+    .quiz-page .hero-section.quiz-page-intro { min-height: auto; padding: var(--qds-space-12) 0 var(--qds-space-16); }
+    .quiz-page .hero-section.quiz-page-intro #quiz-intro-heading { font-size: var(--qds-font-size-3xl); }
+    .quiz-page .hero-section.quiz-page-intro .subheadline { font-size: var(--qds-font-size-base); margin-bottom: var(--qds-space-6); }
+    .quiz-page .hero-section.quiz-page-intro .hero-actions { flex-direction: column; gap: var(--qds-space-4); }
+    .quiz-page .hero-section.quiz-page-intro .hero-actions .btn { width: 100%; max-width: 320px; margin-inline: auto; min-width: auto; }
+
+    /* Accordion on Mobile */
+    .quiz-page .quiz-accordion-container .section-title { font-size: var(--qds-font-size-2xl); }
+    .quiz-page .quiz-accordion-container .section-description { font-size: var(--qds-font-size-base); margin-bottom: var(--qds-space-8); }
+    .quiz-page .accordion-button { padding: var(--qds-space-4); font-size: var(--qds-font-size-base); }
+    .quiz-page .accordion-body { padding: var(--qds-space-4); }
+    .quiz-page .category-grid { grid-template-columns: 1fr; gap: var(--qds-space-4); } /* Stack cards */
+
+    /* Modal on Mobile */
+    .quiz-page .quiz-modal-content { padding: var(--qds-space-4); width: 95vw; max-height: 85vh; }
+    .quiz-page #quiz-modal-title { font-size: var(--qds-font-size-xl); }
+    .quiz-page #quiz-modal-question { font-size: var(--qds-font-size-base); min-height: 2.5em; }
+    .quiz-page .quiz-option.btn {
+        padding: var(--qds-space-3) calc(var(--qds-space-3) + 5px + var(--qds-space-2)); /* Adjust padding */
+        font-size: var(--qds-font-size-sm);
+    }
+    .quiz-page .quiz-modal-navigation { flex-direction: column; }
+    .quiz-page .quiz-modal-navigation .btn { width: 100%; }
+
+    /* Decorative Blurs on Mobile */
+    .quiz-page .deco-blur { opacity: 0.3; filter: blur(80px); }
+    .quiz-page .deco-blur.blur-1 { width: 200px; height: 200px; left: -50px; }
+    .quiz-page .deco-blur.blur-2 { display: none; } /* Hide one to reduce clutter */
+    .quiz-page .deco-blur.blur-3 { width: 180px; height: 180px; bottom: 5vh; left: -40px;}
+}
+
+@media (max-width: 480px) { /* Extra Small Screens */
+    :root {
+        --qds-font-size-base: 0.8125rem; /* 13px */
+        --qds-font-size-5xl: 2rem;    /* Hero heading */
+        --qds-font-size-4xl: 1.75rem;
+        --qds-font-size-3xl: 1.5rem;
+        --qds-container-padding-x: var(--qds-space-4); /* Reduce container padding */
+    }
+    .quiz-page .hero-section.quiz-page-intro #quiz-intro-heading { font-size: var(--qds-font-size-4xl); } /* Adjust specific elements */
+    .quiz-page .quiz-accordion-container .section-title { font-size: var(--qds-font-size-xl); }
+    .quiz-page #quiz-modal-title { font-size: var(--qds-font-size-lg); }
+    .quiz-page .quiz-option.btn {
+         font-size: var(--qds-font-size-xs);
+         padding: var(--qds-space-2) calc(var(--qds-space-2) + 5px + var(--qds-space-1)); /* Further reduce padding */
     }
 }
 
-.quiz-page .pulse-animation {
-    animation: pulse 1.5s infinite ease-in-out;
+/* Ensure active nav link has stronger emphasis, particularly on Quiz Page itself */
+.quiz-page .site-header .nav-link.active-page {
+    color: var(--qds-primary-dark) !important; /* Force darker color for active */
+    font-weight: var(--qds-font-weight-bold) !important; /* Make it bolder */
 }
-
-/* --- Media Queries --- */
-@media (max-width: 991px) { /* Approx tablet breakpoint */
-    .quiz-page .hero-content h1 {
-        font-size: var(--quiz-font-size-3xl);
-    }
-    
-    .quiz-page .subheadline {
-        font-size: var(--quiz-font-size-md);
-    }
-    
-    .quiz-page .accordion-button {
-        font-size: var(--quiz-font-size-md);
-        padding: var(--quiz-space-md) var(--quiz-space-lg); /* Adjust padding */
-    }
-    
-    .quiz-page .category-grid {
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    }
-
-    .quiz-page .modal-content {
-        max-width: 90vw; /* Allow modal to use more viewport width */
-    }
+.quiz-page .site-header .nav-link.active-page::after {
+    background-color: var(--qds-primary) !important; /* Ensure underline matches */
 }
-
-@media (max-width: 767px) { /* Approx mobile breakpoint */
-    .quiz-page .section-padding {
-        padding-top: var(--quiz-space-xl);
-        padding-bottom: var(--quiz-space-xl);
-    }
-    .quiz-page .section-padding--large {
-        padding-top: var(--quiz-space-2xl);
-        padding-bottom: var(--quiz-space-2xl);
-    }
-
-    .quiz-page .hero-section {
-        padding: var(--quiz-space-xl) 0;
-    }
-    
-    .quiz-page .hero-content h1 {
-        font-size: var(--quiz-font-size-2xl);
-    }
-    
-    .quiz-page .subheadline {
-        font-size: var(--quiz-font-size-base);
-    }
-    
-    .quiz-page .hero-actions {
-        flex-direction: column;
-        /* width: 100%; Handled by button width below */
-    }
-    
-    .quiz-page .hero-actions .btn {
-        width: 100%; /* Make hero buttons full width */
-        max-width: 350px; /* But not too wide */
-        margin-left: auto;
-        margin-right: auto;
-    }
-    
-    .quiz-page .section-title {
-        font-size: var(--quiz-font-size-xl);
-    }
-    
-    .quiz-page .section-description {
-        font-size: var(--quiz-font-size-base);
-    }
-    
-    .quiz-page .accordion-button {
-        padding: var(--quiz-space-md);
-        font-size: var(--quiz-font-size-base);
-    }
-    
-    .quiz-page .accordion-body {
-        padding: var(--quiz-space-md);
-    }
-    
-    .quiz-page .category-grid {
-        grid-template-columns: 1fr; /* Stack cards on mobile */
-    }
-    
-    .quiz-page .modal-content {
-        padding: var(--quiz-space-md);
-        width: 95vw; /* More width for modal on small screens */
-        max-height: 90vh;
-        overflow-y: auto; /* Allow scrolling within modal if content overflows */
-    }
-    
-    .quiz-page .modal-title {
-        font-size: var(--quiz-font-size-lg);
-    }
-    
-    .quiz-page .quiz-modal-question-area {
-        font-size: var(--quiz-font-size-md);
-    }
-    
-    .quiz-page .quiz-option { /* Adjusted from .quiz-option-btn */
-        padding: var(--quiz-space-sm) calc(var(--quiz-space-sm) + 5px + var(--quiz-space-xs)); /* Adjust padding for mobile */
-        font-size: var(--quiz-font-size-base);
-    }
-    
-    .quiz-page .quiz-modal-navigation {
-        flex-direction: column;
-    }
-    .quiz-page .quiz-modal-navigation .btn {
-        width: 100%; /* Full width navigation buttons in modal on mobile */
-    }
-
-    .quiz-page .deco-blur.blur-1 {
-        width: 200px; height: 200px; filter: blur(80px); left: -50px;
-    }
-    .quiz-page .deco-blur.blur-2 {
-        width: 250px; height: 250px; filter: blur(100px); right: -80px;
-    }
-    .quiz-page .deco-blur.blur-3 {
-        width: 180px; height: 180px; filter: blur(70px);
-    }
-}
-
-@media (max-width: 480px) { /* Extra small screens */
-    :root { /* Scale down some spacing and font sizes for very small screens */
-        --quiz-font-size-base: 0.9rem; /* 14.4px */
-        --quiz-font-size-md: 1rem;    /* 16px */
-        --quiz-font-size-lg: 1.1rem;   /* 17.6px */
-        --quiz-font-size-xl: 1.25rem;  /* 20px */
-        --quiz-font-size-2xl: 1.5rem; /* 24px */
-
-        --quiz-space-sm: 0.75rem; /* 12px */
-        --quiz-space-md: 1rem;   /* 16px */
-        --quiz-space-lg: 1.5rem; /* 24px */
-    }
-
-    .quiz-page .hero-content h1 {
-        font-size: var(--quiz-font-size-xl); /* Using the adjusted XL for small screens */
-    }
-    .quiz-page .subheadline {
-        font-size: var(--quiz-font-size-sm); /* Adjusted SM */
-    }
-    .quiz-page .section-title {
-        font-size: var(--quiz-font-size-lg); /* Adjusted LG */
-    }
-    .quiz-page .modal-title {
-        font-size: var(--quiz-font-size-md); /* Adjusted MD */
-    }
-    .quiz-page .quiz-modal-question-area {
-        font-size: var(--quiz-font-size-sm);
-    }
-    .quiz-page .quiz-option {
-         font-size: var(--quiz-font-size-sm);
-         padding-top: var(--quiz-space-2xs); /* Further reduce padding */
-         padding-bottom: var(--quiz-space-2xs);
+/* For mobile active state */
+@media (max-width: 767px) {
+    .quiz-page #primary-navigation .nav-link.active-page {
+        background-color: var(--qds-secondary-lighter) !important;
+        color: var(--qds-secondary-dark) !important;
+        border-left-color: var(--qds-secondary-dark) !important;
     }
 }
