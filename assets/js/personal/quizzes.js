@@ -19,7 +19,7 @@
         START_QUIZ_BTN_SELECTOR: '.start-quiz-btn',
 
         QUIZ_MODAL_SELECTOR: '#quiz-modal',
-        MODAL_VISIBLE_CLASS: 'visible', // Class for overlay state (though CSS primarily uses :not([hidden]))
+        MODAL_VISIBLE_CLASS: 'visible',
         MODAL_CONTENT_SELECTOR: '.quiz-modal-content',
         MODAL_FOCUS_DELAY: 150, // ms
 
@@ -39,7 +39,7 @@
             const levels = ['debug', 'info', 'warn', 'error', 'none'];
             if (levels.indexOf(level) >= levels.indexOf(CONFIG.LOG_LEVEL)) {
                 const timestamp = new Date().toISOString().substring(11, 23);
-                console[level === 'error' ? 'error' : 'log'](`[${timestamp}][${level.toUpperCase()}][QuizzesV3.2]`, ...args); // Updated version
+                console[level === 'error' ? 'error' : 'log'](`[${timestamp}][${level.toUpperCase()}][QuizzesV3.3]`, ...args); // Updated version
             }
         },
         debug: (...args) => logger._log('debug', ...args),
@@ -71,6 +71,7 @@
         isFullChallenge: false,
         quizId: null,
         categoryName: '',
+        isOngoing: false, // NEW: Track if a quiz is active
     };
 
     const fullQuizData = [
@@ -237,7 +238,7 @@
         if (fullQuizData.length !== CONFIG.EXPECTED_TOTAL_QUESTIONS) {
             logger.error(`CRITICAL: Expected ${CONFIG.EXPECTED_TOTAL_QUESTIONS} questions, but found ${fullQuizData.length}.`); return false;
         }
-        if (fullQuizData.length > 0) { // Only check firstQ if array is not empty
+        if (fullQuizData.length > 0) {
             const firstQ = fullQuizData[0];
             const requiredKeys = ['id', 'quizId', 'category', 'question', 'options', 'correctAnswerIndex', 'explanation'];
             if (!firstQ || requiredKeys.some(key => !(key in firstQ))) {
@@ -270,10 +271,8 @@
                     collapsePanel.style.visibility = 'hidden';
                 } else {
                     collapsePanel.classList.add(CONFIG.ACCORDION_COLLAPSE_SHOW_CLASS);
-                    // Set to auto initially for open panels to correctly measure content
-                    // The transitionend handler will set it to auto after animation
                     collapsePanel.style.height = collapsePanel.scrollHeight + 'px';
-                    setTimeout(() => { // Allow rendering before setting to auto
+                    setTimeout(() => {
                         if (collapsePanel.classList.contains(CONFIG.ACCORDION_COLLAPSE_SHOW_CLASS)) {
                            collapsePanel.style.height = 'auto';
                         }
@@ -323,10 +322,10 @@
         button.classList.add(CONFIG.ACCORDION_BUTTON_COLLAPSED_CLASS);
         button.setAttribute('aria-expanded', 'false');
         collapsePanel.style.height = collapsePanel.scrollHeight + 'px';
-        requestAnimationFrame(() => { // Ensure current height is applied before transitioning to 0
-             setTimeout(() => { // Delay slightly to allow the height to register before collapsing
+        requestAnimationFrame(() => {
+             setTimeout(() => {
                 collapsePanel.style.height = '0px';
-             }, 0); // Minimum delay
+             }, 0);
         });
         setTimeout(() => {
             if (button.classList.contains(CONFIG.ACCORDION_BUTTON_COLLAPSED_CLASS)) {
@@ -343,13 +342,12 @@
         }
         activeModalTriggerElement = triggerEl;
         document.body.style.overflow = 'hidden';
-        quizModalElement.hidden = false; // This triggers CSS :not([hidden])
+        quizModalElement.hidden = false;
+        currentQuiz.isOngoing = true; // NEW: Mark quiz as ongoing
 
         escapeKeyListener = (event) => handleEscapeKeyForModal(event);
 
         requestAnimationFrame(() => {
-            // The classList.add for .visible on quizModalElement is minor as CSS mainly uses :not([hidden])
-            // It could be removed if CSS exclusively relies on :not([hidden]) for overlay.
             quizModalElement.classList.add(CONFIG.MODAL_VISIBLE_CLASS);
             quizModalContentElement.style.opacity = '1';
             quizModalContentElement.style.transform = 'translateY(0) scale(1)';
@@ -359,18 +357,21 @@
             document.addEventListener('keydown', activeFocusTrapHandler);
             document.addEventListener('keydown', escapeKeyListener);
 
-            const firstInteractive = quizModalElement.querySelector(
-                '.quiz-modal-options-area .quiz-option:not([disabled]), #quiz-modal-next:not([hidden]), #quiz-modal-restart:not([hidden]), #quiz-modal-close-results:not([hidden]), #quiz-modal-close'
-            ) || quizModalCloseBtnEl || quizModalContentElement; // Fallback to content
+            // Focus on the first interactive element or the modal content.
+            // This usually is the first option button, or the close button.
+            const firstInteractive = quizModalOptionsAreaEl?.querySelector('.quiz-option:not([disabled])') ||
+                                   quizModalCloseBtnEl ||
+                                   quizModalContentElement;
             safeFocus(firstInteractive, 'Quiz Modal Opening');
         });
-        logger.info("Quiz modal opened.");
+        logger.info("Quiz modal opened and quiz marked as ongoing.");
     }
 
     function closeQuizModal(returnFocus = true) {
         if (!quizModalElement || quizModalElement.hidden) return;
 
         logger.info("Closing quiz modal...");
+        currentQuiz.isOngoing = false; // NEW: Mark quiz as no longer ongoing
         if (escapeKeyListener) document.removeEventListener('keydown', escapeKeyListener);
         escapeKeyListener = null;
         if (activeFocusTrapHandler) {
@@ -378,18 +379,16 @@
             activeFocusTrapHandler = null;
         }
 
-        quizModalElement.classList.remove(CONFIG.MODAL_VISIBLE_CLASS); // Minor effect given CSS for overlay
+        quizModalElement.classList.remove(CONFIG.MODAL_VISIBLE_CLASS);
         if (quizModalContentElement) {
              quizModalContentElement.style.opacity = '0';
              quizModalContentElement.style.transform = 'translateY(20px) scale(0.95)';
         }
 
         const transitionHandler = (event) => {
-             // Ensure we're reacting to the content's transition or overlay if content is not animated/present
             if (event.target !== quizModalContentElement && event.target !== quizModalElement) {
                 return;
             }
-             // Check if the modal is still intended to be closed (not re-opened quickly)
             if (quizModalElement.hidden || quizModalElement.classList.contains(CONFIG.MODAL_VISIBLE_CLASS)) {
                  if (event.target === quizModalContentElement || event.target === quizModalElement) {
                      (event.target).removeEventListener('transitionend', transitionHandler);
@@ -397,19 +396,17 @@
                 return;
             }
 
-            quizModalElement.hidden = true; // This will trigger opacity:0 via CSS for overlay
+            quizModalElement.hidden = true;
             document.body.style.overflow = '';
             resetQuizInterface();
             if (returnFocus && activeModalTriggerElement && typeof activeModalTriggerElement.focus === 'function') {
                 safeFocus(activeModalTriggerElement, 'Quiz Modal Closing');
             }
             activeModalTriggerElement = null;
-            (event.target).removeEventListener('transitionend', transitionHandler); // Clean up self
+            (event.target).removeEventListener('transitionend', transitionHandler);
             logger.debug("Quiz modal fully closed via transitionend.");
         };
         
-        // Listen primarily on content element as it has opacity and transform transitions
-        // Fallback to quizModalElement if content is not present or its transition doesn't fire.
         const animatedElement = quizModalContentElement || quizModalElement;
         animatedElement.addEventListener('transitionend', transitionHandler);
         
@@ -423,14 +420,21 @@
                     safeFocus(activeModalTriggerElement, 'Quiz Modal Closing (Fallback)');
                 }
                 activeModalTriggerElement = null;
-                animatedElement.removeEventListener('transitionend', transitionHandler); // Clean up
+                animatedElement.removeEventListener('transitionend', transitionHandler);
             }
-        }, CONFIG.MODAL_TRANSITION_DURATION + 150); // Slightly longer fallback
+        }, CONFIG.MODAL_TRANSITION_DURATION + 150);
     }
 
     function handleEscapeKeyForModal(event) {
         if (event.key === 'Escape') {
-            closeQuizModal();
+            // Allow closing only if results are shown OR if user confirms closing ongoing quiz (optional future enhancement)
+            if (!currentQuiz.isOngoing || quizModalResultsAreaEl.hidden === false) {
+                closeQuizModal();
+            } else {
+                // Optional: Confirm if they want to exit an ongoing quiz. For now, prevent Esc close of active quiz.
+                logger.debug("Escape key pressed during ongoing quiz; close prevented unless results showing.");
+                // To allow close on escape during active quiz, simply call closeQuizModal() here.
+            }
         }
     }
 
@@ -443,7 +447,6 @@
 
         if (focusableElements.length === 0) {
              logger.warn("No focusable elements found in modal for trap.");
-             // Fallback: Ensure modal itself can be focused to allow ESC if nothing else.
              if (modal.getAttribute('tabindex') === null) modal.setAttribute('tabindex', "-1");
              return (event) => {};
         }
@@ -469,15 +472,16 @@
 
     function prepareNewQuiz(questions, isFull, quizIdStr = null, category = '') {
         logger.info(`Preparing new quiz. Full: ${isFull}, ID: ${quizIdStr || 'N/A'}, Cat: "${category || 'Full'}"`);
-        shuffleArray(questions); // Shuffle the selected questions for variety each time
+        shuffleArray(questions);
         currentQuiz = {
-            questions: questions.slice(0, isFull ? CONFIG.EXPECTED_TOTAL_QUESTIONS : CONFIG.QUESTIONS_PER_CATEGORY), // Take appropriate number
+            questions: questions.slice(0, isFull ? CONFIG.EXPECTED_TOTAL_QUESTIONS : CONFIG.QUESTIONS_PER_CATEGORY),
             currentQuestionIndex: 0,
             score: 0,
             userAnswers: {},
             isFullChallenge: isFull,
             quizId: quizIdStr,
-            categoryName: category
+            categoryName: category,
+            isOngoing: false // Will be set true when modal opens
         };
         logger.debug("Prepared quiz questions count:", currentQuiz.questions.length);
     }
@@ -491,13 +495,12 @@
             logger.error("Failed to setup quiz modal interface. Aborting quiz start.");
             return;
         }
+        currentQuiz.isOngoing = true; // Moved here, just before modal opens, ensures it's set
         displayCurrentQuizQuestion();
-        openQuizModal(triggerEl);
+        openQuizModal(triggerEl); // openQuizModal will also set currentQuiz.isOngoing
     }
 
     function setupQuizModalInterface() {
-        // Caching here is a fallback; primary caching is now at init.
-        // But this ensures elements are there IF this func is somehow called before full init.
         if (!quizModalTitleEl && !cacheQuizModalInternalElements()) {
              logger.error("Critical: Quiz modal internal elements not found during setup. Aborting UI setup.");
              alert("A critical error occurred setting up the quiz. Please try again later.");
@@ -505,34 +508,38 @@
         }
         const title = currentQuiz.isFullChallenge ? "Full Financial Fitness Challenge" : (currentQuiz.categoryName || "Financial Quiz");
         quizModalTitleEl.textContent = title;
-        quizModalCurrentQEl.textContent = '0'; // Will be updated by displayCurrentQuizQuestion
+        quizModalCurrentQEl.textContent = '0';
         quizModalTotalQEl.textContent = currentQuiz.questions.length;
 
         quizModalQuestionAreaEl.innerHTML = ''; quizModalQuestionAreaEl.hidden = false;
         quizModalOptionsAreaEl.innerHTML = ''; quizModalOptionsAreaEl.hidden = false;
-        quizModalFeedbackAreaEl.hidden = true; quizModalFeedbackAreaEl.className = 'quiz-modal-feedback'; // Reset feedback classes
+        quizModalFeedbackAreaEl.hidden = true; quizModalFeedbackAreaEl.className = 'quiz-modal-feedback';
         quizModalResultsAreaEl.hidden = true; quizModalResultsAreaEl.innerHTML = '';
 
+        // *** ENHANCEMENT: Ensure Next and Restart are hidden at start of new quiz ***
         quizModalNextBtnEl.hidden = true;
-        quizModalRestartBtnEl.hidden = true;
-        quizModalCloseResultsBtnEl.hidden = true;
+        quizModalRestartBtnEl.hidden = true; // Restart only available at results
+        quizModalCloseResultsBtnEl.hidden = true; // Close (results version) only available at results
         
         quizModalProgressEl.hidden = false;
-        quizModalProgressEl.style.setProperty('--quiz-current-question', 0); // Initial progress is 0
+        quizModalProgressEl.style.setProperty('--quiz-current-question', 0);
         quizModalProgressEl.style.setProperty('--quiz-total-questions', currentQuiz.questions.length || 1);
 
         quizModalRestartBtnEl.innerHTML = `<i class="fas fa-redo" aria-hidden="true"></i> Restart ${currentQuiz.isFullChallenge ? 'Full Challenge' : 'Quiz'}`;
-        logger.debug("Quiz modal interface setup complete.");
+        logger.debug("Quiz modal interface setup complete for new quiz.");
         return true;
     }
 
     function displayCurrentQuizQuestion() {
         if (currentQuiz.currentQuestionIndex >= currentQuiz.questions.length) {
+            currentQuiz.isOngoing = false; // Quiz finished, moving to results
             logger.info("All questions answered. Showing results.");
             showQuizResults(); return;
         }
+        currentQuiz.isOngoing = true; // Explicitly ensure quiz is ongoing
         const questionData = currentQuiz.questions[currentQuiz.currentQuestionIndex];
         if (!questionData) {
+            currentQuiz.isOngoing = false;
             logger.error(`Error: Missing question data for index ${currentQuiz.currentQuestionIndex}.`);
             showQuizResults(); return;
         }
@@ -547,22 +554,25 @@
         }
 
         quizModalOptionsAreaEl.innerHTML = '';
-        // Create a mutable copy of options with original indices for shuffling, then mapping
         const optionsWithOriginalIndex = questionData.options.map((text, index) => ({ text, originalIndex: index }));
-        shuffleArray(optionsWithOriginalIndex); // Shuffle the display order of options
+        shuffleArray(optionsWithOriginalIndex);
 
         optionsWithOriginalIndex.forEach(option => {
             const button = document.createElement('button');
             button.type = 'button';
             button.className = 'btn quiz-option';
             button.textContent = option.text;
-            button.dataset.originalIndex = option.originalIndex; // Store original index to check answer
+            button.dataset.originalIndex = option.originalIndex;
             button.addEventListener('click', handleQuizOptionSelection);
             quizModalOptionsAreaEl.appendChild(button);
         });
 
         quizModalFeedbackAreaEl.hidden = true; quizModalFeedbackAreaEl.className = 'quiz-modal-feedback';
-        quizModalNextBtnEl.hidden = true;
+        // *** ENHANCEMENT: Ensure Next is hidden until option selected ***
+        quizModalNextBtnEl.hidden = true; 
+        // Restart button should remain hidden during questions
+        quizModalRestartBtnEl.hidden = true;
+        quizModalCloseResultsBtnEl.hidden = true; // This is for results screen; main close button (X) is always there
         
         const firstOption = quizModalOptionsAreaEl.querySelector('.quiz-option');
         if (firstOption) safeFocus(firstOption, 'Displaying Question Options');
@@ -577,7 +587,6 @@
 
         quizModalOptionsAreaEl.querySelectorAll('.quiz-option').forEach(btn => {
             btn.disabled = true;
-            // Remove any previous interaction states (though usually new question clears this)
             btn.classList.remove('correct', 'incorrect');
         });
 
@@ -596,36 +605,40 @@
         quizModalFeedbackAreaEl.className = `quiz-modal-feedback ${isCorrect ? 'correct' : 'incorrect'}`;
         quizModalFeedbackAreaEl.hidden = false;
 
+        // *** ENHANCEMENT: Only show Next button or Results-related buttons AFTER selection ***
         if (currentQuiz.currentQuestionIndex < currentQuiz.questions.length - 1) {
-            quizModalNextBtnEl.hidden = false;
+            quizModalNextBtnEl.hidden = false; // Show Next button now
+            quizModalRestartBtnEl.hidden = true; // Keep Restart hidden
+            quizModalCloseResultsBtnEl.hidden = true; // Keep Close (results) hidden
             safeFocus(quizModalNextBtnEl, 'Next Question Button Shown');
-        } else {
-             quizModalCloseResultsBtnEl.hidden = false;
-             quizModalRestartBtnEl.hidden = false;
-             logger.info("Last question answered. Scheduling results display.");
-             setTimeout(showQuizResults, CONFIG.QUIZ_FEEDBACK_DELAY);
+        } else { // Last question answered
+            currentQuiz.isOngoing = false; // Quiz technically finished, results will show
+            quizModalNextBtnEl.hidden = true; // No more "Next"
+            // These will be made visible by showQuizResults
+            // quizModalRestartBtnEl.hidden = false; 
+            // quizModalCloseResultsBtnEl.hidden = false;
+            logger.info("Last question answered. Scheduling results display.");
+            setTimeout(showQuizResults, CONFIG.QUIZ_FEEDBACK_DELAY);
         }
     }
 
     function proceedToNextQuestion() {
         logger.debug("Proceeding to next question.");
         currentQuiz.currentQuestionIndex++;
-        displayCurrentQuizQuestion();
+        displayCurrentQuizQuestion(); // This will hide Next button again
     }
 
     function showQuizResults() {
+        currentQuiz.isOngoing = false; // Ensure quiz is marked as not ongoing
         logger.info("Displaying quiz results.");
         quizModalQuestionAreaEl.hidden = true;
         quizModalOptionsAreaEl.hidden = true;
         quizModalFeedbackAreaEl.hidden = true;
-        quizModalNextBtnEl.hidden = true;
+        quizModalNextBtnEl.hidden = true; // Definitely hide Next at results
         
         if(quizModalProgressEl) {
-            // Optionally update progress to 100% or hide it
-            // quizModalProgressEl.style.setProperty('--quiz-current-question', currentQuiz.questions.length);
-            quizModalProgressEl.hidden = true; // Common to hide progress bar at results
+            quizModalProgressEl.hidden = true;
         }
-
 
         const totalQuestions = currentQuiz.questions.length;
         const percentage = totalQuestions > 0 ? Math.round((currentQuiz.score / totalQuestions) * 100) : 0;
@@ -654,19 +667,21 @@
         `;
         quizModalResultsAreaEl.hidden = false;
 
+        // *** ENHANCEMENT: Only show Restart and Close (Results) here ***
         quizModalRestartBtnEl.hidden = false;
-        quizModalCloseResultsBtnEl.hidden = false;
+        quizModalCloseResultsBtnEl.hidden = false; // This is the "Close" button for the results screen
         safeFocus(quizModalRestartBtnEl, 'Quiz Results Shown');
     }
 
     function handleRestartQuiz() {
         logger.info(`Restarting quiz. Full challenge: ${currentQuiz.isFullChallenge}, Quiz ID: ${currentQuiz.quizId || 'N/A'}`);
+        // currentQuiz.isOngoing will be reset by prepareNewQuiz and startQuizFlow
         const originalTrigger = activeModalTriggerElement;
         let questionsForRestart;
         let quizTitleForRestart;
 
         if (currentQuiz.isFullChallenge) {
-            questionsForRestart = [...fullQuizData]; // Get all questions again
+            questionsForRestart = [...fullQuizData];
             quizTitleForRestart = 'Full Financial Fitness Challenge';
             prepareNewQuiz(questionsForRestart, true, null, quizTitleForRestart);
         } else {
@@ -674,11 +689,12 @@
             quizTitleForRestart = currentQuiz.categoryName;
             prepareNewQuiz(questionsForRestart, false, currentQuiz.quizId, quizTitleForRestart);
         }
-        startQuizFlow(originalTrigger);
+        startQuizFlow(originalTrigger); // This will reset ongoing state correctly
     }
 
     function resetQuizInterface() {
-        if (!quizModalTitleEl && !cacheQuizModalInternalElements()) { // Ensure elements are cached if trying to reset
+        currentQuiz.isOngoing = false; // Ensure it's reset
+        if (!quizModalTitleEl && !cacheQuizModalInternalElements()) {
              logger.warn("Cannot reset interface, modal elements not available or not cached."); return;
         }
         quizModalTitleEl.textContent = 'Financial Fitness Quiz';
@@ -697,7 +713,7 @@
         quizModalResultsAreaEl.innerHTML = ''; quizModalResultsAreaEl.hidden = true;
 
         [quizModalNextBtnEl, quizModalRestartBtnEl, quizModalCloseResultsBtnEl].forEach(btn => {
-             if (btn) btn.hidden = true;
+             if (btn) btn.hidden = true; // Hide all action buttons on reset
         });
         logger.debug("Quiz modal interface elements reset.");
     }
@@ -718,7 +734,7 @@
             logger.error("CRITICAL: Quiz modal overlay element not found. Quiz functionality will be severely impaired.");
             allGlobalsFound = false;
         }
-        if (!quizModalContentElement && quizModalElement) { // Content is child of modal
+        if (!quizModalContentElement && quizModalElement) {
              logger.error("CRITICAL: Quiz modal content wrapper not found. Modal may not display correctly.");
              allGlobalsFound = false;
         }
@@ -749,8 +765,8 @@
         
         for (const key in elementsToCache) {
             if (!elementsToCache[key]) {
-                logger.error(`Essential quiz modal internal element missing: ${key} (selector: #${key.replace('El','').replace(/([A-Z])/g, '-$1').toLowerCase().substring('quiz-modal-'.length)})`);
-                return false; // Fail fast if any essential element is missing
+                logger.error(`Essential quiz modal internal element missing: ${key}`);
+                return false;
             }
         }
         logger.debug("All quiz modal internal elements cached successfully.");
@@ -796,9 +812,20 @@
             logger.warn("Accordion element not found, category quiz listeners not attached.");
         }
 
-        // These listeners are now safe to attach because cacheQuizModalInternalElements runs at init
-        if(quizModalCloseBtnEl) quizModalCloseBtnEl.addEventListener('click', () => closeQuizModal());
-        else logger.warn("Quiz modal close button not found, listener not attached.");
+        if(quizModalCloseBtnEl) {
+            quizModalCloseBtnEl.addEventListener('click', () => {
+                // Main "X" close button: similar logic to Escape key for ongoing quiz
+                if (!currentQuiz.isOngoing || quizModalResultsAreaEl.hidden === false) {
+                    closeQuizModal();
+                } else {
+                     logger.debug("Main close (X) button clicked during ongoing quiz; close prevented unless results showing.");
+                     // Optionally: add a confirm dialog here:
+                     // if (confirm("Are you sure you want to close the ongoing quiz? Your progress will be lost.")) {
+                     //     closeQuizModal();
+                     // }
+                }
+            });
+        } else logger.warn("Quiz modal close button not found, listener not attached.");
 
         if(quizModalNextBtnEl) quizModalNextBtnEl.addEventListener('click', proceedToNextQuestion);
         else logger.warn("Quiz modal next button not found, listener not attached.");
@@ -806,14 +833,20 @@
         if(quizModalRestartBtnEl) quizModalRestartBtnEl.addEventListener('click', handleRestartQuiz);
         else logger.warn("Quiz modal restart button not found, listener not attached.");
         
-        if(quizModalCloseResultsBtnEl) quizModalCloseResultsBtnEl.addEventListener('click', () => closeQuizModal());
-        else logger.warn("Quiz modal close results button not found, listener not attached.");
+        if(quizModalCloseResultsBtnEl) { // This button is specifically for the results screen
+            quizModalCloseResultsBtnEl.addEventListener('click', () => closeQuizModal());
+        } else logger.warn("Quiz modal close results button not found, listener not attached.");
 
         if(quizModalElement) {
             quizModalElement.addEventListener('click', (event) => {
-                if (event.target === quizModalElement) { // Click on overlay itself
-                    logger.debug("Modal overlay clicked, closing modal.");
-                    closeQuizModal();
+                if (event.target === quizModalElement) {
+                    if (!currentQuiz.isOngoing || quizModalResultsAreaEl.hidden === false) {
+                         logger.debug("Modal overlay clicked, closing modal.");
+                         closeQuizModal();
+                    } else {
+                         logger.debug("Modal overlay clicked during ongoing quiz; close prevented unless results showing.");
+                         // Optionally: add a confirm dialog for overlay click too.
+                    }
                 }
             });
         }
@@ -821,15 +854,13 @@
     }
 
     function initializeQuizzesPage() {
-        logger.info(`Rofilid Quizzes Page Script Initializing (v3.2.0)`);
+        logger.info(`Rofilid Quizzes Page Script Initializing (v3.3.0)`);
         if (!cacheGlobalElements()) {
             logger.error("CRITICAL: Failed to cache essential global elements. Halting script execution.");
             return;
         }
-        // IMPORTANT: Cache modal internal elements ONCE at initialization, AFTER quizModalElement itself is cached.
         if (quizModalElement && !cacheQuizModalInternalElements()) {
             logger.error("CRITICAL: Failed to cache essential quiz modal internal elements. Quiz functionality may fail.");
-            // Depending on severity, might want to disable quiz buttons here
         }
 
         if (!validateQuizDataIntegrity()) {
@@ -840,7 +871,7 @@
         }
 
         initializeAccordionInteractions();
-        setupEventListeners(); // Now this will correctly find cached modal buttons
+        setupEventListeners();
         updateCopyrightYear();
         
         logger.info("Rofilid Quizzes Page script fully loaded and initialized.");
