@@ -1,8 +1,5 @@
 /**
  * File Location: /assets/js/personal/quizzes.js
- * Description: Scripts exclusive to the ROFILID Financial Fitness Challenge page (quizzes.html).
- *              Manages accordion, quiz modal, and quiz logic (full & category-based).
- * Version: 3.1.0 (Bug Fixes & Compatibility with Independent CSS)
  */
 
 (function() {
