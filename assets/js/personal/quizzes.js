@@ -820,9 +820,9 @@
                 } else {
                      logger.debug("Main close (X) button clicked during ongoing quiz; close prevented unless results showing.");
                      // Optionally: add a confirm dialog here:
-                     // if (confirm("Are you sure you want to close the ongoing quiz? Your progress will be lost.")) {
-                     //     closeQuizModal();
-                     // }
+                      if (confirm("Are you sure you want to close the ongoing quiz? Your progress will be lost.")) {
+                          closeQuizModal();
+                      }
                 }
             });
         } else logger.warn("Quiz modal close button not found, listener not attached.");
